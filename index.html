@@ -13,61 +13,90 @@
       font-family: 'Playfair Display', serif;
     }
     .hero {
-      background: linear-gradient(rgba(10,10,31,0.75), rgba(26,10,46,0.85)), 
+      background: linear-gradient(rgba(10,10,31,0.75), rgba(26,10,46,0.9)), 
                   url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
+      min-height: 100vh;
     }
     .title {
       font-family: 'Cinzel', serif;
-      text-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+      text-shadow: 0 0 40px rgba(168, 85, 247, 0.7);
+    }
+    .scroll-section {
+      min-height: 100vh;
     }
   </style>
 </head>
-<body class="min-h-screen hero flex items-center justify-center text-center p-6 relative overflow-hidden">
+<body class="min-h-screen">
 
-  <!-- Estrellas sutiles -->
-  <div class="absolute inset-0 bg-[radial-gradient(circle,#ffffff22_1px,transparent_1px)] bg-[length:50px_50px] pointer-events-none"></div>
+  <!-- Hero Banner -->
+  <section class="hero flex items-center justify-center text-center p-6 relative">
+    <div class="relative z-10 max-w-4xl mx-auto">
+      <div class="mb-8 inline-flex items-center gap-3 px-6 py-3 bg-purple-950/70 border border-purple-400/30 rounded-full backdrop-blur-md">
+        🌌 ORÁCULO PRISMA DEL ALMA 🌌
+      </div>
 
-  <div class="relative z-10 max-w-3xl mx-auto">
-    <div class="mb-8 inline-flex items-center gap-3 px-6 py-2.5 bg-purple-950/70 border border-purple-400/30 rounded-full backdrop-blur-md">
-      🌌 <span class="tracking-widest text-purple-300 text-sm">ORÁCULO PRISMA DEL ALMA</span> 🌌
+      <h1 class="title text-6xl md:text-8xl font-bold tracking-tighter mb-6 leading-none">
+        BRUXA<br>TAROT
+      </h1>
+
+      <p class="text-xl md:text-2xl text-purple-200 mb-16 max-w-lg mx-auto">
+        Un templo donde tu alma recuerda su luz, su sombra y su magia
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a href="#" class="group block p-8 bg-purple-900/40 border border-purple-400/40 hover:border-purple-300 rounded-3xl transition-all hover:scale-105">
+          <div class="text-4xl mb-4">📅</div>
+          <h3 class="text-2xl font-semibold mb-2">Calendario 30 Días</h3>
+          <p class="text-purple-300">Tu guía diaria de contenido con intención</p>
+        </a>
+
+        <a href="#" class="group block p-8 bg-purple-900/40 border border-purple-400/40 hover:border-purple-300 rounded-3xl transition-all hover:scale-105">
+          <div class="text-4xl mb-4">🔮</div>
+          <h3 class="text-2xl font-semibold mb-2">Portal Mágico</h3>
+          <p class="text-purple-300">Tiradas interactivas del Oráculo</p>
+        </a>
+      </div>
     </div>
+  </section>
 
-    <h1 class="title text-6xl md:text-8xl font-bold tracking-tighter mb-6 leading-none">
-      BRUXA<br>TAROT
-    </h1>
-
-    <p class="text-xl md:text-2xl text-purple-200 mb-16 max-w-lg mx-auto">
-      Un templo donde tu alma recuerda su luz, su sombra y su magia
-    </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <a href="#" class="group block p-8 bg-purple-900/40 border border-purple-400/40 hover:border-purple-300 rounded-3xl transition-all hover:scale-105">
-        <div class="text-4xl mb-4">📅</div>
-        <h3 class="text-2xl font-semibold mb-2">Calendario 30 Días</h3>
-        <p class="text-purple-300">Tu guía diaria de contenido con intención</p>
-      </a>
-
-      <a href="#" class="group block p-8 bg-purple-900/40 border border-purple-400/40 hover:border-purple-300 rounded-3xl transition-all hover:scale-105">
-        <div class="text-4xl mb-4">🔮</div>
-        <h3 class="text-2xl font-semibold mb-2">Portal Mágico</h3>
-        <p class="text-purple-300">Tiradas interactivas del Oráculo Prisma</p>
-      </a>
-
-      <a href="#" class="group block p-8 bg-purple-900/40 border border-purple-400/40 hover:border-purple-300 rounded-3xl transition-all hover:scale-105">
-        <div class="text-4xl mb-4">📖</div>
-        <h3 class="text-2xl font-semibold mb-2">Historias del Alma</h3>
-        <p class="text-purple-300">Canalizaciones y relatos místicos</p>
-      </a>
-
-      <a href="#" class="group block p-8 bg-purple-900/40 border border-purple-400/40 hover:border-purple-300 rounded-3xl transition-all hover:scale-105">
-        <div class="text-4xl mb-4">🎵</div>
-        <h3 class="text-2xl font-semibold mb-2">Música & Vibra</h3>
-        <p class="text-purple-300">Sonidos que elevan el alma</p>
-      </a>
+  <!-- Más secciones (scroll) -->
+  <section class="scroll-section py-24 px-6 border-t border-purple-900/30">
+    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="group bg-purple-950/30 border border-purple-500/30 p-10 rounded-3xl hover:border-purple-400 transition-all">
+        <div class="text-5xl mb-6">📖</div>
+        <h3 class="text-2xl font-semibold mb-3">Historias del Alma</h3>
+        <p class="text-purple-300">Canalizaciones, relatos y susurros del Prisma</p>
+      </div>
+      <div class="group bg-purple-950/30 border border-purple-500/30 p-10 rounded-3xl hover:border-purple-400 transition-all">
+        <div class="text-5xl mb-6">🎵</div>
+        <h3 class="text-2xl font-semibold mb-3">Música & Vibra</h3>
+        <p class="text-purple-300">Sonidos que despiertan tu magia interior</p>
+      </div>
+      <div class="group bg-purple-950/30 border border-purple-500/30 p-10 rounded-3xl hover:border-purple-400 transition-all">
+        <div class="text-5xl mb-6">🦋</div>
+        <h3 class="text-2xl font-semibold mb-3">El Oráculo Prisma</h3>
+        <p class="text-purple-300">Conoce las cartas y sus mensajes</p>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- Footer redes -->
+  <footer class="py-16 border-t border-purple-900/50 bg-black/40">
+    <div class="max-w-md mx-auto text-center">
+      <p class="text-purple-300 mb-6">Conéctate con la magia</p>
+      <div class="flex justify-center gap-8 text-4xl mb-10">
+        <a href="#" class="hover:text-pink-400 transition">📷</a>
+        <a href="#" class="hover:text-blue-500 transition">📘</a>
+        <a href="#" class="hover:text-black transition">🎵</a>
+        <a href="#" class="hover:text-white transition">𝕏</a>
+        <a href="#" class="hover:text-purple-400 transition">🧵</a>
+        <a href="#" class="hover:text-red-500 transition">📺</a>
+      </div>
+      <p class="text-xs text-purple-500">© 2026 Bruxa Tarot • Todos los derechos reservados</p>
+    </div>
+  </footer>
 </body>
 </html>
