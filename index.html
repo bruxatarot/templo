@@ -3,89 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bruxa Tarot - Templo del Prisma</title>
+  <title>Bruxa Tarot • Templo del Prisma</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
   <style>
     body {
-      background: linear-gradient(to bottom, #0a0a1f, #1a0a2e);
+      background: #0a0a1f;
       color: white;
       font-family: 'Playfair Display', serif;
-      overflow-x: hidden;
     }
     .hero {
-      background: linear-gradient(rgba(10,10,31,0.75), rgba(26,10,46,0.9)), 
+      background: linear-gradient(rgba(10,10,31,0.78), rgba(26,10,46,0.92)), 
                   url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
       min-height: 100vh;
     }
-    .title {
-      font-family: 'Cinzel', serif;
-      text-shadow: 0 0 40px rgba(168, 85, 247, 0.7);
-      animation: glow 4s ease-in-out infinite alternate;
+    .glow-text {
+      text-shadow: 0 0 40px rgba(168, 85, 247, 0.8);
+      animation: glow 6s ease-in-out infinite alternate;
     }
     @keyframes glow {
       from { text-shadow: 0 0 20px rgba(168, 85, 247, 0.5); }
-      to { text-shadow: 0 0 50px rgba(168, 85, 247, 0.9); }
+      to { text-shadow: 0 0 60px rgba(168, 85, 247, 0.9); }
     }
-    .star {
-      animation: twinkle 4s infinite alternate;
+    .card-hover {
+      transition: all 0.5s ease;
     }
-    @keyframes twinkle {
-      0% { opacity: 0.4; }
-      100% { opacity: 1; }
-    }
-    .card {
-      transition: all 0.4s ease;
-    }
-    .card:hover {
-      transform: translateY(-12px) scale(1.05);
-      box-shadow: 0 25px 50px -12px rgba(168, 85, 247, 0.4);
+    .card-hover:hover {
+      transform: translateY(-15px) scale(1.04);
+      box-shadow: 0 30px 60px -15px rgba(168, 85, 247, 0.5);
     }
   </style>
 </head>
 <body class="min-h-screen hero flex flex-col">
 
-  <!-- Hero -->
+  <!-- Hero Section -->
   <section class="flex-1 flex items-center justify-center text-center p-6 relative">
-    <div class="absolute inset-0 bg-[radial-gradient(circle,#ffffff22_1px,transparent_1px)] bg-[length:60px_60px] star"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle,#ffffff22_1px,transparent_1px)] bg-[length:70px_70px]"></div>
     
     <div class="relative z-10 max-w-4xl mx-auto">
-      <div class="mb-8 inline-flex items-center gap-3 px-6 py-3 bg-purple-950/70 border border-purple-400/30 rounded-full backdrop-blur-md">
-        🌌 ORÁCULO PRISMA DEL ALMA 🌌
+      <div class="mb-8 inline-flex items-center gap-3 px-8 py-3 bg-purple-950/70 border border-purple-400/40 rounded-full backdrop-blur-md text-purple-200 tracking-widest text-sm">
+        🌙 TEMPLO SAGRADO DEL PRISMA 🌙
       </div>
 
-      <h1 class="title text-6xl md:text-8xl font-bold tracking-tighter mb-6 leading-none">
+      <h1 class="glow-text text-6xl md:text-8xl font-bold tracking-tighter mb-6 leading-none">
         BRUXA<br>TAROT
       </h1>
 
-      <p class="text-xl md:text-2xl text-purple-200 mb-16 max-w-lg mx-auto">
-        Un templo donde tu alma recuerda su luz, su sombra y su magia
+      <p class="text-2xl md:text-3xl text-purple-200 mb-16 max-w-2xl mx-auto">
+        Un templo donde tu alma recuerda su luz, su sombra y su verdadero poder.
       </p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-xl mx-auto">
-        <a href="#" class="card block p-8 bg-purple-900/50 border border-purple-400/50 hover:border-purple-300 rounded-3xl transition-all">
-          <div class="text-5xl mb-4">📅</div>
-          <h3 class="text-2xl font-semibold mb-2">Calendario 30 Días</h3>
-          <p class="text-purple-300">Tu ritual diario de creación mágica</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+        <a href="#" class="card-hover block p-10 bg-purple-900/50 border border-purple-400/50 hover:border-purple-300 rounded-3xl transition-all">
+          <div class="text-5xl mb-6">🔮</div>
+          <h3 class="text-3xl font-semibold mb-3">Portal Mágico</h3>
+          <p class="text-purple-300">Tiradas del Oráculo Prisma del Alma</p>
         </a>
 
-        <a href="#" class="card block p-8 bg-purple-900/50 border border-purple-400/50 hover:border-purple-300 rounded-3xl transition-all">
-          <div class="text-5xl mb-4">🔮</div>
-          <h3 class="text-2xl font-semibold mb-2">Portal Mágico</h3>
-          <p class="text-purple-300">Tiradas interactivas del Oráculo Prisma</p>
+        <a href="#" class="card-hover block p-10 bg-purple-900/50 border border-purple-400/50 hover:border-purple-300 rounded-3xl transition-all">
+          <div class="text-5xl mb-6">🕯️</div>
+          <h3 class="text-3xl font-semibold mb-3">Rituales &amp; Canalizaciones</h3>
+          <p class="text-purple-300">Magia práctica y mensajes del espíritu</p>
         </a>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="py-12 bg-black/60 border-t border-purple-900/50">
-    <div class="max-w-md mx-auto text-center">
-      <p class="text-purple-300 mb-6">Conecta con la magia</p>
-      <div class="flex justify-center gap-8 text-4xl mb-8">
+  <footer class="py-16 bg-black/70 border-t border-purple-900/50">
+    <div class="max-w-4xl mx-auto text-center px-6">
+      <p class="text-purple-300 mb-8">Conecta con la Bruja</p>
+      <div class="flex justify-center gap-10 text-4xl mb-12">
         <a href="#" class="hover:text-pink-400 transition">📷</a>
         <a href="#" class="hover:text-blue-500 transition">📘</a>
         <a href="#" class="hover:text-black transition">🎵</a>
