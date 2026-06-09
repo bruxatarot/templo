@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>El Pozo de los Deseos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Cormorant Garamond", serif;
+      background: radial-gradient(circle at top, #1b1030, #05030a);
+      color: #f5f0ff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0.5rem auto 0;
+      opacity: 0.85;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .panel {
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .panel p {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    form {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      max-width: 420px;
+      padding: 0.6rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid #7c5cff;
+      background: rgba(10, 6, 20, 0.8);
+      color: #f5f0ff;
+      outline: none;
+    }
+
+    input[type="text"]::placeholder {
+      color: #b9a8ff;
+    }
+
+    button {
+      padding: 0.5rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid #f5c86b;
+      background: linear-gradient(135deg, #f5c86b, #e08fff);
+      color: #1b1030;
+      font-weight: 600;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.85rem;
+    }
+
+    button:hover {
+      filter: brightness(1.08);
+    }
+
+    /* Cielo estrellado */
+    #cielo {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      height: 420px;
+      margin-top: 1rem;
+      border-radius: 18px;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #0b0618, #020109);
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+    }
+
+    .estrella {
+      position: absolute;
+      color: #fff;
+      font-size: 18px;
+      text-shadow: 0 0 8px #fff, 0 0 16px #f5c86b;
+      animation: brillar 2s infinite alternate;
+      cursor: default;
+    }
+
+    @keyframes brillar {
+      from { opacity: 0.4; transform: scale(0.8); }
+      to   { opacity: 1;   transform: scale(1.15); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>El Pozo de los Deseos</h1>
+    <p>Lanza tu deseo al cielo… y observa cómo se convierte en una estrella que se suma al firmamento del Templo.</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <p>
+        Escribe tu deseo, intención o petición al universo.  
+        Cada palabra que entregas aquí se transforma en una estrella que habita este cielo compartido.
+      </p>
+
+      <form id="deseoForm">
+        <input
+          type="text"
+          id="deseoInput"
+          placeholder="Escribe tu deseo..."
+          required
+        />
+        <button type="submit">Enviar al cielo ✨</button>
+      </form>
+    </section>
+
+    <section id="cielo" aria-label="Cielo de deseos">
+      <!-- Aquí aparecerán las estrellas generadas por JavaScript -->
+    </section>
+  </main>
+
+  <footer>
+    Parte del Templo Bruxa · Cada estrella es un deseo compartido.
+  </footer>
+
+  <script>
+    // Aquí luego conectaremos con JSONBin.
+    // Por ahora, solo creamos estrellas locales para probar la experiencia.
+
+    const cielo = document.getElementById("cielo");
+    const form = document.getElementById("deseoForm");
+    const input = document.getElementById("deseoInput");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const texto = input.value.trim();
+      if (!texto) return;
+
+      crearEstrella(texto);
+      input.value = "";
+    });
+
+    function crearEstrella(texto) {
+      const estrella = document.createElement("div");
+      estrella.className = "estrella";
+      estrella.textContent = "★";
+
+      const x = Math.random() * 90; // porcentaje
+      const y = Math.random() * 90;
+
+      estrella.style.left = x + "%";
+      estrella.style.top = y + "%";
+      estrella.title = texto;
+
+      cielo.appendChild(estrella);
+    }
+  </script>
+
+</body>
+</html>
