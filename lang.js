@@ -1,333 +1,254 @@
 // ── BRUXA TAROT • SISTEMA DE IDIOMAS ──
-// Archivo central de traducciones para todas las páginas
-
 const LANGS = {
-
-  // ══════════════════════════════════════════
-  // ESPAÑOL
-  // ══════════════════════════════════════════
   es: {
-    // NAV
-    nav_home:    'Inicio',
-    nav_bruja:   'La Bruja',
-    nav_templo:  'El Templo',
-    nav_carta:   'Carta del Día',
-    nav_redes:   'Conecta',
-    nav_rituales:'Rituales',
-    nav_back:    '← Volver al Templo',
-
-    // LANG SELECTOR
-    lang_label: 'Idioma',
-
-    // HERO (index)
-    hero_badge:    '✦ TEMPLO DEL PRISMA ✦',
-    hero_greeting: 'Hola, Alma Brillante…',
-    hero_tagline:  'Un templo donde tu alma recuerda su luz,\nsu sombra y su verdadero poder.',
-    hero_cta_templo: 'Entrar al Templo',
-    hero_cta_carta:  'Carta del Día',
-    hero_scroll:   'Baja',
-
-    // QUIEN SOY
-    qs_label:   'La Bruja detrás del Templo',
-    qs_title:   'Soy Bruxa Tarot',
-    qs_quote:   '"La vida no es blanco y negro.\nEs un prisma de infinitos colores esperando ser vividos."',
-    qs_body1:   'Soy una guía espiritual, lectora de Tarot y creadora del Oráculo Prisma del Alma — 31 cartas nacidas de mis propias historias, personajes y canalización.',
-    qs_body2:   'Cada carta es un espejo. Cada lectura, un regreso a ti.',
-    qs_photo:   'Tu fotografía\nva aquí, Bruxa',
-
-    // TEMPLO
-    templo_label: 'El Templo',
-    templo_title: '¿Qué encontrarás aquí?',
-    templo_body:  'El Templo del Prisma es donde conviven las Esencias Sagradas, las Dualidades, los Guardianes, las Llaves Prismáticas y los Portales Místicos de tu alma.',
-    portal_oraculo_name: 'Oráculo Prisma',
-    portal_oraculo_desc: '31 cartas nacidas de mis historias. Personajes reales que te hablan directamente desde el alma.',
-    portal_musica_name:  'Música Sagrada',
-    portal_musica_desc:  'Frecuencias y canalizaciones para elevar tu vibración y sanar desde adentro.',
-    portal_historias_name: 'Mis Historias',
-    portal_historias_desc: 'Los personajes del Oráculo tienen vida propia. Conócelos, siéntelos, reconócete en ellos.',
-    portal_rituales_name:  'Rituales del Alma',
-    portal_rituales_desc:  'Magia práctica para cada luna, cada carta, cada transformación que tu alma está pidiendo.',
-
-    // CARTA DEL DÍA
-    carta_label:        'Oráculo Prisma del Alma',
-    carta_title:        'Carta del Día',
-    carta_instruction:  'Respira profundo, Alma Brillante. Piensa en lo que necesitas hoy. Cuando sientas el llamado, voltea la carta y recibe el mensaje que lleva tu nombre.',
-    carta_tap:          'Toca la carta para voltearla',
-    carta_reading_title: '✦ MENSAJE DEL ORÁCULO ✦',
-    carta_nuevo:        '✦ Nueva tirada',
-
-    // REDES
-    redes_label: 'Conecta con la Bruja',
-    redes_title: 'Encuéntrame en el cosmos',
-    redes_body:  'Cada red es un portal distinto al Templo. Ven, el alma siempre encuentra su camino.',
-
-    // FOOTER
-    footer: '© 2026 Bruxa Tarot • Templo del Prisma • Oráculo Prisma del Alma',
-
-    // RITUALES (página rituales.html)
-    rit_badge:       '✦ ORÁCULO PRISMA DEL ALMA ✦',
-    rit_title:       'Rituales\ndel Prisma',
-    rit_sub:         'Hola, Alma Brillante. El ritual que necesitas hoy ya te está esperando. Respira profundo, observa el mazo y elige la carta que te llame.',
-    rit_hint:        '☽ Las 31 cartas te aguardan boca abajo ☾',
-    rit_shuffle:     '✦ Barajar el Mazo',
-    rit_ver_todas:   'Ver todas las cartas',
-    rit_filter_all:  'Todas',
-    rit_keywords_lbl:'Palabras clave',
-    rit_ritual_lbl:  'Ritual sugerido',
-    rit_elegir_otra: '✦ Elegir otra carta',
-    rit_carta_dia:   'Carta del Día',
+    nav_bruja:'La Bruja', nav_templo:'El Templo', nav_carta:'Carta del Día',
+    nav_redes:'Conecta', nav_rituales:'Rituales', nav_back:'← Volver al Templo',
+    hero_badge:'✦ TEMPLO DEL PRISMA ✦', hero_greeting:'Hola, Alma Brillante…',
+    hero_tagline:'Un templo donde tu alma recuerda su luz,\nsu sombra y su verdadero poder.',
+    hero_cta_templo:'Entrar al Templo', hero_cta_carta:'Carta del Día', hero_scroll:'Baja',
+    qs_label:'La Bruja detrás del Templo', qs_title:'Soy Bruxa Tarot',
+    qs_quote:'"La vida no es blanco y negro.\nEs un prisma de infinitos colores esperando ser vividos."',
+    qs_body1:'Soy una guía espiritual, lectora de Tarot y creadora del Oráculo Prisma del Alma — 31 cartas nacidas de mis propias historias, personajes y canalización.',
+    qs_body2:'Cada carta es un espejo. Cada lectura, un regreso a ti.',
+    qs_photo:'Tu fotografía\nva aquí, Bruxa',
+    templo_label:'El Templo', templo_title:'¿Qué encontrarás aquí?',
+    templo_body:'El Templo del Prisma es donde conviven las Esencias Sagradas, las Dualidades, los Guardianes, las Llaves Prismáticas y los Portales Místicos de tu alma.',
+    portal_oraculo_name:'Oráculo Prisma', portal_oraculo_desc:'31 cartas nacidas de mis historias. Personajes reales que te hablan directamente desde el alma.',
+    portal_musica_name:'Música Sagrada', portal_musica_desc:'Frecuencias y canalizaciones para elevar tu vibración y sanar desde adentro.',
+    portal_historias_name:'Mis Historias', portal_historias_desc:'Los personajes del Oráculo tienen vida propia. Conócelos, siéntelos, reconócete en ellos.',
+    portal_rituales_name:'Rituales del Alma', portal_rituales_desc:'Magia práctica para cada luna, cada carta, cada transformación que tu alma está pidiendo.',
+    carta_label:'Oráculo Prisma del Alma', carta_title:'Carta del Día',
+    carta_instruction:'Respira profundo, Alma Brillante. Piensa en lo que necesitas hoy. Cuando sientas el llamado, voltea la carta y recibe el mensaje que lleva tu nombre.',
+    carta_tap:'Toca la carta para voltearla', carta_reading_title:'✦ MENSAJE DEL ORÁCULO ✦', carta_nuevo:'✦ Nueva tirada',
+    redes_label:'Conecta con la Bruja', redes_title:'Encuéntrame en el cosmos',
+    redes_body:'Cada red es un portal distinto al Templo. Ven, el alma siempre encuentra su camino.',
+    footer:'© 2026 Bruxa Tarot • Templo del Prisma • Oráculo Prisma del Alma',
+    rit_badge:'✦ ORÁCULO PRISMA DEL ALMA ✦', rit_title:'Rituales\ndel Prisma',
+    rit_sub:'Hola, Alma Brillante. El ritual que necesitas hoy ya te está esperando. Respira profundo, observa el mazo y elige la carta que te llame.',
+    rit_hint:'☽ Las 31 cartas te aguardan boca abajo ☾',
+    rit_shuffle:'✦ Barajar el Mazo', rit_ver_todas:'Ver todas las cartas', rit_filter_all:'Todas',
+    rit_keywords_lbl:'Palabras clave', rit_ritual_lbl:'Ritual sugerido',
+    rit_elegir_otra:'✦ Elegir otra carta', rit_carta_dia:'Carta del Día',
   },
-
-  // ══════════════════════════════════════════
-  // ENGLISH
-  // ══════════════════════════════════════════
   en: {
-    nav_home:    'Home',
-    nav_bruja:   'The Witch',
-    nav_templo:  'The Temple',
-    nav_carta:   'Card of the Day',
-    nav_redes:   'Connect',
-    nav_rituales:'Rituals',
-    nav_back:    '← Back to the Temple',
-
-    lang_label: 'Language',
-
-    hero_badge:    '✦ TEMPLE OF THE PRISM ✦',
-    hero_greeting: 'Hello, Brilliant Soul…',
-    hero_tagline:  'A temple where your soul remembers its light,\nits shadow and its true power.',
-    hero_cta_templo: 'Enter the Temple',
-    hero_cta_carta:  'Card of the Day',
-    hero_scroll:   'Scroll',
-
-    qs_label:   'The Witch behind the Temple',
-    qs_title:   'I am Bruxa Tarot',
-    qs_quote:   '"Life is not black and white.\nIt is a prism of infinite colors waiting to be lived."',
-    qs_body1:   'I am a spiritual guide, Tarot reader and creator of the Prisma Soul Oracle — 31 cards born from my own stories, characters and channeling.',
-    qs_body2:   'Every card is a mirror. Every reading, a return to yourself.',
-    qs_photo:   'Your photo\ngoes here, Bruxa',
-
-    templo_label: 'The Temple',
-    templo_title: 'What will you find here?',
-    templo_body:  'The Temple of the Prism is where Sacred Essences, Dualities, Guardians, Prismatic Keys and Mystical Portals of your soul coexist.',
-    portal_oraculo_name: 'Prisma Oracle',
-    portal_oraculo_desc: '31 cards born from my stories. Real characters that speak to you directly from the soul.',
-    portal_musica_name:  'Sacred Music',
-    portal_musica_desc:  'Frequencies and channelings to elevate your vibration and heal from within.',
-    portal_historias_name: 'My Stories',
-    portal_historias_desc: 'The Oracle characters have a life of their own. Meet them, feel them, recognize yourself in them.',
-    portal_rituales_name:  'Soul Rituals',
-    portal_rituales_desc:  'Practical magic for every moon, every card, every transformation your soul is calling for.',
-
-    carta_label:        'Prisma Soul Oracle',
-    carta_title:        'Card of the Day',
-    carta_instruction:  'Breathe deeply, Brilliant Soul. Think about what you need today. When you feel the call, flip the card and receive the message that carries your name.',
-    carta_tap:          'Tap the card to flip it',
-    carta_reading_title: '✦ MESSAGE FROM THE ORACLE ✦',
-    carta_nuevo:        '✦ New reading',
-
-    redes_label: 'Connect with the Witch',
-    redes_title: 'Find me in the cosmos',
-    redes_body:  'Each network is a different portal to the Temple. Come, the soul always finds its way.',
-
-    footer: '© 2026 Bruxa Tarot • Temple of the Prism • Prisma Soul Oracle',
-
-    rit_badge:       '✦ PRISMA SOUL ORACLE ✦',
-    rit_title:       'Prisma\nRituals',
-    rit_sub:         'Hello, Brilliant Soul. The ritual you need today is already waiting for you. Breathe deeply, observe the deck and choose the card that calls you.',
-    rit_hint:        '☽ All 31 cards await you face down ☾',
-    rit_shuffle:     '✦ Shuffle the Deck',
-    rit_ver_todas:   'See all cards',
-    rit_filter_all:  'All',
-    rit_keywords_lbl:'Keywords',
-    rit_ritual_lbl:  'Suggested ritual',
-    rit_elegir_otra: '✦ Choose another card',
-    rit_carta_dia:   'Card of the Day',
+    nav_bruja:'The Witch', nav_templo:'The Temple', nav_carta:'Card of the Day',
+    nav_redes:'Connect', nav_rituales:'Rituals', nav_back:'← Back to the Temple',
+    hero_badge:'✦ TEMPLE OF THE PRISM ✦', hero_greeting:'Hello, Brilliant Soul…',
+    hero_tagline:'A temple where your soul remembers its light,\nits shadow and its true power.',
+    hero_cta_templo:'Enter the Temple', hero_cta_carta:'Card of the Day', hero_scroll:'Scroll',
+    qs_label:'The Witch behind the Temple', qs_title:'I am Bruxa Tarot',
+    qs_quote:'"Life is not black and white.\nIt is a prism of infinite colors waiting to be lived."',
+    qs_body1:'I am a spiritual guide, Tarot reader and creator of the Prisma Soul Oracle — 31 cards born from my own stories, characters and channeling.',
+    qs_body2:'Every card is a mirror. Every reading, a return to yourself.',
+    qs_photo:'Your photo\ngoes here, Bruxa',
+    templo_label:'The Temple', templo_title:'What will you find here?',
+    templo_body:'The Temple of the Prism is where Sacred Essences, Dualities, Guardians, Prismatic Keys and Mystical Portals of your soul coexist.',
+    portal_oraculo_name:'Prisma Oracle', portal_oraculo_desc:'31 cards born from my stories. Real characters that speak to you directly from the soul.',
+    portal_musica_name:'Sacred Music', portal_musica_desc:'Frequencies and channelings to elevate your vibration and heal from within.',
+    portal_historias_name:'My Stories', portal_historias_desc:'The Oracle characters have a life of their own. Meet them, feel them, recognize yourself in them.',
+    portal_rituales_name:'Soul Rituals', portal_rituales_desc:'Practical magic for every moon, every card, every transformation your soul is calling for.',
+    carta_label:'Prisma Soul Oracle', carta_title:'Card of the Day',
+    carta_instruction:'Breathe deeply, Brilliant Soul. Think about what you need today. When you feel the call, flip the card and receive the message that carries your name.',
+    carta_tap:'Tap the card to flip it', carta_reading_title:'✦ MESSAGE FROM THE ORACLE ✦', carta_nuevo:'✦ New reading',
+    redes_label:'Connect with the Witch', redes_title:'Find me in the cosmos',
+    redes_body:'Each network is a different portal to the Temple. Come, the soul always finds its way.',
+    footer:'© 2026 Bruxa Tarot • Temple of the Prism • Prisma Soul Oracle',
+    rit_badge:'✦ PRISMA SOUL ORACLE ✦', rit_title:'Prisma\nRituals',
+    rit_sub:'Hello, Brilliant Soul. The ritual you need today is already waiting for you. Breathe deeply, observe the deck and choose the card that calls you.',
+    rit_hint:'☽ All 31 cards await you face down ☾',
+    rit_shuffle:'✦ Shuffle the Deck', rit_ver_todas:'See all cards', rit_filter_all:'All',
+    rit_keywords_lbl:'Keywords', rit_ritual_lbl:'Suggested ritual',
+    rit_elegir_otra:'✦ Choose another card', rit_carta_dia:'Card of the Day',
   },
-
-  // ══════════════════════════════════════════
-  // ITALIANO
-  // ══════════════════════════════════════════
   it: {
-    nav_home:    'Home',
-    nav_bruja:   'La Strega',
-    nav_templo:  'Il Tempio',
-    nav_carta:   'Carta del Giorno',
-    nav_redes:   'Connettiti',
-    nav_rituales:'Rituali',
-    nav_back:    '← Torna al Tempio',
-
-    lang_label: 'Lingua',
-
-    hero_badge:    '✦ TEMPIO DEL PRISMA ✦',
-    hero_greeting: 'Ciao, Anima Brillante…',
-    hero_tagline:  'Un tempio dove la tua anima ricorda la sua luce,\nla sua ombra e il suo vero potere.',
-    hero_cta_templo: 'Entra nel Tempio',
-    hero_cta_carta:  'Carta del Giorno',
-    hero_scroll:   'Scorri',
-
-    qs_label:   'La Strega dietro il Tempio',
-    qs_title:   'Sono Bruxa Tarot',
-    qs_quote:   '"La vita non è in bianco e nero.\nÈ un prisma di colori infiniti che aspettano di essere vissuti."',
-    qs_body1:   'Sono una guida spirituale, lettrice di Tarocchi e creatrice dell\'Oracolo Prisma dell\'Anima — 31 carte nate dalle mie storie, personaggi e canalizzazioni.',
-    qs_body2:   'Ogni carta è uno specchio. Ogni lettura, un ritorno a te stessa.',
-    qs_photo:   'La tua foto\nva qui, Bruxa',
-
-    templo_label: 'Il Tempio',
-    templo_title: 'Cosa troverai qui?',
-    templo_body:  'Il Tempio del Prisma è dove coesistono le Essenze Sacre, le Dualità, i Guardiani, le Chiavi Prismatiche e i Portali Mistici della tua anima.',
-    portal_oraculo_name: 'Oracolo Prisma',
-    portal_oraculo_desc: '31 carte nate dalle mie storie. Personaggi reali che ti parlano direttamente dall\'anima.',
-    portal_musica_name:  'Musica Sacra',
-    portal_musica_desc:  'Frequenze e canalizzazioni per elevare la tua vibrazione e guarire dall\'interno.',
-    portal_historias_name: 'Le Mie Storie',
-    portal_historias_desc: 'I personaggi dell\'Oracolo hanno vita propria. Conoscili, sentili, riconosciti in loro.',
-    portal_rituales_name:  'Rituali dell\'Anima',
-    portal_rituales_desc:  'Magia pratica per ogni luna, ogni carta, ogni trasformazione che la tua anima sta chiedendo.',
-
-    carta_label:        'Oracolo Prisma dell\'Anima',
-    carta_title:        'Carta del Giorno',
-    carta_instruction:  'Respira profondamente, Anima Brillante. Pensa a ciò di cui hai bisogno oggi. Quando senti il richiamo, gira la carta e ricevi il messaggio che porta il tuo nome.',
-    carta_tap:          'Tocca la carta per girarla',
-    carta_reading_title: '✦ MESSAGGIO DELL\'ORACOLO ✦',
-    carta_nuevo:        '✦ Nuova lettura',
-
-    redes_label: 'Connettiti con la Strega',
-    redes_title: 'Trovami nel cosmo',
-    redes_body:  'Ogni rete è un portale diverso al Tempio. Vieni, l\'anima trova sempre la sua strada.',
-
-    footer: '© 2026 Bruxa Tarot • Tempio del Prisma • Oracolo Prisma dell\'Anima',
-
-    rit_badge:       '✦ ORACOLO PRISMA DELL\'ANIMA ✦',
-    rit_title:       'Rituali\ndel Prisma',
-    rit_sub:         'Ciao, Anima Brillante. Il rituale di cui hai bisogno oggi ti sta già aspettando. Respira profondamente, osserva il mazzo e scegli la carta che ti chiama.',
-    rit_hint:        '☽ Le 31 carte ti aspettano a faccia in giù ☾',
-    rit_shuffle:     '✦ Mescola il Mazzo',
-    rit_ver_todas:   'Vedi tutte le carte',
-    rit_filter_all:  'Tutte',
-    rit_keywords_lbl:'Parole chiave',
-    rit_ritual_lbl:  'Rituale suggerito',
-    rit_elegir_otra: '✦ Scegli un\'altra carta',
-    rit_carta_dia:   'Carta del Giorno',
+    nav_bruja:'La Strega', nav_templo:'Il Tempio', nav_carta:'Carta del Giorno',
+    nav_redes:'Connettiti', nav_rituales:'Rituali', nav_back:'← Torna al Tempio',
+    hero_badge:'✦ TEMPIO DEL PRISMA ✦', hero_greeting:'Ciao, Anima Brillante…',
+    hero_tagline:'Un tempio dove la tua anima ricorda la sua luce,\nla sua ombra e il suo vero potere.',
+    hero_cta_templo:'Entra nel Tempio', hero_cta_carta:'Carta del Giorno', hero_scroll:'Scorri',
+    qs_label:'La Strega dietro il Tempio', qs_title:'Sono Bruxa Tarot',
+    qs_quote:'"La vita non è in bianco e nero.\nÈ un prisma di colori infiniti che aspettano di essere vissuti."',
+    qs_body1:'Sono una guida spirituale, lettrice di Tarocchi e creatrice dell\'Oracolo Prisma dell\'Anima — 31 carte nate dalle mie storie, personaggi e canalizzazioni.',
+    qs_body2:'Ogni carta è uno specchio. Ogni lettura, un ritorno a te stessa.',
+    qs_photo:'La tua foto\nva qui, Bruxa',
+    templo_label:'Il Tempio', templo_title:'Cosa troverai qui?',
+    templo_body:'Il Tempio del Prisma è dove coesistono le Essenze Sacre, le Dualità, i Guardiani, le Chiavi Prismatiche e i Portali Mistici della tua anima.',
+    portal_oraculo_name:'Oracolo Prisma', portal_oraculo_desc:'31 carte nate dalle mie storie. Personaggi reali che ti parlano direttamente dall\'anima.',
+    portal_musica_name:'Musica Sacra', portal_musica_desc:'Frequenze e canalizzazioni per elevare la tua vibrazione e guarire dall\'interno.',
+    portal_historias_name:'Le Mie Storie', portal_historias_desc:'I personaggi dell\'Oracolo hanno vita propria. Conoscili, sentili, riconosciti in loro.',
+    portal_rituales_name:'Rituali dell\'Anima', portal_rituales_desc:'Magia pratica per ogni luna, ogni carta, ogni trasformazione che la tua anima sta chiedendo.',
+    carta_label:'Oracolo Prisma dell\'Anima', carta_title:'Carta del Giorno',
+    carta_instruction:'Respira profondamente, Anima Brillante. Pensa a ciò di cui hai bisogno oggi. Quando senti il richiamo, gira la carta e ricevi il messaggio che porta il tuo nome.',
+    carta_tap:'Tocca la carta per girarla', carta_reading_title:'✦ MESSAGGIO DELL\'ORACOLO ✦', carta_nuevo:'✦ Nuova lettura',
+    redes_label:'Connettiti con la Strega', redes_title:'Trovami nel cosmo',
+    redes_body:'Ogni rete è un portale diverso al Tempio. Vieni, l\'anima trova sempre la sua strada.',
+    footer:'© 2026 Bruxa Tarot • Tempio del Prisma • Oracolo Prisma dell\'Anima',
+    rit_badge:'✦ ORACOLO PRISMA DELL\'ANIMA ✦', rit_title:'Rituali\ndel Prisma',
+    rit_sub:'Ciao, Anima Brillante. Il rituale di cui hai bisogno oggi ti sta già aspettando. Respira profondamente, osserva il mazzo e scegli la carta che ti chiama.',
+    rit_hint:'☽ Le 31 carte ti aspettano a faccia in giù ☾',
+    rit_shuffle:'✦ Mescola il Mazzo', rit_ver_todas:'Vedi tutte le carte', rit_filter_all:'Tutte',
+    rit_keywords_lbl:'Parole chiave', rit_ritual_lbl:'Rituale suggerito',
+    rit_elegir_otra:'✦ Scegli un\'altra carta', rit_carta_dia:'Carta del Giorno',
   },
-
-  // ══════════════════════════════════════════
-  // 한국어 (COREANO)
-  // ══════════════════════════════════════════
   ko: {
-    nav_home:    '홈',
-    nav_bruja:   '마녀',
-    nav_templo:  '신전',
-    nav_carta:   '오늘의 카드',
-    nav_redes:   '연결',
-    nav_rituales:'의식',
-    nav_back:    '← 신전으로 돌아가기',
-
-    lang_label: '언어',
-
-    hero_badge:    '✦ 프리즘의 신전 ✦',
-    hero_greeting: '안녕하세요, 빛나는 영혼이여…',
-    hero_tagline:  '당신의 영혼이 빛과 그림자,\n그리고 진정한 힘을 기억하는 신전.',
-    hero_cta_templo: '신전 입장',
-    hero_cta_carta:  '오늘의 카드',
-    hero_scroll:   '아래로',
-
-    qs_label:   '신전 뒤의 마녀',
-    qs_title:   '저는 Bruxa Tarot입니다',
-    qs_quote:   '"삶은 흑백이 아닙니다.\n살아가기를 기다리는 무한한 색의 프리즘입니다."',
-    qs_body1:   '저는 영적 안내자이자 타로 리더이며, 프리즈마 영혼 오라클의 창조자입니다. 나의 이야기, 캐릭터, 채널링에서 탄생한 31장의 카드.',
-    qs_body2:   '모든 카드는 거울입니다. 모든 리딩은 당신 자신으로의 귀환입니다.',
-    qs_photo:   '여기에 당신의\n사진이 들어갑니다',
-
-    templo_label: '신전',
-    templo_title: '여기서 무엇을 찾을 수 있나요?',
-    templo_body:  '프리즘의 신전은 당신 영혼의 신성한 본질, 이중성, 수호자, 프리즘 열쇠, 신비로운 포털이 공존하는 곳입니다.',
-    portal_oraculo_name: '프리즘 오라클',
-    portal_oraculo_desc: '나의 이야기에서 탄생한 31장의 카드. 영혼에서 직접 당신에게 말하는 실제 캐릭터들.',
-    portal_musica_name:  '신성한 음악',
-    portal_musica_desc:  '당신의 진동을 높이고 내면에서 치유하기 위한 주파수와 채널링.',
-    portal_historias_name: '나의 이야기',
-    portal_historias_desc: '오라클 캐릭터들은 고유한 생명을 가지고 있습니다. 그들을 만나고, 느끼고, 그 안에서 자신을 발견하세요.',
-    portal_rituales_name:  '영혼의 의식',
-    portal_rituales_desc:  '매 달, 매 카드, 당신의 영혼이 요청하는 모든 변화를 위한 실용적인 마법.',
-
-    carta_label:        '프리즘 영혼 오라클',
-    carta_title:        '오늘의 카드',
-    carta_instruction:  '깊게 숨을 쉬세요, 빛나는 영혼이여. 오늘 필요한 것을 생각해보세요. 부름을 느낄 때 카드를 뒤집고 당신의 이름이 담긴 메시지를 받으세요.',
-    carta_tap:          '카드를 터치하여 뒤집기',
-    carta_reading_title: '✦ 오라클의 메시지 ✦',
-    carta_nuevo:        '✦ 새로운 리딩',
-
-    redes_label: '마녀와 연결하기',
-    redes_title: '우주에서 나를 찾아보세요',
-    redes_body:  '각 네트워크는 신전으로 향하는 다른 포털입니다. 오세요, 영혼은 항상 길을 찾습니다.',
-
-    footer: '© 2026 Bruxa Tarot • 프리즘의 신전 • 프리즘 영혼 오라클',
-
-    rit_badge:       '✦ 프리즘 영혼 오라클 ✦',
-    rit_title:       '프리즘\n의식',
-    rit_sub:         '안녕하세요, 빛나는 영혼이여. 오늘 필요한 의식이 이미 당신을 기다리고 있습니다. 깊게 숨을 쉬고, 덱을 관찰하고, 당신을 부르는 카드를 선택하세요.',
-    rit_hint:        '☽ 31장의 카드가 뒤집혀 당신을 기다립니다 ☾',
-    rit_shuffle:     '✦ 덱 셔플',
-    rit_ver_todas:   '모든 카드 보기',
-    rit_filter_all:  '전체',
-    rit_keywords_lbl:'키워드',
-    rit_ritual_lbl:  '추천 의식',
-    rit_elegir_otra: '✦ 다른 카드 선택',
-    rit_carta_dia:   '오늘의 카드',
+    nav_bruja:'마녀', nav_templo:'신전', nav_carta:'오늘의 카드',
+    nav_redes:'연결', nav_rituales:'의식', nav_back:'← 신전으로 돌아가기',
+    hero_badge:'✦ 프리즘의 신전 ✦', hero_greeting:'안녕하세요, 빛나는 영혼이여…',
+    hero_tagline:'당신의 영혼이 빛과 그림자,\n그리고 진정한 힘을 기억하는 신전.',
+    hero_cta_templo:'신전 입장', hero_cta_carta:'오늘의 카드', hero_scroll:'아래로',
+    qs_label:'신전 뒤의 마녀', qs_title:'저는 Bruxa Tarot입니다',
+    qs_quote:'"삶은 흑백이 아닙니다.\n살아가기를 기다리는 무한한 색의 프리즘입니다."',
+    qs_body1:'저는 영적 안내자이자 타로 리더이며, 프리즈마 영혼 오라클의 창조자입니다. 나의 이야기, 캐릭터, 채널링에서 탄생한 31장의 카드.',
+    qs_body2:'모든 카드는 거울입니다. 모든 리딩은 당신 자신으로의 귀환입니다.',
+    qs_photo:'여기에 당신의\n사진이 들어갑니다',
+    templo_label:'신전', templo_title:'여기서 무엇을 찾을 수 있나요?',
+    templo_body:'프리즘의 신전은 당신 영혼의 신성한 본질, 이중성, 수호자, 프리즘 열쇠, 신비로운 포털이 공존하는 곳입니다.',
+    portal_oraculo_name:'프리즘 오라클', portal_oraculo_desc:'나의 이야기에서 탄생한 31장의 카드. 영혼에서 직접 당신에게 말하는 실제 캐릭터들.',
+    portal_musica_name:'신성한 음악', portal_musica_desc:'당신의 진동을 높이고 내면에서 치유하기 위한 주파수와 채널링.',
+    portal_historias_name:'나의 이야기', portal_historias_desc:'오라클 캐릭터들은 고유한 생명을 가지고 있습니다. 그들을 만나고, 느끼고, 그 안에서 자신을 발견하세요.',
+    portal_rituales_name:'영혼의 의식', portal_rituales_desc:'매 달, 매 카드, 당신의 영혼이 요청하는 모든 변화를 위한 실용적인 마법.',
+    carta_label:'프리즘 영혼 오라클', carta_title:'오늘의 카드',
+    carta_instruction:'깊게 숨을 쉬세요, 빛나는 영혼이여. 오늘 필요한 것을 생각해보세요. 부름을 느낄 때 카드를 뒤집고 당신의 이름이 담긴 메시지를 받으세요.',
+    carta_tap:'카드를 터치하여 뒤집기', carta_reading_title:'✦ 오라클의 메시지 ✦', carta_nuevo:'✦ 새로운 리딩',
+    redes_label:'마녀와 연결하기', redes_title:'우주에서 나를 찾아보세요',
+    redes_body:'각 네트워크는 신전으로 향하는 다른 포털입니다. 오세요, 영혼은 항상 길을 찾습니다.',
+    footer:'© 2026 Bruxa Tarot • 프리즘의 신전 • 프리즘 영혼 오라클',
+    rit_badge:'✦ 프리즘 영혼 오라클 ✦', rit_title:'프리즘\n의식',
+    rit_sub:'안녕하세요, 빛나는 영혼이여. 오늘 필요한 의식이 이미 당신을 기다리고 있습니다. 깊게 숨을 쉬고, 덱을 관찰하고, 당신을 부르는 카드를 선택하세요.',
+    rit_hint:'☽ 31장의 카드가 뒤집혀 당신을 기다립니다 ☾',
+    rit_shuffle:'✦ 덱 셔플', rit_ver_todas:'모든 카드 보기', rit_filter_all:'전체',
+    rit_keywords_lbl:'키워드', rit_ritual_lbl:'추천 의식',
+    rit_elegir_otra:'✦ 다른 카드 선택', rit_carta_dia:'오늘의 카드',
   }
 };
 
-// ── CARD TRANSLATIONS ──
+// ── CARD CONTENT TRANSLATIONS (messages + rituals + keywords) ──
 const CARD_TRANSLATIONS = {
   en: {
-    catLabels: {
-      esencias:   '🌈 Sacred Essences',
-      dualidades: '🌒 Prism Dualities',
-      guardianes: '🛡️ Prism Guardians',
-      llaves:     '💠 Prismatic Keys',
-      portales:   '🌌 Mystical Portals'
-    },
-    filterLabels: ['All','🌈 Sacred Essences','🌒 Dualities','🛡️ Guardians','💠 Keys','🌌 Portals'],
-    subtitles: ['Prism Channeler','Spirit Hunter','Healing Goddess','Karma Goddess','Goddess of the Path','Goddess of Self-Love','God of Time','God of Fire & Resurrection','Inner Return','Spiritual Awakening','Reconnection','Shadow Weaver','Echo of Doubt','The Subtle Poison','Silent Intrusion','Prisoner of Yesterday','Eternal Whisper','The Voice Against Injustice','Protector of Broken Hearts','The Druid of the Mirror','The Three Heart Allies','Cupid Undercover','Soul Cheerleader','Guardian of Portals','The Illuminated','Underworld Traveler','Mystical Portal','Mystical Portal','Mystical Portal','Mystical Portal','Mystical Portal']
+    catLabels:{ esencias:'🌈 Sacred Essences', dualidades:'🌒 Prism Dualities', guardianes:'🛡️ Guardians', llaves:'💠 Prismatic Keys', portales:'🌌 Mystical Portals' },
+    filterLabels:['All','🌈 Sacred Essences','🌒 Dualities','🛡️ Guardians','💠 Keys','🌌 Portals'],
+    cards:[
+      {subtitle:'Prism Channeler', keywords:['Inspiration','Rebirth','Clarity','Transformation','New perspective'], message:'Bruxa Tarot appears when it\'s time to see life through new eyes. You have the power to change your perspective and choose a new frequency. What areas of your life have grown dull? This card is a gentle but firm call to reclaim your sense of wonder.', ritual:'Choose a space in your life that feels dim or lifeless. Breathe new life into it with art, flowers, candles or scents. Let the process awaken your creativity and symbolize your emotional rebirth with something new in that space.'},
+      {subtitle:'Spirit Hunter', keywords:['Energetic protection','Sharp intuition','Observation','Spiritual alert'], message:'When Nabi appears, something invisible needs to be seen. Your intuition will be your greatest ally. Observe, discern and act with stealth — but with firmness. Do not underestimate what seems small.', ritual:'Spend a moment exploring your surroundings with fresh eyes. Observe something that would normally go unnoticed: a plant, a shadow, an insect. Imagine the epic story you could tell from its perspective. Strengthen your connection with everyday magic.'},
+      {subtitle:'Healing Goddess', keywords:['Healing','Patience','Nurturing love','Cycles','Inner time'], message:'Healing doesn\'t mean avoiding pain — it means crossing through it with courage. Marta invites you to trust that every tear shed waters your path toward a stronger, more beautiful version of yourself.', ritual:'Prepare a small altar with white flowers and a white candle. Write on a piece of paper what you need to release and heal. Fold it and burn it safely, visualizing how the ashes transform your pain into strength.'},
+      {subtitle:'Karma Goddess', keywords:['Balance','Energetic justice','Emotional harvest','Life lesson'], message:'Jade appears when the universe is making adjustments. A situation is reaching its point of balance, a truth is coming to light. This card invites you to forgive yourself and release what you are no longer meant to carry.', ritual:'Sit in a quiet place and visualize a scale in your hands. Symbolically place your proud actions on one side and your worrying ones on the other. Without judgment, write three actions you can take to bring balance back to your life.'},
+      {subtitle:'Goddess of the Path', keywords:['Intuition','Inner guidance','Emotional clarity','Spiritual calling'], message:'Elena appears when you are lost or about to give up. The path is already drawn inside you. Even if you can\'t see the whole map, you have enough clarity for the next step. Trust your intuition. You are not alone.', ritual:'Close your eyes and visualize two paths before you. One easy path that ends in thorns, one challenging path that ends in light. Ask yourself: what decisions am I avoiding? Write them down and note one brave step you can take today.'},
+      {subtitle:'Goddess of Self-Love', keywords:['Self-affirmation','Dignity','Cycle closure','Liberation'], message:'Mia arrives when it\'s time to remember who you are and what you\'re worth. The love starts with you. Don\'t be afraid to walk away from what doesn\'t value you. When you recognize yourself first, you attract healthier relationships.', ritual:'Go to a peaceful place, preferably near water. Write what you are no longer willing to tolerate. On another paper, write the wonderful things you recognize in yourself. With intention, tear up the first paper and keep the second close to your heart.'},
+      {subtitle:'God of Time', keywords:['Urgency','Action','Decision','Imminent change','Present moment'], message:'Tony appears when the time is now. There is no more room for "later." What you don\'t choose today, time chooses for you. Something needs to be decided, started or left behind. This card is that signal.', ritual:'Set a timer for exactly 10 minutes. Write without stopping everything you wish to do but have been postponing. When it\'s done, read it aloud and choose one thing you can start today.'},
+      {subtitle:'God of Fire & Resurrection', keywords:['Deep desire','Rebirth','Emotional courage','Passion','Unbreakable love'], message:'Dante appears when desire is so strong it cannot be ignored. He is the fire that burns what no longer serves so that rebirth can happen. Dare to feel without censorship and follow the truth of your inner fire.', ritual:'Write on a piece of paper what you wish to overcome or what holds you back. In a safe place, burn it symbolically. As the ashes fall, repeat: "I rise from my ashes, unstoppable and free."'},
+      {subtitle:'Inner Return', keywords:['Soul reconnection','Inner truth','Awakening intuition','Silent rebirth'], message:'The Clear Voice is the moment the soul says: no more running — let\'s go home. You are ready to return to yourself. It\'s time to pick up the microphone of your own life and speak your truth again.', ritual:'Light a blue candle. Write three things you haven\'t said but need to express, three wishes you carry in silence, and three truths that define you. Then, standing before a mirror, read them aloud.'},
+      {subtitle:'Spiritual Awakening', keywords:['Awakening','Soul restlessness','Inner search','Spiritual calling'], message:'When everything seems fine but you feel a void. Your heart desires another life. This card also appears when you\'ve already taken the first step and need confirmation that your soul is guiding you.', ritual:'Make a list of things that no longer make you feel alive. Then write: "What my soul wants to experience." It doesn\'t matter if they seem impossible. That list is your compass.'},
+      {subtitle:'Reconnection', keywords:['Soul reunion','Deep calm','Cycle closure','Spiritual belonging'], message:'When you finally close a cycle. When, despite the world\'s chaos, there is calm within. What you seek is not outside — it\'s in the reconnection with your own soul.', ritual:'Create a small altar with objects that represent you: a photo, a letter, a stone, a scent. Sit in silence before it and repeat three times: "I am here. I am enough. This is my home."'},
+      {subtitle:'Shadow Weaver', keywords:['Emotional manipulation','Ambiguity','Control through silence'], message:'This card appears when someone plays with you without saying so. Your intuition already knows the truth. It also appears when you yourself are falling into manipulative dynamics without noticing.', ritual:'Take a black or red thread. Name it: "this represents the story woven so I couldn\'t see the truth." With intention, break it and say: "Today I free myself from the spell. Let shadow no longer cloud my clarity."'},
+      {subtitle:'Echo of Doubt', keywords:['Indecision','Emotional insecurity','Unfinished choices'], message:'When you are waiting for someone to choose you... and they don\'t. Not choosing is also a choice. And the soul knows it. Love is not lukewarm — it\'s fire or nothing.', ritual:'Write the name or symbol of what doesn\'t choose you. Hold it for a moment, feel its weight. Then bury it in earth or let it float on water and say: "I release you. Today I choose myself."'},
+      {subtitle:'The Subtle Poison', keywords:['Manipulation','Dark seduction','Mental domination','Hidden danger'], message:'Valeria arrives as a whisper. Is what you feel desire or addiction? Are you accepting crumbs disguised as passion? This card invites you to ask whether you\'re using your charm to avoid showing true vulnerability.', ritual:'Take a black thread and tie it around your wrist saying: "I cut all ties with any manipulation that doesn\'t respect my light." Then break the thread with determination, imagining how you free yourself from any toxic influence.'},
+      {subtitle:'Silent Intrusion', keywords:['Elegant manipulation','Disguised jealousy','Emotional control','Hidden insecurity'], message:'True power doesn\'t come from external control, but from internal security. Are you clinging to something that no longer resonates but still represents power? This card invites you to release the illusion of control.', ritual:'Write on a paper what you deeply envy. Feel the weight of that emotion. Then burn it with intention, saying: "I release envy to make room for my own light." Open your heart to your own talents.'},
+      {subtitle:'Prisoner of Yesterday', keywords:['Emotional stagnation','Nostalgia','Fear of change','Empty attachments'], message:'Tatiana appears when you are clinging to something only because it\'s familiar. Are you in repeated cycles out of habit, not love? Sometimes your worst enemy isn\'t pain — it\'s attachment to what once was.', ritual:'Write on a paper the phrases you repeat to yourself to avoid moving forward. Fold it and burn it with intention, saying: "I release the past to open myself to my own light." Feel that fire cleansing the toxic attachment.'},
+      {subtitle:'Eternal Whisper', keywords:['Impossible love','Deep connection','Burning silence','Intertwined souls'], message:'When you feel a love so deep it transcends the tangible. Sometimes the most real love is the one that aches in silence, the one that lives in the unsaid. Perhaps the soul is waiting for another life, another plane, another moment.', ritual:'Write a letter to that love that could not be. Don\'t edit or review it. Then keep it in a box with salt, dried flowers or lavender, and symbolically bury it. Surrender that love to the universe.'},
+      {subtitle:'Voice Against Injustice', keywords:['Justice','Loyalty','Silent courage','Emotional defense'], message:'Alberto appears when someone needs to be defended, even if they don\'t dare ask. Be a shield when someone else is falling. One act of intercession can change the course of an adverse situation.', ritual:'Take a white stone and hold it in your left hand. Close your eyes and visualize the face of someone who needs your support. Repeat: "I am a shield for those in need." Keep the stone where you\'ll see it every day.'},
+      {subtitle:'Protector of Broken Hearts', keywords:['Unconditional loyalty','Silent protection','Unrequited love','Constant presence'], message:'It\'s time to honor what has always been there: an unrequited love, a friendship that held you, or a part of yourself you never let die despite the pain. Someone has loved or accompanied you without being seen.', ritual:'Find a smooth stone or shell. Hold it close to your heart and think of someone who needs comfort. Repeat: "I am a refuge for hurting hearts." Keep that object close to you.'},
+      {subtitle:'The Druid of the Mirror', keywords:['Emotional reflection','Intuitive clarity','Unforced truth'], message:'Rosario doesn\'t give you direct answers — she holds a mirror up and accompanies you as you discover them yourself. She represents the friendship that doesn\'t judge, that listens before speaking.', ritual:'Fill a bowl with clean water and place it before a mirror. Sit before them, breathe deeply and look at your reflection in the water. Ask yourself: "What part of me needs to be revealed?" Stay in silence, then write what you perceive.'},
+      {subtitle:'Renata, Cristina & Sofía', keywords:['Unconditional support','Sisterhood','Shared strength','Protection','Union'], message:'Are you letting others accompany you, or trying to carry everything alone? It\'s time to honor those who hold you up. The power of true friendship: the one who acts, the one who heals with laughter, the one who observes with wisdom.', ritual:'Write the names of people who have been your true support. Next to each name, write what they represent in your life: laughter, strength, wisdom. Write a symbolic letter to each one. Feel those connections sustaining you.'},
+      {subtitle:'Cupid Undercover', keywords:['True love','Subtle union','Silent intuition','Emotional bridge'], message:'Jazmín works in silence and trusts the universe\'s timing. The true cupid doesn\'t shoot arrows — they send signs. Is there someone supporting you quietly that you haven\'t yet noticed?', ritual:'Write on a seed or small paper the symbol of the relationship you wish to attract. Keep it in a jar with a flower petal and some earth. Each time you look at it, remember that true love works in silence.'},
+      {subtitle:'Soul Cheerleader', keywords:['Authentic motivation','Borrowed faith','Contagious energy','Heart\'s impulse'], message:'This card is the cry of the soul that says: you are doing better than you think. Don\'t hide when it\'s time to shine. When your faith falters, remember you are supported, seen, and capable.', ritual:'In a small box or jar, place five papers with your achievements or favorite qualities. Decorate it with vibrant colors. Each morning, pull one out, read it aloud and celebrate with a small jump, repeating: "This is me and I celebrate it!"'},
+      {subtitle:'Guardian of Portals', keywords:['Powerful curiosity','Magical beginnings','Unexpected connection','Hidden keys'], message:'Follow your curiosity, explore what seemed insignificant. Something is about to open in your life. The magic doesn\'t always arrive with grand rituals — sometimes it comes with small daring acts.', ritual:'Choose a door or drawer in your home that you rarely use. Stand before it with the intention of "finding something new in my life," open it slowly and observe what you see. That everyday object will be your sign that you hold the key to new thresholds.'},
+      {subtitle:'The Illuminated', keywords:['Inner wisdom','Mental clarity','Sacred silence','Elevated perspective'], message:'Erebus appears when you are ready to see beyond the surface. You don\'t need loud words — his presence alone is enough to make you question everything and find answers where before there was only noise.', ritual:'At dusk, turn off all lights and place before you an unlit candle or a bowl of dark water. Say softly: "Let the echo of the forgotten guide me." Feel the silence. Then light the candle and write down the first thing you perceive.'},
+      {subtitle:'Underworld Traveler', keywords:['Inner journey','Divine mystery','Ancestral wisdom','Silent transformation'], message:'You are crossing inner portals you didn\'t want to see before. You don\'t need to understand everything — only dare to follow your own journey. You are being transformed in ways that are not yet visible.', ritual:'At dusk, place a dark cloth on a table. Put a mysterious object on top (a stone, an old key). Close your eyes and say: "Aetherius, bring your secret." Stay in silence for one minute and write down the first image that emerges.'},
+      {subtitle:'Mystical Portal', keywords:['Conscious descent','Underworld journey','Rebirth','Fertile darkness'], message:'You don\'t enter to disappear — you enter to remember who you were before you forgot. Only what no longer serves can burn. To return to yourself... sometimes you have to go down first.', ritual:'Light a dark candle (black or purple). Write what you no longer want to carry: fears, guilt, patterns. Place it under the candle, visualizing how the flame absorbs that weight. Bury the ashes in the earth or dissolve them in running water.'},
+      {subtitle:'Mystical Portal', keywords:['Spiritual support','Ancestral wisdom','Invisible guides','Synchronicities'], message:'There is already an energetic council gathered: your guides, your future selves, your ancestors. You are already being held by greater energies. You are not alone — invisible forces are already deliberating in your favor.', ritual:'Invite someone close to share a simple meal without distractions, without phones or screens. Before beginning, close your eyes and give thanks for being together. Savor each bite with full attention, recognizing the love that unites you.'},
+      {subtitle:'Mystical Portal', keywords:['Radical transformation','End of comfort','Awakening','Raw truth'], message:'The Portal of Chaos is not your enemy. The universe shakes the table so you stop pretending to fit in. It frees you — even if it hurts. Only what is real can survive this kind of shaking.', ritual:'Put on music that inspires energy in you. Open your wardrobe or drawers. Select what you no longer use and donate, gift or recycle those objects. As you set them aside, say: "I release the old to make way for the new." Feel the lightness.'},
+      {subtitle:'Mystical Portal', keywords:['Emotional alchemy','Deep healing','Internal processes','Invisible cooking'], message:'Your soul is in an alchemical process. Don\'t interrupt the mixture just because you don\'t yet understand the result. Trust in what is cooking inside you. Patience and love are the best ingredients for your growth.', ritual:'Choose a simple recipe: a broth, a soup, a soft stew. As you cook, feel each aroma and texture. Add salt or herbs with the intention of "healing what needs to be healed." Let it simmer slowly and savor each spoonful as an act of love toward yourself.'},
+      {subtitle:'Mystical Portal', keywords:['Mental awakening','Spiritual clarity','Soul memory','Channeling'], message:'Wisdom is not found — it is remembered. You are ready to receive answers you couldn\'t hold before. The butterflies that emerge are illuminated thoughts, ideas that arrive like lightning, memories of other lives.', ritual:'Take a notebook and a pen. Formulate one essential question for yourself. Place the notebook under your pillow with the intention of receiving a clue. Upon waking, write without editing the first thing you remember: a word, a symbol, a sensation.'},
+    ]
   },
   it: {
-    catLabels: {
-      esencias:   '🌈 Essenze Sacre',
-      dualidades: '🌒 Dualità del Prisma',
-      guardianes: '🛡️ Guardiani del Prisma',
-      llaves:     '💠 Chiavi Prismatiche',
-      portales:   '🌌 Portali Mistici'
-    },
-    filterLabels: ['Tutte','🌈 Essenze Sacre','🌒 Dualità','🛡️ Guardiani','💠 Chiavi','🌌 Portali'],
-    subtitles: ['Canalizzatrice del Prisma','Cacciatrice di Spiriti','Dea della Guarigione','Dea del Karma','Dea del Cammino','Dea dell\'Amore Proprio','Dio del Tempo','Dio del Fuoco e della Resurrezione','Ritorno Interiore','Risveglio Spirituale','Riconnessione','Tessitore di Ombre','Eco del Dubbio','Il Veleno Sottile','Intrusione Silenziosa','Prigioniera di Ieri','Sussurro Eterno','La Voce Contro l\'Ingiustizia','Protettore dei Cuori Spezzati','La Druida dello Specchio','Le Tre Alleate del Cuore','Cupido Nascosto','Cheerleader dell\'Anima','Guardiano dei Portali','L\'Illuminato','Il Viaggiatore dell\'Inframondo','Portale Mistico','Portale Mistico','Portale Mistico','Portale Mistico','Portale Mistico']
+    catLabels:{ esencias:'🌈 Essenze Sacre', dualidades:'🌒 Dualità del Prisma', guardianes:'🛡️ Guardiani', llaves:'💠 Chiavi Prismatiche', portales:'🌌 Portali Mistici' },
+    filterLabels:['Tutte','🌈 Essenze Sacre','🌒 Dualità','🛡️ Guardiani','💠 Chiavi','🌌 Portali'],
+    cards:[
+      {subtitle:'Canalizzatrice del Prisma', keywords:['Ispirazione','Rinascita','Chiarezza','Trasformazione'], message:'Bruxa Tarot appare quando è tempo di vedere la vita con occhi nuovi. Hai il potere di cambiare la tua prospettiva. Questa carta è un invito gentile ma fermo a recuperare il senso della meraviglia.', ritual:'Scegli uno spazio nella tua vita che senti spento. Porta nuova vita con arte, fiori, candele o profumi. Lascia che il processo svegli la tua creatività e simboleggi la tua rinascita emotiva.'},
+      {subtitle:'Cacciatrice di Spiriti', keywords:['Protezione energetica','Intuizione acuta','Osservazione'], message:'Quando Nabi appare, qualcosa di invisibile ha bisogno di essere visto. La tua intuizione sarà la tua migliore alleata. Osserva, discerni e agisci con cautela, ma con fermezza.', ritual:'Dedica un momento a esplorare il tuo ambiente con occhi nuovi. Osserva qualcosa che di solito passerebbe inosservato. Immagina che storia epica potresti raccontare dalla sua prospettiva.'},
+      {subtitle:'Dea della Guarigione', keywords:['Guarigione','Pazienza','Amore che si coltiva','Cicli'], message:'Guarire non significa evitare il dolore, ma attraversarlo con coraggio. Marta ti invita a fidarti che ogni lacrima versa innaffia il tuo cammino verso una versione più forte di te.', ritual:'Prepara un altare con fiori bianchi e una candela bianca. Scrivi su un foglio ciò che hai bisogno di liberare e guarire. Piegalo e brucialo in sicurezza, visualizzando come le ceneri trasformano il tuo dolore in forza.'},
+      {subtitle:'Dea del Karma', keywords:['Equilibrio','Giustizia energetica','Raccolta emotiva'], message:'Jade appare quando l\'universo sta facendo aggiustamenti. C\'è una situazione che sta raggiungendo il suo punto di equilibrio. Questa carta ti invita a perdonarti e lasciare andare ciò che non sei più chiamata a portare.', ritual:'Siediti in un posto tranquillo e visualizza una bilancia nelle tue mani. Posiziona simbolicamente le tue azioni di cui sei orgogliosa su un lato e quelle che ti preoccupano sull\'altro. Scrivi tre azioni per riportare equilibrio nella tua vita.'},
+      {subtitle:'Dea del Cammino', keywords:['Intuizione','Guida interiore','Chiarezza emotiva'], message:'Elena appare quando sei persa o stai per arrenderti. Il cammino è già tracciato dentro di te. Fidati della tua intuizione. Non sei sola.', ritual:'Chiudi gli occhi e visualizza due sentieri davanti a te. Uno facile che finisce in spine, l\'altro impegnativo che finisce in luce. Chiediti: quali decisioni sto evitando? Scrivile e nota un passo coraggioso che puoi fare oggi.'},
+      {subtitle:'Dea dell\'Amore Proprio', keywords:['Autoaffermazione','Dignità','Liberazione'], message:'Mia arriva quando è tempo di ricordare chi sei e quanto vali. L\'amore inizia da te. Non temere di allontanarti da ciò che non ti valorizza.', ritual:'Va in un posto tranquillo, preferibilmente vicino all\'acqua. Scrivi ciò che non sei più disposta a tollerare. Su un altro foglio, scrivi le cose meravigliose che riconosci in te stessa. Strappa il primo foglio e tieni il secondo vicino al cuore.'},
+      {subtitle:'Dio del Tempo', keywords:['Urgenza','Azione','Decisione','Cambiamento imminente'], message:'Tony appare quando il momento è adesso. Non c\'è più spazio per il "dopo." Quello che non scegli oggi, lo sceglie il tempo per te.', ritual:'Imposta un timer per esattamente 10 minuti. Scrivi senza fermarti tutto ciò che desideri fare ma hai rimandato. Quando finisce, leggilo ad alta voce e scegli una cosa che puoi iniziare oggi stesso.'},
+      {subtitle:'Dio del Fuoco e della Resurrezione', keywords:['Desiderio profondo','Rinascita','Passione'], message:'Dante appare quando il desiderio è così forte da non poter essere ignorato. Osa sentire senza censura e segui la verità del tuo fuoco interiore.', ritual:'Scrivi su un foglio ciò che vuoi superare. In un posto sicuro, brucialo simbolicamente. Mentre le ceneri cadono, ripeti: "Risorgo dalle mie ceneri, inarrestabile e libera."'},
+      {subtitle:'Ritorno Interiore', keywords:['Riconnessione','Verità interiore','Intuizione'], message:'La Voce Chiara è il momento in cui l\'anima dice: basta fuggire, torniamo a casa. È ora di prendere il microfono della tua vita e parlare di nuovo la tua verità.', ritual:'Accendi una candela blu. Scrivi tre cose che non hai detto ma hai bisogno di esprimere, tre desideri che porti in silenzio, e tre verità che ti definiscono. Poi, davanti allo specchio, leggile ad alta voce.'},
+      {subtitle:'Risveglio Spirituale', keywords:['Risveglio','Irrequietezza dell\'anima','Ricerca interiore'], message:'Quando tutto sembra andare bene ma senti un vuoto. Il tuo cuore desidera un\'altra vita. Questa carta appare anche quando hai già fatto il primo passo e hai bisogno di conferma che la tua anima ti guida.', ritual:'Fai una lista di cose che non ti fanno più sentire viva. Poi scrivi: "Ciò che la mia anima vuole vivere." Non importa se sembrano impossibili. Quella lista è la tua bussola.'},
+      {subtitle:'Riconnessione', keywords:['Riunione con l\'anima','Calma profonda','Chiusura del ciclo'], message:'Quando riesci a chiudere un ciclo. Dentro di te c\'è calma. Ciò che cerchi non è fuori — è nella riconnessione con la tua anima.', ritual:'Crea un piccolo altare con oggetti che ti rappresentano: una foto, una lettera, una pietra, un profumo. Siediti in silenzio davanti ad esso e ripeti tre volte: "Sono qui. Sono abbastanza. Questa è la mia casa."'},
+      {subtitle:'Tessitore di Ombre', keywords:['Manipolazione emotiva','Ambiguità','Controllo'], message:'Questa carta appare quando qualcuno gioca con te senza dirlo. La tua intuizione conosce già la verità. Appare anche quando tu stessa stai cadendo in dinamiche di manipolazione senza accorgertene.', ritual:'Prendi un filo nero o rosso. Chiamalo: "questo rappresenta la storia tessuta per non farmi vedere la verità." Con intenzione, rompilo e di\': "Oggi mi libero dall\'incantesimo."'},
+      {subtitle:'Eco del Dubbio', keywords:['Indecisione','Insicurezza emotiva','Scelte incompiute'], message:'Quando stai aspettando che qualcuno ti scelga... e non lo fa. Non scegliere è anche scegliere. E l\'anima lo sa.', ritual:'Scrivi il nome o il simbolo di ciò che non ti sceglie. Tienilo per un momento, senti il suo peso. Poi seppelliscilo sotto terra o lascialo galleggiare sull\'acqua e di\': "Ti libero. Oggi scelgo me stessa."'},
+      {subtitle:'Il Veleno Sottile', keywords:['Manipolazione','Seduzione oscura','Pericolo nascosto'], message:'Valeria arriva come un sussurro. Ciò che senti è desiderio o dipendenza? Stai accettando briciole travestite da passione?', ritual:'Prendi un filo nero e legalo intorno al tuo polso dicendo: "Taglio i legami con ogni manipolazione che non rispetta la mia luce." Poi rompi il filo con determinazione.'},
+      {subtitle:'Intrusione Silenziosa', keywords:['Controllo emotivo','Gelosia','Insicurezza nascosta'], message:'Il vero potere non viene dal controllo esterno, ma dalla sicurezza interna. Sei aggrappata a qualcosa che non vibra più con te? Questa carta ti invita a lasciare andare l\'illusione del controllo.', ritual:'Scrivi su un foglio ciò che invidi profondamente. Senti il peso di quell\'emozione. Poi brucialo con intenzione, dicendo: "Libero l\'invidia per fare spazio alla mia luce."'},
+      {subtitle:'Prigioniera di Ieri', keywords:['Stagnazione','Nostalgia','Paura del cambiamento'], message:'Tatiana appare quando sei aggrappata a qualcosa solo perché è familiare. Sei in cicli ripetuti per abitudine, non per amore?', ritual:'Scrivi le frasi che ti ripeti per non andare avanti. Piegalo e brucialo con intenzione, dicendo: "Lascio andare il passato per aprirmi alla mia luce."'},
+      {subtitle:'Sussurro Eterno', keywords:['Amore impossibile','Connessione profonda','Silenzio che brucia'], message:'Quando senti un amore così profondo da trascendere il tangibile. A volte l\'anima sta aspettando un\'altra vita, un altro piano, un altro momento.', ritual:'Scrivi una lettera a quell\'amore che non ha potuto essere. Non modificarla. Poi conservala in una scatola con sale, fiori secchi o lavanda, e seppelliscila simbolicamente.'},
+      {subtitle:'La Voce Contro l\'Ingiustizia', keywords:['Giustizia','Lealtà','Coraggio'], message:'Alberto appare quando qualcuno ha bisogno di essere difeso, anche se non osa chiederlo. Sii trincea quando qualcun altro sta cadendo.', ritual:'Prendi una pietra bianca e tienila nella mano sinistra. Chiudi gli occhi e visualizza il volto di qualcuno che ha bisogno del tuo sostegno. Ripeti: "Sono uno scudo per chi ne ha bisogno."'},
+      {subtitle:'Protettore dei Cuori Spezzati', keywords:['Lealtà incondizionale','Amore silenzioso'], message:'È tempo di onorare ciò che è sempre stato lì: un amore non corrisposto, un\'amicizia che ti ha sostenuta, o una parte di te che non hai mai lasciato morire.', ritual:'Trova una pietra liscia o una conchiglia. Tienila vicino al cuore e pensa a qualcuno che ha bisogno di conforto. Ripeti: "Sono un rifugio per i cuori che soffrono."'},
+      {subtitle:'La Druida dello Specchio', keywords:['Riflessione emotiva','Chiarezza intuitiva'], message:'Rosario non ti dà risposte dirette — ti pone davanti allo specchio e ti accompagna mentre le scopri da sola. Rappresenta l\'amicizia che non giudica, che ascolta prima di parlare.', ritual:'Riempi una ciotola con acqua pulita e posizionala davanti a uno specchio. Siediti davanti ad essi, respira profondamente e guarda il tuo riflesso nell\'acqua. Chiediti: "Quale parte di me ha bisogno di rivelarsi?"'},
+      {subtitle:'Le Tre Alleate del Cuore', keywords:['Sostegno incondizionale','Sorellanza','Forza condivisa'], message:'Stai lasciando che ti accompagnino, o stai cercando di portare tutto da sola? È tempo di onorare chi ti sostiene.', ritual:'Scrivi i nomi delle persone che sono state il tuo vero sostegno. Accanto a ogni nome, annota cosa rappresenta nella tua vita. Scrivi una lettera simbolica per ognuna di loro.'},
+      {subtitle:'Cupido Nascosto', keywords:['Amore vero','Unione sottile','Intuizione silenziosa'], message:'Jazmín lavora in silenzio e si fida del tempo dell\'universo. Il vero cupido non lancia frecce, ma invia segnali.', ritual:'Scrivi su un seme o un piccolo foglio il simbolo della relazione che desideri attrarre. Conservalo in un barattolo insieme a un petalo di fiore e un po\' di terra.'},
+      {subtitle:'Cheerleader dell\'Anima', keywords:['Motivazione autentica','Fede prestata','Energia contagiosa'], message:'Questa carta è il grido dell\'anima che dice: stai andando meglio di quanto pensi. Non nasconderti quando è ora di brillare.', ritual:'In una scatolina o barattolo, metti cinque foglietti con i tuoi traguardi o qualità preferite. Decoralo con colori vivaci. Ogni mattina, estraine uno, leggilo ad alta voce e festeggia con un piccolo salto.'},
+      {subtitle:'Guardiano dei Portali', keywords:['Curiosità potente','Inizi magici','Chiavi nascoste'], message:'Segui la tua curiosità, esplora ciò che sembrava insignificante. Qualcosa sta per aprirsi nella tua vita.', ritual:'Scegli una porta o un cassetto della tua casa che usi quasi mai. Mettiti davanti con l\'intenzione di "trovare qualcosa di nuovo nella mia vita," aprilo lentamente e osserva cosa vedi.'},
+      {subtitle:'L\'Illuminato', keywords:['Saggezza interiore','Chiarezza mentale','Silenzio sacro'], message:'Erebus appare quando sei pronta a vedere oltre la superficie. La sua presenza basta per farti trovare risposte dove prima c\'era solo rumore.', ritual:'Al tramonto, spegni tutte le luci e metti davanti a te una candela spenta o una ciotola d\'acqua scura. Di\' sottovoce: "Che l\'eco del dimenticato mi guidi." Poi accendi la candela e annota la prima cosa che percepisci.'},
+      {subtitle:'Il Viaggiatore dell\'Inframondo', keywords:['Viaggio interiore','Mistero divino','Trasformazione silenziosa'], message:'Stai attraversando portali interiori che prima non volevi vedere. Non hai bisogno di capire tutto: solo di osare seguire il tuo viaggio.', ritual:'Al tramonto, metti un panno scuro su un tavolo. Metti sopra un oggetto misterioso (una pietra, una vecchia chiave). Chiudi gli occhi e di\': "Aetherius, porta il tuo segreto." Rimani in silenzio per un minuto.'},
+      {subtitle:'Portale Mistico', keywords:['Discesa consapevole','Rinascita','Oscurità fertile'], message:'Non entri per sparire — entri per ricordare chi eri prima di dimenticare. Per tornare a te stessa... a volte bisogna scendere.', ritual:'Accendi una candela scura (nera o viola). Scrivi ciò che non vuoi più portare. Mettilo sotto la candela, visualizzando come la fiamma assorbe quel peso. Seppellisci le ceneri nella terra.'},
+      {subtitle:'Portale Mistico', keywords:['Sostegno spirituale','Guide invisibili','Sincronicità'], message:'C\'è già un concilio energetico riunito: le tue guide, i tuoi io futuri, i tuoi antenati. Sei già sostenuta da energie maggiori.', ritual:'Invita qualcuno vicino a condividere un pasto semplice senza distrazioni, senza telefoni o schermi. Prima di iniziare, chiudete gli occhi e ringraziate per essere insieme.'},
+      {subtitle:'Portale Mistico', keywords:['Trasformazione radicale','Risveglio','Rinnovamento'], message:'Il Portale del Caos non è il tuo nemico. L\'universo scuote il tavolo perché tu smetta di fingere di adattarti. Ti libera... anche se fa male.', ritual:'Metti musica che ti ispiri energia. Apri il tuo armadio o i cassetti. Seleziona ciò che non usi più e donalo, regalalo o riciclalo. Mentre lo metti da parte, di\': "Mi libero del vecchio per fare spazio al nuovo."'},
+      {subtitle:'Portale Mistico', keywords:['Alchimia emotiva','Guarigione profonda','Processo'], message:'La tua anima è in processo alchemico. Non interrompere la miscela solo perché non capisci ancora il risultato. Fidati di ciò che si sta cucinando dentro di te.', ritual:'Scegli una ricetta semplice: un brodo, una minestra, uno stufato. Mentre cucini, senti ogni aroma e consistenza. Aggiungi sale o erbe con l\'intenzione di "guarire ciò che ho bisogno di guarire."'},
+      {subtitle:'Portale Mistico', keywords:['Risveglio mentale','Chiarezza spirituale','Canalizzazione'], message:'La saggezza non si trova... si ricorda. Sei pronta a ricevere risposte che prima non potevi sostenere.', ritual:'Prendi un quaderno e una penna. Formula una domanda essenziale per te. Metti il quaderno sotto il cuscino con l\'intenzione di ricevere un indizio. Al risveglio, annota senza modificare la prima cosa che ricordi.'},
+    ]
   },
   ko: {
-    catLabels: {
-      esencias:   '🌈 신성한 본질',
-      dualidades: '🌒 프리즘 이중성',
-      guardianes: '🛡️ 프리즘 수호자',
-      llaves:     '💠 프리즘 열쇠',
-      portales:   '🌌 신비로운 포털'
-    },
-    filterLabels: ['전체','🌈 신성한 본질','🌒 이중성','🛡️ 수호자','💠 열쇠','🌌 포털'],
-    subtitles: ['프리즘 채널러','영혼 사냥꾼','치유의 여신','카르마의 여신','길의 여신','자기 사랑의 여신','시간의 신','불과 부활의 신','내면의 귀환','영적 각성','재연결','그림자 직조자','의심의 메아리','미묘한 독','조용한 침입','어제의 포로','영원한 속삭임','불의에 맞서는 목소리','상처 입은 마음의 수호자','거울의 드루이드','세 심장의 동맹자','비밀 큐피드','영혼 치어리더','포털의 수호자','깨달은 자','지하 세계 여행자','신비로운 포털','신비로운 포털','신비로운 포털','신비로운 포털','신비로운 포털']
+    catLabels:{ esencias:'🌈 신성한 본질', dualidades:'🌒 프리즘 이중성', guardianes:'🛡️ 수호자', llaves:'💠 프리즘 열쇠', portales:'🌌 신비로운 포털' },
+    filterLabels:['전체','🌈 신성한 본질','🌒 이중성','🛡️ 수호자','💠 열쇠','🌌 포털'],
+    cards:[
+      {subtitle:'프리즘 채널러', keywords:['영감','재탄생','명료함','변화'], message:'Bruxa Tarot는 새로운 눈으로 삶을 바라볼 때 나타납니다. 당신은 관점을 바꿀 힘이 있습니다. 삶에서 무언가 흐릿해진 영역은 어디인가요? 경이로움을 되찾으라는 부드럽지만 확고한 부름입니다.', ritual:'삶에서 흐릿하게 느껴지는 공간을 선택하세요. 예술, 꽃, 향기, 빛으로 새로운 생명을 불어넣어 주세요. 그 과정이 당신의 창의성을 깨우고 감정적 재탄생을 상징하도록 하세요.'},
+      {subtitle:'영혼 사냥꾼', keywords:['에너지 보호','예리한 직관','관찰'], message:'Nabi가 나타날 때, 보이지 않는 무언가를 보아야 합니다. 직관이 가장 큰 동맹이 될 것입니다. 조심스럽지만 단호하게 관찰하고 분별하며 행동하세요.', ritual:'새로운 눈으로 주변 환경을 탐험하는 시간을 가지세요. 보통 눈에 띄지 않을 무언가를 관찰하세요: 식물, 그림자, 곤충. 그 관점에서 어떤 서사를 쓸 수 있을지 상상해보세요.'},
+      {subtitle:'치유의 여신', keywords:['치유','인내','사랑','순환'], message:'치유는 고통을 피하는 것이 아니라 용기 있게 통과하는 것입니다. Marta는 흘린 모든 눈물이 더 강한 당신으로 가는 길을 적신다고 믿으라고 초대합니다.', ritual:'흰 꽃과 흰 양초로 작은 제단을 준비하세요. 해방하고 치유해야 할 것을 종이에 쓰세요. 종이를 접어 안전하게 태우면서, 재가 고통을 힘으로 변화시키는 것을 시각화하세요.'},
+      {subtitle:'카르마의 여신', keywords:['균형','에너지 정의','감정적 수확'], message:'Jade는 우주가 조정을 하고 있을 때 나타납니다. 한 상황이 균형점에 도달하고 있습니다. 이 카드는 자신을 용서하고 더 이상 짊어지지 않아도 되는 것을 내려놓으라고 초대합니다.', ritual:'조용한 곳에 앉아 손에 저울을 시각화하세요. 자랑스러운 행동을 한쪽에, 걱정스러운 행동을 다른 쪽에 상징적으로 놓으세요. 판단 없이, 삶에 균형을 가져올 세 가지 행동을 쓰세요.'},
+      {subtitle:'길의 여신', keywords:['직관','내면의 안내','감정적 명료함'], message:'Elena는 당신이 길을 잃었거나 포기하려 할 때 나타납니다. 길은 이미 내면에 그려져 있습니다. 직관을 신뢰하세요. 당신은 혼자가 아닙니다.', ritual:'눈을 감고 앞에 두 개의 길을 시각화하세요. 가시덤불로 끝나는 쉬운 길 하나, 빛으로 끝나는 도전적인 길 하나. 어떤 결정을 피하고 있나요? 그것을 쓰고 오늘 할 수 있는 용감한 한 걸음을 적으세요.'},
+      {subtitle:'자기 사랑의 여신', keywords:['자기 긍정','존엄','해방'], message:'Mia는 당신이 누구이고 얼마나 가치 있는지 기억할 때가 되었을 때 옵니다. 사랑은 자신에서 시작됩니다. 당신을 소중히 여기지 않는 것에서 멀어지는 것을 두려워하지 마세요.', ritual:'물 근처처럼 평화로운 곳으로 가세요. 더 이상 참을 수 없는 것을 쓰세요. 다른 종이에는 자신에게서 인식하는 놀라운 것들을 쓰세요. 의도를 가지고 첫 번째 종이를 찢고 두 번째는 가슴 가까이 간직하세요.'},
+      {subtitle:'시간의 신', keywords:['긴급성','행동','결정','임박한 변화'], message:'Tony는 지금이 그 때임을 알릴 때 나타납니다. "나중에"를 위한 공간은 더 이상 없습니다. 오늘 선택하지 않는 것은 시간이 대신 선택합니다.', ritual:'정확히 10분 타이머를 설정하세요. 멈추지 않고 미뤄왔던 모든 것을 쓰세요. 끝나면 소리 내어 읽고 오늘 시작할 수 있는 한 가지를 선택하세요.'},
+      {subtitle:'불과 부활의 신', keywords:['깊은 열망','재탄생','열정'], message:'Dante는 욕망이 너무 강해 무시할 수 없을 때 나타납니다. 검열 없이 느끼고 내면의 불길의 진실을 따라가는 것을 두려워하지 마세요.', ritual:'극복하고 싶거나 자신을 제한하는 것을 종이에 쓰세요. 안전한 곳에서 상징적으로 태우세요. 재가 떨어지면서 반복하세요: "나는 내 재에서 일어나, 멈출 수 없고 자유롭다."'},
+      {subtitle:'내면의 귀환', keywords:['영혼 재연결','내면의 진실','직관'], message:'맑은 목소리는 영혼이 말하는 순간입니다: 더 이상 도망치지 말고 집으로 돌아가자. 자신의 삶의 마이크를 잡고 다시 진실을 말할 때입니다.', ritual:'파란 양초를 켜세요. 말하지 못했지만 표현해야 할 세 가지, 침묵 속에 품은 세 가지 소망, 자신을 정의하는 세 가지 진실을 쓰세요. 그리고 거울 앞에서 소리 내어 읽으세요.'},
+      {subtitle:'영적 각성', keywords:['각성','영혼의 불안','내면의 탐색'], message:'모든 것이 괜찮아 보이지만 공허함을 느낄 때. 당신의 마음은 다른 삶을 원합니다. 이 카드는 당신이 이미 첫 걸음을 내딛었고 영혼이 안내하고 있다는 확인이 필요할 때도 나타납니다.', ritual:'당신을 더 이상 살아있다고 느끼게 하지 않는 것들의 목록을 만드세요. 그런 다음 "내 영혼이 경험하고 싶은 것"을 쓰세요. 불가능해 보여도 괜찮습니다. 그 목록이 당신의 나침반입니다.'},
+      {subtitle:'재연결', keywords:['영혼과의 재회','깊은 평온','순환의 마감'], message:'한 순환을 마감할 때. 세상이 혼란스러워도 내면에 평온이 있을 때. 당신이 찾는 것은 밖에 있지 않습니다 — 영혼과의 재연결 안에 있습니다.', ritual:'당신을 나타내는 물건들로 작은 제단을 만드세요: 사진, 편지, 돌, 향. 그 앞에 침묵 속에 앉아 세 번 반복하세요: "나는 여기 있다. 나는 충분하다. 이것이 나의 집이다."'},
+      {subtitle:'그림자 직조자', keywords:['감정적 조종','모호함','통제'], message:'이 카드는 누군가가 말 없이 당신을 가지고 놀 때 나타납니다. 당신의 직관은 이미 진실을 알고 있습니다.', ritual:'검은색이나 빨간색 실을 잡으세요. "이것은 내가 진실을 보지 못하게 짜여진 이야기를 나타낸다"고 이름 붙이세요. 의도를 가지고 끊으며 말하세요: "오늘 나는 주문에서 해방된다."'},
+      {subtitle:'의심의 메아리', keywords:['우유부단함','감정적 불안','미완성된 선택'], message:'당신이 선택받기를 기다리는데... 선택받지 못할 때. 선택하지 않는 것도 선택입니다. 그리고 영혼은 그것을 압니다.', ritual:'당신을 선택하지 않는 것의 이름이나 상징을 쓰세요. 잠시 가지고 있으면서 그 무게를 느끼세요. 그런 다음 땅에 묻거나 물에 띄우며 말하세요: "나는 당신을 해방한다. 오늘 나는 나 자신을 선택한다."'},
+      {subtitle:'미묘한 독', keywords:['조종','어두운 유혹','숨겨진 위험'], message:'Valeria는 속삭임처럼 옵니다. 당신이 느끼는 것이 욕망인가요, 중독인가요? 열정으로 위장한 부스러기를 받아들이고 있나요?', ritual:'검은 실을 손목에 묶으며 말하세요: "나의 빛을 존중하지 않는 모든 조종과의 연결을 끊는다." 그런 다음 결연히 실을 끊으세요.'},
+      {subtitle:'조용한 침입', keywords:['감정적 통제','질투','숨겨진 불안'], message:'진정한 힘은 외적 통제가 아닌 내적 안정에서 옵니다. 더 이상 공명하지 않지만 여전히 권력을 나타내는 무언가에 매달려 있나요?', ritual:'깊이 부러워하는 것을 종이에 쓰세요. 그 감정의 무게를 느끼세요. 그런 다음 의도를 가지고 태우며 말하세요: "나의 빛을 위한 공간을 만들기 위해 질투를 해방한다."'},
+      {subtitle:'어제의 포로', keywords:['정체','향수','변화에 대한 두려움'], message:'Tatiana는 단지 익숙하다는 이유로 무언가에 매달릴 때 나타납니다. 사랑이 아닌 습관으로 반복되는 순환에 있나요?', ritual:'앞으로 나아가지 못하게 하기 위해 스스로에게 반복하는 말을 종이에 쓰세요. 의도를 가지고 태우며 말하세요: "나의 빛에 열리기 위해 과거를 해방한다."'},
+      {subtitle:'영원한 속삭임', keywords:['불가능한 사랑','깊은 연결','타오르는 침묵'], message:'유형을 초월하는 깊은 사랑을 느낄 때. 때로 영혼은 다른 생, 다른 차원, 다른 순간을 기다리고 있습니다.', ritual:'이루어지지 못한 사랑에게 편지를 쓰세요. 수정하거나 검토하지 마세요. 그런 다음 소금, 말린 꽃, 라벤더와 함께 상자에 넣고 상징적으로 묻으세요.'},
+      {subtitle:'불의에 맞서는 목소리', keywords:['정의','충성','용기'], message:'Alberto는 누군가가 방어가 필요할 때, 감히 부탁하지 못할 때도 나타납니다. 누군가가 쓰러지고 있을 때 방패가 되어주세요.', ritual:'흰 돌을 왼손에 쥐세요. 눈을 감고 당신의 지지가 필요한 사람의 얼굴을 시각화하세요. 반복하세요: "나는 필요로 하는 사람을 위한 방패다." 돌을 매일 볼 수 있는 곳에 두세요.'},
+      {subtitle:'상처 입은 마음의 수호자', keywords:['무조건적 충성','조용한 사랑'], message:'항상 거기 있었던 것을 기릴 때입니다: 짝사랑, 당신을 지탱해준 우정, 또는 고통에도 죽게 두지 않은 자신의 일부.', ritual:'부드러운 돌이나 조개를 찾으세요. 심장 가까이 들고 위로가 필요한 사람을 생각하세요. 반복하세요: "나는 고통받는 마음들의 안식처다."'},
+      {subtitle:'거울의 드루이드', keywords:['감정적 성찰','직관적 명료함'], message:'Rosario는 직접적인 답을 주지 않습니다 — 거울을 들어 올려 당신이 스스로 발견하는 동안 함께합니다. 판단하지 않고 말하기 전에 듣는 우정을 나타냅니다.', ritual:'깨끗한 물을 그릇에 채우고 거울 앞에 놓으세요. 그 앞에 앉아 깊이 호흡하고 물 속의 반영을 바라보세요. 자신에게 물으세요: "나의 어떤 부분이 드러날 필요가 있나?" 침묵 속에 머물다 인식한 것을 쓰세요.'},
+      {subtitle:'세 심장의 동맹자', keywords:['무조건적 지지','자매애','공유된 힘'], message:'당신이 함께하도록 허용하고 있나요, 아니면 모든 것을 혼자 짊어지려 하고 있나요? 당신을 지탱해주는 이들을 기릴 때입니다.', ritual:'진정한 지지가 되어준 사람들의 이름을 쓰세요. 각 이름 옆에 그들이 삶에서 무엇을 나타내는지 적으세요: 웃음, 힘, 지혜. 각 사람을 위한 상징적인 편지를 쓰세요.'},
+      {subtitle:'비밀 큐피드', keywords:['진정한 사랑','미묘한 결합','조용한 직관'], message:'Jazmín은 침묵 속에 일하며 우주의 타이밍을 신뢰합니다. 진정한 큐피드는 화살을 쏘지 않고 신호를 보냅니다.', ritual:'끌어당기고 싶은 관계의 상징을 씨앗이나 작은 종이에 쓰세요. 꽃잎과 약간의 흙과 함께 병에 보관하세요. 볼 때마다 진정한 사랑은 침묵 속에 일한다는 것을 기억하세요.'},
+      {subtitle:'영혼 치어리더', keywords:['진정한 동기 부여','빌린 믿음','전염되는 에너지'], message:'이 카드는 당신이 생각하는 것보다 더 잘 하고 있다고 외치는 영혼의 소리입니다. 빛날 시간이 되었을 때 숨지 마세요.', ritual:'작은 상자나 병에 성취나 좋아하는 자질이 적힌 다섯 장의 종이를 넣으세요. 밝은 색으로 장식하세요. 매일 아침 하나를 꺼내 소리 내어 읽고 작은 점프로 축하하며 반복하세요: "이것이 나이고 나는 이것을 축하한다!"'},
+      {subtitle:'포털의 수호자', keywords:['강력한 호기심','마법의 시작','숨겨진 열쇠'], message:'호기심을 따르고, 사소해 보이는 것을 탐험하세요. 삶에서 무언가가 열리려 하고 있습니다.', ritual:'거의 사용하지 않는 집의 문이나 서랍을 선택하세요. "삶에서 새로운 것을 찾으려는" 의도를 가지고 앞에 서서, 천천히 열고 무엇이 보이는지 관찰하세요.'},
+      {subtitle:'깨달은 자', keywords:['내면의 지혜','정신적 명료함','신성한 침묵'], message:'Erebus는 표면 너머를 볼 준비가 되었을 때 나타납니다. 그의 존재만으로도 이전에 소음만 있던 곳에서 답을 찾게 합니다.', ritual:'해질녘에 모든 빛을 끄고 앞에 불 꺼진 양초나 어두운 물 그릇을 놓으세요. 조용히 말하세요: "잊혀진 것의 메아리가 나를 안내하게 하라." 침묵을 느끼세요. 그런 다음 양초를 켜고 처음 인식한 것을 적으세요.'},
+      {subtitle:'지하 세계 여행자', keywords:['내면의 여정','신성한 미스터리','조용한 변화'], message:'이전에 보고 싶지 않았던 내면의 포털을 건너고 있습니다. 모든 것을 이해할 필요는 없습니다: 자신의 여정을 따라가는 것만으로 충분합니다.', ritual:'해질녘에 탁자에 어두운 천을 놓으세요. 위에 신비로운 물건을 놓으세요 (돌, 오래된 열쇠). 눈을 감고 말하세요: "Aetherius, 당신의 비밀을 가져오세요." 1분 동안 침묵 속에 머물며 떠오르는 첫 번째 이미지를 적으세요.'},
+      {subtitle:'신비로운 포털', keywords:['의식적인 하강','재탄생','비옥한 어둠'], message:'당신은 사라지려고 들어가는 것이 아닙니다 — 잊기 전에 당신이 누구였는지 기억하려고 들어갑니다. 자신으로 돌아가기 위해... 때로는 아래로 가야 합니다.', ritual:'어두운 양초(검은색 또는 보라색)를 켜세요. 더 이상 짊어지고 싶지 않은 것을 쓰세요: 두려움, 죄책감, 패턴. 양초 아래에 놓고, 불꽃이 그 무게를 흡수하는 것을 시각화하세요. 재를 땅에 묻으세요.'},
+      {subtitle:'신비로운 포털', keywords:['영적 지지','보이지 않는 안내자','동시성'], message:'이미 에너지 의회가 모여 있습니다: 당신의 안내자, 미래의 자아들, 조상들. 당신은 이미 더 큰 에너지에 의해 지탱되고 있습니다.', ritual:'방해 없이, 전화나 화면 없이 가까운 사람과 간단한 식사를 나누도록 초대하세요. 시작하기 전에 눈을 감고 함께 있음에 감사하세요. 당신들을 연결하는 사랑을 인식하며 각 한 입을 완전한 주의로 음미하세요.'},
+      {subtitle:'신비로운 포털', keywords:['근본적인 변화','각성','갱신'], message:'카오스의 포털은 당신의 적이 아닙니다. 우주는 당신이 맞추려는 척을 그만두도록 테이블을 흔듭니다. 아프더라도 당신을 해방시킵니다.', ritual:'영감을 주는 음악을 틀어보세요. 옷장이나 서랍을 열어보세요. 더 이상 사용하지 않는 것을 기부하거나 선물하거나 재활용하세요. 치우면서 말하세요: "새로운 것을 위한 길을 만들기 위해 옛것을 해방한다."'},
+      {subtitle:'신비로운 포털', keywords:['감정적 연금술','깊은 치유','과정'], message:'당신의 영혼은 연금술 과정에 있습니다. 아직 결과를 이해하지 못한다고 혼합을 방해하지 마세요. 당신 안에서 요리되고 있는 것을 신뢰하세요.', ritual:'간단한 레시피를 선택하세요: 육수, 수프, 스튜. 요리하면서 각 향기와 질감을 느끼세요. "치유해야 할 것을 치유한다"는 의도를 가지고 소금이나 허브를 추가하세요. 천천히 끓이고 각 숟가락을 자신에 대한 사랑의 행위로 음미하세요.'},
+      {subtitle:'신비로운 포털', keywords:['정신적 각성','영적 명료함','채널링'], message:'지혜는 찾는 것이 아닙니다 — 기억하는 것입니다. 이전에는 감당할 수 없었던 답을 받을 준비가 되었습니다.', ritual:'노트와 펜을 가져오세요. 자신을 위한 한 가지 핵심 질문을 만드세요. 실마리를 받겠다는 의도를 가지고 노트를 베개 아래에 놓으세요. 일어났을 때 처음 기억하는 것을 수정 없이 적으세요: 단어, 상징, 감각.'},
+    ]
   }
 };
 
 // ── LANGUAGE ENGINE ──
 const LangEngine = {
   current: 'es',
-
   detect() {
     const saved = localStorage.getItem('bt_lang');
     if (saved && LANGS[saved]) return saved;
-    const browser = (navigator.language || navigator.userLanguage || 'es').toLowerCase();
-    if (browser.startsWith('ko')) return 'ko';
-    if (browser.startsWith('it')) return 'it';
-    if (browser.startsWith('en')) return 'en';
+    const b = (navigator.language || 'es').toLowerCase();
+    if (b.startsWith('ko')) return 'ko';
+    if (b.startsWith('it')) return 'it';
+    if (b.startsWith('en')) return 'en';
     return 'es';
   },
-
   set(lang) {
     if (!LANGS[lang]) return;
     this.current = lang;
@@ -336,49 +257,46 @@ const LangEngine = {
     this.apply();
     this.updateSelector();
   },
-
-  t(key) {
-    return LANGS[this.current]?.[key] || LANGS['es'][key] || key;
-  },
-
+  t(key) { return LANGS[this.current]?.[key] || LANGS['es'][key] || key; },
   apply() {
-    // Apply all data-i18n attributes
     document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      const val = this.t(key);
-      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-        el.placeholder = val;
-      } else {
-        el.textContent = val;
-      }
+      const val = this.t(el.getAttribute('data-i18n'));
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
+      else el.textContent = val;
     });
-    // Apply data-i18n-html (for innerHTML with line breaks)
     document.querySelectorAll('[data-i18n-html]').forEach(el => {
-      const key = el.getAttribute('data-i18n-html');
-      el.innerHTML = this.t(key).replace(/\n/g, '<br>');
+      el.innerHTML = this.t(el.getAttribute('data-i18n-html')).replace(/\n/g, '<br>');
     });
-    // Fire custom event so pages can react
     document.dispatchEvent(new CustomEvent('langchange', { detail: this.current }));
   },
-
   updateSelector() {
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.lang === this.current);
     });
   },
-
   init() {
     this.current = this.detect();
     document.documentElement.lang = this.current;
-    // Wait for DOM
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => { this.apply(); this.updateSelector(); });
-    } else {
-      this.apply();
-      this.updateSelector();
-    }
+    } else { this.apply(); this.updateSelector(); }
+  },
+  // Helper: get translated card data for index num (1-31)
+  getCard(num) {
+    const lang = this.current;
+    if (lang === 'es' || !CARD_TRANSLATIONS[lang]) return null;
+    return CARD_TRANSLATIONS[lang].cards[num - 1] || null;
+  },
+  getCatLabel(cat) {
+    const lang = this.current;
+    if (lang === 'es' || !CARD_TRANSLATIONS[lang]) return null;
+    return CARD_TRANSLATIONS[lang].catLabels[cat] || null;
+  },
+  getFilterLabels() {
+    const lang = this.current;
+    if (lang === 'es' || !CARD_TRANSLATIONS[lang]) return null;
+    return CARD_TRANSLATIONS[lang].filterLabels || null;
   }
 };
 
-// Auto-init
 LangEngine.init();
