@@ -1,1 +1,561 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bruxa Tarot • Templo del Prisma</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #c9a84c; --gold-light: #e8c97a; --gold-pale: #f5e6b8;
+      --deep: #04060f; --navy: #070c1a; --midnight: #0b1128;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--deep); color: #e8dfc8; font-family: 'Cormorant Garamond', serif; overflow-x: hidden; }
 
+    #starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(ellipse at 20% 30%, #0d1a3a 0%, #04060f 60%), radial-gradient(ellipse at 80% 70%, #100828 0%, transparent 60%); }
+    #starfield canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem; background: linear-gradient(to bottom, rgba(4,6,15,0.95), transparent); }
+    .nav-logo { font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 0.3em; color: var(--gold); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.2em; color: #b8a87a; text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--gold-light); }
+
+    /* HERO */
+    #hero { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center; padding: 6rem 2rem 4rem; }
+    .hero-badge { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.4em; color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.35); padding: 0.5rem 2rem; border-radius: 100px; margin-bottom: 2.5rem;
+      background: rgba(201,168,76,0.06); animation: fadeUp 1s ease 0.2s both; }
+    .hero-greeting { font-style: italic; font-weight: 300; font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+      color: #d4c4a0; margin-bottom: 1rem; animation: fadeUp 1s ease 0.4s both; }
+    .hero-name { font-family: 'Cinzel Decorative', serif; font-size: clamp(3rem, 9vw, 7rem); font-weight: 700;
+      line-height: 1; color: transparent;
+      background: linear-gradient(135deg, #c9a84c 0%, #f5e6b8 40%, #c9a84c 70%, #8a6420 100%);
+      -webkit-background-clip: text; background-clip: text; letter-spacing: 0.05em; margin-bottom: 0.3rem;
+      animation: fadeUp 1s ease 0.6s both; }
+    .hero-sub { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.5em; color: var(--gold);
+      margin-bottom: 2.5rem; animation: fadeUp 1s ease 0.8s both; }
+    .hero-tagline { font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-style: italic; font-weight: 300;
+      color: #c4b090; line-height: 1.7; max-width: 600px; animation: fadeUp 1s ease 1s both; margin-bottom: 3.5rem; }
+    .hero-cta { display: inline-flex; gap: 1.2rem; animation: fadeUp 1s ease 1.2s both; flex-wrap: wrap; justify-content: center; }
+    .btn { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.25em; padding: 0.95rem 2.5rem;
+      border-radius: 100px; text-decoration: none; transition: all 0.4s ease; cursor: pointer; border: none; }
+    .btn-primary { background: linear-gradient(135deg, #c9a84c, #a07828); color: var(--deep); box-shadow: 0 0 30px rgba(201,168,76,0.3); }
+    .btn-primary:hover { box-shadow: 0 0 50px rgba(201,168,76,0.5); transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: var(--gold); border: 1px solid rgba(201,168,76,0.4); }
+    .btn-ghost:hover { background: rgba(201,168,76,0.08); transform: translateY(-2px); }
+    .scroll-hint { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem; animation: fadeUp 1.5s ease 2s both; }
+    .scroll-hint span { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.3em; color: rgba(201,168,76,0.5); }
+    .scroll-hint .line { width: 1px; height: 50px; background: linear-gradient(to bottom, rgba(201,168,76,0.5), transparent); animation: scroll-line 2s ease-in-out infinite; }
+    @keyframes scroll-line { 0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom} }
+
+    .divider { display: flex; align-items: center; gap: 1.5rem; padding: 0 3rem; margin: 0 auto; max-width: 600px; }
+    .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent); }
+    .divider-symbol { color: var(--gold); font-size: 1.2rem; }
+
+    section { position: relative; z-index: 1; padding: 6rem 2rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.5em; color: var(--gold); margin-bottom: 1rem; opacity: 0.8; }
+    .section-title { font-family: 'Cinzel Decorative', serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 400; line-height: 1.2; color: var(--gold-pale); margin-bottom: 1.5rem; }
+    .section-body { font-size: 1.15rem; font-style: italic; font-weight: 300; line-height: 1.9; color: #c4b090; max-width: 650px; }
+
+    /* QUIEN SOY */
+    #quien-soy { background: linear-gradient(to bottom, transparent, rgba(15,21,53,0.4), transparent); }
+    .quiensoy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .quiensoy-image-wrap { position: relative; display: flex; justify-content: center; }
+    .quiensoy-frame { width: 340px; height: 440px; border-radius: 200px 200px 160px 160px;
+      background: linear-gradient(160deg, #1a1050, #0b1128); border: 1px solid rgba(201,168,76,0.25);
+      display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+      box-shadow: 0 0 60px rgba(120,80,220,0.15), inset 0 0 40px rgba(201,168,76,0.05); }
+    .quiensoy-placeholder { text-align: center; padding: 2rem; color: rgba(201,168,76,0.5); }
+    .quiensoy-placeholder .icon { font-size: 4rem; margin-bottom: 1rem; }
+    .quiensoy-placeholder p { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; line-height: 1.8; }
+    .frame-glow { position: absolute; inset: -2px; border-radius: inherit;
+      background: linear-gradient(135deg, rgba(201,168,76,0.3), transparent 50%, rgba(120,80,220,0.2)); pointer-events: none; }
+    .orb { position: absolute; border-radius: 50%; animation: float-orb 6s ease-in-out infinite; }
+    .orb-1 { width:120px;height:120px;background:radial-gradient(circle,rgba(120,80,220,0.2),transparent 70%);top:-30px;right:-30px; }
+    .orb-2 { width:80px;height:80px;background:radial-gradient(circle,rgba(201,168,76,0.15),transparent 70%);bottom:30px;left:-20px;animation-delay:-3s; }
+    @keyframes float-orb { 0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)} }
+    .highlight-quote { font-size: 1.5rem; font-style: italic; font-weight: 300; color: var(--gold-light); line-height: 1.6; margin-bottom: 2rem; padding-left: 1.5rem; border-left: 2px solid rgba(201,168,76,0.4); }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem; }
+    .tag { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.2em; padding: 0.4rem 1.2rem; border-radius: 100px; border: 1px solid rgba(201,168,76,0.3); color: var(--gold); background: rgba(201,168,76,0.05); }
+
+    /* PORTALES */
+    #templo { background: linear-gradient(to bottom, transparent, rgba(10,8,30,0.5)); }
+    .templo-intro { text-align: center; max-width: 700px; margin: 0 auto 5rem; }
+    .portals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .portal-card { position: relative; overflow: hidden; border: 1px solid rgba(201,168,76,0.18); border-radius: 20px;
+      background: linear-gradient(160deg, rgba(15,21,53,0.9), rgba(4,6,15,0.9)); padding: 2.5rem 2rem;
+      cursor: pointer; transition: all 0.5s cubic-bezier(0.4,0,0.2,1); text-decoration: none; color: inherit; display: block; }
+    .portal-card::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.08), transparent 60%); opacity:0; transition:opacity 0.5s; }
+    .portal-card:hover::before { opacity: 1; }
+    .portal-card:hover { transform: translateY(-8px); border-color: rgba(201,168,76,0.4); box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(201,168,76,0.1); }
+    .portal-symbol { font-size: 2.8rem; margin-bottom: 1.5rem; display: block; }
+    .portal-name { font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 0.8rem; }
+    .portal-desc { font-size: 0.95rem; font-style: italic; color: #a09070; line-height: 1.7; }
+    .portal-arrow { position: absolute; bottom: 1.5rem; right: 1.5rem; color: rgba(201,168,76,0.3); transition: all 0.3s; }
+    .portal-card:hover .portal-arrow { color: var(--gold); transform: translate(3px,-3px); }
+
+    /* CARTA DEL DÍA */
+    #carta { background: radial-gradient(ellipse at center, rgba(26,16,80,0.4), transparent 70%); }
+    .carta-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .carta-instructions { font-size: 0.95rem; font-style: italic; color: #a09070; margin: 1.5rem 0 2.5rem; line-height: 1.8; }
+
+    /* CATEGORY BADGES */
+    .cat-badge { display: inline-block; font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.25em;
+      padding: 0.3rem 1rem; border-radius: 100px; margin-bottom: 1.2rem; }
+    .cat-esencias { background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.25); color: #ffd700; }
+    .cat-dualidades { background: rgba(100,60,180,0.1); border: 1px solid rgba(100,60,180,0.3); color: #b090e0; }
+    .cat-guardianes { background: rgba(60,180,140,0.1); border: 1px solid rgba(60,180,140,0.3); color: #7ecab0; }
+    .cat-llaves { background: rgba(180,60,180,0.1); border: 1px solid rgba(180,60,180,0.3); color: #d090d0; }
+    .cat-portales { background: rgba(220,120,60,0.1); border: 1px solid rgba(220,120,60,0.3); color: #f0a070; }
+
+    /* CARD FLIP */
+    .card-scene { width: 240px; height: 415px; perspective: 1000px; cursor: pointer; margin: 0 auto; }
+    .card-flip { width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform 1.2s cubic-bezier(0.4,0.2,0.2,1); }
+    .card-scene.flipped .card-flip { transform: rotateY(180deg); }
+    .card-face { position:absolute; inset:0; border-radius:18px; backface-visibility:hidden; -webkit-backface-visibility:hidden; overflow:hidden; }
+
+    /* REVERSO — usa imagen dorso.png */
+    .card-back {
+      border: 1px solid rgba(201,168,76,0.35);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(201,168,76,0.1);
+      background: #0b1128;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-back img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 18px;
+      display: block;
+    }
+    .card-back-fallback {
+      /* mostrado si la imagen no carga */
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 1.5rem; gap: 1rem; width: 100%; height: 100%;
+      background: linear-gradient(160deg, #1a1050, #0b1128);
+    }
+    .card-back img.error + .card-back-fallback { display: flex; }
+    .card-shimmer { position:absolute; inset:0; background:linear-gradient(135deg,transparent 30%,rgba(201,168,76,0.05) 50%,transparent 70%); animation:shimmer 3s ease-in-out infinite; pointer-events:none; border-radius:18px; }
+    @keyframes shimmer { 0%,100%{opacity:0}50%{opacity:1} }
+    .hover-pulse { position:absolute; inset:-1px; border-radius:19px; border:1px solid rgba(201,168,76,0.15); animation:card-pulse 2s ease-in-out infinite; pointer-events:none; }
+    @keyframes card-pulse { 0%,100%{opacity:0.5}50%{opacity:1;box-shadow:0 0 20px 5px rgba(201,168,76,0.1)} }
+    .card-tap-hint { position:absolute; bottom:14px; left:0; right:0; text-align:center;
+      font-family:'Cinzel',serif; font-size:0.55rem; letter-spacing:0.25em; color:rgba(201,168,76,0.5); pointer-events:none; }
+
+    /* FRENTE — imagen de la carta */
+    .card-front {
+      transform: rotateY(180deg);
+      border: 1px solid rgba(201,168,76,0.5);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(201,168,76,0.15);
+      background: #0b1128;
+      display: flex; flex-direction: column;
+    }
+    .card-front-img {
+      flex: 1; width: 100%; object-fit: cover;
+      display: block;
+    }
+    .card-front-footer {
+      background: linear-gradient(to top, rgba(4,6,15,0.97) 0%, rgba(4,6,15,0.7) 100%);
+      padding: 0.9rem 1rem 1rem;
+      text-align: center;
+    }
+    .card-front-name { font-family:'Cinzel',serif; font-size:0.75rem; letter-spacing:0.15em; color:var(--gold); margin-bottom:0.2rem; line-height:1.3; }
+    .card-front-subtitle { font-family:'Cinzel',serif; font-size:0.5rem; letter-spacing:0.2em; color:rgba(201,168,76,0.5); }
+
+    /* LECTURA */
+    .carta-reading { margin-top:2rem; padding:1.5rem; border:1px solid rgba(201,168,76,0.15); border-radius:12px;
+      background:rgba(15,21,53,0.5); opacity:0; max-height:0; overflow:hidden; transition:opacity 0.8s ease, max-height 0.8s ease; }
+    .carta-reading.visible { opacity:1; max-height:700px; }
+    .carta-reading-title { font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.3em; color:var(--gold); margin-bottom:0.8rem; }
+    .carta-reading p { font-style:italic; font-size:1rem; color:#b0a07a; line-height:1.8; }
+    .carta-keywords { display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:1rem; }
+    .carta-kw { font-family:'Cinzel',serif; font-size:0.55rem; letter-spacing:0.15em; padding:0.25rem 0.7rem;
+      border-radius:100px; border:1px solid rgba(201,168,76,0.2); color:rgba(201,168,76,0.7); }
+
+    /* REDES */
+    #redes { background: linear-gradient(to bottom, transparent, rgba(4,6,15,0.9)); }
+    .redes-inner { text-align:center; max-width:700px; margin:0 auto; }
+    .redes-grid { display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:3rem; }
+    .red-link { display:flex; align-items:center; gap:0.8rem; padding:0.9rem 1.8rem; border-radius:100px;
+      border:1px solid rgba(201,168,76,0.2); background:rgba(15,21,53,0.6); text-decoration:none;
+      transition:all 0.4s; font-family:'Cinzel',serif; font-size:0.68rem; letter-spacing:0.15em; color:#b8a87a; }
+    .red-link:hover { border-color:rgba(201,168,76,0.5); background:rgba(201,168,76,0.08); color:var(--gold); transform:translateY(-3px); }
+    .red-icon { font-size:1.3rem; }
+
+    footer { position:relative; z-index:1; text-align:center; padding:3rem 2rem; border-top:1px solid rgba(201,168,76,0.1); }
+    footer p { font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.3em; color:rgba(201,168,76,0.35); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity:0; transform:translateY(40px); transition:opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}
+    .reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
+
+    @media(max-width:768px){
+      nav{padding:1rem 1.5rem}.nav-links{display:none}
+      .quiensoy-grid{grid-template-columns:1fr;gap:3rem}
+      .quiensoy-frame{width:280px;height:360px}
+      .carta-wrap{grid-template-columns:1fr;gap:3rem}
+      section{padding:4rem 1.5rem}
+    }
+  </style>
+</head>
+<body>
+  <div id="starfield"><canvas id="stars"></canvas></div>
+
+  <nav>
+    <a href="#" class="nav-logo">✦ BRUXA TAROT</a>
+    <ul class="nav-links">
+      <li><a href="#quien-soy">La Bruja</a></li>
+      <li><a href="#templo">El Templo</a></li>
+      <li><a href="#carta">Carta del Día</a></li>
+      <li><a href="#redes">Conecta</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-badge">✦ TEMPLO DEL PRISMA ✦</div>
+    <p class="hero-greeting">Hola, Alma Brillante…</p>
+    <h1 class="hero-name">BRUXA<br>TAROT</h1>
+    <p class="hero-sub">✦ ✦ ✦</p>
+    <p class="hero-tagline">Un templo donde tu alma recuerda su luz,<br>su sombra y su verdadero poder.</p>
+    <div class="hero-cta">
+      <a href="#templo" class="btn btn-primary">Entrar al Templo</a>
+      <a href="#carta" class="btn btn-ghost">Carta del Día</a>
+    </div>
+    <div class="scroll-hint"><span>Baja</span><div class="line"></div></div>
+  </section>
+
+  <!-- QUIEN SOY -->
+  <section id="quien-soy">
+    <div class="section-inner">
+      <div class="quiensoy-grid">
+        <div class="quiensoy-image-wrap reveal">
+          <div style="position:absolute;inset:0;pointer-events:none;"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+          <div class="quiensoy-frame">
+            <div class="frame-glow"></div>
+            <div class="quiensoy-placeholder"><div class="icon">🌙</div><p>Tu fotografía<br>va aquí, Bruxa</p></div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p class="section-label">La Bruja detrás del Templo</p>
+          <h2 class="section-title">Soy Bruxa Tarot</h2>
+          <p class="highlight-quote">"La vida no es blanco y negro.<br>Es un prisma de infinitos colores esperando ser vividos."</p>
+          <p class="section-body">Soy una guía espiritual, lectora de Tarot y creadora del Oráculo Prisma del Alma — 31 cartas nacidas de mis propias historias, personajes y canalización.</p>
+          <p class="section-body" style="margin-top:1rem;">Cada carta es un espejo. Cada lectura, un regreso a ti.</p>
+          <div class="tags">
+            <span class="tag">Oráculo Prisma</span><span class="tag">Esencias Sagradas</span>
+            <span class="tag">Dualidades</span><span class="tag">Guardianes</span>
+            <span class="tag">Llaves Prismáticas</span><span class="tag">Portales Místicos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" style="position:relative;z-index:1;"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
+
+  <!-- EL TEMPLO -->
+  <section id="templo">
+    <div class="section-inner">
+      <div class="templo-intro reveal">
+        <p class="section-label" style="text-align:center;">El Templo</p>
+        <h2 class="section-title" style="text-align:center;">¿Qué encontrarás aquí?</h2>
+        <p class="section-body" style="margin:0 auto;text-align:center;">El Templo del Prisma es donde conviven las Esencias Sagradas, las Dualidades, los Guardianes, las Llaves Prismáticas y los Portales Místicos de tu alma.</p>
+      </div>
+      <div class="portals-grid">
+        <a href="#carta" class="portal-card reveal reveal-delay-1">
+          <span class="portal-symbol">🔮</span>
+          <p class="portal-name">Oráculo Prisma</p>
+          <p class="portal-desc">31 cartas nacidas de mis historias. Personajes reales que te hablan directamente desde el alma.</p>
+          <span class="portal-arrow">↗</span>
+        </a>
+        <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="portal-card reveal reveal-delay-2">
+          <span class="portal-symbol">🎵</span>
+          <p class="portal-name">Música Sagrada</p>
+          <p class="portal-desc">Frecuencias y canalizaciones para elevar tu vibración y sanar desde adentro.</p>
+          <span class="portal-arrow">↗</span>
+        </a>
+        <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="portal-card reveal reveal-delay-3">
+          <span class="portal-symbol">📖</span>
+          <p class="portal-name">Mis Historias</p>
+          <p class="portal-desc">Los personajes del Oráculo tienen vida propia. Conócelos, siéntelos, reconócete en ellos.</p>
+          <span class="portal-arrow">↗</span>
+        </a>
+        <a href="#" class="portal-card reveal reveal-delay-4">
+          <span class="portal-symbol">🕯️</span>
+          <p class="portal-name">Rituales del Alma</p>
+          <p class="portal-desc">Magia práctica para cada luna, cada carta, cada transformación que tu alma está pidiendo.</p>
+          <span class="portal-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" style="position:relative;z-index:1;"><div class="divider-line"></div><span class="divider-symbol">☽ ✦ ☾</span><div class="divider-line"></div></div>
+
+  <!-- CARTA DEL DÍA -->
+  <section id="carta">
+    <div class="section-inner">
+      <div class="carta-wrap">
+        <div class="reveal">
+          <p class="section-label">Oráculo Prisma del Alma</p>
+          <h2 class="section-title">Carta del Día</h2>
+          <p class="carta-instructions">Respira profundo, Alma Brillante. Piensa en lo que necesitas hoy. Cuando sientas el llamado, voltea la carta y recibe el mensaje que lleva tu nombre.</p>
+          <div class="carta-reading" id="cartaReading">
+            <div id="catBadgeWrap"></div>
+            <p class="carta-reading-title" id="cartaReadingTitle">✦ MENSAJE DEL ORÁCULO ✦</p>
+            <p id="cartaMessage"></p>
+            <div class="carta-keywords" id="cartaKeywords"></div>
+          </div>
+          <div id="nuevoBtn" style="display:none;margin-top:1.5rem;">
+            <button onclick="resetCard()" class="btn btn-ghost" style="font-size:0.65rem;padding:0.7rem 1.8rem;">✦ Nueva tirada</button>
+          </div>
+        </div>
+
+        <div class="reveal reveal-delay-2">
+          <div class="card-scene" id="cardScene" onclick="flipCard()">
+            <div class="card-flip" id="cardFlip">
+              <!-- REVERSO -->
+              <div class="card-face card-back">
+                <img src="images/dorso.png" alt="Reverso Oráculo Prisma"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="card-back-fallback">
+                  <span style="font-size:3rem;">🦋</span>
+                  <p style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;color:rgba(201,168,76,0.5);">Oráculo Prisma</p>
+                </div>
+                <div class="card-shimmer"></div>
+                <div class="hover-pulse"></div>
+                <div class="card-tap-hint">Toca para revelar</div>
+              </div>
+              <!-- FRENTE -->
+              <div class="card-face card-front" id="cardFront">
+                <img class="card-front-img" id="cardImg" src="" alt="Carta del día"
+                     onerror="this.style.display='none'">
+                <div class="card-front-footer">
+                  <p class="card-front-name" id="cardName">—</p>
+                  <p class="card-front-subtitle" id="cardSubtitle">—</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p style="text-align:center;margin-top:1.2rem;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;color:rgba(201,168,76,0.4);">Toca la carta para voltearla</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" style="position:relative;z-index:1;"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
+
+  <!-- REDES -->
+  <section id="redes">
+    <div class="section-inner">
+      <div class="redes-inner reveal">
+        <p class="section-label">Conecta con la Bruja</p>
+        <h2 class="section-title">Encuéntrame en el cosmos</h2>
+        <p class="section-body" style="margin:0 auto;text-align:center;">Cada red es un portal distinto al Templo. Ven, el alma siempre encuentra su camino.</p>
+        <div class="redes-grid">
+          <a href="https://www.facebook.com/bruxatarot" target="_blank" class="red-link"><span class="red-icon">📘</span> Facebook</a>
+          <a href="https://www.instagram.com/bruxa_tarot" target="_blank" class="red-link"><span class="red-icon">📷</span> Instagram</a>
+          <a href="https://www.tiktok.com/@bruxatarot31" target="_blank" class="red-link"><span class="red-icon">🎵</span> TikTok</a>
+          <a href="https://www.threads.net/@bruxa_tarot" target="_blank" class="red-link"><span class="red-icon">🧵</span> Threads</a>
+          <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="red-link"><span class="red-icon">📺</span> YouTube</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="divider" style="margin-bottom:2rem;"><div class="divider-line"></div><span class="divider-symbol" style="color:rgba(201,168,76,0.2);">✦</span><div class="divider-line"></div></div>
+    <p>© 2026 Bruxa Tarot • Templo del Prisma • Oráculo Prisma del Alma</p>
+  </footer>
+
+  <script>
+  // ── STARFIELD ──
+  (function(){
+    const canvas=document.getElementById('stars'), ctx=canvas.getContext('2d');
+    let stars=[],W,H;
+    function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+    function initStars(){
+      stars=[];
+      const count=Math.floor((W*H)/4000);
+      for(let i=0;i<count;i++) stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+0.2,
+        alpha:Math.random()*0.7+0.1,twinkleSpeed:Math.random()*0.02+0.005,
+        twinkleOffset:Math.random()*Math.PI*2,gold:Math.random()<0.08});
+    }
+    function draw(t){
+      ctx.clearRect(0,0,W,H);
+      stars.forEach(s=>{
+        const a=s.alpha*(0.6+0.4*Math.sin(t*s.twinkleSpeed+s.twinkleOffset));
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle=s.gold?`rgba(201,168,76,${a*0.8})`:`rgba(255,255,255,${a})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    window.addEventListener('resize',()=>{resize();initStars();});
+    resize();initStars();requestAnimationFrame(draw);
+  })();
+
+  // ── SCROLL REVEAL ──
+  const reveals=document.querySelectorAll('.reveal');
+  new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});
+  },{threshold:0.12}).observe && reveals.forEach(el=>
+    new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});
+    },{threshold:0.12}).observe(el)
+  );
+
+  // ── 31 CARTAS DEL ORÁCULO PRISMA ──
+  const cartas = [
+    { num:1,  name:'Bruxa Tarot',                    subtitle:'Canalizadora del Prisma',        cat:'esencias', catLabel:'🌈 Esencias Sagradas del Prisma',  img:'images/bruxa.png',
+      keywords:['Inspiración','Renacimiento','Claridad','Transformación','Nueva perspectiva'],
+      message:'Es tiempo de recuperar tu magia personal. ¿En qué áreas de tu vida te sientes estancada o apagada? Bruxa Tarot es tu señal para despertar, crear, y permitirte vivir una vida vibrante nuevamente. La belleza no siempre está en lo perfecto, sino en lo auténtico.' },
+    { num:2,  name:'Nabi',                           subtitle:'Cazadora de Espíritus',          cat:'esencias', catLabel:'🌈 Esencias Sagradas del Prisma',  img:'images/nabi.png',
+      keywords:['Protección energética','Intuición aguda','Observación','Alerta espiritual'],
+      message:'Esta carta surge cuando estás llamada a reconocer y enfrentar tus propios espíritus — esos miedos o situaciones que percibes como amenazas. Nabi te dice que es momento de actuar con valentía, transformando tus debilidades en fortalezas. No subestimes lo pequeño.' },
+    { num:3,  name:'Marta',                          subtitle:'Diosa de la Sanación',           cat:'esencias', catLabel:'🌈 Esencias Sagradas del Prisma',  img:'images/marta.png',
+      keywords:['Sanación','Paciencia','Amor que se cultiva','Ciclos','Tiempo interior'],
+      message:'Sanar no implica evitar el dolor, sino atravesarlo con valentía y paciencia. Marta te invita a confiar en que cada lágrima derramada riega tu camino hacia una versión más fuerte y hermosa de ti.' },
+    { num:4,  name:'Jade',                           subtitle:'Diosa del Karma',                cat:'esencias', catLabel:'🌈 Esencias Sagradas del Prisma',  img:'images/jade.png',
+      keywords:['Equilibrio','Justicia energética','Cosecha emocional','Lección de vida'],
+      message:'Esta carta se presenta cuando necesitas reconocer las consecuencias de tus acciones. Jade te invita a entender que cada experiencia está allí para equilibrar, enseñar y transformarte. El karma no es castigo; es energía que regresa para restaurar el orden.' },
+    { num:5,  name:'Elena',                          subtitle:'Diosa del Camino',               cat:'esencias', catLabel:'🌈 Esencias Sagradas del Prisma',  img:'images/elena.png',
+      keywords:['Intuición','Guía interna','Claridad emocional','Llamado espiritual'],
+      message:'Elena surge cuando enfrentas decisiones importantes. Escuchar a tu corazón es un acto de coraje. El camino correcto puede parecer más difícil, pero siempre te llevará al lugar donde realmente perteneces.' },
+    { num:6,  name:'Mia',                            subtitle:'Diosa del Amor Propio',          cat:'esencias', catLabel:'🌈 Esencias Sagradas del Prisma',  img:'images/mia.png',
+      keywords:['Autoafirmación','Dignidad','Cierre de ciclo','Luz interior','Liberación'],
+      message:'La presencia de Mia anuncia que es tiempo de soltar lo que ya no te sirve emocionalmente. Pon límites claros, prioriza tu bienestar y reconoce que no necesitas perseguir el amor ni validación de nadie más. Cuando te reconoces primero, atraes relaciones más sanas.' },
+    { num:7,  name:'Tony',                           subtitle:'Dios del Tiempo',                cat:'esencias', catLabel:'🌈 Esencias Sagradas del Prisma',  img:'images/tony.png',
+      keywords:['Urgencia','Acción','Decisión','Cambio inminente','Momento presente'],
+      message:'Si Tony está aquí, es probable que hayas estado postergando algo importante. Te recuerda que cada oportunidad perdida es un pequeño duelo. Tony llega como un llamado urgente a tomar decisiones claras antes de que sea demasiado tarde.' },
+    { num:8,  name:'Dante',                          subtitle:'Dios del Fuego y la Resurrección', cat:'esencias', catLabel:'🌈 Esencias Sagradas del Prisma', img:'images/dante.png',
+      keywords:['Deseo profundo','Renacimiento','Valentía emocional','Pasión','Amor inquebrantable'],
+      message:'Dante te visita cuando enfrentas momentos difíciles. Tienes dentro de ti la fuerza necesaria para vencer cualquier adversidad. Abraza tus cicatrices como medallas de valentía y cree profundamente en tu poder para transformar cualquier dolor en victoria.' },
+    { num:9,  name:'La Voz Clara',                   subtitle:'Regreso Interior',               cat:'esencias', catLabel:'🌈 Esencias Sagradas del Prisma',  img:'images/la-voz-clara.png',
+      keywords:['Reconexión con el alma','Verdad interna','Intuición que despierta','Renacimiento silencioso'],
+      message:'Esta carta surge cuando estás lista para romper el silencio. Tal vez llevas tiempo sintiéndote invisible, minimizando lo que sientes. La Voz Clara aparece para impulsarte a recuperar tu tono, tu energía, tu narrativa. Es hora de tomar el micrófono de tu vida.' },
+    { num:10, name:'El Llamado del Alma',             subtitle:'Despertar Espiritual',           cat:'esencias', catLabel:'🌈 Esencias Sagradas del Prisma',  img:'images/llama.png',
+      keywords:['Despertar','Inquietud del alma','Búsqueda interior','Llamado espiritual'],
+      message:'Cuando te sientes inquieta sin saber por qué. Cuando todo parece estar "bien", pero sientes un vacío. Tu corazón desea otra vida, aunque aún no sepa cuál. Esta carta también aparece cuando ya diste el primer paso y necesitas confirmación de que tu alma te guía.' },
+    { num:11, name:'El Regreso a Casa',               subtitle:'Reconexión',                     cat:'esencias', catLabel:'🌈 Esencias Sagradas del Prisma',  img:'images/regreso.png',
+      keywords:['Reencuentro con el alma','Calma profunda','Cierre de ciclo','Pertenencia espiritual'],
+      message:'Cuando logras cerrar un ciclo. Cuando sientes que, aunque el mundo siga en caos, dentro de ti hay calma. Esta carta te recuerda que no estás perdida. Lo que buscas no está fuera, sino en la reconexión con tu alma.' },
+    { num:12, name:'Álvaro',                          subtitle:'Tejedor de Sombras',             cat:'dualidades', catLabel:'🌒 Dualidades Prisma – El Espejo del Alma', img:'images/alvaro.png',
+      keywords:['Manipulación emocional','Ambigüedad','Control desde el silencio'],
+      message:'Esta carta surge cuando alguien juega contigo sin decirlo, cuando te preguntas si estás exagerando… pero tu intuición ya sabe la verdad. También aparece cuando tú misma estás cayendo en dinámicas de manipulación, aunque no lo notes.' },
+    { num:13, name:'Emmanuel',                        subtitle:'Eco de la Duda',                 cat:'dualidades', catLabel:'🌒 Dualidades Prisma – El Espejo del Alma', img:'images/emmanuel.png',
+      keywords:['Indecisión','Inseguridad emocional','Doble sombra','Elecciones inconclusas'],
+      message:'Cuando estás esperando que alguien elija… y no lo hace. Cuando te quedas atrapada en un "casi" que duele más que un "no". El amor no es tibio. Es fuego o no es nada.' },
+    { num:14, name:'Valeria',                         subtitle:'El Veneno Sutil',                cat:'dualidades', catLabel:'🌒 Dualidades Prisma – El Espejo del Alma', img:'images/valeria.png',
+      keywords:['Manipulación','Seducción oscura','Dominio mental','Peligro encubierto'],
+      message:'Cuando percibes que detrás de una sonrisa hay intenciones ocultas. Cuando sientes que alguien usa tu ambición para sus propios fines. También surge si tú misma estás justificando comportamientos tóxicos en nombre del éxito o la validación.' },
+    { num:15, name:'Karina',                          subtitle:'Intromisión Silenciosa',         cat:'dualidades', catLabel:'🌒 Dualidades Prisma – El Espejo del Alma', img:'images/karina.png',
+      keywords:['Manipulación elegante','Celos disfrazados','Control emocional','Inseguridad oculta'],
+      message:'Cuando sientes un resentimiento inexplicable al éxito de alguien más. Cuando actúas por miedo a perder tu lugar. Cuando compararte te lleva a sabotear, consciente o inconscientemente, los logros ajenos.' },
+    { num:16, name:'Tatiana',                         subtitle:'Prisionera del Ayer',            cat:'dualidades', catLabel:'🌒 Dualidades Prisma – El Espejo del Alma', img:'images/tatiana.png',
+      keywords:['Estancamiento emocional','Nostalgia','Miedo al cambio','Apegos vacíos'],
+      message:'Cuando repites patrones de relación que solo te dejan estancada. Cuando sientes más temor al cambio que al dolor de lo familiar. Cuando tu zona de confort se convierte en tu jaula.' },
+    { num:17, name:'Lucía y Samuel',                  subtitle:'Susurro Eterno',                 cat:'dualidades', catLabel:'🌒 Dualidades Prisma – El Espejo del Alma', img:'images/lucia-samuel.png',
+      keywords:['Amor imposible','Conexión profunda','Silencio que arde','Almas entrelazadas'],
+      message:'Cuando sientes que has perdido un amor sin haberlo vivido por completo. Cuando una conexión sigue viva en tu alma, aunque ya no exista en el plano físico. Cuando sueñas con alguien que ya no está… pero su energía sigue contigo.' },
+    { num:18, name:'Alberto',                         subtitle:'La Voz que Enfrenta la Injusticia', cat:'guardianes', catLabel:'🛡️ Guardianes del Prisma', img:'images/alberto.png',
+      keywords:['Justicia','Lealtad','Valentía silenciosa','Defensa emocional'],
+      message:'Cuando observas que alguien sufre sin recibir respaldo. Cuando tú misma sientes el impulso de defender a otros, aunque nadie lo note. Un acto de intercesión puede cambiar el rumbo de una situación adversa.' },
+    { num:19, name:'Oracio',                          subtitle:'Protector de los Corazones Rotos', cat:'guardianes', catLabel:'🛡️ Guardianes del Prisma', img:'images/oracio.png',
+      keywords:['Lealtad incondicional','Protección silenciosa','Amor no correspondido','Presencia constante'],
+      message:'Es momento de honrar lo que siempre ha estado ahí. Puede ser un amor no correspondido, una amistad que te sostuvo, o una parte de ti que nunca dejaste morir a pesar del dolor.' },
+    { num:20, name:'Rosario',                         subtitle:'La Druida del Espejo',           cat:'guardianes', catLabel:'🛡️ Guardianes del Prisma', img:'images/rosario.png',
+      keywords:['Reflexión emocional','Claridad intuitiva','Sabiduría silenciosa','Verdad no forzada'],
+      message:'Cuando necesitas detenerte y observar tus emociones sin juicio. Cuando una parte de ti ya conoce la verdad, pero requiere tu permiso para emerger. Cuando buscas un refugio donde el silencio sea tan sanador como cualquier palabra.' },
+    { num:21, name:'Las Tres Aliadas del Corazón',    subtitle:'Renata, Cristina y Sofía',       cat:'guardianes', catLabel:'🛡️ Guardianes del Prisma', img:'images/lastres.png',
+      keywords:['Apoyo incondicional','Sororidad','Fuerza compartida','Protección','Unión'],
+      message:'Cuando necesitas recordar quiénes son tus verdaderos aliados. Cuando estás perdiendo la fe en ti misma… y solo hace falta una voz que te diga: "Aquí estoy." El alma necesita una red que la sostenga sin condiciones.' },
+    { num:22, name:'Jazmín',                          subtitle:'Cupido Encubierto',              cat:'guardianes', catLabel:'🛡️ Guardianes del Prisma', img:'images/jazmin.png',
+      keywords:['Unión sutil','Amor verdadero','Puente emocional','Intuición silenciosa'],
+      message:'Cuando sientes un tic de tu corazón ante una presencia nueva. Cuando una coincidencia te hace temblar de emoción. Jazmín trabaja en silencio y confía en el tiempo del universo.' },
+    { num:23, name:'Daniela',                         subtitle:'Cheerleader del Alma',           cat:'guardianes', catLabel:'🛡️ Guardianes del Prisma', img:'images/daniela.png',
+      keywords:['Motivación auténtica','Fe prestada','Energía contagiosa','Impulso del corazón'],
+      message:'Cuando tu motivación flaquea y necesitas un empujón de energía. Cuando dudas de tus capacidades y urge recordar tu fuerza interna. Esta carta es el grito del alma que dice: vas mejor de lo que crees.' },
+    { num:24, name:'Heimdall',                        subtitle:'Guardián de los Portales',       cat:'llaves', catLabel:'💠 Llaves Prismáticas del Alma', img:'images/heimdall.png',
+      keywords:['Curiosidad poderosa','Inicios mágicos','Conexión inesperada','Llaves ocultas'],
+      message:'Cuando un simple giro de tu rutina revela un nuevo horizonte. Cuando te resistes a explorar porque "no parece importante", y luego descubres que ahí estaba la llave. La magia no llega siempre con grandes rituales, sino con pequeños atrevimientos.' },
+    { num:25, name:'Erebus',                          subtitle:'El Iluminado',                   cat:'llaves', catLabel:'💠 Llaves Prismáticas del Alma', img:'images/erebus.png',
+      keywords:['Sabiduría interior','Claridad mental','Silencio sagrado','Perspectiva elevada'],
+      message:'Cuando necesitas ver con más claridad. Cuando estás rodeada de ruido… y tu alma pide silencio. Cuando sabes que hay algo más, pero aún no logras nombrarlo.' },
+    { num:26, name:'Aetherius',                       subtitle:'El Viajero del Inframundo',      cat:'llaves', catLabel:'💠 Llaves Prismáticas del Alma', img:'images/aetherius.png',
+      keywords:['Travesía interior','Misterio divino','Sabiduría ancestral','Transformación silenciosa'],
+      message:'Cuando sientes el llamado de algo más allá de tu comprensión diaria. Cuando intuyes secretos o respuestas que no aparecen en la luz del día. Cuando has recorrido tanto tu propio laberinto que necesitas guía en la penumbra.' },
+    { num:27, name:'El Umbral del Inframundo',        subtitle:'Portal Místico',                 cat:'portales', catLabel:'🌌 Portales Místicos', img:'images/umbral.png',
+      keywords:['Descenso consciente','Travesía interior','Renacimiento','Oscuridad fértil'],
+      message:'Cuando sientes que algo en ti debe morir para que algo mayor nazca. Cuando el alivio no llega con palabras, sino con el silencio de tu propia sombra. Para regresar a ti… a veces hay que bajar.' },
+    { num:28, name:'El Concilio de la Magia',         subtitle:'Portal Místico',                 cat:'portales', catLabel:'🌌 Portales Místicos', img:'images/concilio.png',
+      keywords:['Apoyo espiritual','Sabiduría ancestral','Guías invisibles','Sincronicidades'],
+      message:'Cuando necesitas recordarte que no estás sola y que tienes un refugio en las personas que te quieren. Cuando tu corazón anhela pertenencia y te convoca a reconocer a tu propia tribu.' },
+    { num:29, name:'El Portal del Caos',              subtitle:'Portal Místico',                 cat:'portales', catLabel:'🌌 Portales Místicos', img:'images/caos.png',
+      keywords:['Transformación radical','Fin de lo cómodo','Despertar','Verdad cruda'],
+      message:'Cuando sientes que el estancamiento te asfixia y necesitas un impulso radical. Para renacer, primero debes soltar cargas acumuladas. Cuando todo se rompe… nace lo que realmente eres.' },
+    { num:30, name:'El Inframundo de las Pociones',   subtitle:'Portal Místico',                 cat:'portales', catLabel:'🌌 Portales Místicos', img:'images/pociones.png',
+      keywords:['Alquimia emocional','Sanación profunda','Procesos internos','Cocción invisible'],
+      message:'Cuando estás impaciente por ver cambios y olvidas que el cambio profundo lleva su tiempo. Tu alma está en proceso alquímico. No interrumpas la mezcla: el amor y la paciencia son los mejores condimentos para tu crecimiento.' },
+    { num:31, name:'El Portal del Conocimiento Infinito', subtitle:'Portal Místico',            cat:'portales', catLabel:'🌌 Portales Místicos', img:'images/conocimiento.png',
+      keywords:['Despertar mental','Claridad espiritual','Memoria del alma','Canalización'],
+      message:'Cuando una idea te golpea con fuerza, como si emergiera de otra dimensión. Cuando una pregunta repetida de pronto encuentra respuesta sin esfuerzo consciente. La sabiduría no se encuentra… se recuerda.' }
+  ];
+
+  const catClasses = { esencias:'cat-esencias', dualidades:'cat-dualidades', guardianes:'cat-guardianes', llaves:'cat-llaves', portales:'cat-portales' };
+
+  let flipped = false;
+
+  function pickCard() {
+    const d = new Date();
+    const seed = d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+    return cartas[seed % cartas.length];
+  }
+
+  function flipCard() {
+    if (flipped) return;
+    flipped = true;
+    const c = pickCard();
+
+    // Cargar imagen del frente antes de voltear
+    const img = document.getElementById('cardImg');
+    img.src = c.img;
+    img.style.display = 'block';
+    document.getElementById('cardName').textContent = c.name;
+    document.getElementById('cardSubtitle').textContent = c.subtitle;
+    document.getElementById('cardScene').classList.add('flipped');
+
+    setTimeout(() => {
+      document.getElementById('catBadgeWrap').innerHTML =
+        `<span class="cat-badge ${catClasses[c.cat]}">${c.catLabel}</span>`;
+      document.getElementById('cartaReadingTitle').textContent = `✦ ${c.name.toUpperCase()} ✦`;
+      document.getElementById('cartaMessage').textContent = c.message;
+      document.getElementById('cartaKeywords').innerHTML =
+        c.keywords.map(k=>`<span class="carta-kw">${k}</span>`).join('');
+      document.getElementById('cartaReading').classList.add('visible');
+      document.getElementById('nuevoBtn').style.display = 'block';
+    }, 1000);
+  }
+
+  function resetCard() {
+    flipped = false;
+    document.getElementById('cardScene').classList.remove('flipped');
+    const reading = document.getElementById('cartaReading');
+    reading.classList.remove('visible');
+    document.getElementById('nuevoBtn').style.display = 'none';
+    document.getElementById('catBadgeWrap').innerHTML = '';
+    document.getElementById('cartaKeywords').innerHTML = '';
+    document.getElementById('cardImg').src = '';
+  }
+  </script>
+</body>
+</html>
