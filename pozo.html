@@ -336,19 +336,38 @@
   window.addEventListener('resize',()=>{resize();initStars();});resize();initStars();requestAnimationFrame(draw);
 })();
 
-// ── STORAGE (JSONBin para persistencia real) ──
-// Usamos localStorage como fallback mientras se integra el backend
-const STORAGE_KEY = 'bt_pozo_deseos';
+// ── JSONBIN — Persistencia compartida real ──
+const BIN_ID  = '6a2826e4f5f4af5e29d25cac';
+const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+const BIN_KEY = '$2a$10$xp8R85bRTFmRje4ngH8kZ.STZZJEc.6aub7iigpfvCp4DyxMEyD/u';
+const BIN_HEADERS = { 'Content-Type': 'application/json', 'X-Access-Key': BIN_KEY };
 
-function cargarDeseos() {
+let _cacheDeseos = null;
+
+async function cargarDeseos() {
+  if (_cacheDeseos !== null) return _cacheDeseos;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch { return []; }
+    const res = await fetch(BIN_URL + '/latest', { headers: BIN_HEADERS });
+    if (!res.ok) throw new Error('fetch error');
+    const data = await res.json();
+    _cacheDeseos = Array.isArray(data.record?.deseos) ? data.record.deseos : [];
+  } catch {
+    try { _cacheDeseos = JSON.parse(localStorage.getItem('bt_pozo_bk') || '[]'); }
+    catch { _cacheDeseos = []; }
+  }
+  return _cacheDeseos;
 }
 
-function guardarDeseos(deseos) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(deseos)); } catch {}
+async function guardarDeseos(deseos) {
+  _cacheDeseos = deseos;
+  try { localStorage.setItem('bt_pozo_bk', JSON.stringify(deseos)); } catch {}
+  try {
+    await fetch(BIN_URL, {
+      method: 'PUT',
+      headers: BIN_HEADERS,
+      body: JSON.stringify({ deseos })
+    });
+  } catch(e) { console.warn('JSONBin write error:', e); }
 }
 
 // ── COLORES DE ESTRELLAS ──
@@ -396,11 +415,12 @@ function renderEstrella(deseo, nuevo = false) {
 }
 
 // ── RENDER TODO EL CIELO ──
-function renderCielo() {
+async function renderCielo() {
   const cielo  = document.getElementById('cielo');
   const empty  = document.getElementById('cieloEmpty');
   const counter= document.getElementById('cieloCounter');
-  const deseos = cargarDeseos();
+  counter.textContent = 'Cargando el cielo…';
+  const deseos = await cargarDeseos();
 
   // Limpiar estrellas existentes (no el empty)
   cielo.querySelectorAll('.deseo-star').forEach(e => e.remove());
@@ -418,12 +438,17 @@ function renderCielo() {
 }
 
 // ── ENVIAR DESEO ──
-function enviarDeseo() {
+async function enviarDeseo() {
   const input = document.getElementById('deseoInput');
+  const btn   = document.getElementById('submitBtn');
   const texto = input.value.trim();
   if (!texto) return;
 
-  const deseos = cargarDeseos();
+  // Deshabilitar mientras guarda
+  btn.disabled = true;
+  btn.textContent = '✦ Enviando…';
+
+  const deseos = await cargarDeseos();
 
   // Generar propiedades visuales únicas y guardarlas
   const color = STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)];
@@ -434,10 +459,9 @@ function enviarDeseo() {
 
   const nuevo = { texto, color, size, speed, x, y, ts: Date.now() };
   deseos.push(nuevo);
-  guardarDeseos(deseos);
+  await guardarDeseos(deseos);
 
   // Render inmediato con animación
-  const cielo = document.getElementById('cielo');
   document.getElementById('cieloEmpty').style.display = 'none';
   renderEstrella(nuevo, true);
 
@@ -447,8 +471,9 @@ function enviarDeseo() {
 
   input.value = '';
   document.getElementById('charCount').textContent = '0/80';
+  btn.disabled = false;
+  btn.textContent = '✦ Lanzar al cosmos';
 
-  // Toast
   mostrarToast();
 }
 
