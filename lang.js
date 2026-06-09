@@ -24,6 +24,22 @@ const LANGS = {
     redes_label:'Conecta con la Bruja', redes_title:'Encuéntrame en el cosmos',
     redes_body:'Cada red es un portal distinto al Templo. Ven, el alma siempre encuentra su camino.',
     footer:'© 2026 Bruxa Tarot • Templo del Prisma • Oráculo Prisma del Alma',
+    pozo_badge:'✦ TEMPLO DEL PRISMA ✦',
+    pozo_title:'El Pozo
+de los Deseos',
+    pozo_sub:'Lanza tu deseo al cosmos, Alma Brillante. Cada palabra que entregas aquí se convierte en una estrella que habita este cielo compartido — visible para todas las almas que lleguen después.',
+    pozo_placeholder:'Escribe tu deseo al universo…',
+    pozo_btn:'✦ Lanzar al cosmos',
+    pozo_btn_sending:'✦ Enviando…',
+    pozo_firmamento:'EL FIRMAMENTO DEL TEMPLO',
+    pozo_cielo_title:'Deseos de las Almas',
+    pozo_cargando:'Cargando el cielo…',
+    pozo_vacio:'Aún no hay deseos — ¡lanza el primero!',
+    pozo_counter_s:'deseo ilumina este cielo',
+    pozo_counter_p:'deseos iluminan este cielo',
+    pozo_empty_p:'El cielo te espera.
+Sé la primera estrella.',
+    pozo_toast:'✦ Tu deseo viaja al cosmos',
     rit_badge:'✦ ORÁCULO PRISMA DEL ALMA ✦', rit_title:'Rituales\ndel Prisma',
     rit_sub:'Hola, Alma Brillante. El ritual que necesitas hoy ya te está esperando. Respira profundo, observa el mazo y elige la carta que te llame.',
     rit_hint:'☽ Las 31 cartas te aguardan boca abajo ☾',
@@ -55,6 +71,22 @@ const LANGS = {
     redes_label:'Connect with the Witch', redes_title:'Find me in the cosmos',
     redes_body:'Each network is a different portal to the Temple. Come, the soul always finds its way.',
     footer:'© 2026 Bruxa Tarot • Temple of the Prism • Prisma Soul Oracle',
+    pozo_badge:'✦ TEMPLE OF THE PRISM ✦',
+    pozo_title:'The Wishing
+Well',
+    pozo_sub:'Cast your wish into the cosmos, Brilliant Soul. Every word you offer here becomes a star that inhabits this shared sky — visible to every soul who arrives after you.',
+    pozo_placeholder:'Write your wish to the universe…',
+    pozo_btn:'✦ Launch into the cosmos',
+    pozo_btn_sending:'✦ Sending…',
+    pozo_firmamento:'THE TEMPLE FIRMAMENT',
+    pozo_cielo_title:'Wishes of the Souls',
+    pozo_cargando:'Loading the sky…',
+    pozo_vacio:'No wishes yet — be the first star!',
+    pozo_counter_s:'wish lights this sky',
+    pozo_counter_p:'wishes light this sky',
+    pozo_empty_p:'The sky awaits you.
+Be the first star.',
+    pozo_toast:'✦ Your wish travels to the cosmos',
     rit_badge:'✦ PRISMA SOUL ORACLE ✦', rit_title:'Prisma\nRituals',
     rit_sub:'Hello, Brilliant Soul. The ritual you need today is already waiting for you. Breathe deeply, observe the deck and choose the card that calls you.',
     rit_hint:'☽ All 31 cards await you face down ☾',
@@ -86,6 +118,22 @@ const LANGS = {
     redes_label:'Connettiti con la Strega', redes_title:'Trovami nel cosmo',
     redes_body:'Ogni rete è un portale diverso al Tempio. Vieni, l\'anima trova sempre la sua strada.',
     footer:'© 2026 Bruxa Tarot • Tempio del Prisma • Oracolo Prisma dell\'Anima',
+    pozo_badge:'✦ TEMPIO DEL PRISMA ✦',
+    pozo_title:'Il Pozzo
+dei Desideri',
+    pozo_sub:'Lancia il tuo desiderio nel cosmo, Anima Brillante. Ogni parola che offri qui diventa una stella che abita questo cielo condiviso — visibile a ogni anima che arriverà dopo di te.',
+    pozo_placeholder:'Scrivi il tuo desiderio all'universo…',
+    pozo_btn:'✦ Lancia nel cosmo',
+    pozo_btn_sending:'✦ Invio…',
+    pozo_firmamento:'IL FIRMAMENTO DEL TEMPIO',
+    pozo_cielo_title:'Desideri delle Anime',
+    pozo_cargando:'Caricamento del cielo…',
+    pozo_vacio:'Ancora nessun desiderio — sii la prima stella!',
+    pozo_counter_s:'desiderio illumina questo cielo',
+    pozo_counter_p:'desideri illuminano questo cielo',
+    pozo_empty_p:'Il cielo ti aspetta.
+Sii la prima stella.',
+    pozo_toast:'✦ Il tuo desiderio viaggia nel cosmo',
     rit_badge:'✦ ORACOLO PRISMA DELL\'ANIMA ✦', rit_title:'Rituali\ndel Prisma',
     rit_sub:'Ciao, Anima Brillante. Il rituale di cui hai bisogno oggi ti sta già aspettando. Respira profondamente, osserva il mazzo e scegli la carta che ti chiama.',
     rit_hint:'☽ Le 31 carte ti aspettano a faccia in giù ☾',
@@ -117,6 +165,22 @@ const LANGS = {
     redes_label:'마녀와 연결하기', redes_title:'우주에서 나를 찾아보세요',
     redes_body:'각 네트워크는 신전으로 향하는 다른 포털입니다. 오세요, 영혼은 항상 길을 찾습니다.',
     footer:'© 2026 Bruxa Tarot • 프리즘의 신전 • 프리즘 영혼 오라클',
+    pozo_badge:'✦ 프리즘의 신전 ✦',
+    pozo_title:'소원의
+우물',
+    pozo_sub:'우주에 소원을 던져보세요, 빛나는 영혼이여. 여기서 전하는 모든 말은 함께 나누는 하늘에 사는 별이 됩니다 — 당신 다음에 오는 모든 영혼에게 보입니다.',
+    pozo_placeholder:'우주에 소원을 쓰세요…',
+    pozo_btn:'✦ 우주로 던지기',
+    pozo_btn_sending:'✦ 전송 중…',
+    pozo_firmamento:'신전의 창공',
+    pozo_cielo_title:'영혼들의 소원',
+    pozo_cargando:'하늘을 불러오는 중…',
+    pozo_vacio:'아직 소원이 없습니다 — 첫 번째 별이 되세요!',
+    pozo_counter_s:'개의 소원이 이 하늘을 밝힙니다',
+    pozo_counter_p:'개의 소원이 이 하늘을 밝힙니다',
+    pozo_empty_p:'하늘이 당신을 기다립니다.
+첫 번째 별이 되세요.',
+    pozo_toast:'✦ 당신의 소원이 우주로 여행합니다',
     rit_badge:'✦ 프리즘 영혼 오라클 ✦', rit_title:'프리즘\n의식',
     rit_sub:'안녕하세요, 빛나는 영혼이여. 오늘 필요한 의식이 이미 당신을 기다리고 있습니다. 깊게 숨을 쉬고, 덱을 관찰하고, 당신을 부르는 카드를 선택하세요.',
     rit_hint:'☽ 31장의 카드가 뒤집혀 당신을 기다립니다 ☾',
@@ -270,6 +334,9 @@ const LangEngine = {
     });
     document.querySelectorAll('[data-i18n-html]').forEach(el => {
       el.innerHTML = this.t(el.getAttribute('data-i18n-html')).replace(/\n/g, '<br>');
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      el.placeholder = this.t(el.getAttribute('data-i18n-placeholder'));
     });
     document.dispatchEvent(new CustomEvent('langchange', { detail: this.current }));
   },
