@@ -2,198 +2,479 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>El Pozo de los Deseos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Pozo de los Deseos • Bruxa Tarot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <script src="lang.js"></script>
   <style>
+    :root {
+      --gold: #c9a84c; --gold-light: #e8c97a; --gold-pale: #f5e6b8;
+      --deep: #04060f; --midnight: #0b1128;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
     body {
-      margin: 0;
-      font-family: "Cormorant Garamond", serif;
-      background: radial-gradient(circle at top, #1b1030, #05030a);
-      color: #f5f0ff;
-      display: flex;
-      flex-direction: column;
+      background: var(--deep);
+      color: #e8dfc8;
+      font-family: 'Cormorant Garamond', serif;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    header {
+    /* STARFIELD FIJO */
+    #starfield {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(ellipse at 20% 30%, #0d1a3a 0%, #04060f 60%),
+                  radial-gradient(ellipse at 80% 70%, #100828 0%, transparent 60%);
+    }
+    #starfield canvas { position:absolute; inset:0; width:100%; height:100%; }
+
+    /* NAV */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:100;
+      display: flex; align-items:center; justify-content:space-between;
+      padding: 1.2rem 3rem;
+      background: linear-gradient(to bottom, rgba(4,6,15,.97), transparent);
+    }
+    .nav-logo { font-family:'Cinzel',serif; font-size:1rem; letter-spacing:.3em; color:var(--gold); text-decoration:none; }
+    .nav-back { font-family:'Cinzel',serif; font-size:.68rem; letter-spacing:.2em; color:#b8a87a; text-decoration:none; transition:color .3s; }
+    .nav-back:hover { color:var(--gold); }
+    .lang-selector { display:flex; align-items:center; gap:.35rem; }
+    .lang-btn { font-family:'Cinzel',serif; font-size:.58rem; letter-spacing:.12em; padding:.28rem .65rem; border-radius:100px; cursor:pointer; border:1px solid rgba(201,168,76,.2); background:transparent; color:#b8a87a; transition:all .3s; }
+    .lang-btn:hover { border-color:rgba(201,168,76,.5); color:var(--gold); }
+    .lang-btn.active { background:rgba(201,168,76,.15); border-color:rgba(201,168,76,.6); color:var(--gold); }
+
+    /* HERO */
+    #hero {
+      position: relative; z-index:1;
+      padding: 9rem 2rem 4rem;
       text-align: center;
-      padding: 2rem 1rem 1rem;
+    }
+    .hero-badge {
+      font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.45em; color:var(--gold);
+      border:1px solid rgba(201,168,76,.3); padding:.45rem 1.8rem; border-radius:100px;
+      background:rgba(201,168,76,.05); display:inline-block; margin-bottom:2rem;
+      animation: fadeUp .9s ease .1s both;
+    }
+    .hero-title {
+      font-family:'Cinzel Decorative',serif; font-size:clamp(2rem,5vw,4rem);
+      font-weight:400; color:var(--gold-pale); line-height:1.15; margin-bottom:1.2rem;
+      animation: fadeUp .9s ease .3s both;
+    }
+    .hero-sub {
+      font-style:italic; font-size:clamp(1rem,2vw,1.3rem); color:#c4b090;
+      line-height:1.8; max-width:600px; margin:0 auto 3rem;
+      animation: fadeUp .9s ease .5s both;
     }
 
-    header h1 {
-      font-size: 2.4rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+    /* FORM */
+    .deseo-form {
+      position: relative; z-index:1;
+      display: flex; flex-direction:column; align-items:center; gap:1rem;
+      animation: fadeUp .9s ease .7s both;
+      padding: 0 1.5rem;
     }
-
-    header p {
+    .input-wrap {
+      position: relative; width:100%; max-width:520px;
+    }
+    .deseo-input {
+      width: 100%;
+      padding: .85rem 1.6rem;
+      border-radius: 100px;
+      border: 1px solid rgba(201,168,76,.35);
+      background: rgba(11,17,40,.7);
+      color: #f5e6b8;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0.5rem auto 0;
-      opacity: 0.85;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem;
-    }
-
-    .panel {
-      max-width: 600px;
-      width: 100%;
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .panel p {
-      font-size: 1rem;
-      opacity: 0.9;
-    }
-
-    form {
-      margin-top: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      align-items: center;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      max-width: 420px;
-      padding: 0.6rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid #7c5cff;
-      background: rgba(10, 6, 20, 0.8);
-      color: #f5f0ff;
+      font-style: italic;
       outline: none;
+      transition: border-color .3s, box-shadow .3s;
+      backdrop-filter: blur(8px);
+    }
+    .deseo-input::placeholder { color:rgba(201,168,76,.4); }
+    .deseo-input:focus {
+      border-color: rgba(201,168,76,.7);
+      box-shadow: 0 0 20px rgba(201,168,76,.12);
+    }
+    .char-count {
+      position:absolute; right:1.2rem; top:50%; transform:translateY(-50%);
+      font-family:'Cinzel',serif; font-size:.55rem; color:rgba(201,168,76,.35);
+      pointer-events:none;
+    }
+    .submit-btn {
+      font-family:'Cinzel',serif; font-size:.68rem; letter-spacing:.25em;
+      padding:.85rem 2.4rem; border-radius:100px; cursor:pointer; border:none;
+      background: linear-gradient(135deg, #c9a84c, #a07828);
+      color: var(--deep);
+      box-shadow: 0 0 30px rgba(201,168,76,.3);
+      transition: all .4s;
+    }
+    .submit-btn:hover { box-shadow:0 0 50px rgba(201,168,76,.5); transform:translateY(-2px); }
+    .submit-btn:disabled { opacity:.5; cursor:default; transform:none; }
+
+    /* DIVIDER */
+    .divider { display:flex; align-items:center; gap:1.5rem; padding:0 3rem; margin:3rem auto 0; max-width:500px; position:relative; z-index:1; }
+    .divider-line { flex:1; height:1px; background:linear-gradient(to right,transparent,rgba(201,168,76,.35),transparent); }
+    .divider-sym { color:var(--gold); font-size:1rem; }
+
+    /* CIELO DE DESEOS */
+    #cielo-wrap {
+      position: relative; z-index:1;
+      padding: 2rem 1.5rem 5rem;
+      display: flex; flex-direction:column; align-items:center;
+    }
+    .cielo-header {
+      text-align:center; margin-bottom:2rem;
+    }
+    .cielo-header p {
+      font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.4em;
+      color:rgba(201,168,76,.5); margin-bottom:.5rem;
+    }
+    .cielo-header h2 {
+      font-family:'Cinzel Decorative',serif; font-size:clamp(1.4rem,3vw,2.2rem);
+      color:var(--gold-pale); font-weight:400;
+    }
+    .cielo-counter {
+      font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.3em;
+      color:rgba(201,168,76,.4); margin-top:.5rem;
     }
 
-    input[type="text"]::placeholder {
-      color: #b9a8ff;
-    }
-
-    button {
-      padding: 0.5rem 1.4rem;
-      border-radius: 999px;
-      border: 1px solid #f5c86b;
-      background: linear-gradient(135deg, #f5c86b, #e08fff);
-      color: #1b1030;
-      font-weight: 600;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-size: 0.85rem;
-    }
-
-    button:hover {
-      filter: brightness(1.08);
-    }
-
-    /* Cielo estrellado */
+    /* EL CIELO */
     #cielo {
       position: relative;
-      width: 100%;
-      max-width: 900px;
-      height: 420px;
-      margin-top: 1rem;
-      border-radius: 18px;
+      width: 100%; max-width: 1000px;
+      height: 500px;
+      border-radius: 24px;
+      border: 1px solid rgba(201,168,76,.12);
+      background: radial-gradient(ellipse at center, #0d1535 0%, #04060f 100%);
+      box-shadow: inset 0 0 80px rgba(0,0,0,.6), 0 0 60px rgba(0,0,0,.4);
       overflow: hidden;
-      background: radial-gradient(circle at center, #0b0618, #020109);
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
     }
 
-    .estrella {
+    /* NEBULA OVERLAY */
+    #cielo::before {
+      content:'';
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse at 20% 40%, rgba(80,40,160,.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 25%, rgba(40,80,180,.1) 0%, transparent 40%),
+        radial-gradient(ellipse at 60% 75%, rgba(120,40,120,.08) 0%, transparent 45%);
+      pointer-events:none;
+    }
+
+    /* ESTRELLAS DE DESEOS */
+    .deseo-star {
       position: absolute;
-      color: #fff;
-      font-size: 18px;
-      text-shadow: 0 0 8px #fff, 0 0 16px #f5c86b;
-      animation: brillar 2s infinite alternate;
-      cursor: default;
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+      transition: transform .3s;
+      z-index: 2;
+    }
+    .deseo-star svg {
+      filter: drop-shadow(0 0 4px var(--star-color, #c9a84c))
+              drop-shadow(0 0 10px var(--star-color, #c9a84c));
+      animation: star-pulse var(--pulse-speed, 3s) ease-in-out infinite alternate;
+      transition: filter .3s;
+    }
+    .deseo-star:hover svg {
+      filter: drop-shadow(0 0 8px #fff)
+              drop-shadow(0 0 20px var(--star-color, #c9a84c))
+              drop-shadow(0 0 40px var(--star-color, #c9a84c));
+      transform: scale(1.4);
+    }
+    @keyframes star-pulse {
+      from { opacity: .5; transform: scale(.85); }
+      to   { opacity: 1;  transform: scale(1.1); }
     }
 
-    @keyframes brillar {
-      from { opacity: 0.4; transform: scale(0.8); }
-      to   { opacity: 1;   transform: scale(1.15); }
+    /* TOOLTIP */
+    .deseo-star .tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%; transform: translateX(-50%);
+      background: rgba(11,17,40,.95);
+      border: 1px solid rgba(201,168,76,.35);
+      border-radius: 12px;
+      padding: .6rem 1rem;
+      font-style:italic; font-size:.9rem; color:#f5e6b8;
+      white-space: nowrap; max-width: 220px;
+      white-space: normal; text-align:center;
+      pointer-events: none;
+      opacity: 0; visibility: hidden;
+      transition: opacity .25s, visibility .25s;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 30px rgba(0,0,0,.5);
+      z-index: 10;
+      line-height: 1.5;
+    }
+    .deseo-star .tooltip::after {
+      content:'';
+      position:absolute; top:100%; left:50%; transform:translateX(-50%);
+      border:6px solid transparent;
+      border-top-color: rgba(201,168,76,.35);
+    }
+    .deseo-star:hover .tooltip,
+    .deseo-star.touched .tooltip {
+      opacity: 1; visibility: visible;
     }
 
-    footer {
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.8rem;
-      opacity: 0.7;
+    /* ENTRADA ANIMADA */
+    @keyframes star-appear {
+      0%   { opacity:0; transform:translate(-50%,-50%) scale(0) rotate(-180deg); }
+      70%  { transform:translate(-50%,-50%) scale(1.3) rotate(10deg); }
+      100% { opacity:1; transform:translate(-50%,-50%) scale(1) rotate(0deg); }
+    }
+    .deseo-star.nuevo { animation: star-appear .8s cubic-bezier(.34,1.56,.64,1) forwards; }
+
+    /* ESTADO VACÍO */
+    .cielo-empty {
+      position:absolute; inset:0; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:.8rem;
+      pointer-events:none;
+    }
+    .cielo-empty span { font-size:2.5rem; opacity:.3; }
+    .cielo-empty p {
+      font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.3em;
+      color:rgba(201,168,76,.25); text-align:center;
+    }
+
+    /* TOAST */
+    #toast {
+      position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(20px);
+      background:rgba(11,17,40,.95); border:1px solid rgba(201,168,76,.3);
+      border-radius:100px; padding:.7rem 2rem;
+      font-family:'Cinzel',serif; font-size:.65rem; letter-spacing:.2em; color:var(--gold);
+      opacity:0; pointer-events:none;
+      transition:opacity .4s, transform .4s;
+      z-index:200; backdrop-filter:blur(8px);
+    }
+    #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    /* FOOTER */
+    .page-footer { position:relative; z-index:1; text-align:center; padding:2rem; border-top:1px solid rgba(201,168,76,.08); }
+    .page-footer p { font-family:'Cinzel',serif; font-size:.58rem; letter-spacing:.3em; color:rgba(201,168,76,.3); }
+    .page-footer a { color:rgba(201,168,76,.5); text-decoration:none; }
+    .page-footer a:hover { color:var(--gold); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)} }
+
+    @media(max-width:600px) {
+      nav { padding:1rem 1.5rem; }
+      #cielo { height:380px; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>El Pozo de los Deseos</h1>
-    <p>Lanza tu deseo al cielo… y observa cómo se convierte en una estrella que se suma al firmamento del Templo.</p>
-  </header>
+  <div id="starfield"><canvas id="stars"></canvas></div>
 
-  <main>
-    <section class="panel">
-      <p>
-        Escribe tu deseo, intención o petición al universo.  
-        Cada palabra que entregas aquí se transforma en una estrella que habita este cielo compartido.
-      </p>
+  <nav>
+    <a href="index.html" class="nav-back">← Volver al Templo</a>
+    <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
+    <div class="lang-selector">
+      <button class="lang-btn active" data-lang="es" onclick="LangEngine.set('es')">ES</button>
+      <button class="lang-btn" data-lang="en"  onclick="LangEngine.set('en')">EN</button>
+      <button class="lang-btn" data-lang="it"  onclick="LangEngine.set('it')">IT</button>
+      <button class="lang-btn" data-lang="ko"  onclick="LangEngine.set('ko')">한국</button>
+    </div>
+  </nav>
 
-      <form id="deseoForm">
-        <input
-          type="text"
-          id="deseoInput"
-          placeholder="Escribe tu deseo..."
-          required
-        />
-        <button type="submit">Enviar al cielo ✨</button>
-      </form>
-    </section>
+  <!-- HERO -->
+  <section id="hero">
+    <span class="hero-badge">✦ TEMPLO DEL PRISMA ✦</span>
+    <h1 class="hero-title">El Pozo<br>de los Deseos</h1>
+    <p class="hero-sub">Lanza tu deseo al cosmos, Alma Brillante. Cada palabra que entregas aquí se convierte en una estrella que habita este cielo compartido — visible para todas las almas que lleguen después.</p>
+  </section>
 
-    <section id="cielo" aria-label="Cielo de deseos">
-      <!-- Aquí aparecerán las estrellas generadas por JavaScript -->
-    </section>
-  </main>
+  <!-- FORM -->
+  <div class="deseo-form">
+    <div class="input-wrap">
+      <input
+        class="deseo-input" id="deseoInput" type="text"
+        placeholder="Escribe tu deseo al universo…"
+        maxlength="80" autocomplete="off"
+      />
+      <span class="char-count" id="charCount">0/80</span>
+    </div>
+    <button class="submit-btn" id="submitBtn" onclick="enviarDeseo()">
+      ✦ Lanzar al cosmos
+    </button>
+  </div>
 
-  <footer>
-    Parte del Templo Bruxa · Cada estrella es un deseo compartido.
-  </footer>
+  <!-- DIVIDER -->
+  <div class="divider"><div class="divider-line"></div><span class="divider-sym">☽ ✦ ☾</span><div class="divider-line"></div></div>
 
-  <script>
-    // Aquí luego conectaremos con JSONBin.
-    // Por ahora, solo creamos estrellas locales para probar la experiencia.
+  <!-- CIELO -->
+  <section id="cielo-wrap">
+    <div class="cielo-header">
+      <p>EL FIRMAMENTO DEL TEMPLO</p>
+      <h2>Deseos de las Almas</h2>
+      <p class="cielo-counter" id="cieloCounter">Cargando el cielo…</p>
+    </div>
+    <div id="cielo">
+      <div class="cielo-empty" id="cieloEmpty">
+        <span>✦</span>
+        <p>El cielo te espera.<br>Sé la primera estrella.</p>
+      </div>
+    </div>
+  </section>
 
-    const cielo = document.getElementById("cielo");
-    const form = document.getElementById("deseoForm");
-    const input = document.getElementById("deseoInput");
+  <!-- TOAST -->
+  <div id="toast">✦ Tu deseo viaja al cosmos</div>
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const texto = input.value.trim();
-      if (!texto) return;
+  <div class="divider" style="margin-bottom:0"><div class="divider-line"></div><span class="divider-sym">✦</span><div class="divider-line"></div></div>
+  <div class="page-footer"><p>© 2026 <a href="index.html">Bruxa Tarot</a> • Templo del Prisma • El Pozo de los Deseos</p></div>
 
-      crearEstrella(texto);
-      input.value = "";
-    });
+<script>
+// ── STARFIELD ──
+(function(){
+  const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');
+  let stars=[],W,H;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  function initStars(){stars=[];const n=Math.floor((W*H)/5000);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,alpha:Math.random()*.6+.1,ts:Math.random()*.015+.004,to:Math.random()*Math.PI*2,gold:Math.random()<.06});}
+  function draw(t){ctx.clearRect(0,0,W,H);stars.forEach(s=>{const a=s.alpha*(.6+.4*Math.sin(t*s.ts+s.to));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.gold?`rgba(201,168,76,${a*.8})`:`rgba(255,255,255,${a})`;ctx.fill();});requestAnimationFrame(draw);}
+  window.addEventListener('resize',()=>{resize();initStars();});resize();initStars();requestAnimationFrame(draw);
+})();
 
-    function crearEstrella(texto) {
-      const estrella = document.createElement("div");
-      estrella.className = "estrella";
-      estrella.textContent = "★";
+// ── STORAGE (JSONBin para persistencia real) ──
+// Usamos localStorage como fallback mientras se integra el backend
+const STORAGE_KEY = 'bt_pozo_deseos';
 
-      const x = Math.random() * 90; // porcentaje
-      const y = Math.random() * 90;
+function cargarDeseos() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+}
 
-      estrella.style.left = x + "%";
-      estrella.style.top = y + "%";
-      estrella.title = texto;
+function guardarDeseos(deseos) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(deseos)); } catch {}
+}
 
-      cielo.appendChild(estrella);
-    }
-  </script>
+// ── COLORES DE ESTRELLAS ──
+const STAR_COLORS = [
+  '#c9a84c', // oro
+  '#e8c97a', // oro claro
+  '#b090e0', // violeta
+  '#7ecab0', // turquesa
+  '#f0a070', // naranja suave
+  '#f5e6b8', // crema
+  '#d090d0', // lavanda
+  '#90b0f0', // azul
+  '#ffffff',  // blanco puro
+];
 
+function starSVG(size, color) {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${color}" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" stroke="${color}" stroke-width=".5"/>
+  </svg>`;
+}
+
+// ── RENDER UNA ESTRELLA ──
+function renderEstrella(deseo, nuevo = false) {
+  const cielo = document.getElementById('cielo');
+  const el = document.createElement('div');
+  el.className = 'deseo-star' + (nuevo ? ' nuevo' : '');
+
+  const color = deseo.color || STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)];
+  const size  = deseo.size  || (Math.random() * 12 + 14); // 14–26px
+  const speed = deseo.speed || (Math.random() * 3 + 2) + 's';
+  const x     = deseo.x    !== undefined ? deseo.x : Math.random() * 88 + 2;
+  const y     = deseo.y    !== undefined ? deseo.y : Math.random() * 84 + 2;
+
+  el.style.cssText = `left:${x}%;top:${y}%;--star-color:${color};--pulse-speed:${speed};`;
+  el.innerHTML = `${starSVG(size, color)}<div class="tooltip">${escapeHTML(deseo.texto)}</div>`;
+
+  // Touch support para móvil
+  el.addEventListener('click', () => {
+    el.classList.toggle('touched');
+    setTimeout(() => el.classList.remove('touched'), 3000);
+  });
+
+  cielo.appendChild(el);
+  return { color, size, speed, x, y };
+}
+
+// ── RENDER TODO EL CIELO ──
+function renderCielo() {
+  const cielo  = document.getElementById('cielo');
+  const empty  = document.getElementById('cieloEmpty');
+  const counter= document.getElementById('cieloCounter');
+  const deseos = cargarDeseos();
+
+  // Limpiar estrellas existentes (no el empty)
+  cielo.querySelectorAll('.deseo-star').forEach(e => e.remove());
+
+  if (deseos.length === 0) {
+    empty.style.display = 'flex';
+    counter.textContent = 'Aún no hay deseos — ¡lanza el primero!';
+    return;
+  }
+
+  empty.style.display = 'none';
+  counter.textContent = `${deseos.length} deseo${deseos.length !== 1 ? 's' : ''} iluminan este cielo`;
+
+  deseos.forEach(d => renderEstrella(d, false));
+}
+
+// ── ENVIAR DESEO ──
+function enviarDeseo() {
+  const input = document.getElementById('deseoInput');
+  const texto = input.value.trim();
+  if (!texto) return;
+
+  const deseos = cargarDeseos();
+
+  // Generar propiedades visuales únicas y guardarlas
+  const color = STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)];
+  const size  = Math.random() * 12 + 14;
+  const speed = (Math.random() * 3 + 2) + 's';
+  const x     = Math.random() * 86 + 2;
+  const y     = Math.random() * 80 + 4;
+
+  const nuevo = { texto, color, size, speed, x, y, ts: Date.now() };
+  deseos.push(nuevo);
+  guardarDeseos(deseos);
+
+  // Render inmediato con animación
+  const cielo = document.getElementById('cielo');
+  document.getElementById('cieloEmpty').style.display = 'none';
+  renderEstrella(nuevo, true);
+
+  // Actualizar counter
+  document.getElementById('cieloCounter').textContent =
+    `${deseos.length} deseo${deseos.length !== 1 ? 's' : ''} iluminan este cielo`;
+
+  input.value = '';
+  document.getElementById('charCount').textContent = '0/80';
+
+  // Toast
+  mostrarToast();
+}
+
+function mostrarToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── CHAR COUNTER ──
+document.getElementById('deseoInput').addEventListener('input', function() {
+  document.getElementById('charCount').textContent = `${this.value.length}/80`;
+});
+
+// ── ENTER KEY ──
+document.getElementById('deseoInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { e.preventDefault(); enviarDeseo(); }
+});
+
+// ── ESCAPE HTML ──
+function escapeHTML(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── INIT ──
+renderCielo();
+</script>
 </body>
 </html>
