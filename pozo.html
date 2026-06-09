@@ -269,7 +269,7 @@
   <div id="starfield"><canvas id="stars"></canvas></div>
 
   <nav>
-    <a href="index.html" class="nav-back">← Volver al Templo</a>
+    <a href="index.html" class="nav-back" data-i18n="nav_back">← Volver al Templo</a>
     <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
     <div class="lang-selector">
       <button class="lang-btn active" data-lang="es" onclick="LangEngine.set('es')">ES</button>
@@ -281,9 +281,9 @@
 
   <!-- HERO -->
   <section id="hero">
-    <span class="hero-badge">✦ TEMPLO DEL PRISMA ✦</span>
-    <h1 class="hero-title">El Pozo<br>de los Deseos</h1>
-    <p class="hero-sub">Lanza tu deseo al cosmos, Alma Brillante. Cada palabra que entregas aquí se convierte en una estrella que habita este cielo compartido — visible para todas las almas que lleguen después.</p>
+    <span class="hero-badge" data-i18n="pozo_badge">✦ TEMPLO DEL PRISMA ✦</span>
+    <h1 class="hero-title" data-i18n-html="pozo_title">El Pozo<br>de los Deseos</h1>
+    <p class="hero-sub" data-i18n="pozo_sub">Lanza tu deseo al cosmos, Alma Brillante. Cada palabra que entregas aquí se convierte en una estrella que habita este cielo compartido — visible para todas las almas que lleguen después.</p>
   </section>
 
   <!-- FORM -->
@@ -291,13 +291,13 @@
     <div class="input-wrap">
       <input
         class="deseo-input" id="deseoInput" type="text"
-        placeholder="Escribe tu deseo al universo…"
+        placeholder="Escribe tu deseo al universo…" data-i18n-placeholder="pozo_placeholder"
         maxlength="80" autocomplete="off"
       />
       <span class="char-count" id="charCount">0/80</span>
     </div>
     <button class="submit-btn" id="submitBtn" onclick="enviarDeseo()">
-      ✦ Lanzar al cosmos
+      <span data-i18n="pozo_btn">✦ Lanzar al cosmos</span>
     </button>
   </div>
 
@@ -307,20 +307,20 @@
   <!-- CIELO -->
   <section id="cielo-wrap">
     <div class="cielo-header">
-      <p>EL FIRMAMENTO DEL TEMPLO</p>
-      <h2>Deseos de las Almas</h2>
-      <p class="cielo-counter" id="cieloCounter">Cargando el cielo…</p>
+      <p data-i18n="pozo_firmamento">EL FIRMAMENTO DEL TEMPLO</p>
+      <h2 data-i18n="pozo_cielo_title">Deseos de las Almas</h2>
+      <p class="cielo-counter" id="cieloCounter" data-i18n="pozo_cargando">Cargando el cielo…</p>
     </div>
     <div id="cielo">
       <div class="cielo-empty" id="cieloEmpty">
         <span>✦</span>
-        <p>El cielo te espera.<br>Sé la primera estrella.</p>
+        <p data-i18n-html="pozo_empty_p">El cielo te espera.<br>Sé la primera estrella.</p>
       </div>
     </div>
   </section>
 
   <!-- TOAST -->
-  <div id="toast">✦ Tu deseo viaja al cosmos</div>
+  <div id="toast" data-i18n="pozo_toast">✦ Tu deseo viaja al cosmos</div>
 
   <div class="divider" style="margin-bottom:0"><div class="divider-line"></div><span class="divider-sym">✦</span><div class="divider-line"></div></div>
   <div class="page-footer"><p>© 2026 <a href="index.html">Bruxa Tarot</a> • Templo del Prisma • El Pozo de los Deseos</p></div>
@@ -419,7 +419,7 @@ async function renderCielo() {
   const cielo  = document.getElementById('cielo');
   const empty  = document.getElementById('cieloEmpty');
   const counter= document.getElementById('cieloCounter');
-  counter.textContent = 'Cargando el cielo…';
+  counter.textContent = LangEngine.t('pozo_cargando');
   const deseos = await cargarDeseos();
 
   // Limpiar estrellas existentes (no el empty)
@@ -427,12 +427,12 @@ async function renderCielo() {
 
   if (deseos.length === 0) {
     empty.style.display = 'flex';
-    counter.textContent = 'Aún no hay deseos — ¡lanza el primero!';
+    counter.textContent = LangEngine.t('pozo_vacio');
     return;
   }
 
   empty.style.display = 'none';
-  counter.textContent = `${deseos.length} deseo${deseos.length !== 1 ? 's' : ''} iluminan este cielo`;
+  counter.textContent = `${deseos.length} ${LangEngine.t(deseos.length !== 1 ? 'pozo_counter_p' : 'pozo_counter_s')}`;
 
   deseos.forEach(d => renderEstrella(d, false));
 }
@@ -446,7 +446,7 @@ async function enviarDeseo() {
 
   // Deshabilitar mientras guarda
   btn.disabled = true;
-  btn.textContent = '✦ Enviando…';
+  btn.querySelector('span').textContent = LangEngine.t('pozo_btn_sending');
 
   const deseos = await cargarDeseos();
 
@@ -466,19 +466,19 @@ async function enviarDeseo() {
   renderEstrella(nuevo, true);
 
   // Actualizar counter
-  document.getElementById('cieloCounter').textContent =
-    `${deseos.length} deseo${deseos.length !== 1 ? 's' : ''} iluminan este cielo`;
+  document.getElementById('cieloCounter').textContent = `${deseos.length} ${LangEngine.t(deseos.length !== 1 ? 'pozo_counter_p' : 'pozo_counter_s')}`;
 
   input.value = '';
   document.getElementById('charCount').textContent = '0/80';
   btn.disabled = false;
-  btn.textContent = '✦ Lanzar al cosmos';
+  btn.querySelector('span').textContent = LangEngine.t('pozo_btn');
 
   mostrarToast();
 }
 
 function mostrarToast() {
   const t = document.getElementById('toast');
+  t.textContent = LangEngine.t('pozo_toast');
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2800);
 }
