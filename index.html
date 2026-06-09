@@ -70,16 +70,54 @@
     /* PORTALES */
     #templo{background:linear-gradient(to bottom,transparent,rgba(10,8,30,.5))}
     .templo-intro{text-align:center;max-width:700px;margin:0 auto 5rem}
-    .portals-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem}
-    .portal-card{position:relative;overflow:hidden;border:1px solid rgba(201,168,76,.18);border-radius:20px;background:linear-gradient(160deg,rgba(15,21,53,.9),rgba(4,6,15,.9));padding:2.5rem 2rem;cursor:pointer;transition:all .5s cubic-bezier(.4,0,.2,1);text-decoration:none;color:inherit;display:block}
-    .portal-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,.08),transparent 60%);opacity:0;transition:opacity .5s}
+    /* portals-grid now defined in portal-card section */
+    /* PORTALES — píldoras místicas */
+    .portals-grid{display:flex;flex-direction:column;gap:.75rem;max-width:680px;margin:0 auto}
+    .portal-card{
+      position:relative;overflow:hidden;
+      display:flex;align-items:center;gap:1.4rem;
+      padding:.95rem 1.6rem;
+      border-radius:100px;
+      border:1px solid rgba(201,168,76,.15);
+      background:rgba(11,17,40,.5);
+      backdrop-filter:blur(6px);
+      text-decoration:none;color:inherit;
+      transition:all .4s cubic-bezier(.4,0,.2,1);
+      cursor:pointer;
+    }
+    .portal-card::before{
+      content:'';position:absolute;inset:0;border-radius:100px;
+      background:linear-gradient(90deg,rgba(201,168,76,.06),transparent 60%);
+      opacity:0;transition:opacity .4s;
+    }
     .portal-card:hover::before{opacity:1}
-    .portal-card:hover{transform:translateY(-8px);border-color:rgba(201,168,76,.4);box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 40px rgba(201,168,76,.1)}
-    .portal-symbol{font-size:2.8rem;margin-bottom:1.5rem;display:block}
-    .portal-name{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:.2em;color:var(--gold);margin-bottom:.8rem}
-    .portal-desc{font-size:.95rem;font-style:italic;color:#a09070;line-height:1.7}
-    .portal-arrow{position:absolute;bottom:1.5rem;right:1.5rem;color:rgba(201,168,76,.3);transition:all .3s}
-    .portal-card:hover .portal-arrow{color:var(--gold);transform:translate(3px,-3px)}
+    .portal-card:hover{
+      border-color:rgba(201,168,76,.45);
+      background:rgba(15,21,53,.7);
+      transform:translateX(6px);
+      box-shadow:0 4px 30px rgba(0,0,0,.3),0 0 20px rgba(201,168,76,.07);
+    }
+    .portal-symbol{
+      font-size:1.3rem;flex-shrink:0;
+      width:36px;height:36px;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(201,168,76,.07);
+      border:1px solid rgba(201,168,76,.15);
+      border-radius:50%;
+      transition:all .4s;
+    }
+    .portal-card:hover .portal-symbol{
+      background:rgba(201,168,76,.13);
+      border-color:rgba(201,168,76,.35);
+    }
+    .portal-text{flex:1;min-width:0}
+    .portal-name{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.2em;color:var(--gold);display:block;margin-bottom:.15rem}
+    .portal-desc{font-size:.85rem;font-style:italic;color:rgba(160,144,112,.8);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .portal-arrow{
+      color:rgba(201,168,76,.25);font-size:.9rem;flex-shrink:0;
+      transition:all .4s;margin-left:auto;padding-left:.5rem;
+    }
+    .portal-card:hover .portal-arrow{color:var(--gold);transform:translateX(4px)}
     /* CARTA */
     #carta{background:radial-gradient(ellipse at center,rgba(26,16,80,.4),transparent 70%)}
     .carta-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
@@ -199,7 +237,7 @@
   <!-- EL TEMPLO -->
   <section id="templo">
     <div class="section-inner">
-      <div class="templo-intro reveal" style="text-align:center;max-width:700px;margin:0 auto 5rem">
+      <div class="templo-intro reveal" style="text-align:center;max-width:700px;margin:0 auto 3rem">
         <p class="section-label" data-i18n="templo_label">El Templo</p>
         <h2 class="section-title" data-i18n="templo_title">¿Qué encontrarás aquí?</h2>
         <p class="section-body" style="margin:0 auto;text-align:center" data-i18n="templo_body">El Templo del Prisma…</p>
@@ -207,33 +245,43 @@
       <div class="portals-grid">
         <a href="#carta" class="portal-card reveal reveal-delay-1">
           <span class="portal-symbol">🔮</span>
-          <p class="portal-name" data-i18n="portal_oraculo_name">Oráculo Prisma</p>
-          <p class="portal-desc"  data-i18n="portal_oraculo_desc">31 cartas nacidas de mis historias.</p>
-          <span class="portal-arrow">↗</span>
+          <div class="portal-text">
+            <span class="portal-name" data-i18n="portal_oraculo_name">Oráculo Prisma</span>
+            <span class="portal-desc" data-i18n="portal_oraculo_desc">31 cartas nacidas de mis historias.</span>
+          </div>
+          <span class="portal-arrow">→</span>
         </a>
         <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="portal-card reveal reveal-delay-2">
           <span class="portal-symbol">🎵</span>
-          <p class="portal-name" data-i18n="portal_musica_name">Música Sagrada</p>
-          <p class="portal-desc"  data-i18n="portal_musica_desc">Frecuencias y canalizaciones…</p>
-          <span class="portal-arrow">↗</span>
+          <div class="portal-text">
+            <span class="portal-name" data-i18n="portal_musica_name">Música Sagrada</span>
+            <span class="portal-desc" data-i18n="portal_musica_desc">Frecuencias y canalizaciones…</span>
+          </div>
+          <span class="portal-arrow">→</span>
         </a>
         <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="portal-card reveal reveal-delay-3">
           <span class="portal-symbol">📖</span>
-          <p class="portal-name" data-i18n="portal_historias_name">Mis Historias</p>
-          <p class="portal-desc"  data-i18n="portal_historias_desc">Los personajes del Oráculo…</p>
-          <span class="portal-arrow">↗</span>
+          <div class="portal-text">
+            <span class="portal-name" data-i18n="portal_historias_name">Mis Historias</span>
+            <span class="portal-desc" data-i18n="portal_historias_desc">Los personajes del Oráculo…</span>
+          </div>
+          <span class="portal-arrow">→</span>
         </a>
         <a href="rituales.html" class="portal-card reveal reveal-delay-4">
           <span class="portal-symbol">🕯️</span>
-          <p class="portal-name" data-i18n="portal_rituales_name">Rituales del Alma</p>
-          <p class="portal-desc"  data-i18n="portal_rituales_desc">Magia práctica para cada luna…</p>
-          <span class="portal-arrow">↗</span>
+          <div class="portal-text">
+            <span class="portal-name" data-i18n="portal_rituales_name">Rituales del Alma</span>
+            <span class="portal-desc" data-i18n="portal_rituales_desc">Magia práctica para cada luna…</span>
+          </div>
+          <span class="portal-arrow">→</span>
         </a>
         <a href="pozo.html" class="portal-card reveal reveal-delay-4">
           <span class="portal-symbol">⭐</span>
-          <p class="portal-name" data-i18n="portal_pozo_name">Pozo de los Deseos</p>
-          <p class="portal-desc"  data-i18n="portal_pozo_desc">Lanza tu deseo al cosmos y conviértelo en una estrella del firmamento compartido.</p>
-          <span class="portal-arrow">↗</span>
+          <div class="portal-text">
+            <span class="portal-name" data-i18n="portal_pozo_name">Pozo de los Deseos</span>
+            <span class="portal-desc" data-i18n="portal_pozo_desc">Lanza tu deseo al cosmos y conviértelo en una estrella del firmamento compartido.</span>
+          </div>
+          <span class="portal-arrow">→</span>
         </a>
       </div>
     </div>
