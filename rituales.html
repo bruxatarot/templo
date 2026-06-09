@@ -268,19 +268,20 @@ function elegirCarta(el,carta){
 }
 
 function abrirRitual(carta){
-  const lang=LangEngine.current;
-  const sub=(lang!=='es'&&CARD_TRANSLATIONS[lang])?CARD_TRANSLATIONS[lang].subtitles[carta.num-1]:carta.subtitle;
-  const catLbl=(lang!=='es'&&CARD_TRANSLATIONS[lang])?CARD_TRANSLATIONS[lang].catLabels[carta.cat]:
-    ({esencias:'🌈 Esencias Sagradas',dualidades:'🌒 Dualidades del Prisma',guardianes:'🛡️ Guardianes del Prisma',llaves:'💠 Llaves Prismáticas',portales:'🌌 Portales Místicos'}[carta.cat]);
+  const tr=LangEngine.getCard(carta.num);
+  const sub=tr?tr.subtitle:carta.subtitle;
+  const catLbl=LangEngine.getCatLabel(carta.cat)||({esencias:'🌈 Esencias Sagradas',dualidades:'🌒 Dualidades del Prisma',guardianes:'🛡️ Guardianes del Prisma',llaves:'💠 Llaves Prismáticas',portales:'🌌 Portales Místicos'}[carta.cat]);
+  const kws=tr?tr.keywords:carta.keywords;
+  const ritual=tr?tr.ritual:carta.ritual;
 
   document.getElementById('rImg').src=carta.img;
   document.getElementById('rName').textContent=carta.name;
   document.getElementById('rSubtitle').textContent=sub||carta.subtitle;
   const badge=document.getElementById('rBadge');
   badge.textContent=catLbl; badge.className=`ritual-cat-badge ${catClasses[carta.cat]}`;
-  document.getElementById('rKeywords').innerHTML=carta.keywords.map(k=>`<span class="kw">${k}</span>`).join('');
+  document.getElementById('rKeywords').innerHTML=kws.map(k=>`<span class="kw">${k}</span>`).join('');
 
-  const pasos=carta.ritual.split(/\.\s+/).map(s=>s.trim()).filter(s=>s.length>10);
+  const pasos=ritual.split(/\.\s+/).map(s=>s.trim()).filter(s=>s.length>10);
   document.getElementById('rSteps').innerHTML=pasos.map((p,i)=>`
     <div class="ritual-step">
       <span class="step-num">${i+1}</span>
@@ -300,17 +301,10 @@ function cerrarPanel(){
 function cerrarRitual(e){if(e.target===document.getElementById('ritual-panel'))cerrarPanel();}
 
 // Update filter labels when language changes
-document.addEventListener('langchange',function(e){
-  const lang=e.detail;
-  if(lang!=='es'&&CARD_TRANSLATIONS[lang]){
-    const labels=CARD_TRANSLATIONS[lang].filterLabels;
-    const btns=document.querySelectorAll('.filter-btn');
-    btns.forEach((btn,i)=>{if(labels[i])btn.textContent=labels[i];});
-  } else {
-    const labels=['Todas','🌈 Esencias Sagradas','🌒 Dualidades','🛡️ Guardianes','💠 Llaves','🌌 Portales'];
-    document.querySelectorAll('.filter-btn').forEach((btn,i)=>{if(labels[i])btn.textContent=labels[i];});
-  }
-  // Re-translate "All" button from data-i18n
+document.addEventListener('langchange',function(){
+  const labels=LangEngine.getFilterLabels()||['Todas','🌈 Esencias Sagradas','🌒 Dualidades','🛡️ Guardianes','💠 Llaves','🌌 Portales'];
+  document.querySelectorAll('.filter-btn').forEach((btn,i)=>{if(labels[i])btn.textContent=labels[i];});
+  // Re-apply "All" from i18n
   const allBtn=document.querySelector('.filter-btn[data-i18n="rit_filter_all"]');
   if(allBtn)allBtn.textContent=LangEngine.t('rit_filter_all');
 });
