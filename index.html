@@ -170,9 +170,12 @@
       <div class="quiensoy-grid">
         <div class="quiensoy-image-wrap reveal">
           <div style="position:absolute;inset:0;pointer-events:none;"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
-          <div class="quiensoy-frame">
+          <div class="quiensoy-frame" style="padding:0;overflow:hidden;">
             <div class="frame-glow"></div>
-            <div class="quiensoy-placeholder"><div class="icon">🌙</div><p data-i18n-html="qs_photo">Tu fotografía<br>va aquí, Bruxa</p></div>
+            <img src="images/bruxa-tarot.png" alt="Bruxa Tarot"
+                 style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="quiensoy-placeholder" style="display:none"><div class="icon">🌙</div><p data-i18n-html="qs_photo">Tu fotografía<br>va aquí, Bruxa</p></div>
           </div>
         </div>
         <div class="reveal reveal-delay-2">
@@ -224,6 +227,12 @@
           <span class="portal-symbol">🕯️</span>
           <p class="portal-name" data-i18n="portal_rituales_name">Rituales del Alma</p>
           <p class="portal-desc"  data-i18n="portal_rituales_desc">Magia práctica para cada luna…</p>
+          <span class="portal-arrow">↗</span>
+        </a>
+        <a href="pozo.html" class="portal-card reveal reveal-delay-4">
+          <span class="portal-symbol">⭐</span>
+          <p class="portal-name" data-i18n="portal_pozo_name">Pozo de los Deseos</p>
+          <p class="portal-desc"  data-i18n="portal_pozo_desc">Lanza tu deseo al cosmos y conviértelo en una estrella del firmamento compartido.</p>
           <span class="portal-arrow">↗</span>
         </a>
       </div>
@@ -353,7 +362,7 @@
   const catClasses={esencias:'cat-esencias',dualidades:'cat-dualidades',guardianes:'cat-guardianes',llaves:'cat-llaves',portales:'cat-portales'};
   let flipped=false;
 
-  function pickCard(){const d=new Date();const s=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();return cartas[s%cartas.length];}
+  function pickCard(){const d=new Date();const start=new Date(d.getFullYear(),0,0);const dayOfYear=Math.floor((d-start)/(1000*60*60*24));return cartas[(dayOfYear-1)%cartas.length];}
 
   function flipCard(){
     if(flipped)return;flipped=true;
