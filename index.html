@@ -360,18 +360,20 @@
     const c=pickCard();
     const img=document.getElementById('cardImg');
     img.src=c.img;img.style.display='block';
-    // Translate subtitle if needed
-    const lang=LangEngine.current;
-    const sub=(lang!=='es'&&CARD_TRANSLATIONS[lang])?CARD_TRANSLATIONS[lang].subtitles[c.num-1]:c.subtitle;
-    const catLbl=(lang!=='es'&&CARD_TRANSLATIONS[lang])?CARD_TRANSLATIONS[lang].catLabels[c.cat]:c.catLabel;
+    // Get translated content if available
+    const tr=LangEngine.getCard(c.num);
+    const sub=tr?tr.subtitle:c.subtitle;
+    const catLbl=LangEngine.getCatLabel(c.cat)||c.catLabel;
+    const msg=tr?tr.message:c.message;
+    const kws=tr?tr.keywords:c.keywords;
     document.getElementById('cardName').textContent=c.name;
-    document.getElementById('cardSubtitle').textContent=sub||c.subtitle;
+    document.getElementById('cardSubtitle').textContent=sub;
     document.getElementById('cardScene').classList.add('flipped');
     setTimeout(()=>{
       document.getElementById('catBadgeWrap').innerHTML=`<span class="cat-badge ${catClasses[c.cat]}">${catLbl}</span>`;
       document.getElementById('cartaReadingTitle').textContent=`✦ ${c.name.toUpperCase()} ✦`;
-      document.getElementById('cartaMessage').textContent=c.message;
-      document.getElementById('cartaKeywords').innerHTML=c.keywords.map(k=>`<span class="carta-kw">${k}</span>`).join('');
+      document.getElementById('cartaMessage').textContent=msg;
+      document.getElementById('cartaKeywords').innerHTML=kws.map(k=>`<span class="carta-kw">${k}</span>`).join('');
       document.getElementById('cartaReading').classList.add('visible');
       document.getElementById('nuevoBtn').style.display='block';
     },1000);
