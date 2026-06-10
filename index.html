@@ -71,53 +71,62 @@
     #templo{background:linear-gradient(to bottom,transparent,rgba(10,8,30,.5))}
     .templo-intro{text-align:center;max-width:700px;margin:0 auto 5rem}
     /* portals-grid now defined in portal-card section */
-    /* PORTALES — píldoras místicas */
-    .portals-grid{display:flex;flex-direction:column;gap:.75rem;max-width:680px;margin:0 auto}
+    /* PORTALES — dropdown mágico */
+    /* portals-grid now defined in portal-card section */
+    .portals-grid{ display:flex; justify-content:center; }
+
+    .dropdown-wrap{ position:relative; display:inline-block; }
+
+    .dropdown-trigger{
+      font-family:'Cinzel',serif; font-size:.75rem; letter-spacing:.3em;
+      padding:.9rem 2.4rem; border-radius:100px; cursor:pointer; border:none;
+      background:linear-gradient(135deg,#c9a84c,#a07828);
+      color:var(--deep); box-shadow:0 0 30px rgba(201,168,76,.3);
+      transition:all .4s; display:flex; align-items:center; gap:.8rem;
+    }
+    .dropdown-trigger:hover{ box-shadow:0 0 50px rgba(201,168,76,.5); transform:translateY(-2px); }
+    .dropdown-trigger .dt-arrow{
+      font-size:.7rem; transition:transform .3s;
+    }
+    .dropdown-wrap.open .dt-arrow{ transform:rotate(180deg); }
+
+    .dropdown-menu{
+      position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%);
+      min-width:280px; z-index:50;
+      background:rgba(7,12,26,.97);
+      border:1px solid rgba(201,168,76,.25);
+      border-radius:16px; overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.6), 0 0 40px rgba(201,168,76,.06);
+      backdrop-filter:blur(12px);
+      opacity:0; visibility:hidden; transform:translateX(-50%) translateY(-8px);
+      transition:opacity .3s ease, transform .3s ease, visibility .3s;
+    }
+    .dropdown-wrap.open .dropdown-menu{
+      opacity:1; visibility:visible; transform:translateX(-50%) translateY(0);
+    }
     .portal-card{
-      position:relative;overflow:hidden;
-      display:flex;align-items:center;gap:1.4rem;
-      padding:.95rem 1.6rem;
-      border-radius:100px;
-      border:1px solid rgba(201,168,76,.15);
-      background:rgba(11,17,40,.5);
-      backdrop-filter:blur(6px);
-      text-decoration:none;color:inherit;
-      transition:all .4s cubic-bezier(.4,0,.2,1);
+      display:flex; align-items:center; gap:1rem;
+      padding:.85rem 1.4rem;
+      text-decoration:none; color:inherit;
+      border-bottom:1px solid rgba(201,168,76,.08);
+      transition:background .25s;
       cursor:pointer;
     }
-    .portal-card::before{
-      content:'';position:absolute;inset:0;border-radius:100px;
-      background:linear-gradient(90deg,rgba(201,168,76,.06),transparent 60%);
-      opacity:0;transition:opacity .4s;
-    }
-    .portal-card:hover::before{opacity:1}
-    .portal-card:hover{
-      border-color:rgba(201,168,76,.45);
-      background:rgba(15,21,53,.7);
-      transform:translateX(6px);
-      box-shadow:0 4px 30px rgba(0,0,0,.3),0 0 20px rgba(201,168,76,.07);
-    }
+    .portal-card:last-child{ border-bottom:none; }
+    .portal-card:hover{ background:rgba(201,168,76,.07); }
     .portal-symbol{
-      font-size:1.3rem;flex-shrink:0;
-      width:36px;height:36px;
-      display:flex;align-items:center;justify-content:center;
+      font-size:1.2rem; flex-shrink:0;
+      width:32px; height:32px;
+      display:flex; align-items:center; justify-content:center;
       background:rgba(201,168,76,.07);
-      border:1px solid rgba(201,168,76,.15);
+      border:1px solid rgba(201,168,76,.12);
       border-radius:50%;
-      transition:all .4s;
     }
-    .portal-card:hover .portal-symbol{
-      background:rgba(201,168,76,.13);
-      border-color:rgba(201,168,76,.35);
-    }
-    .portal-text{flex:1;min-width:0}
-    .portal-name{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.2em;color:var(--gold);display:block;margin-bottom:.15rem}
-    .portal-desc{font-size:.85rem;font-style:italic;color:rgba(160,144,112,.8);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .portal-arrow{
-      color:rgba(201,168,76,.25);font-size:.9rem;flex-shrink:0;
-      transition:all .4s;margin-left:auto;padding-left:.5rem;
-    }
-    .portal-card:hover .portal-arrow{color:var(--gold);transform:translateX(4px)}
+    .portal-text{ flex:1; min-width:0; }
+    .portal-name{ font-family:'Cinzel',serif; font-size:.68rem; letter-spacing:.18em; color:var(--gold); display:block; margin-bottom:.1rem; }
+    .portal-desc{ font-size:.82rem; font-style:italic; color:rgba(160,144,112,.8); line-height:1.3; }
+    .portal-arrow{ color:rgba(201,168,76,.25); font-size:.85rem; flex-shrink:0; transition:all .3s; }
+    .portal-card:hover .portal-arrow{ color:var(--gold); transform:translateX(3px); }
     /* CARTA */
     #carta{background:radial-gradient(ellipse at center,rgba(26,16,80,.4),transparent 70%)}
     .carta-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
@@ -242,55 +251,63 @@
         <h2 class="section-title" data-i18n="templo_title">¿Qué encontrarás aquí?</h2>
         <p class="section-body" style="margin:0 auto;text-align:center" data-i18n="templo_body">El Templo del Prisma…</p>
       </div>
-      <div class="portals-grid">
-        <a href="#carta" class="portal-card reveal reveal-delay-1">
-          <span class="portal-symbol">🔮</span>
-          <div class="portal-text">
-            <span class="portal-name" data-i18n="portal_oraculo_name">Oráculo Prisma</span>
-            <span class="portal-desc" data-i18n="portal_oraculo_desc">31 cartas nacidas de mis historias.</span>
+      <div class="portals-grid reveal">
+        <div class="dropdown-wrap" id="portalDropdown">
+          <button class="dropdown-trigger" onclick="togglePortals()">
+            ✦ El Más Allá — Click Aquí
+            <span class="dt-arrow">▾</span>
+          </button>
+          <div class="dropdown-menu" id="portalMenu">
+            <a href="#carta" class="portal-card" onclick="closePortals()">
+              <span class="portal-symbol">🔮</span>
+              <div class="portal-text">
+                <span class="portal-name">Consultar el Oráculo</span>
+                <span class="portal-desc">Carta del día del Oráculo Prisma</span>
+              </div>
+              <span class="portal-arrow">→</span>
+            </a>
+            <a href="rituales.html" class="portal-card">
+              <span class="portal-symbol">🕯️</span>
+              <div class="portal-text">
+                <span class="portal-name">Rituales del Prisma</span>
+                <span class="portal-desc">Magia práctica para cada luna y carta</span>
+              </div>
+              <span class="portal-arrow">→</span>
+            </a>
+            <a href="pozo.html" class="portal-card">
+              <span class="portal-symbol">⭐</span>
+              <div class="portal-text">
+                <span class="portal-name">Pozo de los Deseos</span>
+                <span class="portal-desc">Lanza tu deseo al cosmos</span>
+              </div>
+              <span class="portal-arrow">→</span>
+            </a>
+            <a href="diario.html" class="portal-card">
+              <span class="portal-symbol">📖</span>
+              <div class="portal-text">
+                <span class="portal-name">Diario del Alma</span>
+                <span class="portal-desc">Tu espacio sagrado y privado</span>
+              </div>
+              <span class="portal-arrow">→</span>
+            </a>
+            <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="portal-card">
+              <span class="portal-symbol">🎵</span>
+              <div class="portal-text">
+                <span class="portal-name">Frecuencias Sagradas</span>
+                <span class="portal-desc">Música y canalizaciones del alma</span>
+              </div>
+              <span class="portal-arrow">→</span>
+            </a>
+            <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="portal-card">
+              <span class="portal-symbol">📚</span>
+              <div class="portal-text">
+                <span class="portal-name">Libro de Sabiduría</span>
+                <span class="portal-desc">Las historias detrás del Oráculo</span>
+              </div>
+              <span class="portal-arrow">→</span>
+            </a>
           </div>
-          <span class="portal-arrow">→</span>
-        </a>
-        <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="portal-card reveal reveal-delay-2">
-          <span class="portal-symbol">🎵</span>
-          <div class="portal-text">
-            <span class="portal-name" data-i18n="portal_musica_name">Música Sagrada</span>
-            <span class="portal-desc" data-i18n="portal_musica_desc">Frecuencias y canalizaciones…</span>
-          </div>
-          <span class="portal-arrow">→</span>
-        </a>
-        <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="portal-card reveal reveal-delay-3">
-          <span class="portal-symbol">📖</span>
-          <div class="portal-text">
-            <span class="portal-name" data-i18n="portal_historias_name">Mis Historias</span>
-            <span class="portal-desc" data-i18n="portal_historias_desc">Los personajes del Oráculo…</span>
-          </div>
-          <span class="portal-arrow">→</span>
-        </a>
-        <a href="rituales.html" class="portal-card reveal reveal-delay-4">
-          <span class="portal-symbol">🕯️</span>
-          <div class="portal-text">
-            <span class="portal-name" data-i18n="portal_rituales_name">Rituales del Alma</span>
-            <span class="portal-desc" data-i18n="portal_rituales_desc">Magia práctica para cada luna…</span>
-          </div>
-          <span class="portal-arrow">→</span>
-        </a>
-        <a href="pozo.html" class="portal-card reveal reveal-delay-4">
-          <span class="portal-symbol">⭐</span>
-          <div class="portal-text">
-            <span class="portal-name" data-i18n="portal_pozo_name">Pozo de los Deseos</span>
-            <span class="portal-desc" data-i18n="portal_pozo_desc">Lanza tu deseo al cosmos y conviértelo en una estrella del firmamento compartido.</span>
-          </div>
-          <span class="portal-arrow">→</span>
-        </a>
-        <a href="diario.html" class="portal-card reveal reveal-delay-4">
-          <span class="portal-symbol">📖</span>
-          <div class="portal-text">
-            <span class="portal-name" data-i18n="portal_diario_name">Diario del Alma</span>
-            <span class="portal-desc" data-i18n="portal_diario_desc">Tu espacio sagrado para guardar cartas, rituales y reflexiones.</span>
-          </div>
-          <span class="portal-arrow">→</span>
-        </a>
+        </div>
       </div>
     </div>
   </section>
@@ -453,6 +470,19 @@
     document.getElementById('cartaKeywords').innerHTML='';
     document.getElementById('cardImg').src='';
   }
+
+  // DROPDOWN PORTAL
+  function togglePortals(){
+    document.getElementById('portalDropdown').classList.toggle('open');
+  }
+  function closePortals(){
+    document.getElementById('portalDropdown').classList.remove('open');
+  }
+  // Close on click outside
+  document.addEventListener('click', function(e){
+    const wrap = document.getElementById('portalDropdown');
+    if(wrap && !wrap.contains(e.target)) wrap.classList.remove('open');
+  });
   </script>
 </body>
 </html>
