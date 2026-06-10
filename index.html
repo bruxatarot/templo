@@ -175,6 +175,68 @@
     .reveal-delay-1{transition-delay:.1s}.reveal-delay-2{transition-delay:.2s}
     .reveal-delay-3{transition-delay:.3s}.reveal-delay-4{transition-delay:.4s}
     @media(max-width:768px){nav{padding:1rem 1.5rem}.nav-links{display:none}.quiensoy-grid{grid-template-columns:1fr;gap:3rem}.quiensoy-frame{width:280px;height:360px}.carta-wrap{grid-template-columns:1fr;gap:3rem}section{padding:4rem 1.5rem}}
+
+    /* DIARIO REMINDER + NOMBRE MISTICO */
+    .diario-reminder{
+      margin-top:1.5rem; padding:1rem 1.4rem;
+      border:1px solid rgba(201,168,76,.15); border-radius:12px;
+      background:rgba(11,17,40,.5); backdrop-filter:blur(4px);
+      display:none;
+    }
+    .diario-reminder.visible{ display:block; animation:fadeUp .6s ease both; }
+    .diario-reminder-text{
+      font-style:italic; font-size:.9rem; color:#a09070; line-height:1.7; margin-bottom:.8rem;
+    }
+    .diario-reminder-text strong{ color:var(--gold-light); font-style:normal; }
+    .diario-link{
+      display:inline-flex; align-items:center; gap:.5rem;
+      font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.2em;
+      color:var(--gold); text-decoration:none;
+      border:1px solid rgba(201,168,76,.25); border-radius:100px;
+      padding:.4rem 1.1rem; background:rgba(201,168,76,.05);
+      transition:all .3s;
+    }
+    .diario-link:hover{ background:rgba(201,168,76,.1); border-color:rgba(201,168,76,.45); }
+
+    /* NOMBRE MISTICO */
+    .nombre-mistico-wrap{
+      margin-top:1rem; padding:1rem 1.4rem;
+      border:1px solid rgba(120,80,220,.2); border-radius:12px;
+      background:rgba(15,10,40,.5); text-align:center;
+    }
+    /* standalone section styles already in .nombre-mistico-form etc */
+    .nombre-mistico-label{
+      font-family:'Cinzel',serif; font-size:.55rem; letter-spacing:.35em;
+      color:rgba(201,168,76,.45); margin-bottom:.5rem;
+    }
+    .nombre-mistico-form{
+      display:flex; gap:.5rem; margin-bottom:.8rem; flex-wrap:wrap;
+    }
+    .nombre-mistico-form input{
+      flex:1; min-width:0; padding:.5rem .8rem; border-radius:100px;
+      border:1px solid rgba(201,168,76,.2); background:rgba(4,6,15,.5);
+      color:#f5e6b8; font-family:'Cormorant Garamond',serif; font-size:.9rem;
+      outline:none; transition:border-color .3s;
+    }
+    .nombre-mistico-form input:focus{ border-color:rgba(201,168,76,.45); }
+    .nombre-mistico-btn{
+      font-family:'Cinzel',serif; font-size:.58rem; letter-spacing:.15em;
+      padding:.5rem 1.2rem; border-radius:100px; border:none; cursor:pointer;
+      background:linear-gradient(135deg,rgba(120,80,220,.6),rgba(80,40,160,.6));
+      color:#e8dfc8; transition:all .3s; white-space:nowrap;
+    }
+    .nombre-mistico-btn:hover{ background:linear-gradient(135deg,rgba(120,80,220,.8),rgba(80,40,160,.8)); }
+    .nombre-resultado{
+      display:none; margin-top:.6rem;
+    }
+    .nombre-resultado.visible{ display:block; animation:fadeUp .5s ease both; }
+    .nombre-resultado-nombre{
+      font-family:'Cinzel Decorative',serif; font-size:1.1rem;
+      color:var(--gold-pale); margin-bottom:.3rem; line-height:1.4;
+    }
+    .nombre-resultado-sub{
+      font-style:italic; font-size:.85rem; color:#a09070;
+    }
   </style>
 </head>
 <body>
@@ -328,6 +390,17 @@
             <p id="cartaMessage"></p>
             <div class="carta-keywords" id="cartaKeywords"></div>
           </div>
+
+          <!-- DIARIO REMINDER -->
+          <div class="diario-reminder" id="diarioReminder">
+            <p class="diario-reminder-text">
+              🦋 <strong>No olvides escribir tu carta en el Diario del Alma.</strong><br>
+              Guarda este mensaje, tu reflexión y cómo te habló hoy el Oráculo.
+            </p>
+            <a href="diario.html" class="diario-link">📖 Ir al Diario del Alma →</a>
+          </div>
+
+
           <div id="nuevoBtn" style="display:none;margin-top:1.5rem">
             <button onclick="resetCard()" class="btn btn-ghost" style="font-size:.65rem;padding:.7rem 1.8rem" data-i18n="carta_nuevo">✦ Nueva tirada</button>
           </div>
@@ -353,6 +426,35 @@
             </div>
           </div>
           <p style="text-align:center;margin-top:1.2rem;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.3em;color:rgba(201,168,76,.4)" data-i18n="carta_tap">Toca la carta para voltearla</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
+
+  <!-- NOMBRE MÍSTICO -->
+  <section id="nombre-mistico" style="position:relative;z-index:1;padding:4rem 2rem;">
+    <div class="section-inner" style="max-width:700px;margin:0 auto;text-align:center;">
+      <div class="reveal">
+        <p class="section-label" style="text-align:center;">✦ ORÁCULO PRISMA</p>
+        <h2 class="section-title" style="text-align:center;">Tu Nombre Místico</h2>
+        <p class="section-body" style="margin:0 auto 2.5rem;text-align:center;">
+          El Oráculo Prisma te ha asignado un nombre desde antes de que nacieras.<br>
+          Ingresa tu fecha de nacimiento y descúbrelo.
+        </p>
+        <div style="background:rgba(11,17,40,.6);border:1px solid rgba(201,168,76,.15);border-radius:20px;padding:2rem;max-width:500px;margin:0 auto;">
+          <div class="nombre-mistico-form">
+            <input type="date" id="nombreFecha" placeholder="Tu fecha de nacimiento">
+            <button class="nombre-mistico-btn" onclick="calcularNombre()">✦ Revelar mi nombre</button>
+          </div>
+          <div class="nombre-resultado" id="nombreResultado">
+            <div style="margin:1.2rem 0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.2),transparent)"></div>
+            <p style="font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.35em;color:rgba(201,168,76,.4);margin-bottom:.8rem;">TU NOMBRE DEL PRISMA ES</p>
+            <p class="nombre-resultado-nombre" id="nombreTexto"></p>
+            <div style="margin:.8rem 0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.15),transparent)"></div>
+            <p class="nombre-resultado-sub" id="nombreSub"></p>
+          </div>
         </div>
       </div>
     </div>
@@ -458,6 +560,8 @@
       document.getElementById('cartaKeywords').innerHTML=kws.map(k=>`<span class="carta-kw">${k}</span>`).join('');
       document.getElementById('cartaReading').classList.add('visible');
       document.getElementById('nuevoBtn').style.display='block';
+      // Show diario reminder
+      document.getElementById('diarioReminder').classList.add('visible');
     },1000);
   }
 
@@ -469,6 +573,49 @@
     document.getElementById('catBadgeWrap').innerHTML='';
     document.getElementById('cartaKeywords').innerHTML='';
     document.getElementById('cardImg').src='';
+    document.getElementById('diarioReminder').classList.remove('visible');
+  }
+
+  // ── NOMBRE MÍSTICO ──
+  const PERSONAJES = [
+    'Bruxa','Nabi','Marta','Jade','Elena','Mia','Tony','Dante',
+    'La Voz Clara','El Llamado','El Regreso','Álvaro','Emmanuel',
+    'Valeria','Karina','Tatiana','Lucía','Alberto','Oracio','Rosario',
+    'Las Aliadas','Jazmín','Daniela','Heimdall','Erebus','Aetherius',
+    'El Umbral','El Concilio','El Caos','Las Pociones','El Conocimiento'
+  ];
+  const ELEMENTOS = [
+    'de la Luna Cristalina','del Fuego Eterno','del Viento Dorado',
+    'de la Sombra Sagrada','del Prisma Infinito','de la Estrella Naciente',
+    'del Agua Profunda','de la Tierra Ancestral','del Rayo Violeta',
+    'del Alba Mística','del Crepúsculo Dorado','de la Niebla Encantada'
+  ];
+  const TITULOS = [
+    'La Guardiana','La Tejedora','La Portadora','La Invocadora',
+    'La Canalizadora','La Vidente','La Viajera','La Despertadora',
+    'La Bruja','La Druida','La Sacerdotisa','La Chamán'
+  ];
+
+  function calcularNombre(){
+    const fecha = document.getElementById('nombreFecha').value;
+    if(!fecha){ return; }
+    const d = new Date(fecha);
+    const dia  = d.getDate();        // 1-31  → personaje
+    const mes  = d.getMonth();       // 0-11  → elemento
+    const anio = d.getFullYear();    // → título via suma de dígitos
+
+    const personaje = PERSONAJES[(dia - 1) % PERSONAJES.length];
+    const elemento  = ELEMENTOS[mes % ELEMENTOS.length];
+    const digitSum  = String(anio).split('').reduce((a,b)=>a+parseInt(b),0);
+    const titulo    = TITULOS[digitSum % TITULOS.length];
+
+    const nombre = `${titulo} ${personaje} ${elemento}`;
+    const numeroPrisma = ((dia + mes + 1 + digitSum) % 31) + 1;
+
+    document.getElementById('nombreTexto').textContent = nombre;
+    document.getElementById('nombreSub').textContent =
+      `Tu número del Prisma es el ${numeroPrisma} · Carta guía: ${PERSONAJES[(numeroPrisma-1) % PERSONAJES.length]}`;
+    document.getElementById('nombreResultado').classList.add('visible');
   }
 
   // DROPDOWN PORTAL
