@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luz y Sombra • Tu Personaje del Prisma • Bruxa Tarot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <script src="lang.js"></script>
+  <style>
+    :root{--gold:#c9a84c;--gold-light:#e8c97a;--gold-pale:#f5e6b8;--deep:#04060f;--midnight:#0b1128;
+      --fire:#e85d04;--water:#0077b6;--earth:#588157;--air:#7b2d8b;}
+    *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+    body{background:var(--deep);color:#e8dfc8;font-family:'Cormorant Garamond',serif;overflow-x:hidden;min-height:100vh}
+    #starfield{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:radial-gradient(ellipse at 20% 30%,#0d1a3a,#04060f 60%),radial-gradient(ellipse at 80% 70%,#100828,transparent 60%)}
+    #starfield canvas{position:absolute;inset:0;width:100%;height:100%}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+      padding:1.2rem 3rem;background:linear-gradient(to bottom,rgba(4,6,15,.97),transparent)}
+    .nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.3em;color:var(--gold);text-decoration:none}
+    .nav-back{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.2em;color:#b8a87a;text-decoration:none;transition:color .3s}
+    .nav-back:hover{color:var(--gold)}
+
+    /* HERO */
+    #hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem}
+    .hero-badge{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.45em;color:var(--gold);
+      border:1px solid rgba(201,168,76,.3);padding:.45rem 1.8rem;border-radius:100px;
+      background:rgba(201,168,76,.05);display:inline-block;margin-bottom:2rem;animation:fadeUp .9s ease .1s both}
+    .hero-title{font-family:'Cinzel Decorative',serif;font-size:clamp(2.5rem,6vw,5rem);
+      font-weight:400;color:var(--gold-pale);line-height:1.1;margin-bottom:1rem;animation:fadeUp .9s ease .3s both}
+    .hero-sub{font-style:italic;font-size:clamp(1rem,2vw,1.3rem);color:#c4b090;
+      line-height:1.8;max-width:600px;margin:0 auto 3rem;animation:fadeUp .9s ease .5s both}
+    .start-btn{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.3em;padding:1rem 3rem;
+      border-radius:100px;border:none;cursor:pointer;
+      background:linear-gradient(135deg,#c9a84c,#a07828);color:var(--deep);
+      box-shadow:0 0 40px rgba(201,168,76,.3);transition:all .4s;animation:fadeUp .9s ease .7s both}
+    .start-btn:hover{box-shadow:0 0 60px rgba(201,168,76,.5);transform:translateY(-3px)}
+
+    /* ELEMENTO ICONS HERO */
+    .elementos-preview{display:flex;gap:2rem;justify-content:center;margin-bottom:3rem;
+      animation:fadeUp .9s ease .6s both;flex-wrap:wrap}
+    .elem-pill{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;
+      padding:.4rem 1.2rem;border-radius:100px;border:1px solid rgba(201,168,76,.2);
+      color:rgba(201,168,76,.6);background:rgba(201,168,76,.04)}
+
+    /* TEST SECTION */
+    #test-section{position:relative;z-index:1;display:none;
+      min-height:100vh;padding:6rem 2rem 4rem}
+    .test-inner{max-width:700px;margin:0 auto}
+
+    /* PROGRESS */
+    .progress-wrap{margin-bottom:3rem}
+    .progress-label{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.4);margin-bottom:.6rem;display:flex;justify-content:space-between}
+    .progress-bar{height:2px;background:rgba(201,168,76,.1);border-radius:2px;overflow:hidden}
+    .progress-fill{height:100%;background:linear-gradient(to right,#c9a84c,#e8c97a);
+      border-radius:2px;transition:width .6s ease}
+
+    /* QUESTION CARD */
+    .question-card{animation:fadeUp .5s ease both}
+    .q-element-badge{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.3em;
+      padding:.3rem 1rem;border-radius:100px;display:inline-block;margin-bottom:1.5rem}
+    .q-type-simbolica{background:rgba(120,80,220,.08);border:1px solid rgba(120,80,220,.2);color:#b090e0}
+    .q-type-comportamiento{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);color:var(--gold)}
+    .q-type-poetica{background:rgba(200,100,150,.08);border:1px solid rgba(200,100,150,.2);color:#e090b0}
+    .q-type-revelacion{background:rgba(60,180,140,.08);border:1px solid rgba(60,180,140,.2);color:#7ecab0}
+    .q-number{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.4);margin-bottom:.8rem}
+    .q-text{font-family:'Cinzel Decorative',serif;font-size:clamp(1.2rem,3vw,1.8rem);
+      color:var(--gold-pale);line-height:1.4;margin-bottom:2.5rem;font-weight:400}
+
+    /* OPTIONS */
+    .options-grid{display:flex;flex-direction:column;gap:.9rem}
+    .option-btn{display:flex;align-items:center;gap:1.2rem;padding:1rem 1.4rem;
+      border-radius:14px;border:1px solid rgba(201,168,76,.15);
+      background:rgba(11,17,40,.5);cursor:pointer;text-align:left;
+      transition:all .35s cubic-bezier(.4,0,.2,1);width:100%;
+      font-family:'Cormorant Garamond',serif;font-size:1.05rem;
+      color:#c4b090;line-height:1.5;backdrop-filter:blur(4px)}
+    .option-btn:hover{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.08);
+      color:var(--gold-pale);transform:translateX(6px)}
+    .option-btn.selected{border-color:rgba(201,168,76,.6);background:rgba(201,168,76,.12);
+      color:var(--gold-pale)}
+    .option-emoji{font-size:1.4rem;flex-shrink:0;width:32px;text-align:center}
+    .option-text{flex:1;font-style:italic}
+
+    /* ELEMENT COLORS */
+    .elem-fire .option-btn:hover,.elem-fire .option-btn.selected{border-color:rgba(232,93,4,.4);background:rgba(232,93,4,.08)}
+    .elem-water .option-btn:hover,.elem-water .option-btn.selected{border-color:rgba(0,119,182,.4);background:rgba(0,119,182,.08)}
+    .elem-earth .option-btn:hover,.elem-earth .option-btn.selected{border-color:rgba(88,129,87,.4);background:rgba(88,129,87,.08)}
+    .elem-air .option-btn:hover,.elem-air .option-btn.selected{border-color:rgba(123,45,139,.4);background:rgba(123,45,139,.08)}
+
+    /* RESULT SECTION */
+    #result-section{position:relative;z-index:1;display:none;
+      min-height:100vh;padding:6rem 2rem 6rem;text-align:center}
+    .result-inner{max-width:800px;margin:0 auto}
+    .result-element{font-size:4rem;margin-bottom:1rem;animation:fadeUp .6s ease .1s both}
+    .result-element-name{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.4em;
+      color:rgba(201,168,76,.5);margin-bottom:2rem;animation:fadeUp .6s ease .2s both}
+
+    .result-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:2.5rem 0;
+      animation:fadeUp .6s ease .3s both}
+    @media(max-width:600px){.result-cards{grid-template-columns:1fr}}
+
+    .result-card{border-radius:20px;padding:2rem 1.5rem;text-align:center;
+      border:1px solid rgba(201,168,76,.2);background:rgba(11,17,40,.7);
+      backdrop-filter:blur(8px)}
+    .result-card.luz{border-color:rgba(201,168,76,.35);
+      background:linear-gradient(160deg,rgba(201,168,76,.08),rgba(11,17,40,.8))}
+    .result-card.sombra{border-color:rgba(120,80,220,.25);
+      background:linear-gradient(160deg,rgba(120,80,220,.06),rgba(11,17,40,.8))}
+    .result-card-type{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.35em;
+      margin-bottom:.8rem}
+    .result-card.luz .result-card-type{color:var(--gold)}
+    .result-card.sombra .result-card-type{color:#b090e0}
+    .result-card-emoji{font-size:2.5rem;margin-bottom:.8rem;display:block}
+    .result-card-name{font-family:'Cinzel Decorative',serif;font-size:1.3rem;
+      color:var(--gold-pale);margin-bottom:.4rem;font-weight:400}
+    .result-card-subtitle{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.45);margin-bottom:1rem}
+    .result-card-desc{font-style:italic;font-size:.95rem;color:#a09070;line-height:1.7;margin-bottom:1rem}
+    .result-card-frase{font-style:italic;font-size:.9rem;color:var(--gold-light);
+      padding:.6rem 1rem;border-left:2px solid rgba(201,168,76,.3);text-align:left;line-height:1.6}
+
+    .result-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;
+      margin-top:2.5rem;animation:fadeUp .6s ease .5s both}
+    .btn{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.2em;padding:.85rem 2rem;
+      border-radius:100px;text-decoration:none;transition:all .4s;cursor:pointer;border:none}
+    .btn-primary{background:linear-gradient(135deg,#c9a84c,#a07828);color:var(--deep);
+      box-shadow:0 0 25px rgba(201,168,76,.25)}
+    .btn-primary:hover{box-shadow:0 0 45px rgba(201,168,76,.45);transform:translateY(-2px)}
+    .btn-ghost{background:transparent;color:var(--gold);border:1px solid rgba(201,168,76,.3)}
+    .btn-ghost:hover{background:rgba(201,168,76,.08);transform:translateY(-2px)}
+    .btn-violet{background:rgba(120,80,220,.15);color:#c0a0f0;border:1px solid rgba(120,80,220,.3)}
+    .btn-violet:hover{background:rgba(120,80,220,.25);transform:translateY(-2px)}
+
+    /* DIVIDER */
+    .divider{display:flex;align-items:center;gap:1.5rem;max-width:400px;margin:2rem auto;position:relative;z-index:1}
+    .divider-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.3),transparent)}
+    .divider-sym{color:var(--gold);font-size:1rem}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse-gold{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0)}50%{box-shadow:0 0 20px 4px rgba(201,168,76,.15)}}
+
+    .question-card.exit{animation:slideOut .3s ease forwards}
+    @keyframes slideOut{to{opacity:0;transform:translateX(-30px)}}
+
+    @media(max-width:768px){nav{padding:1rem 1.5rem}section{padding:4rem 1.5rem}}
+  </style>
+</head>
+<body>
+  <div id="starfield"><canvas id="stars"></canvas></div>
+
+  <nav>
+    <a href="index.html" class="nav-back">← Volver al Templo</a>
+    <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <span class="hero-badge">✦ ORÁCULO PRISMA DEL ALMA ✦</span>
+    <h1 class="hero-title">Luz y Sombra</h1>
+    <p class="hero-sub">Descubre qué personaje del Mundo Prisma vive en ti — quién eres en tu mejor versión y quién aparece cuando te pierdes.</p>
+    <div class="elementos-preview">
+      <span class="elem-pill">🔥 Fuego · Bastos</span>
+      <span class="elem-pill">🌊 Agua · Copas</span>
+      <span class="elem-pill">🌍 Tierra · Pentáculos</span>
+      <span class="elem-pill">🌬️ Aire · Espadas</span>
+    </div>
+    <button class="start-btn" onclick="iniciarTest()">✦ Comenzar el Test</button>
+  </section>
+
+  <!-- TEST -->
+  <section id="test-section">
+    <div class="test-inner">
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span id="progressLabel" style="font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.3em;color:rgba(201,168,76,.4)">PREGUNTA 1 DE 7</span>
+          <span id="progressPct" style="font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.2em;color:rgba(201,168,76,.3)">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
+      <div id="questionContainer"></div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result-section">
+    <div class="result-inner">
+      <span class="hero-badge">✦ TU RESULTADO DEL PRISMA ✦</span>
+      <div class="result-element" id="resultElement">🔥</div>
+      <p class="result-element-name" id="resultElementName">FUEGO · BASTOS · ARIES · LEO · SAGITARIO</p>
+
+      <div class="result-cards">
+        <div class="result-card luz">
+          <p class="result-card-type">☀️ TU LUZ</p>
+          <span class="result-card-emoji" id="luzEmoji">🔥</span>
+          <h2 class="result-card-name" id="luzNombre">Dante</h2>
+          <p class="result-card-subtitle" id="luzSubtitle">Dios del Fuego y la Resurrección</p>
+          <p class="result-card-desc" id="luzDesc">Descripción</p>
+          <p class="result-card-frase" id="luzFrase">"Frase"</p>
+        </div>
+        <div class="result-card sombra">
+          <p class="result-card-type">🌒 TU SOMBRA</p>
+          <span class="result-card-emoji" id="sombraEmoji">⏳</span>
+          <h2 class="result-card-name" id="sombraNombre">Tony</h2>
+          <p class="result-card-subtitle" id="sombraSubtitle">Dios del Tiempo</p>
+          <p class="result-card-desc" id="sombraDesc">Descripción</p>
+          <p class="result-card-frase" id="sombraFrase">"Frase"</p>
+        </div>
+      </div>
+
+      <div class="divider"><div class="divider-line"></div><span class="divider-sym">✦</span><div class="divider-line"></div></div>
+
+      <div class="result-actions">
+        <a href="historias.html" class="btn btn-primary">📚 Conoce su historia</a>
+        <a href="diario.html" class="btn btn-violet">📖 Guardar en mi Diario</a>
+        <button onclick="reiniciarTest()" class="btn btn-ghost">✦ Hacer el test de nuevo</button>
+      </div>
+    </div>
+  </section>
+
+<script>
+// ── STARFIELD ──
+(function(){
+  const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');
+  let stars=[],W,H;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  function initStars(){stars=[];const n=Math.floor((W*H)/4000);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.2,alpha:Math.random()*.7+.1,ts:Math.random()*.02+.005,to:Math.random()*Math.PI*2,gold:Math.random()<.08});}
+  function draw(t){ctx.clearRect(0,0,W,H);stars.forEach(s=>{const a=s.alpha*(.6+.4*Math.sin(t*s.ts+s.to));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.gold?`rgba(201,168,76,${a*.8})`:`rgba(255,255,255,${a})`;ctx.fill();});requestAnimationFrame(draw);}
+  window.addEventListener('resize',()=>{resize();initStars();});resize();initStars();requestAnimationFrame(draw);
+})();
+
+// ── PERSONAJES ──
+const PERSONAJES = {
+  dante:{nombre:'Dante',subtitle:'Dios del Fuego y la Resurrección',emoji:'🔥',
+    luz:'Alta intensidad emocional y motivacional. Funciona desde el deseo, el impulso vital y la transformación a través de la crisis. Eres un perfil de renacimiento por ruptura — del dolor más profundo nace tu llama más brillante.',
+    sombra:'En sombra: adicción emocional, impulsividad o apego al drama. Cuando te pierdes, buscas la intensidad aunque destruya.',
+    frase:'"Si el deseo es verdadero, ni el tiempo ni el miedo lo detienen."'},
+  tony:{nombre:'Tony',subtitle:'Dios del Tiempo',emoji:'⏳',
+    luz:'Psicología de urgencia interna. Percibes el valor del momento presente con intensidad. Eres decisivo, orientado a la acción, con baja tolerancia a la procrastinación emocional.',
+    sombra:'En sombra: ansiedad por el control del futuro o impulsividad. Cuando te pierdes, el miedo a que el tiempo se acabe te paraliza.',
+    frase:'"Nada espera por ti. El tiempo no perdona."'},
+  jade:{nombre:'Jade',subtitle:'Diosa del Karma',emoji:'🌿',
+    luz:'Estructura mental basada en causa–efecto. Tienes una necesidad interna de coherencia moral y equilibrio. Eres firme pero no impulsiva — procesas antes de responder.',
+    sombra:'En sombra: rigidez, culpa o juicio excesivo. Cuando te pierdes, el peso de la justicia se convierte en condena.',
+    frase:'"El control de mi historia siempre estuvo en mis manos."'},
+  alberto:{nombre:'Alberto',subtitle:'La Voz que Enfrenta la Injusticia',emoji:'⚖️',
+    luz:'Psicología de defensa ética. Tienes el impulso de confrontar lo injusto. Eres el regulador externo de límites sociales — cuando algo está mal, no puedes quedarte callado/a.',
+    sombra:'En sombra: rigidez moral o confrontación impulsiva. Cuando te pierdes, luchas batallas que no son tuyas.',
+    frase:'"No es que me toque... es que no puedo quedarme callado."'},
+  valeria:{nombre:'Valeria',subtitle:'El Veneno Sutil',emoji:'🍷',
+    luz:'Perfil de influencia social emocional. Puedes leer a las personas con precisión extraordinaria. Cuando usas ese poder para bien, eres una fuerza magnética e irresistible.',
+    sombra:'En sombra: toxicidad pasiva y autoafirmación a costa de otros. Distorsionas percepciones sin confrontación directa.',
+    frase:'"No necesito gritar... cuando mi presencia ya envenena."'},
+  karina:{nombre:'Karina',subtitle:'Intromisión Silenciosa',emoji:'💎',
+    luz:'Psicología de invasión emocional sutil. Cuando usas esa percepción para proteger en vez de controlar, eres una guardiana formidable.',
+    sombra:'En sombra: desestabilización emocional del entorno. Cruzas límites sin confrontación abierta, desde la inseguridad.',
+    frase:'"Todo está bajo mi control."'},
+  alvaro:{nombre:'Álvaro',subtitle:'Tejedor de Sombras',emoji:'🌫️',
+    luz:'Perfil de control emocional indirecto. Cuando canalizas esa sensibilidad hacia la vulnerabilidad genuina, puedes conectar profundamente.',
+    sombra:'En sombra profunda: manipulación pasiva, dependencia emocional disfrazada. Usas la ambigüedad como escudo.',
+    frase:'"No supe valorar lo que tenía hasta que fue demasiado tarde."'},
+  mia:{nombre:'Mía',subtitle:'Diosa del Amor Propio',emoji:'🌊',
+    luz:'Psicología de autoconsciencia evolutiva. Tu identidad se construye desde el valor personal, no desde la validación externa. Tienes una fortaleza silenciosa que sorprende a quienes te subestiman.',
+    sombra:'En sombra: hiperdefensa emocional o cierre prematuro del vínculo. Cuando te pierdes, te cierras antes de que puedan lastimarte.',
+    frase:'"No soy segunda opción de nadie."'},
+  sebastian:{nombre:'Sebastián',subtitle:'La Voz sin Filtros',emoji:'⚽',
+    luz:'Honestidad pura e instintiva. Ves la verdad antes que nadie y la dices sin calcular las consecuencias. Tu inocencia es tu superpoder.',
+    sombra:'En sombra: dices verdades que lastiman sin querer. Tu honestidad no siempre llega en el momento correcto.',
+    frase:'"¡A veces los que menos saben son los que más ven!"'},
+  marta:{nombre:'Marta',subtitle:'Diosa de la Sanación',emoji:'🌸',
+    luz:'Perfil de procesamiento emocional lento pero profundo. Integras experiencias a través del tiempo. Tienes tolerancia alta al dolor transformacional y una capacidad de amar que pocas personas poseen.',
+    sombra:'En sombra: estancamiento emocional o sobre-resistencia al cambio. Te aferras a la esperanza aunque ya no haya señales.',
+    frase:'"Algunas flores tardan en florecer... pero cuando lo hacen, cambian todo."'},
+  lucia:{nombre:'Lucía',subtitle:'Susurro Eterno',emoji:'💔',
+    luz:'Psicología de vínculo profundo no resuelto. Representas la memoria emocional activa — la que siente con tanta intensidad que el eco permanece.',
+    sombra:'En sombra: idealización del pasado y dificultad de cierre. Vives emocionalmente en lo que pudo ser.',
+    frase:'"Nuestro amor no se apagó... solo se quedó en silencio."'},
+  oracio:{nombre:'Oracio',subtitle:'Protector de los Corazones Rotos',emoji:'🧿',
+    luz:'Perfil de apego silencioso. Amas desde la observación y el sostén, no desde la demanda. Alta lealtad emocional — eres el amor constante que nunca pide reconocimiento.',
+    sombra:'En sombra: invisibilidad emocional y autosacrificio. Cuando te pierdes, te borras a ti mismo/a para que otros brillen.',
+    frase:'"No puedo pedir que me elijas... solo quiero estar cuando me necesites."'},
+  samuel:{nombre:'Samuel',subtitle:'Susurro Eterno',emoji:'🌆',
+    luz:'Psicología de profundidad emocional. Sientes con una intensidad que pocos comprenden. Tu melancolía nace de haber amado de verdad.',
+    sombra:'En sombra: quedarte atrapado/a en el eco de lo que fue. El peso de lo no cerrado te impide avanzar.',
+    frase:'"Pensé que el tiempo nos daría otra oportunidad."'},
+  daniela:{nombre:'Daniela',subtitle:'Cheerleader del Alma',emoji:'🌟',
+    luz:'Psicología de refuerzo positivo. Tu rol es activar la motivación emocional en otros. Funcionas desde el entusiasmo y la contención energética — siempre estás cuando te necesitan.',
+    sombra:'En sombra: negación del dolor propio. Cuando te pierdes, cuidas tanto a otros que te olvidas de ti misma/o.',
+    frase:'"¡Tú puedes! Y si se te olvida... aquí estaré para recordártelo."'},
+  emmanuel:{nombre:'Emmanuel',subtitle:'Eco de la Duda',emoji:'🌀',
+    luz:'Psicología de indecisión afectiva. Tu alta sensibilidad emocional te hace percibir todo con intensidad. Cuando aprendes a decidir, esa profundidad se convierte en tu mayor fortaleza.',
+    sombra:'En sombra: nostalgia paralizante y apego a lo conocido aunque duela. No elegir también es una elección.',
+    frase:'"Pensé que el tiempo me daría claridad... pero solo me la quitó."'},
+  jazmin:{nombre:'Jazmín',subtitle:'Cupido Encubierto',emoji:'💘',
+    luz:'Perfil de mediación emocional. Facilitas conexiones entre otros incluso antes que en ti misma/o. Alta empatía social — apareces justo cuando alguien más te necesita.',
+    sombra:'En sombra: postergación del propio deseo emocional. Conectas a todos menos a ti misma/o.',
+    frase:'"El amor no necesita gritar... a veces solo necesita que alguien lo vea."'},
+  sofia:{nombre:'Sofía',subtitle:'La Romántica Empedernida',emoji:'🩷',
+    luz:'Crees en el amor épico cuando nadie más cree. Tu fe en la conexión humana es contagiosa e inagotable. Eres la esperanza en forma de persona.',
+    sombra:'En sombra: el romanticismo puede volverse ingenuidad. Sufres más de la cuenta cuando la realidad no alcanza tu ideal.',
+    frase:'"El amor épico existe... y yo lo encuentro en todas partes."'},
+  mariana:{nombre:'Mariana',subtitle:'La Luz que Conecta Mundos',emoji:'🩷',
+    luz:'Representas la ligereza, la alegría y la conexión entre mundos. Ves oportunidades donde otros ven problemas. Tu presencia convierte lo difícil en llevadero.',
+    sombra:'En sombra: puedes convertirte en puente para todos menos para ti misma/o. Tu adaptabilidad a veces esconde lo que realmente necesitas.',
+    frase:'"Yo solo vine a ver un partido y terminé dentro de una novela."'},
+  rosario:{nombre:'Rosario',subtitle:'La Druida del Espejo',emoji:'🪞',
+    luz:'Perfil de introspección profunda. Reflejas verdades emocionales sin suavizarlas. Alta capacidad de insight psicológico — eres el espejo que todos necesitan pero pocos buscan.',
+    sombra:'En sombra: exceso de autoanálisis o dureza emocional. Cuando te pierdes, la verdad se vuelve juicio.',
+    frase:'"No estás sola en esto. Vamos a encontrar las respuestas."'},
+  violeta:{nombre:'Violeta',subtitle:'La Voz de la Realidad',emoji:'🟣',
+    luz:'Sarcástica, honesta y directa. No soportas las falsedades. Eres la voz que dice lo que todos piensan pero nadie se atreve a decir.',
+    sombra:'En sombra: tu honestidad puede volverse dureza. Dices verdades sin considerar el momento o el costo emocional.',
+    frase:'"No necesito entender el partido... solo saber a quién tengo que defender."'},
+  elena:{nombre:'Elena',subtitle:'Diosa del Camino',emoji:'✨',
+    luz:'Psicología intuitiva estable. No impones decisiones, facilitas claridad interna. Funcionas como brújula emocional — guías sin que nadie lo note.',
+    sombra:'En sombra: duda excesiva o desconexión de la intuición. Cuando te pierdes, dejas de confiar en la brújula que llevas dentro.',
+    frase:'"No te diré qué hacer. Solo te mostraré que el camino existe."'},
+  natalia:{nombre:'Natalia',subtitle:'La Resiliente',emoji:'🎵',
+    luz:'Fuerte, resiliente y protectora. Te negaste a ser manipulada aunque el costo fuera alto. Cuando apoyas a otros desde esa experiencia, eres una fuerza transformadora.',
+    sombra:'En sombra: la resiliencia puede convertirse en dureza emocional. A veces es difícil volver a confiar.',
+    frase:'"Me negué a ser manipulada. Y eso me costó todo... y me dio todo."'},
+  renata:{nombre:'Renata',subtitle:'La Estratega del Corazón',emoji:'♟️',
+    luz:'Observadora y calculadora — piensas antes de actuar. Parece fría, pero en realidad eres la más protectora del grupo.',
+    sombra:'En sombra: te desconectas emocionalmente cuando la estrategia toma el control. El análisis puede convertirse en frialdad.',
+    frase:'"Observa, planea, actúa. En ese orden."'},
+  adam:{nombre:'Adam',subtitle:'La Lucidez Incómoda',emoji:'🧢',
+    luz:'Sarcástico e irónico, pero con una lealtad profunda escondida detrás. Eres la lucidez incómoda que el grupo necesita — dices lo que todos piensan.',
+    sombra:'En sombra: el sarcasmo se convierte en escudo que aleja a quienes más te importan.',
+    frase:'"Alguien tiene que decir lo que todos piensan."'},
+  erebus:{nombre:'Erebus',subtitle:'El Iluminado',emoji:'💻',
+    luz:'Psicología de conciencia expandida. Integras luz y oscuridad sin rechazo. Alta capacidad de comprensión profunda — ves sistemas donde otros ven caos.',
+    sombra:'En sombra: aislamiento emocional o sobreintelectualización. Cuando te pierdes, te encierras en tu mundo interior.',
+    frase:'"No todo conocimiento viene con ruido. A veces la verdad llega como susurro."'},
+  tatiana:{nombre:'Tatiana',subtitle:'Prisionera del Ayer',emoji:'⏳',
+    luz:'Inteligente, estratégica y con una presencia magnética. Cuando canalizas esa energía hacia la vulnerabilidad, eres capaz de conexiones profundas.',
+    sombra:'En sombra: el miedo al abandono te vuelve controladora. Vives emocionalmente anclada al pasado.',
+    frase:'"Todo lo que no puedo controlar... me asusta."'},
+  marcos:{nombre:'Marcos',subtitle:'El Oportunista',emoji:'🕷️',
+    luz:'Pragmático y adaptable. Sabes leer el entorno mejor que nadie. Cuando usas esa habilidad de forma ética, puedes ser un puente entre mundos.',
+    sombra:'En sombra: manipulador, cobarde y oportunista. Se rodea de personas más talentosas para vivir de su éxito.',
+    frase:'"No-no-no me vengas con eso. Esto es un negocio, ¿me oíste?"'},
+  nabi:{nombre:'Nabi',subtitle:'Cazadora de Espíritus',emoji:'🦋',
+    luz:'Perfil hiperintuitivo con vigilancia emocional constante. Detectas incongruencias que otros no ven. Tu sensibilidad es tu superpoder cuando la diriges hacia la protección.',
+    sombra:'En sombra: ansiedad, sospecha o sobreinterpretación de señales. Cuando te pierdes, ves peligro donde no lo hay.',
+    frase:'"Abre los ojos del alma. Algo sutil pero importante necesita ser atendido."'},
+  bruxa:{nombre:'Bruxa Tarot',subtitle:'Canalizadora del Prisma',emoji:'🔮',
+    luz:'Mente creativa altamente perceptiva. Traduces emociones en imágenes y posibilidades. Reformulas la realidad cuando otros colapsan — transformas el caos en magia.',
+    sombra:'En sombra: te desconectas de lo concreto y vives demasiado en potenciales. El prisma puede volverse laberinto.',
+    frase:'"La vida no es blanco y negro. Es un prisma de colores infinitos."'},
+  aetherius:{nombre:'Aetherius',subtitle:'El Viajero del Inframundo',emoji:'🌌',
+    luz:'Perfil de exploración interna extrema. No temes lo emocional profundo. Funcionas desde la transformación a través de lo inconsciente.',
+    sombra:'En sombra: desconexión de la realidad cotidiana. Cuando te pierdes, el viaje interior se vuelve un lugar del que no puedes salir.',
+    frase:'"Hay quienes caminan por el día... y otros que traen respuestas desde la noche."'},
+  heimdall:{nombre:'Heimdall',subtitle:'Guardián de los Portales',emoji:'🌉',
+    luz:'Perfil de vigilancia psicológica. Detectas cambios energéticos antes de que ocurran. Eres el filtro entre estados emocionales — proteges los umbrales sagrados.',
+    sombra:'En sombra: hipercontrol y rigidez defensiva. Cuando te pierdes, nada puede pasar por tus portales — ni lo bueno.',
+    frase:'"A veces los portales no se abren con llaves... sino con travesuras."'},
+};
+
+const ELEMENTOS = {
+  fuego:{emoji:'🔥',nombre:'FUEGO · BASTOS · ARIES · LEO · SAGITARIO',color:'#e85d04'},
+  agua:{emoji:'🌊',nombre:'AGUA · COPAS · CÁNCER · ESCORPIO · PISCIS',color:'#0077b6'},
+  tierra:{emoji:'🌍',nombre:'TIERRA · PENTÁCULOS · TAURO · VIRGO · CAPRICORNIO',color:'#588157'},
+  aire:{emoji:'🌬️',nombre:'AIRE · ESPADAS · GÉMINIS · LIBRA · ACUARIO',color:'#7b2d8b'},
+};
+
+// ── ÁRBOL DE PREGUNTAS ──
+const PREGUNTAS = {
+
+  // P1 — TODOS
+  p1:{
+    num:1, tipo:'comportamiento',
+    texto:'Cuando navegas el mundo, ¿desde dónde lo haces?',
+    opciones:[
+      {emoji:'🔥',texto:'Desde la pasión, la intensidad y la acción',next:'p2_fuego',elem:'fuego'},
+      {emoji:'🌊',texto:'Desde el corazón, la empatía y la conexión',next:'p2_agua',elem:'agua'},
+      {emoji:'🌍',texto:'Desde la razón, la observación y la estructura',next:'p2_tierra',elem:'tierra'},
+      {emoji:'🌬️',texto:'Desde la intuición, lo invisible y lo místico',next:'p2_aire',elem:'aire'},
+    ]
+  },
+
+  // ── FUEGO ──
+  p2_fuego:{num:2,tipo:'comportamiento',elemClass:'elem-fire',
+    texto:'Cuando sientes esa intensidad, ¿hacia dónde la diriges?',
+    opciones:[
+      {emoji:'🔥',texto:'Hacia la transformación y el renacimiento',next:'p3_fa'},
+      {emoji:'⚖️',texto:'Hacia la justicia y hacer lo correcto',next:'p3_fb'},
+      {emoji:'🌑',texto:'Hacia retener o controlar lo que amas',next:'p3_fc'},
+      {emoji:'💎',texto:'Hacia proteger tu dignidad y valor propio',next:'p3_fd'},
+    ]},
+  p3_fa:{num:3,tipo:'simbolica',elemClass:'elem-fire',
+    texto:'Elige una imagen que resuene contigo:',
+    opciones:[
+      {emoji:'🔥',texto:'Una llama que quema todo para renacer',next:'p4_fa'},
+      {emoji:'⏳',texto:'Un reloj que corre sin parar',next:'p4_fa'},
+      {emoji:'🌹',texto:'Una rosa que crece entre las cenizas',next:'p4_fa'},
+      {emoji:'⚡',texto:'Un rayo que ilumina la oscuridad',next:'p4_fa'},
+    ]},
+  p4_fa:{num:4,tipo:'comportamiento',elemClass:'elem-fire',
+    texto:'Cuando el amor entra en tu vida...',
+    opciones:[
+      {emoji:'💥',texto:'Te lanzas sin red, todo o nada, sin mirar atrás',next:'p5_fa'},
+      {emoji:'⏰',texto:'Sientes urgencia — actúas antes de que el tiempo decida',next:'p5_fa'},
+      {emoji:'🔄',texto:'Lo transformas en combustible cuando duele',next:'p5_fa'},
+      {emoji:'📉',texto:'Lo valoras solo cuando sientes que se acaba',next:'p5_fa'},
+    ]},
+  p5_fa:{num:5,tipo:'simbolica',elemClass:'elem-fire',
+    texto:'¿Qué hora del día describe mejor tu energía?',
+    opciones:[
+      {emoji:'🌑',texto:'La medianoche — cuando todo puede cambiar',next:'p6_fa'},
+      {emoji:'🌅',texto:'El amanecer — cuando el tiempo apremia',next:'p6_fa'},
+      {emoji:'☀️',texto:'El mediodía — cuando el fuego está en su punto',next:'p6_fa'},
+      {emoji:'🌆',texto:'El atardecer — cuando sientes que se acaba',next:'p6_fa'},
+    ]},
+  p6_fa:{num:6,tipo:'poetica',elemClass:'elem-fire',
+    texto:'¿Cuál frase vive en tu alma?',
+    opciones:[
+      {emoji:'🔥',texto:'"Si el deseo es verdadero, ni el tiempo ni el miedo lo detienen"',next:'p7_fa',hint:'dante'},
+      {emoji:'⏳',texto:'"Nada espera por ti. El tiempo no perdona"',next:'p7_fa',hint:'tony'},
+      {emoji:'🌹',texto:'"Del dolor más profundo nace la llama más brillante"',next:'p7_fa',hint:'dante'},
+      {emoji:'🕰️',texto:'"Lo que no decides hoy, lo decide el tiempo por ti"',next:'p7_fa',hint:'tony'},
+    ]},
+  p7_fa:{num:7,tipo:'revelacion',elemClass:'elem-fire',
+    texto:'En tu versión más oscura, tú...',
+    opciones:[
+      {emoji:'🌊',texto:'Te vuelves adicto/a al drama y la intensidad emocional',result:{luz:'dante',sombra:'tony'}},
+      {emoji:'⌛',texto:'Te paraliza la ansiedad de que el tiempo se acaba',result:{luz:'tony',sombra:'dante'}},
+      {emoji:'🔥',texto:'El fuego que te transforma también te puede consumir',result:{luz:'dante',sombra:'tony'}},
+      {emoji:'🕰️',texto:'Valoras lo que tienes solo cuando ya casi lo pierdes',result:{luz:'tony',sombra:'dante'}},
+    ]},
+
+  p3_fb:{num:3,tipo:'simbolica',elemClass:'elem-fire',
+    texto:'Elige el lugar donde más te encuentras contigo:',
+    opciones:[
+      {emoji:'⚖️',texto:'Una sala donde todo se equilibra',next:'p4_fb'},
+      {emoji:'🌿',texto:'Un jardín donde cada acción tiene consecuencia',next:'p4_fb'},
+      {emoji:'🛡️',texto:'El frente de batalla defendiendo a los suyos',next:'p4_fb'},
+      {emoji:'🔮',texto:'Un espejo que revela la verdad sin filtros',next:'p4_fb'},
+    ]},
+  p4_fb:{num:4,tipo:'comportamiento',elemClass:'elem-fire',
+    texto:'Cuando alguien te falla profundamente...',
+    opciones:[
+      {emoji:'🌿',texto:'Procesas, equilibras y actúas con justicia estratégica',next:'p5_fb'},
+      {emoji:'⚡',texto:'Lo confrontas directamente — la injusticia no se tolera',next:'p5_fb'},
+      {emoji:'💪',texto:'Usas esa traición para reconstruirte más fuerte',next:'p5_fb'},
+      {emoji:'🛡️',texto:'Defiendes a otros antes que a ti mismo/a',next:'p5_fb'},
+    ]},
+  p5_fb:{num:5,tipo:'simbolica',elemClass:'elem-fire',
+    texto:'¿Qué elemento natural describe tu fuerza?',
+    opciones:[
+      {emoji:'🌿',texto:'La tierra — firme, justa, que siempre da frutos',next:'p6_fb'},
+      {emoji:'⚡',texto:'El rayo — directo, certero, sin rodeos',next:'p6_fb'},
+      {emoji:'🌊',texto:'El río — que fluye pero siempre encuentra su camino',next:'p6_fb'},
+      {emoji:'🔥',texto:'El fuego — que purifica lo que ya no sirve',next:'p6_fb'},
+    ]},
+  p6_fb:{num:6,tipo:'poetica',elemClass:'elem-fire',
+    texto:'¿Cuál frase resuena más contigo?',
+    opciones:[
+      {emoji:'🌿',texto:'"El control de mi historia siempre estuvo en mis manos"',next:'p7_fb',hint:'jade'},
+      {emoji:'⚖️',texto:'"No es que me toque... es que no puedo quedarme callado"',next:'p7_fb',hint:'alberto'},
+      {emoji:'✨',texto:'"Lo que das con amor, regresa amplificado"',next:'p7_fb',hint:'jade'},
+      {emoji:'👊',texto:'"Lo hiciste bien"',next:'p7_fb',hint:'alberto'},
+    ]},
+  p7_fb:{num:7,tipo:'revelacion',elemClass:'elem-fire',
+    texto:'En tu versión más oscura, tú...',
+    opciones:[
+      {emoji:'⚖️',texto:'Te vuelves rígido/a y juzgas en exceso',result:{luz:'jade',sombra:'alberto'}},
+      {emoji:'💥',texto:'Te lanzas impulsivamente sin pensar las consecuencias',result:{luz:'alberto',sombra:'jade'}},
+      {emoji:'🌿',texto:'El peso de la justicia se convierte en condena',result:{luz:'jade',sombra:'alberto'}},
+      {emoji:'⚡',texto:'Luchas batallas que no son tuyas',result:{luz:'alberto',sombra:'jade'}},
+    ]},
+
+  p3_fc:{num:3,tipo:'simbolica',elemClass:'elem-fire',
+    texto:'Elige una imagen que describe cómo te mueves en el mundo:',
+    opciones:[
+      {emoji:'🕷️',texto:'Una telaraña — silenciosa, estratégica, inevitable',next:'p4_fc'},
+      {emoji:'🌫️',texto:'La niebla — presente pero difícil de atrapar',next:'p4_fc'},
+      {emoji:'💎',texto:'Un diamante — perfecto por fuera, duro por dentro',next:'p4_fc'},
+      {emoji:'🌑',texto:'La luna nueva — oscura pero tirando de las mareas',next:'p4_fc'},
+    ]},
+  p4_fc:{num:4,tipo:'comportamiento',elemClass:'elem-fire',
+    texto:'Cuando sientes que pierdes el control en una relación...',
+    opciones:[
+      {emoji:'🍷',texto:'Manipulas sutilmente con encanto e insinuaciones',next:'p5_fc'},
+      {emoji:'💎',texto:'Te vuelves más elegante y calculadora para retenerlo',next:'p5_fc'},
+      {emoji:'🌫️',texto:'Te vuelves ambiguo/a y evasivo/a sin comprometerte',next:'p5_fc'},
+      {emoji:'🔇',texto:'Usas el silencio como arma de poder',next:'p5_fc'},
+    ]},
+  p5_fc:{num:5,tipo:'simbolica',elemClass:'elem-fire',
+    texto:'¿Qué hora del día describe tu energía?',
+    opciones:[
+      {emoji:'🌑',texto:'La medianoche — cuando nadie te ve actuar',next:'p6_fc'},
+      {emoji:'🌆',texto:'El atardecer — cuando todo se vuelve ambiguo',next:'p6_fc'},
+      {emoji:'🌕',texto:'La luna llena — elegante, visible, magnética',next:'p6_fc'},
+      {emoji:'🌫️',texto:'El amanecer nebuloso — entre lo que fue y lo que será',next:'p6_fc'},
+    ]},
+  p6_fc:{num:6,tipo:'poetica',elemClass:'elem-fire',
+    texto:'¿Cuál frase vive en tu sombra?',
+    opciones:[
+      {emoji:'🍷',texto:'"No necesito gritar... cuando mi presencia ya envenena"',next:'p7_fc',hint:'valeria'},
+      {emoji:'💎',texto:'"Todo está bajo mi control"',next:'p7_fc',hint:'karina'},
+      {emoji:'🌫️',texto:'"Pensé que el tiempo me daría claridad... pero solo me la quitó"',next:'p7_fc',hint:'alvaro'},
+      {emoji:'🎭',texto:'"Las emociones no son un juego de poder... ¿o sí?"',next:'p7_fc',hint:'valeria'},
+    ]},
+  p7_fc:{num:7,tipo:'revelacion',elemClass:'elem-fire',
+    texto:'En tu versión más honesta, lo que más temes es...',
+    opciones:[
+      {emoji:'👑',texto:'Perder el poder que tienes sobre otros',result:{luz:'valeria',sombra:'karina'}},
+      {emoji:'🪞',texto:'Que te vean tal como eres realmente',result:{luz:'karina',sombra:'alvaro'}},
+      {emoji:'🌫️',texto:'Comprometerte y perder tu libertad emocional',result:{luz:'alvaro',sombra:'valeria'}},
+      {emoji:'💔',texto:'Ser reemplazado/a por alguien mejor',result:{luz:'karina',sombra:'alvaro'}},
+    ]},
+
+  p3_fd:{num:3,tipo:'simbolica',elemClass:'elem-fire',
+    texto:'Elige el lugar donde más te sientes tú:',
+    opciones:[
+      {emoji:'🌊',texto:'Junto al agua — donde puedes soltar y respirar',next:'p4_fd'},
+      {emoji:'⚽',texto:'En movimiento — corriendo, jugando, siendo libre',next:'p4_fd'},
+      {emoji:'🌸',texto:'En un jardín tranquilo — donde nadie te juzga',next:'p4_fd'},
+      {emoji:'🎮',texto:'En el caos divertido — donde todo puede pasar',next:'p4_fd'},
+    ]},
+  p4_fd:{num:4,tipo:'comportamiento',elemClass:'elem-fire',
+    texto:'Tu mayor fortaleza es...',
+    opciones:[
+      {emoji:'👑',texto:'Tu dignidad — no aceptas menos de lo que mereces',next:'p5_fd'},
+      {emoji:'🎯',texto:'Tu honestidad — dices lo que otros callan',next:'p5_fd'},
+      {emoji:'🦋',texto:'Tu capacidad de soltar lo que no te sirve',next:'p5_fd'},
+      {emoji:'⚡',texto:'Tu energía que no conoce límites',next:'p5_fd'},
+    ]},
+  p5_fd:{num:5,tipo:'simbolica',elemClass:'elem-fire',
+    texto:'¿Qué animal describe mejor tu espíritu?',
+    opciones:[
+      {emoji:'🦋',texto:'Una mariposa — que se transforma y vuela libre',next:'p6_fd'},
+      {emoji:'🐕',texto:'Un cachorro — leal, curioso y sin filtros',next:'p6_fd'},
+      {emoji:'🦁',texto:'Una leona — que sabe su valor sin pedirlo',next:'p6_fd'},
+      {emoji:'🐦',texto:'Un gorrión — pequeño pero que lo ve todo',next:'p6_fd'},
+    ]},
+  p6_fd:{num:6,tipo:'poetica',elemClass:'elem-fire',
+    texto:'¿Cuál frase resuena contigo?',
+    opciones:[
+      {emoji:'👑',texto:'"No soy segunda opción de nadie"',next:'p7_fd',hint:'mia'},
+      {emoji:'😄',texto:'"¡A veces los que menos saben son los que más ven!"',next:'p7_fd',hint:'sebastian'},
+      {emoji:'💫',texto:'"Cuando te reconoces primero, atraes lo que mereces"',next:'p7_fd',hint:'mia'},
+      {emoji:'👀',texto:'"La verdad no necesita esfuerzo, simplemente sale"',next:'p7_fd',hint:'sebastian'},
+    ]},
+  p7_fd:{num:7,tipo:'revelacion',elemClass:'elem-fire',
+    texto:'En tu versión más vulnerable, tú...',
+    opciones:[
+      {emoji:'🚪',texto:'Te cierras emocionalmente para protegerte',result:{luz:'mia',sombra:'sebastian'}},
+      {emoji:'💬',texto:'Dices la verdad sin medir las consecuencias',result:{luz:'sebastian',sombra:'mia'}},
+      {emoji:'🦋',texto:'Tu dignidad puede volverse distancia',result:{luz:'mia',sombra:'sebastian'}},
+      {emoji:'🎯',texto:'Tu honestidad a veces llega en el momento equivocado',result:{luz:'sebastian',sombra:'mia'}},
+    ]},
+
+  // ── AGUA ──
+  p2_agua:{num:2,tipo:'comportamiento',elemClass:'elem-water',
+    texto:'¿Cómo expresas tu conexión con los demás?',
+    opciones:[
+      {emoji:'🌙',texto:'Amando en silencio, esperando, sin pedir nada',next:'p3_aa'},
+      {emoji:'🌸',texto:'Esperando con fe aunque el tiempo pase',next:'p3_ab'},
+      {emoji:'🛡️',texto:'Siendo el sostén activo que siempre está',next:'p3_ac'},
+      {emoji:'🌟',texto:'Conectando, animando y creando puentes',next:'p3_ad'},
+    ]},
+  p3_aa:{num:3,tipo:'simbolica',elemClass:'elem-water',
+    texto:'Elige una imagen que describe tu amor:',
+    opciones:[
+      {emoji:'🌙',texto:'La luna — presente en la oscuridad sin pedir atención',next:'p4_aa'},
+      {emoji:'🌫️',texto:'La niebla — que envuelve sin poder atraparse',next:'p4_aa'},
+      {emoji:'🕯️',texto:'Una vela encendida en silencio',next:'p4_aa'},
+      {emoji:'🌊',texto:'El mar en invierno — profundo y melancólico',next:'p4_aa'},
+    ]},
+  p4_aa:{num:4,tipo:'comportamiento',elemClass:'elem-water',
+    texto:'Cuando amas sin ser correspondido/a...',
+    opciones:[
+      {emoji:'🌿',texto:'Permaneces presente sin exigir reconocimiento',next:'p5_aa'},
+      {emoji:'⚓',texto:'Cargas ese amor como un peso que no puedes soltar',next:'p5_aa'},
+      {emoji:'🕯️',texto:'Encuentras paz en solo poder estar cerca',next:'p5_aa'},
+      {emoji:'🌊',texto:'Te quedas atrapado/a en el eco de lo que fue',next:'p5_aa'},
+    ]},
+  p5_aa:{num:5,tipo:'simbolica',elemClass:'elem-water',
+    texto:'¿Qué hora del día describe tu alma?',
+    opciones:[
+      {emoji:'🌙',texto:'La medianoche — callada, profunda, leal',next:'p6_aa'},
+      {emoji:'🌆',texto:'El atardecer — cuando todo se tiñe de melancolía',next:'p6_aa'},
+      {emoji:'🌑',texto:'La luna nueva — invisible pero tirando mareas',next:'p6_aa'},
+      {emoji:'🌫️',texto:'El amanecer gris — entre lo que fue y lo que no fue',next:'p6_aa'},
+    ]},
+  p6_aa:{num:6,tipo:'poetica',elemClass:'elem-water',
+    texto:'¿Cuál frase vive en tu corazón?',
+    opciones:[
+      {emoji:'🧿',texto:'"No pido que me elijas... solo quiero estar cuando me necesites"',next:'p7_aa',hint:'oracio'},
+      {emoji:'💔',texto:'"Nuestro amor no se apagó... solo se quedó en silencio"',next:'p7_aa',hint:'samuel'},
+      {emoji:'🌙',texto:'"Nunca quise ser protagonista... solo que no te faltara nada"',next:'p7_aa',hint:'oracio'},
+      {emoji:'🌊',texto:'"Pensé que el tiempo nos daría otra oportunidad"',next:'p7_aa',hint:'samuel'},
+    ]},
+  p7_aa:{num:7,tipo:'revelacion',elemClass:'elem-water',
+    texto:'En tu versión más oscura, tú...',
+    opciones:[
+      {emoji:'👻',texto:'Te vuelves invisible emocionalmente por miedo al rechazo',result:{luz:'oracio',sombra:'samuel'}},
+      {emoji:'⏳',texto:'Te quedas atrapado/a en amores que ya terminaron',result:{luz:'samuel',sombra:'oracio'}},
+      {emoji:'🕯️',texto:'Te consumes por otros sin que nadie lo note',result:{luz:'oracio',sombra:'samuel'}},
+      {emoji:'🌊',texto:'El eco del pasado ahoga el presente',result:{luz:'samuel',sombra:'oracio'}},
+    ]},
+
+  p3_ab:{num:3,tipo:'simbolica',elemClass:'elem-water',
+    texto:'Elige el lugar donde más paz encuentras:',
+    opciones:[
+      {emoji:'🌸',texto:'Un jardín en primavera — donde todo puede florecer',next:'p4_ab'},
+      {emoji:'🌆',texto:'Una ciudad de noche — llena de recuerdos',next:'p4_ab'},
+      {emoji:'🌿',texto:'Un campo abierto — donde la esperanza respira',next:'p4_ab'},
+      {emoji:'🌊',texto:'La orilla del mar — entre lo que fue y lo que puede ser',next:'p4_ab'},
+    ]},
+  p4_ab:{num:4,tipo:'comportamiento',elemClass:'elem-water',
+    texto:'Cuando el amor no llega como esperabas...',
+    opciones:[
+      {emoji:'🌸',texto:'Mantienes la esperanza con fe inquebrantable',next:'p5_ab'},
+      {emoji:'💔',texto:'Sientes el peso de lo que pudo ser y no fue',next:'p5_ab'},
+      {emoji:'⏳',texto:'Esperas con paciencia porque crees en el destino',next:'p5_ab'},
+      {emoji:'🌊',texto:'Te quedas con el eco de alguien que sigue en tu alma',next:'p5_ab'},
+    ]},
+  p5_ab:{num:5,tipo:'simbolica',elemClass:'elem-water',
+    texto:'¿Qué animal describe mejor tu espíritu?',
+    opciones:[
+      {emoji:'🦢',texto:'Un cisne — que espera su momento con gracia',next:'p6_ab'},
+      {emoji:'🦋',texto:'Una mariposa atrapada en el cristal',next:'p6_ab'},
+      {emoji:'🌸',texto:'Una flor que tarda en florecer pero cambia todo',next:'p6_ab'},
+      {emoji:'🌙',texto:'Una luciérnaga — luz pequeña en la oscuridad',next:'p6_ab'},
+    ]},
+  p6_ab:{num:6,tipo:'poetica',elemClass:'elem-water',
+    texto:'¿Cuál frase resuena en tu alma?',
+    opciones:[
+      {emoji:'🌸',texto:'"Algunas flores tardan en florecer... pero cuando lo hacen, cambian todo"',next:'p7_ab',hint:'marta'},
+      {emoji:'💔',texto:'"Nuestro amor no se apagó... solo se quedó en silencio"',next:'p7_ab',hint:'lucia'},
+      {emoji:'🌿',texto:'"El amor verdadero espera, confía y no se rinde"',next:'p7_ab',hint:'marta'},
+      {emoji:'🌊',texto:'"Hay amores que no cierran... porque el alma no les da permiso"',next:'p7_ab',hint:'lucia'},
+    ]},
+  p7_ab:{num:7,tipo:'revelacion',elemClass:'elem-water',
+    texto:'En tu versión más vulnerable, tú...',
+    opciones:[
+      {emoji:'🌸',texto:'Te aferras a la esperanza aunque duela seguir esperando',result:{luz:'marta',sombra:'lucia'}},
+      {emoji:'🌊',texto:'No puedes soltar lo que fue porque aún lo sientes real',result:{luz:'lucia',sombra:'marta'}},
+      {emoji:'⏳',texto:'La paciencia se convierte en espera infinita',result:{luz:'marta',sombra:'lucia'}},
+      {emoji:'💔',texto:'El amor que no cerró te impide amar lo que tienes',result:{luz:'lucia',sombra:'marta'}},
+    ]},
+
+  p3_ac:{num:3,tipo:'simbolica',elemClass:'elem-water',
+    texto:'Elige una imagen que describe cómo apoyas a otros:',
+    opciones:[
+      {emoji:'🛡️',texto:'Un escudo — siempre presente, siempre protegiendo',next:'p4_ac'},
+      {emoji:'🌫️',texto:'Una sombra — quiere estar pero no sabe cómo',next:'p4_ac'},
+      {emoji:'🕯️',texto:'Una vela encendida — da luz aunque se consuma',next:'p4_ac'},
+      {emoji:'🌀',texto:'Un torbellino — lleno de intención pero sin dirección',next:'p4_ac'},
+    ]},
+  p4_ac:{num:4,tipo:'comportamiento',elemClass:'elem-water',
+    texto:'Cuando alguien que amas necesita ayuda...',
+    opciones:[
+      {emoji:'🏃',texto:'Estás ahí inmediatamente aunque postergues lo tuyo',next:'p5_ac'},
+      {emoji:'🌀',texto:'Quieres estar pero la indecisión te paraliza',next:'p5_ac'},
+      {emoji:'👂',texto:'Escuchas sin juzgar y ofreces estabilidad',next:'p5_ac'},
+      {emoji:'😰',texto:'Sientes el impulso pero temes equivocarte',next:'p5_ac'},
+    ]},
+  p5_ac:{num:5,tipo:'simbolica',elemClass:'elem-water',
+    texto:'¿Qué hora del día describe tu energía?',
+    opciones:[
+      {emoji:'☀️',texto:'El mediodía — constante, confiable, siempre presente',next:'p6_ac'},
+      {emoji:'🌅',texto:'El amanecer — lleno de intenciones que no siempre se cumplen',next:'p6_ac'},
+      {emoji:'🌿',texto:'La mañana tranquila — donde todo es posible',next:'p6_ac'},
+      {emoji:'🌆',texto:'El atardecer — cuando ya es tarde para decidir',next:'p6_ac'},
+    ]},
+  p6_ac:{num:6,tipo:'poetica',elemClass:'elem-water',
+    texto:'¿Cuál frase resuena contigo?',
+    opciones:[
+      {emoji:'🌟',texto:'"¡Tú puedes! Y si se te olvida... aquí estaré para recordártelo"',next:'p7_ac',hint:'daniela'},
+      {emoji:'🌀',texto:'"Pensé que el tiempo me daría claridad... pero solo me la quitó"',next:'p7_ac',hint:'emmanuel'},
+      {emoji:'🛡️',texto:'"Estar presente es el mayor acto de amor"',next:'p7_ac',hint:'daniela'},
+      {emoji:'💔',texto:'"El amor auténtico requiere valentía... y a veces llego tarde"',next:'p7_ac',hint:'emmanuel'},
+    ]},
+  p7_ac:{num:7,tipo:'revelacion',elemClass:'elem-water',
+    texto:'En tu versión más honesta, tú...',
+    opciones:[
+      {emoji:'🫂',texto:'Das tanto a otros que olvidas darte a ti mismo/a',result:{luz:'daniela',sombra:'emmanuel'}},
+      {emoji:'🌀',texto:'Quieres elegir pero el miedo a perder te paraliza',result:{luz:'emmanuel',sombra:'daniela'}},
+      {emoji:'🕯️',texto:'Te consumes ayudando y nadie lo nota',result:{luz:'daniela',sombra:'emmanuel'}},
+      {emoji:'⏳',texto:'La indecisión te lleva a perder lo que más quieres',result:{luz:'emmanuel',sombra:'daniela'}},
+    ]},
+
+  p3_ad:{num:3,tipo:'simbolica',elemClass:'elem-water',
+    texto:'Elige el lugar donde más brillas:',
+    opciones:[
+      {emoji:'🎉',texto:'En una reunión — conectando almas que no se conocían',next:'p4_ad'},
+      {emoji:'🎬',texto:'En una historia de amor épica — siendo testigo o protagonista',next:'p4_ad'},
+      {emoji:'🌸',texto:'En el momento exacto en que dos personas se reencuentran',next:'p4_ad'},
+      {emoji:'☀️',texto:'En cualquier lugar — porque llevas la alegría contigo',next:'p4_ad'},
+    ]},
+  p4_ad:{num:4,tipo:'comportamiento',elemClass:'elem-water',
+    texto:'Tu mayor don es...',
+    opciones:[
+      {emoji:'🌉',texto:'Crear conexiones inesperadas entre personas',next:'p5_ad'},
+      {emoji:'💫',texto:'Creer en el amor épico cuando nadie más cree',next:'p5_ad'},
+      {emoji:'☀️',texto:'Convertir cualquier situación en algo llevadero',next:'p5_ad'},
+      {emoji:'🎯',texto:'Aparecer justo cuando alguien más te necesita',next:'p5_ad'},
+    ]},
+  p5_ad:{num:5,tipo:'simbolica',elemClass:'elem-water',
+    texto:'¿Qué animal describe tu espíritu?',
+    opciones:[
+      {emoji:'🦋',texto:'Una mariposa — que conecta flores sin quedarse',next:'p6_ad'},
+      {emoji:'🐬',texto:'Un delfín — juguetón, lleno de amor y esperanza',next:'p6_ad'},
+      {emoji:'🐦',texto:'Un colibrí — que aparece cuando más se necesita',next:'p6_ad'},
+      {emoji:'🌻',texto:'Un girasol — que siempre mira hacia la luz',next:'p6_ad'},
+    ]},
+  p6_ad:{num:6,tipo:'poetica',elemClass:'elem-water',
+    texto:'¿Cuál frase resuena en tu alma?',
+    opciones:[
+      {emoji:'💘',texto:'"El amor no necesita gritar... a veces solo necesita que alguien lo vea"',next:'p7_ad',hint:'jazmin'},
+      {emoji:'🩷',texto:'"Yo solo vine a ver un partido y terminé dentro de una novela"',next:'p7_ad',hint:'mariana'},
+      {emoji:'💫',texto:'"El amor épico existe... y yo lo encuentro en todas partes"',next:'p7_ad',hint:'sofia'},
+      {emoji:'🌟',texto:'"Aparezco justo cuando el alma más lo necesita"',next:'p7_ad',hint:'jazmin'},
+    ]},
+  p7_ad:{num:7,tipo:'revelacion',elemClass:'elem-water',
+    texto:'En tu versión más profunda, tú...',
+    opciones:[
+      {emoji:'🦋',texto:'Conectas a todos menos a ti mismo/a',result:{luz:'jazmin',sombra:'mariana'}},
+      {emoji:'💔',texto:'Crees en el amor épico aunque eso te haga sufrir más',result:{luz:'sofia',sombra:'jazmin'}},
+      {emoji:'☀️',texto:'Tu alegría a veces esconde lo que realmente necesitas',result:{luz:'mariana',sombra:'sofia'}},
+      {emoji:'🌸',texto:'Eres el puente para todos los demás pero nadie te tiende el suyo',result:{luz:'jazmin',sombra:'mariana'}},
+    ]},
+
+  // ── TIERRA ──
+  p2_tierra:{num:2,tipo:'comportamiento',elemClass:'elem-earth',
+    texto:'¿Cómo usas tu capacidad de observación?',
+    opciones:[
+      {emoji:'🪞',texto:'Para reflejar verdades y proteger a quien amas',next:'p3_ta'},
+      {emoji:'♟️',texto:'Para planear, estrategizar y nunca ser tomado/a por sorpresa',next:'p3_tb'},
+      {emoji:'🕸️',texto:'Para controlar el entorno y sentirte seguro/a',next:'p3_tc'},
+      {emoji:'💻',texto:'Para comprender lo que otros no pueden ver',next:'p3_td'},
+    ]},
+  p3_ta:{num:3,tipo:'simbolica',elemClass:'elem-earth',
+    texto:'Elige el lugar donde más te encuentras:',
+    opciones:[
+      {emoji:'🪞',texto:'Frente a un espejo — donde la verdad no puede esconderse',next:'p4_ta'},
+      {emoji:'🧭',texto:'En el camino — siendo brújula para otros',next:'p4_ta'},
+      {emoji:'⚡',texto:'En el frente — diciendo lo que nadie se atreve',next:'p4_ta'},
+      {emoji:'🌿',texto:'En un jardín de reconstrucción — tras la tormenta',next:'p4_ta'},
+    ]},
+  p4_ta:{num:4,tipo:'comportamiento',elemClass:'elem-earth',
+    texto:'Tu verdad la expresas...',
+    opciones:[
+      {emoji:'🪞',texto:'Con calma pero sin suavizarla — el espejo no miente',next:'p5_ta'},
+      {emoji:'🧭',texto:'Como brújula — guías sin imponer',next:'p5_ta'},
+      {emoji:'⚡',texto:'Sin filtros — la falsedad te resulta intolerable',next:'p5_ta'},
+      {emoji:'💪',texto:'Desde la resiliencia — has aprendido a decirla tras el dolor',next:'p5_ta'},
+    ]},
+  p5_ta:{num:5,tipo:'simbolica',elemClass:'elem-earth',
+    texto:'¿Qué elemento describe tu fuerza?',
+    opciones:[
+      {emoji:'🪨',texto:'La roca — firme, confiable, inquebrantable',next:'p6_ta'},
+      {emoji:'🌬️',texto:'El viento — que guía sin ser visto',next:'p6_ta'},
+      {emoji:'⚡',texto:'El rayo — directo, honesto, certero',next:'p6_ta'},
+      {emoji:'🌿',texto:'La planta que crece entre el concreto',next:'p6_ta'},
+    ]},
+  p6_ta:{num:6,tipo:'poetica',elemClass:'elem-earth',
+    texto:'¿Cuál frase resuena contigo?',
+    opciones:[
+      {emoji:'🪞',texto:'"No estás sola en esto. Vamos a encontrar las respuestas"',next:'p7_ta',hint:'rosario'},
+      {emoji:'🧭',texto:'"No te diré qué hacer. Solo te mostraré que el camino existe"',next:'p7_ta',hint:'elena'},
+      {emoji:'⚡',texto:'"No necesito que me toque... es que no puedo quedarme callada"',next:'p7_ta',hint:'violeta'},
+      {emoji:'🌿',texto:'"Me negué a ser manipulada. Y eso me costó todo... y me dio todo"',next:'p7_ta',hint:'natalia'},
+    ]},
+  p7_ta:{num:7,tipo:'revelacion',elemClass:'elem-earth',
+    texto:'En tu versión más profunda, tú...',
+    opciones:[
+      {emoji:'🪞',texto:'Reflejas verdades incómodas que otros necesitan escuchar',result:{luz:'rosario',sombra:'violeta'}},
+      {emoji:'🧭',texto:'Guías desde la intuición sin necesidad de protagonismo',result:{luz:'elena',sombra:'natalia'}},
+      {emoji:'⚡',texto:'Tu honestidad directa puede herir sin querer',result:{luz:'violeta',sombra:'elena'}},
+      {emoji:'💪',texto:'Tu resiliencia a veces esconde heridas no cerradas',result:{luz:'natalia',sombra:'rosario'}},
+    ]},
+
+  p3_tb:{num:3,tipo:'simbolica',elemClass:'elem-earth',
+    texto:'Elige la imagen que más describe cómo piensas:',
+    opciones:[
+      {emoji:'♟️',texto:'Un ajedrecista — siempre tres movimientos adelante',next:'p4_tb'},
+      {emoji:'🧢',texto:'Un observador irónico — que ve todo pero finge no importarle',next:'p4_tb'},
+      {emoji:'🔭',texto:'Un telescopio — que ve lejos pero permanece quieto',next:'p4_tb'},
+      {emoji:'🃏',texto:'Un jugador de cartas — que nunca revela su mano',next:'p4_tb'},
+    ]},
+  p4_tb:{num:4,tipo:'comportamiento',elemClass:'elem-earth',
+    texto:'Tu lealtad se expresa como...',
+    opciones:[
+      {emoji:'🛡️',texto:'Protección estratégica — actúo antes de que el peligro llegue',next:'p5_tb'},
+      {emoji:'😏',texto:'Sarcasmo que esconde una preocupación profunda',next:'p5_tb'},
+      {emoji:'🌑',texto:'Planes silenciosos para proteger sin que lo noten',next:'p5_tb'},
+      {emoji:'🎭',texto:'Bromas que dicen la verdad sin que parezca verdad',next:'p5_tb'},
+    ]},
+  p5_tb:{num:5,tipo:'simbolica',elemClass:'elem-earth',
+    texto:'¿Qué hora del día describe tu energía?',
+    opciones:[
+      {emoji:'🌙',texto:'La madrugada — cuando planeas en silencio',next:'p6_tb'},
+      {emoji:'☀️',texto:'El mediodía — cuando sueltas comentarios que nadie esperaba',next:'p6_tb'},
+      {emoji:'🌑',texto:'La luna nueva — invisible pero poderosa',next:'p6_tb'},
+      {emoji:'🌅',texto:'El amanecer — cuando la ironía es más afilada',next:'p6_tb'},
+    ]},
+  p6_tb:{num:6,tipo:'poetica',elemClass:'elem-earth',
+    texto:'¿Cuál frase resuena contigo?',
+    opciones:[
+      {emoji:'♟️',texto:'"Parece fría... pero en realidad es la más protectora"',next:'p7_tb',hint:'renata'},
+      {emoji:'🧢',texto:'"Alguien tiene que decir lo que todos piensan"',next:'p7_tb',hint:'adam'},
+      {emoji:'🌑',texto:'"Observa, planea, actúa. En ese orden"',next:'p7_tb',hint:'renata'},
+      {emoji:'😏',texto:'"Mi sarcasmo es mi idioma. Mi lealtad, mi secreto"',next:'p7_tb',hint:'adam'},
+    ]},
+  p7_tb:{num:7,tipo:'revelacion',elemClass:'elem-earth',
+    texto:'En tu versión más oscura, tú...',
+    opciones:[
+      {emoji:'❄️',texto:'Te desconectas emocionalmente cuando la estrategia toma el control',result:{luz:'renata',sombra:'adam'}},
+      {emoji:'🧢',texto:'Escondes tanto que nadie sabe realmente cómo estás',result:{luz:'adam',sombra:'renata'}},
+      {emoji:'♟️',texto:'El análisis se convierte en una forma de no sentir',result:{luz:'renata',sombra:'adam'}},
+      {emoji:'😏',texto:'El sarcasmo aleja a quienes más te importan',result:{luz:'adam',sombra:'renata'}},
+    ]},
+
+  p3_tc:{num:3,tipo:'simbolica',elemClass:'elem-earth',
+    texto:'Elige la imagen que describe tu relación con el control:',
+    opciones:[
+      {emoji:'🕸️',texto:'Una telaraña — elegante, invisible, inevitable',next:'p4_tc'},
+      {emoji:'🎭',texto:'Una máscara — que proyecta poder aunque por dentro tiemble',next:'p4_tc'},
+      {emoji:'👠',texto:'Un tacón alto — que impone pero que duele llevarlo',next:'p4_tc'},
+      {emoji:'💼',texto:'Un maletín lleno de secretos — que parece más valioso de lo que es',next:'p4_tc'},
+    ]},
+  p4_tc:{num:4,tipo:'comportamiento',elemClass:'elem-earth',
+    texto:'Cuando sientes que pierdes el control...',
+    opciones:[
+      {emoji:'❄️',texto:'Te vuelves más elegante, más calculadora, más fría',next:'p5_tc'},
+      {emoji:'🎭',texto:'Finges más seguridad aunque por dentro colapses',next:'p5_tc'},
+      {emoji:'🔇',texto:'Usas el silencio y la distancia como armas',next:'p5_tc'},
+      {emoji:'💬',texto:'Hablas más de la cuenta para llenar el vacío',next:'p5_tc'},
+    ]},
+  p5_tc:{num:5,tipo:'simbolica',elemClass:'elem-earth',
+    texto:'¿Qué hora del día describe tu energía?',
+    opciones:[
+      {emoji:'🌙',texto:'La noche — elegante, misteriosa, magnética',next:'p6_tc'},
+      {emoji:'🌅',texto:'El amanecer — cuando aún puedes fingir que todo va bien',next:'p6_tc'},
+      {emoji:'🌕',texto:'La luna llena — visible, imponente, que todo lo ilumina',next:'p6_tc'},
+      {emoji:'🌆',texto:'El atardecer — cuando sientes que todo se te escapa',next:'p6_tc'},
+    ]},
+  p6_tc:{num:6,tipo:'poetica',elemClass:'elem-earth',
+    texto:'¿Cuál frase describe tu sombra?',
+    opciones:[
+      {emoji:'🕸️',texto:'"Todo lo que no puedo controlar... me asusta"',next:'p7_tc',hint:'tatiana'},
+      {emoji:'🎭',texto:'"No-no-no me vengas con eso. Esto es un negocio, ¿me oíste?"',next:'p7_tc',hint:'marcos'},
+      {emoji:'👑',texto:'"Necesito sentirme indispensable o me pierdo"',next:'p7_tc',hint:'tatiana'},
+      {emoji:'💼',texto:'"Me rodeo de personas más talentosas para vivir de su éxito"',next:'p7_tc',hint:'marcos'},
+    ]},
+  p7_tc:{num:7,tipo:'revelacion',elemClass:'elem-earth',
+    texto:'En tu versión más honesta, lo que más temes es...',
+    opciones:[
+      {emoji:'💔',texto:'Mostrar tu vulnerabilidad y que te abandonen',result:{luz:'tatiana',sombra:'marcos'}},
+      {emoji:'🪞',texto:'Que descubran que detrás del control no hay nada sólido',result:{luz:'marcos',sombra:'tatiana'}},
+      {emoji:'🌑',texto:'Perder la imagen que tanto has construido',result:{luz:'tatiana',sombra:'marcos'}},
+      {emoji:'🎭',texto:'Que te vean sin la máscara',result:{luz:'marcos',sombra:'tatiana'}},
+    ]},
+
+  p3_td:{num:3,tipo:'simbolica',elemClass:'elem-earth',
+    texto:'¿Qué imagen describe mejor tu mente?',
+    opciones:[
+      {emoji:'💻',texto:'Una pantalla llena de código — que pocos pueden leer',next:'p7_td_erebus'},
+      {emoji:'🌌',texto:'Un universo paralelo — que solo tú puedes ver',next:'p7_td_erebus'},
+      {emoji:'📚',texto:'Una biblioteca infinita — donde todo tiene explicación',next:'p7_td_erebus'},
+      {emoji:'🔭',texto:'Un observatorio — desde donde ves todo sin ser visto',next:'p7_td_erebus'},
+    ]},
+  p7_td_erebus:{num:4,tipo:'revelacion',elemClass:'elem-earth',
+    texto:'Tu mayor riesgo es...',
+    opciones:[
+      {emoji:'🏠',texto:'Encerrarte tanto en tu mundo que pierdes contacto con otros',result:{luz:'erebus',sombra:'adam'}},
+      {emoji:'🧊',texto:'Sobreintelectualizar hasta no sentir nada',result:{luz:'erebus',sombra:'renata'}},
+      {emoji:'🌌',texto:'Volverte tan abstracto/a que nadie puede seguirte',result:{luz:'erebus',sombra:'adam'}},
+      {emoji:'📡',texto:'Ver tanto que te paralizas sin actuar',result:{luz:'erebus',sombra:'renata'}},
+    ]},
+
+  // ── AIRE ──
+  p2_aire:{num:2,tipo:'comportamiento',elemClass:'elem-air',
+    texto:'¿Cómo se manifiesta tu conexión con lo invisible?',
+    opciones:[
+      {emoji:'👁️',texto:'Como vigilancia — sientes el peligro antes de verlo',next:'p3_ai_a'},
+      {emoji:'🔮',texto:'Como percepción — ves símbolos donde otros ven nada',next:'p3_ai_b'},
+      {emoji:'🌌',texto:'Como viaje — te adentras en lo desconocido sin miedo',next:'p3_ai_b'},
+      {emoji:'🚪',texto:'Como protección — cuidas los umbrales entre mundos',next:'p3_ai_a'},
+    ]},
+  p3_ai_a:{num:3,tipo:'simbolica',elemClass:'elem-air',
+    texto:'Elige el lugar donde más te sientes tú:',
+    opciones:[
+      {emoji:'🌙',texto:'En la oscuridad vigilando — donde nadie más mira',next:'p4_ai_a'},
+      {emoji:'🌉',texto:'En el umbral de dos mundos — entre lo conocido y lo desconocido',next:'p4_ai_a'},
+      {emoji:'🦋',texto:'En el silencio antes de la tormenta',next:'p4_ai_a'},
+      {emoji:'🚪',texto:'Ante una puerta cerrada — guardando lo que hay del otro lado',next:'p4_ai_a'},
+    ]},
+  p4_ai_a:{num:4,tipo:'comportamiento',elemClass:'elem-air',
+    texto:'Tu misión en el mundo es...',
+    opciones:[
+      {emoji:'🦋',texto:'Detectar lo que no se ve y proteger a quienes amas',next:'p5_ai_a'},
+      {emoji:'🚪',texto:'Guardar los portales entre lo que fue y lo que será',next:'p5_ai_a'},
+      {emoji:'🔍',texto:'Cazar verdades ocultas que otros no quieren ver',next:'p5_ai_a'},
+      {emoji:'⚡',texto:'Ser el filtro entre energías y dimensiones',next:'p5_ai_a'},
+    ]},
+  p5_ai_a:{num:5,tipo:'simbolica',elemClass:'elem-air',
+    texto:'¿Qué animal describe tu espíritu?',
+    opciones:[
+      {emoji:'🦉',texto:'Un búho — que ve en la oscuridad lo que otros no',next:'p6_ai_a'},
+      {emoji:'🐉',texto:'Un dragón guardián — que protege umbrales sagrados',next:'p6_ai_a'},
+      {emoji:'🐈‍⬛',texto:'Un gato negro — misterioso, independiente, siempre alerta',next:'p6_ai_a'},
+      {emoji:'🦅',texto:'Un águila — que vigila desde las alturas',next:'p6_ai_a'},
+    ]},
+  p6_ai_a:{num:6,tipo:'poetica',elemClass:'elem-air',
+    texto:'¿Cuál frase resuena contigo?',
+    opciones:[
+      {emoji:'🦋',texto:'"Abre los ojos del alma. Algo sutil pero importante necesita ser atendido"',next:'p7_ai_a',hint:'nabi'},
+      {emoji:'🚪',texto:'"A veces los portales no se abren con llaves... sino con travesuras"',next:'p7_ai_a',hint:'heimdall'},
+      {emoji:'👁️',texto:'"Lo que no se ve también existe. Y yo sí lo veo"',next:'p7_ai_a',hint:'nabi'},
+      {emoji:'🌉',texto:'"Soy el guardián del umbral. Nada pasa sin que yo lo sepa"',next:'p7_ai_a',hint:'heimdall'},
+    ]},
+  p7_ai_a:{num:7,tipo:'revelacion',elemClass:'elem-air',
+    texto:'En tu versión más profunda, tú...',
+    opciones:[
+      {emoji:'😰',texto:'Tu hipervigilancia puede convertirse en ansiedad o sospecha',result:{luz:'nabi',sombra:'heimdall'}},
+      {emoji:'🔒',texto:'Tu necesidad de controlar los portales puede volverse rigidez',result:{luz:'heimdall',sombra:'nabi'}},
+      {emoji:'🌑',texto:'Ves tanto que no puedes dejar de ver peligros',result:{luz:'nabi',sombra:'heimdall'}},
+      {emoji:'🚪',texto:'Proteges tan bien los umbrales que nadie puede entrar',result:{luz:'heimdall',sombra:'nabi'}},
+    ]},
+
+  p3_ai_b:{num:3,tipo:'simbolica',elemClass:'elem-air',
+    texto:'Elige el lugar donde más te encuentras:',
+    opciones:[
+      {emoji:'🔮',texto:'En un altar lleno de símbolos — creando magia',next:'p4_ai_b'},
+      {emoji:'🌌',texto:'En el inframundo — explorando lo que nadie se atreve',next:'p4_ai_b'},
+      {emoji:'🎨',texto:'En el proceso creativo — transformando caos en belleza',next:'p4_ai_b'},
+      {emoji:'🌫️',texto:'En la niebla — entre lo consciente y lo inconsciente',next:'p4_ai_b'},
+    ]},
+  p4_ai_b:{num:4,tipo:'comportamiento',elemClass:'elem-air',
+    texto:'Lo invisible que percibes lo conviertes en...',
+    opciones:[
+      {emoji:'🔮',texto:'Magia práctica, color, arte y transformación',next:'p5_ai_b'},
+      {emoji:'🌌',texto:'Un viaje interior profundo hacia lo desconocido',next:'p5_ai_b'},
+      {emoji:'✨',texto:'Símbolos que otros pueden usar para sanar',next:'p5_ai_b'},
+      {emoji:'🌫️',texto:'Exploración del inconsciente sin miedo',next:'p5_ai_b'},
+    ]},
+  p5_ai_b:{num:5,tipo:'simbolica',elemClass:'elem-air',
+    texto:'¿Qué hora del día describe tu energía?',
+    opciones:[
+      {emoji:'🌙',texto:'La medianoche mágica — cuando el velo es más fino',next:'p6_ai_b'},
+      {emoji:'🌅',texto:'El amanecer — cuando la magia se vuelve práctica',next:'p6_ai_b'},
+      {emoji:'🌑',texto:'La luna nueva — cuando todo puede ser reinventado',next:'p6_ai_b'},
+      {emoji:'✨',texto:'La hora bruja — entre las 3 y las 4 AM',next:'p6_ai_b'},
+    ]},
+  p6_ai_b:{num:6,tipo:'poetica',elemClass:'elem-air',
+    texto:'¿Cuál frase resuena en tu alma?',
+    opciones:[
+      {emoji:'🔮',texto:'"La vida no es blanco y negro. Es un prisma de colores infinitos"',next:'p7_ai_b',hint:'bruxa'},
+      {emoji:'🌌',texto:'"Hay quienes caminan por el día... y otros que traen respuestas desde la noche"',next:'p7_ai_b',hint:'aetherius'},
+      {emoji:'✨',texto:'"Atrévete a serlo. La belleza no está en lo perfecto, sino en lo auténtico"',next:'p7_ai_b',hint:'bruxa'},
+      {emoji:'🌫️',texto:'"Para regresar a ti... a veces hay que bajar"',next:'p7_ai_b',hint:'aetherius'},
+    ]},
+  p7_ai_b:{num:7,tipo:'revelacion',elemClass:'elem-air',
+    texto:'En tu versión más oscura, tú...',
+    opciones:[
+      {emoji:'🌈',texto:'Te desconectas de lo concreto y vives demasiado en potenciales',result:{luz:'bruxa',sombra:'aetherius'}},
+      {emoji:'🌌',texto:'Te pierdes tan profundo que pierdes contacto con la realidad',result:{luz:'aetherius',sombra:'bruxa'}},
+      {emoji:'🔮',texto:'El prisma puede volverse laberinto sin salida',result:{luz:'bruxa',sombra:'aetherius'}},
+      {emoji:'🌫️',texto:'El viaje interior se convierte en un lugar del que no puedes salir',result:{luz:'aetherius',sombra:'bruxa'}},
+    ]},
+};
+
+// ── ENGINE ──
+let estado = { preguntaActual:'p1', elemento:null, historial:[], qNum:0 };
+
+const TIPO_LABEL = {
+  comportamiento:'✦ Comportamiento',
+  simbolica:'✦ Simbólica',
+  poetica:'✦ Poética',
+  revelacion:'✦ Revelación Final'
+};
+
+function iniciarTest() {
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('test-section').style.display = 'block';
+  renderPregunta('p1');
+}
+
+function renderPregunta(id) {
+  const p = PREGUNTAS[id];
+  if (!p) return;
+  estado.preguntaActual = id;
+
+  // Update progress
+  const pct = Math.round(((p.num - 1) / 7) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `PREGUNTA ${p.num} DE 7`;
+  document.getElementById('progressPct').textContent = pct + '%';
+
+  const badge = TIPO_LABEL[p.tipo] || '';
+  const elemClass = p.elemClass || '';
+
+  const html = `
+    <div class="question-card ${elemClass}">
+      <span class="q-element-badge q-type-${p.tipo}">${badge}</span>
+      <p class="q-number">Pregunta ${p.num} de 7</p>
+      <h2 class="q-text">${p.texto}</h2>
+      <div class="options-grid">
+        ${p.opciones.map((op, i) => `
+          <button class="option-btn" onclick="elegir(${i})">
+            <span class="option-emoji">${op.emoji}</span>
+            <span class="option-text">${op.texto}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>`;
+
+  const container = document.getElementById('questionContainer');
+  container.innerHTML = html;
+  container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function elegir(idx) {
+  const p = PREGUNTAS[estado.preguntaActual];
+  const op = p.opciones[idx];
+
+  // Mark selected
+  document.querySelectorAll('.option-btn').forEach((btn, i) => {
+    btn.classList.toggle('selected', i === idx);
+    btn.disabled = true;
+  });
+
+  // Save element
+  if (op.elem) estado.elemento = op.elem;
+
+  // Check if result
+  if (op.result) {
+    setTimeout(() => mostrarResultado(op.result), 600);
+    return;
+  }
+
+  // Navigate to next
+  if (op.next) {
+    setTimeout(() => {
+      const container = document.getElementById('questionContainer');
+      container.querySelector('.question-card').classList.add('exit');
+      setTimeout(() => renderPregunta(op.next), 300);
+    }, 400);
+  }
+}
+
+function mostrarResultado(result) {
+  document.getElementById('test-section').style.display = 'none';
+  document.getElementById('result-section').style.display = 'block';
+
+  const luz = PERSONAJES[result.luz];
+  const sombra = PERSONAJES[result.sombra];
+  const elem = ELEMENTOS[estado.elemento] || ELEMENTOS.fuego;
+
+  document.getElementById('resultElement').textContent = elem.emoji;
+  document.getElementById('resultElementName').textContent = elem.nombre;
+
+  document.getElementById('luzEmoji').textContent = luz.emoji;
+  document.getElementById('luzNombre').textContent = luz.nombre;
+  document.getElementById('luzSubtitle').textContent = luz.subtitle;
+  document.getElementById('luzDesc').textContent = luz.luz;
+  document.getElementById('luzFrase').textContent = luz.frase;
+
+  document.getElementById('sombraEmoji').textContent = sombra.emoji;
+  document.getElementById('sombraNombre').textContent = sombra.nombre;
+  document.getElementById('sombraSubtitle').textContent = sombra.subtitle;
+  document.getElementById('sombraDesc').textContent = sombra.sombra;
+  document.getElementById('sombraFrase').textContent = sombra.frase;
+
+  document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function reiniciarTest() {
+  estado = { preguntaActual:'p1', elemento:null, historial:[], qNum:0 };
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('hero').style.display = 'flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
