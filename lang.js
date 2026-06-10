@@ -103,7 +103,6 @@ const LANGS = {
     portal_rituales_name:"Rituali dell'Anima", portal_rituales_desc:'Magia pratica per ogni luna, ogni carta, ogni trasformazione che la tua anima sta chiedendo.',
     portal_pozo_name:'Pozzo dei Desideri', portal_pozo_desc:'Lancia il tuo desiderio nel cosmo e trasformalo in una stella del firmamento condiviso.',
     portal_diario_name:"Diario dell'Anima", portal_diario_desc:'Il tuo spazio sacro per salvare carte, rituali e riflessioni.',
-    portal_oraculo_name:'Oracolo Prisma', portal_oraculo_desc:"31 carte nate dalle mie storie.",
     carta_label:"Oracolo Prisma dell'Anima", carta_title:'Carta del Giorno',
     carta_instruction:'Respira profondamente, Anima Brillante. Pensa a ciò di cui hai bisogno oggi. Quando senti il richiamo, gira la carta e ricevi il messaggio che porta il tuo nome.',
     carta_tap:'Tocca la carta per girarla', carta_reading_title:"✦ MESSAGGIO DELL'ORACOLO ✦", carta_nuevo:'✦ Nuova lettura',
