@@ -65,8 +65,45 @@
     .orb-2{width:80px;height:80px;background:radial-gradient(circle,rgba(201,168,76,.15),transparent 70%);bottom:30px;left:-20px;animation-delay:-3s}
     @keyframes float-orb{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
     .highlight-quote{font-size:1.5rem;font-style:italic;font-weight:300;color:var(--gold-light);line-height:1.6;margin-bottom:2rem;padding-left:1.5rem;border-left:2px solid rgba(201,168,76,.4)}
-    .tags{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2rem}
-    .tag{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;padding:.4rem 1.2rem;border-radius:100px;border:1px solid rgba(201,168,76,.3);color:var(--gold);background:rgba(201,168,76,.05)}
+    .tags{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem}
+    .tag{
+      font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;
+      padding:.4rem 1.2rem;border-radius:100px;
+      border:1px solid rgba(201,168,76,.3);color:var(--gold);
+      background:rgba(201,168,76,.05);
+      text-decoration:none;
+      position:relative;overflow:hidden;
+      transition:border-color .3s, color .3s, background .3s;
+      cursor:pointer;
+    }
+    .tag::before{
+      content:'';
+      position:absolute;inset:0;border-radius:100px;
+      background:radial-gradient(circle at 50% 50%, rgba(201,168,76,.7) 0%, transparent 70%);
+      opacity:0;transform:scale(0);
+      transition:none;
+      pointer-events:none;
+    }
+    .tag.flash::before{
+      animation:tag-flash .6s ease forwards;
+    }
+    @keyframes tag-flash{
+      0%  {opacity:0;transform:scale(0);}
+      30% {opacity:.8;transform:scale(1.2);}
+      60% {opacity:.4;transform:scale(1.5);}
+      100%{opacity:0;transform:scale(2);}
+    }
+    .tag:hover{
+      border-color:rgba(201,168,76,.7);
+      color:var(--gold-pale);
+      background:rgba(201,168,76,.12);
+      box-shadow:0 0 16px rgba(201,168,76,.2);
+    }
+    .tags-hint{
+      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.35);font-style:italic;
+      margin-top:.8rem;line-height:1.6;
+    }
     /* PORTALES */
     #templo{background:linear-gradient(to bottom,transparent,rgba(10,8,30,.5))}
     .templo-intro{text-align:center;max-width:700px;margin:0 auto 5rem}
@@ -293,10 +330,13 @@
           <p class="highlight-quote" data-i18n-html="qs_quote">"La vida no es blanco y negro.<br>Es un prisma de infinitos colores esperando ser vividos."</p>
           <p class="section-body" data-i18n="qs_body1">Soy una guía espiritual, lectora de Tarot y creadora del Oráculo Prisma del Alma.</p>
           <p class="section-body" style="margin-top:1rem" data-i18n="qs_body2">Cada carta es un espejo. Cada lectura, un regreso a ti.</p>
+          <p class="tags-hint">✦ Coloca tu cursor sobre las palabras clave<br>y abre el portal hacia el más allá…</p>
           <div class="tags">
-            <span class="tag">Oráculo Prisma</span><span class="tag">Esencias Sagradas</span>
-            <span class="tag">Dualidades</span><span class="tag">Guardianes</span>
-            <span class="tag">Llaves Prismáticas</span><span class="tag">Portales Místicos</span>
+            <a href="recetas.html"  class="tag" onclick="flashTag(this)">🌈 Esencias Sagradas</a>
+            <a href="historias.html" class="tag" onclick="flashTag(this)">🌒 Dualidades</a>
+            <a href="rituales.html" class="tag" onclick="flashTag(this)">🛡️ Guardianes</a>
+            <a href="diario.html"   class="tag" onclick="flashTag(this)">💠 Llaves Prismáticas</a>
+            <a href="pozo.html"     class="tag" onclick="flashTag(this)">⭐ Pozo de los Deseos</a>
           </div>
         </div>
       </div>
@@ -616,6 +656,15 @@
     document.getElementById('nombreSub').textContent =
       `Tu número del Prisma es el ${numeroPrisma} · Carta guía: ${PERSONAJES[(numeroPrisma-1) % PERSONAJES.length]}`;
     document.getElementById('nombreResultado').classList.add('visible');
+  }
+
+  // TAG FLASH
+  function flashTag(el){
+    el.classList.remove('flash');
+    void el.offsetWidth; // reflow
+    el.classList.add('flash');
+    // Remove class after animation so it can re-trigger
+    setTimeout(()=>el.classList.remove('flash'), 700);
   }
 
   // DROPDOWN PORTAL
