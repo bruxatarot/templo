@@ -487,7 +487,7 @@
   <div id="starfield"><canvas id="stars"></canvas></div>
 
   <nav>
-    <a href="index.html" class="nav-back">← Volver al Templo</a>
+    <a href="index.html" class="nav-back" id="btnBack">← Volver al Templo</a>
     <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
     <div class="nav-right">
       <span class="nav-user" id="navUser"></span>
@@ -764,6 +764,18 @@
       window.showToast('Nombre revelado ✨ (no se pudo guardar: ' + e.message + ')');
     }
   }
+</script>
+<script>
+// Dynamic back button based on origin
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const from = params.get('from');
+  const btn = document.getElementById('btnBack');
+  if(btn && from === 'web'){
+    btn.href = 'web.html';
+    btn.textContent = '← Volver';
+  }
+})();
 </script>
 </body>
 </html>
