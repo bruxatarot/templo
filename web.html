@@ -554,44 +554,25 @@
   }
 
   // ── NOMBRE MÍSTICO ──
-  const PERSONAJES = [
-    'Bruxa','Nabi','Marta','Jade','Elena','Mia','Tony','Dante',
-    'La Voz Clara','El Llamado','El Regreso','Álvaro','Emmanuel',
-    'Valeria','Karina','Tatiana','Lucía','Alberto','Oracio','Rosario',
-    'Renata','Sofía','Cristina','Jazmín','Daniela','Heimdall','Erebus','Aetherius',
-    'El Umbral','El Concilio','El Caos','Las Pociones','El Conocimiento'
-  ];
-  const ELEMENTOS = [
-    'de la Luna Cristalina','del Fuego Eterno','del Viento Dorado',
-    'de la Sombra Sagrada','del Prisma Infinito','de la Estrella Naciente',
-    'del Agua Profunda','de la Tierra Ancestral','del Rayo Violeta',
-    'del Alba Mística','del Crepúsculo Dorado','de la Niebla Encantada'
-  ];
-  const TITULOS = [
-    'La Guardiana','La Tejedora','La Portadora','La Invocadora',
-    'La Canalizadora','La Vidente','La Viajera','La Despertadora',
-    'La Bruja','La Druida','La Sacerdotisa','La Chamán'
-  ];
+  const NM_DIAS=['Iluminado/a','Hechicero/a','Viajero/a','Guardián/a','Portador/a','Mago/a','Encubierto/a','Tejedor/a','Sanador/a','Vidente','Invocador/a','Buscador/a','Protector/a','Velador/a','Prisionero/a','Liberador/a','Custodio/a','Olvidado/a','Renacido/a','Cazador/a','Susurrador/a','Caminante','Venenoso/a','Druida','Musa','Encantador/a','Canalizador/a','Ancestral','Primordial','Revelado/a','Dios/Diosa'];
+  const NM_MESES=['Etéreo/a','Gélido/a','Tempestuoso/a','Floreciente','Eterno/a','Cúpido','Mágico/a','Sutil','Sabio/a','Místico/a','Silencioso/a','Ancestral'];
+  const NM_ANIOS=['del Prisma','del Tiempo','del Fuego','de las Sombras','del Inframundo','del Amor','del Karma','del Umbral','de la Justicia','del Corazón','del Alma','del Espejo','del Destino','de la Luz','de la Oscuridad','del Silencio','del Caos','del Orden','de las Estrellas','del Abismo','del Velo','de la Luna','del Sol','del Despertar','de la Muerte','de la Vida','del Renacimiento','del Olvido','del Recuerdo','de la Verdad','de la Mentira','del Poder','de la Debilidad','del Equilibrio','del Desequilibrio','del Misterio','de la Revelación','del Secreto','de la Traición','de la Lealtad','del Sacrificio','de la Redención','del Castigo','de la Recompensa','del Deseo','de la Tentación','de la Pureza','de la Corrupción','del Nacimiento','del Final','del Comienzo','del Destino'];
 
   function calcularNombre(){
     const fecha = document.getElementById('nombreFecha').value;
     if(!fecha){ return; }
-    const d = new Date(fecha);
-    const dia  = d.getDate();        // 1-31  → personaje
-    const mes  = d.getMonth();       // 0-11  → elemento
-    const anio = d.getFullYear();    // → título via suma de dígitos
-
-    const personaje = PERSONAJES[(dia - 1) % PERSONAJES.length];
-    const elemento  = ELEMENTOS[mes % ELEMENTOS.length];
-    const digitSum  = String(anio).split('').reduce((a,b)=>a+parseInt(b),0);
-    const titulo    = TITULOS[digitSum % TITULOS.length];
-
-    const nombre = `${titulo} ${personaje} ${elemento}`;
-    const numeroPrisma = ((dia + mes + 1 + digitSum) % 31) + 1;
-
+    const d = new Date(fecha + 'T12:00:00');
+    const dia  = d.getDate();
+    const mes  = d.getMonth();
+    const anio = d.getFullYear();
+    const palabra  = NM_DIAS[(dia - 1) % 31];
+    const adjetivo = NM_MESES[mes % 12];
+    const ultimos2 = anio % 100;
+    const idxAnio  = ultimos2 <= 51 ? ultimos2 : ultimos2 - 52;
+    const frase    = NM_ANIOS[idxAnio];
+    const nombre = `${palabra} ${adjetivo} ${frase}`;
     document.getElementById('nombreTexto').textContent = nombre;
-    document.getElementById('nombreSub').textContent =
-      `Tu número del Prisma es el ${numeroPrisma} · Carta guía: ${PERSONAJES[(numeroPrisma-1) % PERSONAJES.length]}`;
+    document.getElementById('nombreSub').textContent = `${dia}/${mes+1}/${anio} · Tu nombre del Prisma`;
     document.getElementById('nombreResultado').classList.add('visible');
   }
 
