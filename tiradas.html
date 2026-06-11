@@ -1,1 +1,833 @@
-en construccion
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oráculo Prisma • Tiradas • Bruxa Tarot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <script src="lang.js"></script>
+  <style>
+    :root{--gold:#c9a84c;--gold-light:#e8c97a;--gold-pale:#f5e6b8;--deep:#04060f;--midnight:#0b1128;}
+    *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+    body{background:var(--deep);color:#e8dfc8;font-family:'Cormorant Garamond',serif;overflow-x:hidden;min-height:100vh}
+
+    #starfield{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:radial-gradient(ellipse at 20% 30%,#0d1a3a,#04060f 60%),
+                 radial-gradient(ellipse at 80% 70%,#100828,transparent 60%)}
+    #starfield canvas{position:absolute;inset:0;width:100%;height:100%}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;
+      justify-content:space-between;padding:1.2rem 3rem;
+      background:linear-gradient(to bottom,rgba(4,6,15,.97),transparent)}
+    .nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.3em;color:var(--gold);text-decoration:none}
+    .nav-back{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.2em;color:#b8a87a;text-decoration:none;transition:color .3s}
+    .nav-back:hover{color:var(--gold)}
+
+    /* ── HERO ── */
+    #hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem}
+
+    .hero-badge{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.45em;color:var(--gold);
+      border:1px solid rgba(201,168,76,.3);padding:.45rem 1.8rem;border-radius:100px;
+      background:rgba(201,168,76,.05);display:inline-block;margin-bottom:2rem;
+      animation:fadeUp .9s ease .1s both}
+
+    .hero-title{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,5vw,4rem);
+      font-weight:400;color:var(--gold-pale);line-height:1.15;margin-bottom:1.5rem;
+      animation:fadeUp .9s ease .3s both}
+
+    .hero-welcome{font-style:italic;font-size:clamp(1.1rem,2.5vw,1.4rem);color:#c4b090;
+      line-height:1.9;max-width:650px;margin:0 auto 1rem;animation:fadeUp .9s ease .5s both}
+
+    .hero-instruccion{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.5);animation:fadeUp .9s ease .7s both;margin-top:.5rem}
+
+    /* ── TEMA SELECTOR ── */
+    #temas{position:relative;z-index:1;padding:0 2rem 6rem}
+    .temas-inner{max-width:900px;margin:0 auto}
+
+    .temas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+    @media(max-width:680px){.temas-grid{grid-template-columns:1fr;gap:1rem}}
+
+    .tema-card{
+      position:relative;overflow:hidden;
+      border:1px solid rgba(201,168,76,.15);border-radius:24px;
+      background:rgba(11,17,40,.6);backdrop-filter:blur(6px);
+      padding:2.5rem 2rem;text-align:center;cursor:pointer;
+      transition:all .5s cubic-bezier(.4,0,.2,1);
+      animation:fadeUp .8s ease both;
+    }
+    .tema-card:nth-child(1){animation-delay:.1s;--tema-color:rgba(220,80,100,.15);--tema-border:rgba(220,80,100,.4)}
+    .tema-card:nth-child(2){animation-delay:.2s;--tema-color:rgba(201,168,76,.12);--tema-border:rgba(201,168,76,.5)}
+    .tema-card:nth-child(3){animation-delay:.3s;--tema-color:rgba(80,100,220,.12);--tema-border:rgba(120,80,220,.4)}
+
+    .tema-card::before{content:'';position:absolute;inset:0;border-radius:24px;
+      background:radial-gradient(ellipse at 50% 0%,var(--tema-color),transparent 70%);
+      opacity:0;transition:opacity .4s}
+    .tema-card:hover::before{opacity:1}
+    .tema-card:hover{
+      border-color:var(--tema-border);
+      transform:translateY(-8px);
+      box-shadow:0 20px 60px rgba(0,0,0,.4);
+    }
+
+    .tema-emoji{font-size:3rem;margin-bottom:1.2rem;display:block;
+      filter:drop-shadow(0 0 8px rgba(201,168,76,.3));
+      transition:transform .3s}
+    .tema-card:hover .tema-emoji{transform:scale(1.15)}
+
+    .tema-nombre{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:.25em;
+      color:var(--gold);margin-bottom:.8rem}
+
+    .tema-desc{font-style:italic;font-size:.95rem;color:#a09070;line-height:1.6;margin-bottom:1.5rem}
+
+    .tema-posiciones{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.5rem}
+    .tema-pos{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.5);padding:.3rem .8rem;border-radius:100px;
+      background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.1)}
+
+    .tema-btn{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;
+      padding:.7rem 1.8rem;border-radius:100px;border:1px solid rgba(201,168,76,.3);
+      background:transparent;color:var(--gold);cursor:pointer;transition:all .3s}
+    .tema-btn:hover{background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.6)}
+
+    /* ── TIRADA SECTION ── */
+    #tirada-section{position:relative;z-index:1;display:none;
+      min-height:100vh;padding:6rem 2rem 6rem}
+    .tirada-inner{max-width:1000px;margin:0 auto}
+
+    .tirada-header{text-align:center;margin-bottom:4rem}
+    .tirada-tema-badge{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.35em;
+      padding:.4rem 1.4rem;border-radius:100px;display:inline-block;margin-bottom:1.2rem}
+    .tirada-titulo{font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,4vw,2.8rem);
+      color:var(--gold-pale);font-weight:400;margin-bottom:.8rem}
+    .tirada-instruccion{font-style:italic;color:#a09070;font-size:1rem;line-height:1.7}
+
+    /* CARTAS EN LA TIRADA */
+    .tirada-cartas{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:3rem}
+    @media(max-width:680px){.tirada-cartas{grid-template-columns:1fr;gap:2rem}}
+
+    .tirada-slot{text-align:center}
+    .tirada-slot-label{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.25em;
+      color:rgba(201,168,76,.5);margin-bottom:.8rem;display:block}
+    .tirada-slot-num{font-family:'Cinzel Decorative',serif;font-size:.9rem;
+      color:rgba(201,168,76,.3);margin-bottom:.5rem;display:block}
+
+    /* CARTA FLIP EN TIRADA */
+    .tirada-card-scene{width:160px;height:276px;perspective:800px;
+      cursor:pointer;margin:0 auto 1rem}
+    .tirada-card-flip{width:100%;height:100%;position:relative;
+      transform-style:preserve-3d;
+      transition:transform 1s cubic-bezier(.4,.2,.2,1)}
+    .tirada-card-scene.flipped .tirada-card-flip{transform:rotateY(180deg)}
+    .tirada-card-face{position:absolute;inset:0;border-radius:12px;
+      backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+
+    .tirada-card-back{background:#0b1128;border:1px solid rgba(201,168,76,.25);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 8px 30px rgba(0,0,0,.5);cursor:pointer;
+      transition:border-color .3s,box-shadow .3s}
+    .tirada-card-back:hover{border-color:rgba(201,168,76,.6);
+      box-shadow:0 0 20px rgba(201,168,76,.2),0 8px 30px rgba(0,0,0,.5)}
+    .tirada-card-back img{width:100%;height:100%;object-fit:cover;border-radius:12px}
+    .tirada-card-back-fb{width:100%;height:100%;display:flex;align-items:center;
+      justify-content:center;font-size:2rem;
+      background:linear-gradient(160deg,#1a1050,#0b1128)}
+
+    .tirada-card-front{transform:rotateY(180deg);background:#0b1128;
+      border:1px solid rgba(201,168,76,.4);
+      box-shadow:0 8px 30px rgba(0,0,0,.5),0 0 20px rgba(201,168,76,.1);
+      display:flex;flex-direction:column}
+    .tirada-card-front img{flex:1;width:100%;object-fit:cover;display:block}
+    .tirada-card-front img.reversed{transform:rotate(180deg)}
+    .tirada-card-front-foot{background:rgba(4,6,15,.92);padding:5px 6px 6px;text-align:center}
+    .tirada-card-front-name{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.1em;color:var(--gold);line-height:1.3}
+
+    .tirada-tap-hint{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.3)}
+
+    /* MENSAJES DE TIRADA */
+    .tirada-mensajes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2rem}
+    @media(max-width:680px){.tirada-mensajes{grid-template-columns:1fr}}
+
+    .tirada-mensaje{border:1px solid rgba(201,168,76,.12);border-radius:14px;
+      padding:1.4rem;background:rgba(11,17,40,.5);
+      opacity:0;transform:translateY(20px);
+      transition:opacity .6s ease,transform .6s ease}
+    .tirada-mensaje.visible{opacity:1;transform:translateY(0)}
+
+    .tirada-msg-pos{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.25em;
+      color:rgba(201,168,76,.45);margin-bottom:.5rem}
+    .tirada-msg-nombre{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.15em;
+      color:var(--gold);margin-bottom:.3rem}
+    .tirada-msg-posicion{font-size:.8rem;margin-bottom:.8rem}
+    .tirada-msg-texto{font-style:italic;font-size:.95rem;color:#b0a07a;line-height:1.8}
+
+    .reversed-badge{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      padding:.2rem .6rem;border-radius:100px;
+      background:rgba(120,80,220,.15);border:1px solid rgba(120,80,220,.3);color:#b090e0}
+    .upright-badge{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      padding:.2rem .6rem;border-radius:100px;
+      background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);color:var(--gold)}
+
+    /* ACCIONES */
+    .tirada-acciones{display:flex;gap:1rem;justify-content:center;
+      flex-wrap:wrap;margin-top:3rem}
+    .btn{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.2em;
+      padding:.85rem 2rem;border-radius:100px;text-decoration:none;
+      transition:all .4s;cursor:pointer;border:none}
+    .btn-primary{background:linear-gradient(135deg,#c9a84c,#a07828);color:var(--deep);
+      box-shadow:0 0 25px rgba(201,168,76,.25)}
+    .btn-primary:hover{box-shadow:0 0 45px rgba(201,168,76,.45);transform:translateY(-2px)}
+    .btn-ghost{background:transparent;color:var(--gold);border:1px solid rgba(201,168,76,.3)}
+    .btn-ghost:hover{background:rgba(201,168,76,.08);transform:translateY(-2px)}
+    .btn-violet{background:rgba(120,80,220,.15);color:#c0a0f0;border:1px solid rgba(120,80,220,.3)}
+    .btn-violet:hover{background:rgba(120,80,220,.25);transform:translateY(-2px)}
+
+    .divider{display:flex;align-items:center;gap:1.5rem;max-width:400px;margin:2rem auto;position:relative;z-index:1}
+    .divider-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.3),transparent)}
+    .divider-sym{color:var(--gold);font-size:1rem}
+
+    /* SHIMMER BACK */
+    .card-shimmer-over{position:absolute;inset:0;border-radius:12px;pointer-events:none;
+      background:linear-gradient(135deg,transparent 25%,rgba(201,168,76,.07) 50%,transparent 75%);
+      animation:shimmer-move 3s ease-in-out infinite;background-size:200% 200%}
+    @keyframes shimmer-move{0%,100%{background-position:0% 0%}50%{background-position:100% 100%}}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+    @media(max-width:768px){nav{padding:1rem 1.5rem}}
+
+    /* ── SHUFFLE ANIMATION ── */
+    #shuffleOverlay{
+      position:fixed;inset:0;z-index:200;
+      display:none;align-items:center;justify-content:center;
+      flex-direction:column;gap:1.5rem;
+      background:rgba(4,6,15,.92);backdrop-filter:blur(8px);
+    }
+    #shuffleOverlay.active{display:flex}
+    .shuffle-label{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.4em;
+      color:rgba(201,168,76,.6);text-align:center}
+    .shuffle-deck{position:relative;width:100px;height:172px}
+    .shuffle-card{
+      position:absolute;width:90px;height:155px;
+      border-radius:10px;background:linear-gradient(160deg,#1a1050,#0b1128);
+      border:1px solid rgba(201,168,76,.25);
+      box-shadow:0 4px 20px rgba(0,0,0,.5);
+      left:50%;transform:translateX(-50%);
+      transition:all .4s cubic-bezier(.4,0,.2,1);
+    }
+    .shuffle-card img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+
+    /* ── PILE SELECTION ── */
+    #pileSection{display:none;text-align:center;margin-bottom:2.5rem}
+    .pile-label{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.5);margin-bottom:1.5rem;display:block}
+    .piles-wrap{display:flex;gap:2.5rem;justify-content:center;flex-wrap:wrap}
+    .pile{
+      position:relative;width:90px;height:155px;cursor:pointer;
+      transition:transform .3s;
+    }
+    .pile:hover{transform:translateY(-10px)}
+    .pile-stack{position:absolute;inset:0}
+    .pile-card{
+      position:absolute;width:88px;height:152px;border-radius:10px;
+      background:linear-gradient(160deg,#1a1050,#0b1128);
+      border:1px solid rgba(201,168,76,.2);
+      box-shadow:0 4px 15px rgba(0,0,0,.4);
+      left:0;top:0;
+    }
+    .pile-card img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+    .pile:hover .pile-card{border-color:rgba(201,168,76,.5);
+      box-shadow:0 0 20px rgba(201,168,76,.2),0 4px 20px rgba(0,0,0,.5)}
+    .pile-hint{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.4);margin-top:.8rem;text-align:center}
+
+    /* ── 7 CARDS SELECTION ── */
+    #seleccionSection{display:none;text-align:center;margin-bottom:2.5rem}
+    .seleccion-label{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.5);margin-bottom:.5rem;display:block}
+    .seleccion-sublabel{font-style:italic;font-size:.9rem;color:#a09070;
+      margin-bottom:1.8rem;display:block}
+    .seleccion-cards{
+      display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;
+      perspective:800px;
+    }
+    .seleccion-card{
+      width:72px;height:124px;cursor:pointer;position:relative;
+      transform-style:preserve-3d;
+      transition:transform .3s cubic-bezier(.4,0,.2,1);
+      flex-shrink:0;
+    }
+    .seleccion-card:hover{transform:translateY(-12px) rotate(-2deg)}
+    .seleccion-card.elegida{
+      transform:translateY(-20px) scale(1.08);
+      filter:drop-shadow(0 0 12px rgba(201,168,76,.6));
+    }
+    .seleccion-card.elegida-otro{opacity:.4;transform:scale(.95)}
+    .seleccion-card-inner{
+      width:100%;height:100%;border-radius:9px;overflow:hidden;
+      border:1px solid rgba(201,168,76,.2);
+      background:linear-gradient(160deg,#1a1050,#0b1128);
+      box-shadow:0 4px 16px rgba(0,0,0,.5);
+      transition:border-color .3s,box-shadow .3s;
+    }
+    .seleccion-card:hover .seleccion-card-inner{
+      border-color:rgba(201,168,76,.6);
+      box-shadow:0 0 16px rgba(201,168,76,.2),0 4px 20px rgba(0,0,0,.5);
+    }
+    .seleccion-card.elegida .seleccion-card-inner{
+      border-color:rgba(201,168,76,.8);
+    }
+    .seleccion-card-inner img{width:100%;height:100%;object-fit:cover;border-radius:9px}
+    .seleccion-counter{
+      font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.25em;
+      color:rgba(201,168,76,.5);margin-top:1.2rem;display:block;
+    }
+    .shimmer-sm{position:absolute;inset:0;border-radius:9px;pointer-events:none;
+      background:linear-gradient(135deg,transparent 25%,rgba(201,168,76,.07) 50%,transparent 75%);
+      animation:shimmer-move 3s ease-in-out infinite;background-size:200% 200%}
+  </style>
+</head>
+<body>
+  <div id="starfield"><canvas id="stars"></canvas></div>
+
+  <nav>
+    <a href="index.html" class="nav-back">← Volver al Templo</a>
+    <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <span class="hero-badge">✦ ORÁCULO PRISMA DEL ALMA ✦</span>
+    <h1 class="hero-title">Portal del<br>Oráculo Prisma</h1>
+    <p class="hero-welcome">
+      Bienvenida, Alma Brillante.<br>
+      Has llegado al portal donde tus miedos, tus dudas<br>
+      y tus preguntas más profundas encontrarán respuesta.<br><br>
+      <em>Respira. Concéntrate. El Oráculo ya te está escuchando.</em>
+    </p>
+    <p class="hero-instruccion">☽ Elige un tema y deja que las cartas hablen ☾</p>
+  </section>
+
+  <!-- TEMAS -->
+  <section id="temas">
+    <div class="temas-inner">
+      <div class="temas-grid">
+
+        <!-- AMOR -->
+        <div class="tema-card" onclick="iniciarTirada('amor')">
+          <span class="tema-emoji">❤️</span>
+          <p class="tema-nombre">AMOR</p>
+          <p class="tema-desc">Deja que el Oráculo ilumine lo que tu corazón siente, lo que lo bloquea y el camino que te pide seguir.</p>
+          <div class="tema-posiciones">
+            <span class="tema-pos">1 · Lo que tu corazón siente</span>
+            <span class="tema-pos">2 · Lo que está bloqueando</span>
+            <span class="tema-pos">3 · Lo que el Oráculo aconseja</span>
+          </div>
+          <button class="tema-btn">✦ Iniciar tirada</button>
+        </div>
+
+        <!-- TRABAJO -->
+        <div class="tema-card" onclick="iniciarTirada('trabajo')">
+          <span class="tema-emoji">✨</span>
+          <p class="tema-nombre">TRABAJO</p>
+          <p class="tema-desc">El Oráculo te muestra dónde estás, qué necesitas soltar y hacia dónde te lleva tu camino profesional.</p>
+          <div class="tema-posiciones">
+            <span class="tema-pos">1 · Dónde estás ahora</span>
+            <span class="tema-pos">2 · Qué necesitas soltar</span>
+            <span class="tema-pos">3 · Hacia dónde vas</span>
+          </div>
+          <button class="tema-btn">✦ Iniciar tirada</button>
+        </div>
+
+        <!-- PERSONAL -->
+        <div class="tema-card" onclick="iniciarTirada('personal')">
+          <span class="tema-emoji">🌙</span>
+          <p class="tema-nombre">PERSONAL</p>
+          <p class="tema-desc">Un espejo del alma. El Oráculo revela tu luz del momento, tu sombra y el mensaje que tu alma necesita hoy.</p>
+          <div class="tema-posiciones">
+            <span class="tema-pos">1 · Tu luz del momento</span>
+            <span class="tema-pos">2 · Tu sombra del momento</span>
+            <span class="tema-pos">3 · El mensaje del alma</span>
+          </div>
+          <button class="tema-btn">✦ Iniciar tirada</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SHUFFLE OVERLAY -->
+  <div id="shuffleOverlay">
+    <p class="shuffle-label" id="shuffleLabel">✦ BARAJANDO EL ORÁCULO ✦</p>
+    <div class="shuffle-deck" id="shuffleDeck"></div>
+  </div>
+
+  <!-- TIRADA -->
+  <section id="tirada-section">
+    <div class="tirada-inner">
+      <div class="tirada-header">
+        <span class="tirada-tema-badge" id="tiradaBadge">❤️ AMOR</span>
+        <h2 class="tirada-titulo" id="tiradaTitulo">Tirada de Amor</h2>
+        <p class="tirada-instruccion" id="tiradaInstruccion">Concéntrate en tu pregunta. Cuando sientas el llamado, voltea cada carta.</p>
+      </div>
+
+      <!-- PILE SELECTION -->
+      <div id="pileSection">
+        <span class="pile-label">☽ ELIGE UN MONTÓN ☾</span>
+        <div class="piles-wrap" id="pilesWrap"></div>
+      </div>
+
+      <!-- 7 CARD SELECTION -->
+      <div id="seleccionSection">
+        <span class="seleccion-label">✦ ELIGE TUS 3 CARTAS ✦</span>
+        <span class="seleccion-sublabel">Concéntrate en tu pregunta y deja que tus manos guíen</span>
+        <div class="seleccion-cards" id="seleccionCards"></div>
+        <span class="seleccion-counter" id="seleccionCounter">0 de 3 elegidas</span>
+      </div>
+
+      <!-- CARTAS REVELADAS -->
+      <div class="tirada-cartas" id="tiradaCartas" style="display:none"></div>
+      <div class="tirada-mensajes" id="tiradaMensajes"></div>
+
+      <div class="tirada-acciones">
+        <a href="diario.html" class="btn btn-violet">📖 Guardar en el Diario</a>
+        <button onclick="otraTirada()" class="btn btn-ghost">✦ Elegir otro tema</button>
+      </div>
+    </div>
+  </section>
+
+<script>
+// STARFIELD
+(function(){
+  const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');
+  let stars=[],W,H;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  function initStars(){stars=[];const n=Math.floor((W*H)/4000);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.2,alpha:Math.random()*.7+.1,ts:Math.random()*.02+.005,to:Math.random()*Math.PI*2,gold:Math.random()<.08});}
+  function draw(t){ctx.clearRect(0,0,W,H);stars.forEach(s=>{const a=s.alpha*(.6+.4*Math.sin(t*s.ts+s.to));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.gold?`rgba(201,168,76,${a*.8})`:`rgba(255,255,255,${a})`;ctx.fill();});requestAnimationFrame(draw);}
+  window.addEventListener('resize',()=>{resize();initStars();});resize();initStars();requestAnimationFrame(draw);
+})();
+
+// ── 31 CARTAS ──
+const cartas = [
+  {num:1,name:'Bruxa Tarot',subtitle:'Canalizadora del Prisma',cat:'esencias',img:'images/bruxa.png',
+    message:'Es tiempo de recuperar tu magia personal. Tienes el poder de cambiar tu mirada y elegir otra frecuencia. Esta carta es un llamado suave pero firme a recuperar el asombro.',
+    sombra:'En sombra: te desconectas de lo concreto y vives demasiado en potenciales. El prisma de posibilidades puede volverse laberinto. Hoy pregúntate: ¿estás creando o evadiendo?'},
+  {num:2,name:'Nabi',subtitle:'Cazadora de Espíritus',cat:'esencias',img:'images/nabi.png',
+    message:'Algo invisible necesita ser visto. Tu intuición será tu mejor aliada. Observa, discierte y actúa con sigilo, pero con firmeza.',
+    sombra:'En sombra: la hipervigilancia se convierte en ansiedad y sospecha. Ves peligro donde no lo hay. Hoy respira — no todo lo que percibes es una amenaza real.'},
+  {num:3,name:'Marta',subtitle:'Diosa de la Sanación',cat:'esencias',img:'images/marta.png',
+    message:'Sanar no implica evitar el dolor, sino atravesarlo con valentía. Marta te invita a confiar en que cada lágrima derramada riega tu camino hacia una versión más fuerte de ti.',
+    sombra:'En sombra: la paciencia se convierte en estancamiento. Te aferras a la esperanza aunque ya no haya señales. ¿Estás esperando o simplemente evitando avanzar?'},
+  {num:4,name:'Jade',subtitle:'Diosa del Karma',cat:'esencias',img:'images/jade.png',
+    message:'Jade aparece cuando el universo está haciendo ajustes. Todo lo que sembraste comienza a dar frutos. Esta carta te invita a perdonarte y soltar lo que ya no te corresponde cargar.',
+    sombra:'En sombra: la necesidad de equilibrio se vuelve rigidez y juicio excesivo. El peso de la justicia puede convertirse en condena. Suelta el veredicto.'},
+  {num:5,name:'Elena',subtitle:'Diosa del Camino',cat:'esencias',img:'images/elena.png',
+    message:'El camino ya está trazado dentro de ti. Aunque no veas todo el mapa, tienes suficiente claridad para el siguiente paso. Confía en tu intuición. No estás sola.',
+    sombra:'En sombra: la brújula interna se silencia por duda excesiva. No confías en lo que ya sabes. Hoy para el ruido externo y escucha lo que llevas dentro.'},
+  {num:6,name:'Mia',subtitle:'Diosa del Amor Propio',cat:'esencias',img:'images/mia.png',
+    message:'Mia llega cuando es momento de recordar quién eres y lo que vales. El amor empieza por ti. No temas alejarte de lo que no te valora.',
+    sombra:'En sombra: la autoprotección se vuelve cierre prematuro. Tu dignidad puede volverse distancia. ¿Estás protegiéndote... o alejando lo que sí te hace bien?'},
+  {num:7,name:'Tony',subtitle:'Dios del Tiempo',cat:'esencias',img:'images/tony.png',
+    message:'Tony aparece cuando el tiempo es ahora. Ya no hay espacio para el después. Lo que no eliges hoy, lo elige el tiempo por ti.',
+    sombra:'En sombra: la urgencia se convierte en ansiedad por el futuro. El miedo a que el tiempo se acabe te paraliza. Hoy respira — no todo necesita resolverse ahora.'},
+  {num:8,name:'Dante',subtitle:'Dios del Fuego y la Resurrección',cat:'esencias',img:'images/dante.png',
+    message:'Dante aparece cuando el deseo es tan fuerte que no puede ser ignorado. Atrévete a sentir sin censura. Del dolor más profundo nace la llama más brillante.',
+    sombra:'En sombra: la intensidad se convierte en adicción al drama emocional. Buscas el fuego aunque destruya. ¿Lo que sientes es pasión... o caos disfrazado?'},
+  {num:9,name:'La Voz Clara',subtitle:'Regreso Interior',cat:'esencias',img:'images/la-voz-clara.png',
+    message:'La Voz Clara es el momento en que el alma dice: ya no más huir. Estás lista para volver a ti. Es hora de tomar el micrófono de tu propia vida.',
+    sombra:'En sombra: el ruido externo ahoga la voz interior. No logras escucharte. Hoy apaga todo lo que no eres tú y siéntate en silencio aunque incomode.'},
+  {num:10,name:'El Llamado del Alma',subtitle:'Despertar Espiritual',cat:'esencias',img:'images/llama.png',
+    message:'Tu corazón desea otra vida. Cuando ya diste el primer paso y necesitas confirmación de que tu alma te guía — esta carta es esa señal.',
+    sombra:'En sombra: el despertar genera crisis de identidad. Te resistes al cambio que tu alma pide. Lo que se mueve en ti no es peligro — es evolución.'},
+  {num:11,name:'El Regreso a Casa',subtitle:'Reconexión',cat:'esencias',img:'images/regreso.png',
+    message:'Luego del caos, del despertar, del dolor — decides volver a ti. No es un regreso al pasado: es al presente más honesto, más tuyo.',
+    sombra:'En sombra: le temes a la calma. La estabilidad te parece aburrida o falsa. ¿Por qué te cuesta tanto permitirte estar en paz?'},
+  {num:12,name:'Álvaro',subtitle:'Tejedor de Sombras',cat:'dualidades',img:'images/alvaro.png',
+    message:'Esta carta surge cuando las emociones se vuelven un juego de poder. ¿Estás en un vínculo desequilibrado? Tu intuición ya sabe la verdad.',
+    sombra:'En sombra profunda: manipulación pasiva y dependencia emocional disfrazada. Usas la ambigüedad como escudo para no comprometerte. Hoy sé honesto/a — contigo primero.'},
+  {num:13,name:'Emmanuel',subtitle:'Eco de la Duda',cat:'dualidades',img:'images/emmanuel.png',
+    message:'Cuando estás atrapada entre lo que deseas y lo que te atreves a elegir. No elegir también es elegir. Y el alma lo sabe.',
+    sombra:'En sombra: nostalgia paralizante y apego a lo conocido aunque duela. Hoy el universo te pide que te decidas.'},
+  {num:14,name:'Valeria',subtitle:'El Veneno Sutil',cat:'dualidades',img:'images/valeria.png',
+    message:'Esta carta llega como susurro. ¿Lo que sientes es deseo o adicción? ¿Estás aceptando migajas disfrazadas de pasión?',
+    sombra:'En sombra: toxicidad pasiva y autoafirmación a costa de otros. Distorsionas percepciones sin confrontación directa. Hoy pregúntate desde dónde estás actuando realmente.'},
+  {num:15,name:'Karina',subtitle:'Intromisión Silenciosa',cat:'dualidades',img:'images/karina.png',
+    message:'El verdadero poder no viene del control externo, sino de la seguridad interna. Esta carta te invita a soltar el espejismo del control.',
+    sombra:'En sombra: cruzas límites sin confrontación abierta, desde la inseguridad disfrazada de poder. El verdadero control viene de adentro, no de manipular lo externo.'},
+  {num:16,name:'Tatiana',subtitle:'Prisionera del Ayer',cat:'dualidades',img:'images/tatiana.png',
+    message:'Tatiana aparece cuando estás aferrada a algo solo porque es familiar. ¿Estás en ciclos repetidos por costumbre, no por amor?',
+    sombra:'En sombra: vives emocionalmente anclada al pasado y repites ciclos por miedo al cambio. Hoy suelta una cosa — solo una — que ya no te sirve pero sigues cargando.'},
+  {num:17,name:'Lucía y Samuel',subtitle:'Susurro Eterno',cat:'dualidades',img:'images/lucia-samuel.png',
+    message:'Cuando sientes un amor tan profundo que trasciende lo tangible. A veces el alma está esperando otra vida, otro plano, otro momento.',
+    sombra:'En sombra: idealizas el pasado y te cierras al presente. Un amor no cerrado sigue ocupando espacio. Hoy date permiso de soltar sin olvidar.'},
+  {num:18,name:'Alberto',subtitle:'La Voz que Enfrenta la Injusticia',cat:'guardianes',img:'images/alberto.png',
+    message:'Alberto aparece cuando alguien necesita ser defendido. Sé trinchera cuando alguien más está cayendo. Un acto de intercesión puede cambiar el rumbo de una situación.',
+    sombra:'En sombra: rigidez moral o confrontación impulsiva. Luchas batallas que no son tuyas. Hoy pregúntate si estás defendiendo la justicia... o tu propio orgullo.'},
+  {num:19,name:'Oracio',subtitle:'Protector de los Corazones Rotos',cat:'guardianes',img:'images/oracio.png',
+    message:'Es momento de honrar lo que siempre ha estado ahí: un amor no correspondido, una amistad que te sostuvo, una parte de ti que nunca dejaste morir.',
+    sombra:'En sombra: invisibilidad emocional y autosacrificio. Te borras para que otros brillen. Hoy recuerda que tus necesidades también importan.'},
+  {num:20,name:'Rosario',subtitle:'La Druida del Espejo',cat:'guardianes',img:'images/rosario.png',
+    message:'Rosario no te da respuestas directas: te pone frente al espejo y te acompaña mientras las descubres. La amistad que escucha antes de hablar.',
+    sombra:'En sombra: exceso de autoanálisis o dureza emocional. La verdad se convierte en juicio. Hoy sé tan compasiva con otros como lo eres con la verdad.'},
+  {num:21,name:'Las Tres Aliadas',subtitle:'Renata, Cristina y Sofía',cat:'guardianes',img:'images/lastres.png',
+    message:'¿Estás dejando que te acompañen, o tratando de cargar todo sola? Es momento de honrar a quienes te sostienen sin condiciones.',
+    sombra:'En sombra: dispersión emocional o contradicción interna. Las voces que te apoyan se contradicen y te confunden. Hoy elige una sola dirección y confía en ella.'},
+  {num:22,name:'Jazmín',subtitle:'Cupido Encubierto',cat:'guardianes',img:'images/jazmin.png',
+    message:'Jazmín trabaja en silencio y confía en el tiempo del universo. El verdadero cupido no lanza flechas — lanza señales.',
+    sombra:'En sombra: conectas a todos menos a ti misma/o. Postergás tu propio deseo emocional. Hoy pregúntate qué necesitas tú.'},
+  {num:23,name:'Daniela',subtitle:'Cheerleader del Alma',cat:'guardianes',img:'images/daniela.png',
+    message:'Esta carta es el grito del alma que dice: vas mejor de lo que crees. No te escondas cuando es hora de brillar.',
+    sombra:'En sombra: niegas tu propio dolor para mantener la energía de todos. Te consumes ayudando y nadie lo nota. Hoy permite que alguien te cuide a ti.'},
+  {num:24,name:'Heimdall',subtitle:'Guardián de los Portales',cat:'llaves',img:'images/heimdall.png',
+    message:'Sigue tu curiosidad, explora lo que parecía insignificante. Algo está a punto de abrirse en tu vida. La magia no siempre llega con grandes rituales.',
+    sombra:'En sombra: hipercontrol y rigidez defensiva. Proteges tan bien los umbrales que nada bueno puede entrar. Hoy abre una puerta aunque dé miedo.'},
+  {num:25,name:'Erebus',subtitle:'El Iluminado',cat:'llaves',img:'images/erebus.png',
+    message:'Erebus aparece cuando estás listo para ver más allá de la superficie. Su presencia basta para hacerte encontrar respuestas donde antes solo había ruido.',
+    sombra:'En sombra: aislamiento emocional y sobreintelectualización. Te encierras tanto en tu mundo que pierdes contacto con los demás. Hoy sal de tu cabeza y entra en tu cuerpo.'},
+  {num:26,name:'Aetherius',subtitle:'El Viajero del Inframundo',cat:'llaves',img:'images/aetherius.png',
+    message:'Estás cruzando portales internos que antes no querías ver. No necesitas entenderlo todo: solo atreverte a seguir tu propio viaje.',
+    sombra:'En sombra: te pierdes tan profundo que pierdes contacto con la realidad cotidiana. Hoy ancla algo concreto — come, camina, respira la tierra.'},
+  {num:27,name:'El Umbral del Inframundo',subtitle:'Portal Místico',cat:'portales',img:'images/umbral.png',
+    message:'No entras para desaparecer — entras para recordar quién eras antes de olvidar. Para regresar a ti... a veces hay que bajar.',
+    sombra:'En sombra: te niegas a bajar. Evitas el dolor transformacional y te quedas en la superficie. Hoy date permiso de sentir lo que has estado evitando.'},
+  {num:28,name:'El Concilio de la Magia',subtitle:'Portal Místico',cat:'portales',img:'images/concilio.png',
+    message:'Ya hay un concilio energético reunido: tus guías, tus yo futuros, tus ancestros. Ya estás siendo sostenida por energías mayores.',
+    sombra:'En sombra: buscas apoyo externo cuando la respuesta ya está dentro. Dependes demasiado de la validación de otros. Hoy confía en tu propio concilio interior.'},
+  {num:29,name:'El Portal del Caos',subtitle:'Portal Místico',cat:'portales',img:'images/caos.png',
+    message:'El Portal del Caos no es tu enemigo. El universo sacude la mesa para que dejes de jugar a encajar. Te libera… aunque duela.',
+    sombra:'En sombra: el caos te paraliza en vez de liberarte. Le temes a lo que se rompe aunque ya no servía. Lo que cae no era tuyo para quedarse.'},
+  {num:30,name:'El Inframundo de las Pociones',subtitle:'Portal Místico',cat:'portales',img:'images/pociones.png',
+    message:'Tu alma está en proceso alquímico. No interrumpas la mezcla: confía en lo que se está cocinando dentro de ti.',
+    sombra:'En sombra: interrumpes el proceso antes de que termine. La impaciencia te impide ver los frutos. Hoy confía en la mezcla aunque no entiendas el resultado aún.'},
+  {num:31,name:'El Portal del Conocimiento Infinito',subtitle:'Portal Místico',cat:'portales',img:'images/conocimiento.png',
+    message:'La sabiduría no se encuentra… se recuerda. Estás lista para recibir respuestas que antes no podías sostener.',
+    sombra:'En sombra: recibes tanta información que no sabes cuál escuchar. El exceso de conocimiento se vuelve parálisis. Hoy elige una sola verdad y actúa desde ahí.'},
+];
+
+// ── CONFIGURACIÓN DE TEMAS ──
+const TEMAS = {
+  amor:{
+    emoji:'❤️', nombre:'AMOR', color:'rgba(220,80,100,.2)', border:'rgba(220,80,100,.5)',
+    titulo:'Tirada de Amor',
+    posiciones:['Lo que tu corazón siente','Lo que está bloqueando','Lo que el Oráculo aconseja']
+  },
+  trabajo:{
+    emoji:'✨', nombre:'TRABAJO', color:'rgba(201,168,76,.15)', border:'rgba(201,168,76,.5)',
+    titulo:'Tirada de Trabajo',
+    posiciones:['Dónde estás ahora','Qué necesitas soltar','Hacia dónde vas']
+  },
+  personal:{
+    emoji:'🌙', nombre:'PERSONAL', color:'rgba(80,100,220,.15)', border:'rgba(120,80,220,.5)',
+    titulo:'Tirada Personal',
+    posiciones:['Tu luz del momento','Tu sombra del momento','El mensaje del alma']
+  }
+};
+
+// ── ESTADO ──
+let temaActual = null;
+let tiradaCartas = []; // 3 cartas sorteadas
+let reveladas = 0;
+
+// ── SHUFFLE ──
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+// ── ESTADO SELECCIÓN ──
+let cartasSeleccionadas = [];
+let pool7 = []; // 7 cartas del montón elegido
+
+// ── INICIAR TIRADA — SHUFFLE ANIMATION ──
+function iniciarTirada(tema) {
+  temaActual = tema;
+  reveladas = 0;
+  cartasSeleccionadas = [];
+
+  const t = TEMAS[tema];
+
+  // Setup header
+  document.getElementById('tiradaBadge').textContent = `${t.emoji} ${t.nombre}`;
+  document.getElementById('tiradaBadge').style.background = t.color;
+  document.getElementById('tiradaBadge').style.border = `1px solid ${t.border}`;
+  document.getElementById('tiradaBadge').style.color = '#f5e6b8';
+  document.getElementById('tiradaTitulo').textContent = t.titulo;
+  document.getElementById('tiradaInstruccion').textContent = 'Observa el barajado... y deja que tu intuición guíe tu elección.';
+
+  // Hide hero/temas, show tirada-section
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('temas').style.display = 'none';
+  document.getElementById('tirada-section').style.display = 'block';
+  document.getElementById('tiradaCartas').style.display = 'none';
+  document.getElementById('tiradaMensajes').innerHTML = '';
+  document.getElementById('pileSection').style.display = 'none';
+  document.getElementById('seleccionSection').style.display = 'none';
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  // START SHUFFLE ANIMATION
+  animarBarajado(() => mostrarMontones());
+}
+
+// ── SHUFFLE ANIMATION ──
+function animarBarajado(callback) {
+  const overlay = document.getElementById('shuffleOverlay');
+  const deck = document.getElementById('shuffleDeck');
+  const label = document.getElementById('shuffleLabel');
+  overlay.classList.add('active');
+  deck.innerHTML = '';
+
+  // Create 8 card visuals
+  for(let i=0;i<8;i++){
+    const card = document.createElement('div');
+    card.className = 'shuffle-card';
+    card.style.cssText = `top:${i*2}px;left:50%;transform:translateX(-50%) rotate(${(i-4)*1.5}deg)`;
+    card.innerHTML = `<img src="images/dorso.png" onerror="this.parentNode.style.background='linear-gradient(160deg,#1a1050,#0b1128)'">`;
+    deck.appendChild(card);
+  }
+
+  const messages = [
+    '✦ BARAJANDO EL ORÁCULO ✦',
+    '✦ LAS CARTAS SE MEZCLAN ✦',
+    '✦ EL ORÁCULO SE PREPARA ✦',
+    '✦ CONCENTRA TU ENERGÍA ✦'
+  ];
+  let msgIdx = 0;
+  let step = 0;
+
+  const animate = setInterval(() => {
+    step++;
+    const cards = deck.querySelectorAll('.shuffle-card');
+    label.textContent = messages[msgIdx % messages.length];
+
+    // Animate cards flying left/right
+    cards.forEach((card, i) => {
+      const side = (step + i) % 2 === 0 ? -1 : 1;
+      const angle = (Math.random()-0.5)*30 * side;
+      const tx = (Math.random()*40-20) * side;
+      const ty = -Math.random()*20;
+      card.style.transform = `translateX(calc(-50% + ${tx}px)) translateY(${ty}px) rotate(${angle}deg)`;
+      card.style.transitionDuration = '0.3s';
+    });
+
+    msgIdx++;
+
+    // After 1.5s reset to stack
+    if(step % 5 === 0){
+      cards.forEach((card,i) => {
+        card.style.transform = `translateX(-50%) rotate(${(i-4)*1.5}deg) translateY(${i*2}px)`;
+      });
+    }
+
+    if(step >= 18){
+      clearInterval(animate);
+      setTimeout(() => {
+        overlay.classList.remove('active');
+        callback();
+      }, 400);
+    }
+  }, 120);
+}
+
+// ── MOSTRAR 3 MONTONES ──
+function mostrarMontones() {
+  document.getElementById('tiradaInstruccion').textContent = 'El Oráculo está listo. Elige el montón que sientas tuyo.';
+  document.getElementById('pileSection').style.display = 'block';
+
+  const pilesWrap = document.getElementById('pilesWrap');
+  pilesWrap.innerHTML = '';
+
+  // Shuffle full deck into 3 piles of ~10
+  const shuffled = shuffle(cartas);
+  const pile1 = shuffled.slice(0,10);
+  const pile2 = shuffled.slice(10,21);
+  const pile3 = shuffled.slice(21,31);
+  const piles = [pile1, pile2, pile3];
+  const pileLabels = ['I','II','III'];
+
+  piles.forEach((pileCards, pi) => {
+    const pile = document.createElement('div');
+    pile.className = 'pile';
+    // Stack of 5 visual cards
+    const stack = document.createElement('div');
+    stack.className = 'pile-stack';
+    for(let k=0;k<5;k++){
+      const pc = document.createElement('div');
+      pc.className = 'pile-card';
+      pc.style.cssText = `top:${k*-2}px;left:${k*1}px;z-index:${k};transform:rotate(${(k-2)*1.2}deg)`;
+      pc.innerHTML = `<img src="images/dorso.png" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.style.display='none'">`;
+      stack.appendChild(pc);
+    }
+    pile.appendChild(stack);
+    const hint = document.createElement('p');
+    hint.className = 'pile-hint';
+    hint.textContent = `Montón ${pileLabels[pi]}`;
+    pile.appendChild(hint);
+    pile.onclick = () => elegirMonton(pileCards);
+    pilesWrap.appendChild(pile);
+  });
+}
+
+// ── ELEGIR MONTÓN → 7 CARTAS ──
+function elegirMonton(pileCards) {
+  document.getElementById('pileSection').style.display = 'none';
+  document.getElementById('tiradaInstruccion').textContent = 'Elige 3 cartas. Tu intuición ya sabe cuáles son.';
+
+  // Take 7 from pile (or all if less)
+  pool7 = shuffle(pileCards).slice(0,7).map(c => ({
+    ...c, isReversed: Math.random() < 0.4
+  }));
+
+  cartasSeleccionadas = [];
+  const seleccionSection = document.getElementById('seleccionSection');
+  const seleccionCards = document.getElementById('seleccionCards');
+  seleccionSection.style.display = 'block';
+  seleccionCards.innerHTML = '';
+  document.getElementById('seleccionCounter').textContent = '0 de 3 elegidas';
+
+  pool7.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'seleccion-card';
+    card.id = `scard${i}`;
+    card.innerHTML = `
+      <div class="seleccion-card-inner">
+        <img src="images/dorso.png" alt="Carta"
+             onerror="this.style.display='none'">
+        <div class="shimmer-sm"></div>
+      </div>`;
+    card.onclick = () => seleccionarCarta(i);
+    seleccionCards.appendChild(card);
+
+    // Fan animation
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    setTimeout(() => {
+      card.style.transition = 'all .4s ease';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    }, i * 80);
+  });
+}
+
+// ── SELECCIONAR CARTA DEL POOL ──
+function seleccionarCarta(i) {
+  if(cartasSeleccionadas.length >= 3) return;
+  if(cartasSeleccionadas.includes(i)) return;
+
+  cartasSeleccionadas.push(i);
+  document.getElementById(`scard${i}`).classList.add('elegida');
+
+  // Dim others if 3 selected
+  if(cartasSeleccionadas.length === 3){
+    pool7.forEach((_, j) => {
+      if(!cartasSeleccionadas.includes(j)){
+        document.getElementById(`scard${j}`).classList.add('elegida-otro');
+      }
+    });
+    // After brief pause, build tirada
+    setTimeout(() => construirTirada(), 600);
+  }
+
+  const count = cartasSeleccionadas.length;
+  document.getElementById('seleccionCounter').textContent =
+    `${count} de 3 elegida${count !== 1 ? 's' : ''}`;
+}
+
+// ── CONSTRUIR TIRADA CON LAS 3 ELEGIDAS ──
+function construirTirada() {
+  const t = TEMAS[temaActual];
+  tiradaCartas = cartasSeleccionadas.map(i => pool7[i]);
+
+  document.getElementById('seleccionSection').style.display = 'none';
+  document.getElementById('tiradaInstruccion').textContent = 'Tus cartas han sido elegidas. Voltéalas cuando estés lista.';
+
+  const cartasEl = document.getElementById('tiradaCartas');
+  const mensajesEl = document.getElementById('tiradaMensajes');
+  cartasEl.style.display = 'grid';
+  cartasEl.innerHTML = '';
+  mensajesEl.innerHTML = '';
+  reveladas = 0;
+
+  tiradaCartas.forEach((c, i) => {
+    const slot = document.createElement('div');
+    slot.className = 'tirada-slot';
+    slot.innerHTML = `
+      <span class="tirada-slot-num">${['I','II','III'][i]}</span>
+      <span class="tirada-slot-label">${t.posiciones[i]}</span>
+      <div class="tirada-card-scene" id="tscene${i}" onclick="revelarCarta(${i})">
+        <div class="tirada-card-flip" id="tflip${i}">
+          <div class="tirada-card-face tirada-card-back">
+            <img src="images/dorso.png" alt="Carta"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="tirada-card-back-fb">🦋</div>
+            <div class="card-shimmer-over"></div>
+          </div>
+          <div class="tirada-card-face tirada-card-front">
+            <img id="timg${i}" src="" alt="" ${c.isReversed ? 'class="reversed"' : ''}>
+            <div class="tirada-card-front-foot">
+              <p class="tirada-card-front-name" id="tname${i}"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="tirada-tap-hint">Toca para revelar</p>`;
+    cartasEl.appendChild(slot);
+
+    const msg = document.createElement('div');
+    msg.className = 'tirada-mensaje';
+    msg.id = `tmsg${i}`;
+    msg.innerHTML = `
+      <p class="tirada-msg-pos">${['I','II','III'][i]} · ${t.posiciones[i].toUpperCase()}</p>
+      <p class="tirada-msg-nombre" id="tmsgname${i}"></p>
+      <p class="tirada-msg-posicion" id="tmsgnposicion${i}"></p>
+      <p class="tirada-msg-texto" id="tmsgtexto${i}"></p>`;
+    mensajesEl.appendChild(msg);
+  });
+
+  cartasEl.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ── REVELAR CARTA ──
+function revelarCarta(i) {
+  const scene = document.getElementById(`tscene${i}`);
+  if (scene.classList.contains('flipped')) return;
+
+  const c = tiradaCartas[i];
+  const img = document.getElementById(`timg${i}`);
+  img.src = c.img;
+  document.getElementById(`tname${i}`).textContent = c.name;
+
+  scene.classList.add('flipped');
+  reveladas++;
+
+  setTimeout(() => {
+    // Show mensaje
+    const badge = c.isReversed
+      ? `<span class="reversed-badge">🌑 Invertida — Sombra</span>`
+      : `<span class="upright-badge">☀️ Derecha — Luz</span>`;
+    document.getElementById(`tmsgnposicion${i}`).innerHTML = badge;
+    document.getElementById(`tmsgname${i}`).textContent = c.name;
+    document.getElementById(`tmsgtexto${i}`).textContent = c.isReversed ? c.sombra : c.message;
+
+    const msgEl = document.getElementById(`tmsg${i}`);
+    msgEl.classList.add('visible');
+    msgEl.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }, 800);
+}
+
+// ── OTRA TIRADA ──
+function otraTirada() {
+  document.getElementById('tirada-section').style.display = 'none';
+  document.getElementById('pileSection').style.display = 'none';
+  document.getElementById('seleccionSection').style.display = 'none';
+  document.getElementById('tiradaCartas').style.display = 'none';
+  document.getElementById('hero').style.display = 'flex';
+  document.getElementById('temas').style.display = 'block';
+  cartasSeleccionadas = [];
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
