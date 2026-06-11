@@ -1,1 +1,895 @@
-EN CONSTRUCCION
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prisma Oracle • Spreads • Bruxa Tarot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <script src="lang.js"></script>
+  <style>
+    :root{--gold:#c9a84c;--gold-light:#e8c97a;--gold-pale:#f5e6b8;--deep:#04060f;--midnight:#0b1128;}
+    *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+    body{background:var(--deep);color:#e8dfc8;font-family:'Cormorant Garamond',serif;overflow-x:hidden;min-height:100vh}
+
+    #starfield{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:radial-gradient(ellipse at 20% 30%,#0d1a3a,#04060f 60%),
+                 radial-gradient(ellipse at 80% 70%,#100828,transparent 60%)}
+    #starfield canvas{position:absolute;inset:0;width:100%;height:100%}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;
+      justify-content:space-between;padding:1.2rem 3rem;
+      background:linear-gradient(to bottom,rgba(4,6,15,.97),transparent)}
+    .nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.3em;color:var(--gold);text-decoration:none}
+    .nav-back{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.2em;color:#b8a87a;text-decoration:none;transition:color .3s}
+    .nav-back:hover{color:var(--gold)}
+    .lang-selector{display:flex;align-items:center;gap:.35rem}
+    .lang-btn{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.12em;padding:.28rem .65rem;border-radius:100px;cursor:pointer;border:1px solid rgba(201,168,76,.2);background:transparent;color:#b8a87a;transition:all .3s}
+    .lang-btn:hover{border-color:rgba(201,168,76,.5);color:var(--gold)}
+    .lang-btn.active{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.6);color:var(--gold)}
+
+    /* ── HERO ── */
+    #hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem}
+
+    .hero-badge{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.45em;color:var(--gold);
+      border:1px solid rgba(201,168,76,.3);padding:.45rem 1.8rem;border-radius:100px;
+      background:rgba(201,168,76,.05);display:inline-block;margin-bottom:2rem;
+      animation:fadeUp .9s ease .1s both}
+
+    .hero-title{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,5vw,4rem);
+      font-weight:400;color:var(--gold-pale);line-height:1.15;margin-bottom:1.5rem;
+      animation:fadeUp .9s ease .3s both}
+
+    .hero-welcome{font-style:italic;font-size:clamp(1.1rem,2.5vw,1.4rem);color:#c4b090;
+      line-height:1.9;max-width:650px;margin:0 auto 1rem;animation:fadeUp .9s ease .5s both}
+
+    .hero-instruccion{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.5);animation:fadeUp .9s ease .7s both;margin-top:.5rem}
+
+    /* ── TEMA SELECTOR ── */
+    #temas{position:relative;z-index:1;padding:0 2rem 6rem}
+    .temas-inner{max-width:900px;margin:0 auto}
+
+    .temas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+    @media(max-width:680px){.temas-grid{grid-template-columns:1fr;gap:1rem}}
+
+    .tema-card{
+      position:relative;overflow:hidden;
+      border:1px solid rgba(201,168,76,.15);border-radius:24px;
+      background:rgba(11,17,40,.6);backdrop-filter:blur(6px);
+      padding:2.5rem 2rem;text-align:center;cursor:pointer;
+      transition:all .5s cubic-bezier(.4,0,.2,1);
+      animation:fadeUp .8s ease both;
+    }
+    .tema-card:nth-child(1){animation-delay:.1s;--tema-color:rgba(220,80,100,.15);--tema-border:rgba(220,80,100,.4)}
+    .tema-card:nth-child(2){animation-delay:.2s;--tema-color:rgba(201,168,76,.12);--tema-border:rgba(201,168,76,.5)}
+    .tema-card:nth-child(3){animation-delay:.3s;--tema-color:rgba(80,100,220,.12);--tema-border:rgba(120,80,220,.4)}
+
+    .tema-card::before{content:'';position:absolute;inset:0;border-radius:24px;
+      background:radial-gradient(ellipse at 50% 0%,var(--tema-color),transparent 70%);
+      opacity:0;transition:opacity .4s}
+    .tema-card:hover::before{opacity:1}
+    .tema-card:hover{
+      border-color:var(--tema-border);
+      transform:translateY(-8px);
+      box-shadow:0 20px 60px rgba(0,0,0,.4);
+    }
+
+    .tema-emoji{font-size:3rem;margin-bottom:1.2rem;display:block;
+      filter:drop-shadow(0 0 8px rgba(201,168,76,.3));
+      transition:transform .3s}
+    .tema-card:hover .tema-emoji{transform:scale(1.15)}
+
+    .tema-nombre{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:.25em;
+      color:var(--gold);margin-bottom:.8rem}
+
+    .tema-desc{font-style:italic;font-size:.95rem;color:#a09070;line-height:1.6;margin-bottom:1.5rem}
+
+    .tema-posiciones{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.5rem}
+    .tema-pos{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.5);padding:.3rem .8rem;border-radius:100px;
+      background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.1)}
+
+    .tema-btn{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;
+      padding:.7rem 1.8rem;border-radius:100px;border:1px solid rgba(201,168,76,.3);
+      background:transparent;color:var(--gold);cursor:pointer;transition:all .3s}
+    .tema-btn:hover{background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.6)}
+
+    /* ── TIRADA SECTION ── */
+    #tirada-section{position:relative;z-index:1;display:none;
+      min-height:100vh;padding:6rem 2rem 6rem}
+    .tirada-inner{max-width:1000px;margin:0 auto}
+
+    .tirada-header{text-align:center;margin-bottom:4rem}
+    .tirada-tema-badge{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.35em;
+      padding:.4rem 1.4rem;border-radius:100px;display:inline-block;margin-bottom:1.2rem}
+    .tirada-titulo{font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,4vw,2.8rem);
+      color:var(--gold-pale);font-weight:400;margin-bottom:.8rem}
+    .tirada-instruccion{font-style:italic;color:#a09070;font-size:1rem;line-height:1.7}
+
+    /* CARTAS EN LA TIRADA */
+    .tirada-cartas{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:3rem}
+    @media(max-width:680px){.tirada-cartas{grid-template-columns:1fr;gap:2rem}}
+
+    .tirada-slot{text-align:center}
+    .tirada-slot-label{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.25em;
+      color:rgba(201,168,76,.5);margin-bottom:.8rem;display:block}
+    .tirada-slot-num{font-family:'Cinzel Decorative',serif;font-size:.9rem;
+      color:rgba(201,168,76,.3);margin-bottom:.5rem;display:block}
+
+    /* CARTA FLIP EN TIRADA */
+    .tirada-card-scene{width:160px;height:276px;perspective:800px;
+      cursor:pointer;margin:0 auto 1rem}
+    .tirada-card-flip{width:100%;height:100%;position:relative;
+      transform-style:preserve-3d;
+      transition:transform 1s cubic-bezier(.4,.2,.2,1)}
+    .tirada-card-scene.flipped .tirada-card-flip{transform:rotateY(180deg)}
+    .tirada-card-face{position:absolute;inset:0;border-radius:12px;
+      backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+
+    .tirada-card-back{background:#0b1128;border:1px solid rgba(201,168,76,.25);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 8px 30px rgba(0,0,0,.5);cursor:pointer;
+      transition:border-color .3s,box-shadow .3s}
+    .tirada-card-back:hover{border-color:rgba(201,168,76,.6);
+      box-shadow:0 0 20px rgba(201,168,76,.2),0 8px 30px rgba(0,0,0,.5)}
+    .tirada-card-back img{width:100%;height:100%;object-fit:cover;border-radius:12px}
+    .tirada-card-back-fb{width:100%;height:100%;display:flex;align-items:center;
+      justify-content:center;font-size:2rem;
+      background:linear-gradient(160deg,#1a1050,#0b1128)}
+
+    .tirada-card-front{transform:rotateY(180deg);background:#0b1128;
+      border:1px solid rgba(201,168,76,.4);
+      box-shadow:0 8px 30px rgba(0,0,0,.5),0 0 20px rgba(201,168,76,.1);
+      display:flex;flex-direction:column}
+    .tirada-card-front img{flex:1;width:100%;object-fit:cover;display:block}
+    .tirada-card-front img.reversed{transform:rotate(180deg)}
+    .tirada-card-front-foot{background:rgba(4,6,15,.92);padding:5px 6px 6px;text-align:center}
+    .tirada-card-front-name{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.1em;color:var(--gold);line-height:1.3}
+
+    .tirada-tap-hint{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.3)}
+
+    /* MENSAJES DE TIRADA */
+    .tirada-mensajes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2rem}
+    @media(max-width:680px){.tirada-mensajes{grid-template-columns:1fr}}
+
+    .tirada-mensaje{border:1px solid rgba(201,168,76,.12);border-radius:14px;
+      padding:1.4rem;background:rgba(11,17,40,.5);
+      opacity:0;transform:translateY(20px);
+      transition:opacity .6s ease,transform .6s ease}
+    .tirada-mensaje.visible{opacity:1;transform:translateY(0)}
+
+    .tirada-msg-pos{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.25em;
+      color:rgba(201,168,76,.45);margin-bottom:.5rem}
+    .tirada-msg-nombre{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.15em;
+      color:var(--gold);margin-bottom:.3rem}
+    .tirada-msg-posicion{font-size:.8rem;margin-bottom:.8rem}
+    .tirada-msg-texto{font-style:italic;font-size:.95rem;color:#b0a07a;line-height:1.8}
+
+    .reversed-badge{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      padding:.2rem .6rem;border-radius:100px;
+      background:rgba(120,80,220,.15);border:1px solid rgba(120,80,220,.3);color:#b090e0}
+    .upright-badge{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      padding:.2rem .6rem;border-radius:100px;
+      background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);color:var(--gold)}
+
+    /* ACCIONES */
+    .tirada-acciones{display:flex;gap:1rem;justify-content:center;
+      flex-wrap:wrap;margin-top:3rem}
+    .btn{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.2em;
+      padding:.85rem 2rem;border-radius:100px;text-decoration:none;
+      transition:all .4s;cursor:pointer;border:none}
+    .btn-primary{background:linear-gradient(135deg,#c9a84c,#a07828);color:var(--deep);
+      box-shadow:0 0 25px rgba(201,168,76,.25)}
+    .btn-primary:hover{box-shadow:0 0 45px rgba(201,168,76,.45);transform:translateY(-2px)}
+    .btn-ghost{background:transparent;color:var(--gold);border:1px solid rgba(201,168,76,.3)}
+    .btn-ghost:hover{background:rgba(201,168,76,.08);transform:translateY(-2px)}
+    .btn-violet{background:rgba(120,80,220,.15);color:#c0a0f0;border:1px solid rgba(120,80,220,.3)}
+    .btn-violet:hover{background:rgba(120,80,220,.25);transform:translateY(-2px)}
+
+    .divider{display:flex;align-items:center;gap:1.5rem;max-width:400px;margin:2rem auto;position:relative;z-index:1}
+    .divider-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.3),transparent)}
+    .divider-sym{color:var(--gold);font-size:1rem}
+
+    /* SHIMMER BACK */
+    .card-shimmer-over{position:absolute;inset:0;border-radius:12px;pointer-events:none;
+      background:linear-gradient(135deg,transparent 25%,rgba(201,168,76,.07) 50%,transparent 75%);
+      animation:shimmer-move 3s ease-in-out infinite;background-size:200% 200%}
+    @keyframes shimmer-move{0%,100%{background-position:0% 0%}50%{background-position:100% 100%}}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+    @media(max-width:768px){nav{padding:1rem 1.5rem}}
+
+    /* ── SHUFFLE ANIMATION ── */
+    #shuffleOverlay{
+      position:fixed;inset:0;z-index:200;
+      display:none;align-items:center;justify-content:center;
+      flex-direction:column;gap:1.5rem;
+      background:rgba(4,6,15,.92);backdrop-filter:blur(8px);
+    }
+    #shuffleOverlay.active{display:flex}
+    .shuffle-label{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.4em;
+      color:rgba(201,168,76,.6);text-align:center}
+    .shuffle-deck{position:relative;width:100px;height:172px}
+    .shuffle-card{
+      position:absolute;width:90px;height:155px;
+      border-radius:10px;background:linear-gradient(160deg,#1a1050,#0b1128);
+      border:1px solid rgba(201,168,76,.25);
+      box-shadow:0 4px 20px rgba(0,0,0,.5);
+      left:50%;transform:translateX(-50%);
+      transition:all .4s cubic-bezier(.4,0,.2,1);
+    }
+    .shuffle-card img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+
+    /* ── PILE SELECTION ── */
+    #pileSection{display:none;text-align:center;margin-bottom:2.5rem}
+    .pile-label{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.5);margin-bottom:1.5rem;display:block}
+    .piles-wrap{display:flex;gap:2.5rem;justify-content:center;flex-wrap:wrap}
+    .pile{
+      position:relative;width:90px;height:155px;cursor:pointer;
+      transition:transform .3s;
+    }
+    .pile:hover{transform:translateY(-10px)}
+    .pile-stack{position:absolute;inset:0}
+    .pile-card{
+      position:absolute;width:88px;height:152px;border-radius:10px;
+      background:linear-gradient(160deg,#1a1050,#0b1128);
+      border:1px solid rgba(201,168,76,.2);
+      box-shadow:0 4px 15px rgba(0,0,0,.4);
+      left:0;top:0;
+    }
+    .pile-card img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+    .pile:hover .pile-card{border-color:rgba(201,168,76,.5);
+      box-shadow:0 0 20px rgba(201,168,76,.2),0 4px 20px rgba(0,0,0,.5)}
+    .pile-hint{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.4);margin-top:.8rem;text-align:center}
+
+    /* ── 7 CARDS SELECTION ── */
+    #seleccionSection{display:none;text-align:center;margin-bottom:2.5rem}
+    .seleccion-label{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.5);margin-bottom:.5rem;display:block}
+    .seleccion-sublabel{font-style:italic;font-size:.9rem;color:#a09070;
+      margin-bottom:1.8rem;display:block}
+    .seleccion-cards{
+      display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;
+      perspective:800px;
+    }
+    .seleccion-card{
+      width:72px;height:124px;cursor:pointer;position:relative;
+      transform-style:preserve-3d;
+      transition:transform .3s cubic-bezier(.4,0,.2,1);
+      flex-shrink:0;
+    }
+    .seleccion-card:hover{transform:translateY(-12px) rotate(-2deg)}
+    .seleccion-card.elegida{
+      transform:translateY(-20px) scale(1.08);
+      filter:drop-shadow(0 0 12px rgba(201,168,76,.6));
+    }
+    .seleccion-card.elegida-otro{opacity:.4;transform:scale(.95)}
+    .seleccion-card-inner{
+      width:100%;height:100%;border-radius:9px;overflow:hidden;
+      border:1px solid rgba(201,168,76,.2);
+      background:linear-gradient(160deg,#1a1050,#0b1128);
+      box-shadow:0 4px 16px rgba(0,0,0,.5);
+      transition:border-color .3s,box-shadow .3s;
+    }
+    .seleccion-card:hover .seleccion-card-inner{
+      border-color:rgba(201,168,76,.6);
+      box-shadow:0 0 16px rgba(201,168,76,.2),0 4px 20px rgba(0,0,0,.5);
+    }
+    .seleccion-card.elegida .seleccion-card-inner{
+      border-color:rgba(201,168,76,.8);
+    }
+    .seleccion-card-inner img{width:100%;height:100%;object-fit:cover;border-radius:9px}
+    .seleccion-counter{
+      font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.25em;
+      color:rgba(201,168,76,.5);margin-top:1.2rem;display:block;
+    }
+    .shimmer-sm{position:absolute;inset:0;border-radius:9px;pointer-events:none;
+      background:linear-gradient(135deg,transparent 25%,rgba(201,168,76,.07) 50%,transparent 75%);
+      animation:shimmer-move 3s ease-in-out infinite;background-size:200% 200%}
+  </style>
+</head>
+<body>
+  <div id="starfield"><canvas id="stars"></canvas></div>
+
+  <nav>
+    <a href="index.html" class="nav-back">← Back to the Temple</a>
+    <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
+    <div class="lang-selector">
+      <button class="lang-btn" onclick="window.location.href='tiradas.html'">ES</button>
+      <button class="lang-btn active" onclick="window.location.href='tiradas-en.html'">EN</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <span class="hero-badge">✦ PRISMA SOUL ORACLE ✦</span>
+    <h1 class="hero-title">Portal of the<br>Prisma Oracle</h1>
+    <p class="hero-welcome">
+      Welcome, Bright Soul.<br>
+      You have arrived at the portal where your fears, doubts<br>
+      and deepest questions will find their answer.<br><br>
+      <em>Breathe. Focus. The Oracle is already listening.</em>
+    </p>
+    <p class="hero-instruccion">☽ Choose a theme and let the cards speak ☾</p>
+  </section>
+
+  <!-- TEMAS -->
+  <section id="temas">
+    <div class="temas-inner">
+      <div class="temas-grid">
+
+        <!-- AMOR -->
+        <div class="tema-card" onclick="iniciarTirada('amor')">
+          <span class="tema-emoji">❤️</span>
+          <p class="tema-nombre">LOVE</p>
+          <p class="tema-desc">Let the Oracle illuminate what your heart feels, what is blocking it, and the path it asks you to follow.</p>
+          <div class="tema-posiciones">
+            <span class="tema-pos">1 · What your heart feels</span>
+            <span class="tema-pos">2 · What is blocking it</span>
+            <span class="tema-pos">3 · What the Oracle advises</span>
+          </div>
+          <button class="tema-btn">✦ Start spread</button>
+        </div>
+
+        <!-- TRABAJO -->
+        <div class="tema-card" onclick="iniciarTirada('trabajo')">
+          <span class="tema-emoji">✨</span>
+          <p class="tema-nombre">WORK</p>
+          <p class="tema-desc">The Oracle shows you where you are, what you need to release, and where your professional path is leading.</p>
+          <div class="tema-posiciones">
+            <span class="tema-pos">1 · Where you are now</span>
+            <span class="tema-pos">2 · What you need to release</span>
+            <span class="tema-pos">3 · Where you are headed</span>
+          </div>
+          <button class="tema-btn">✦ Start spread</button>
+        </div>
+
+        <!-- PERSONAL -->
+        <div class="tema-card" onclick="iniciarTirada('personal')">
+          <span class="tema-emoji">🌙</span>
+          <p class="tema-nombre">PERSONAL</p>
+          <p class="tema-desc">A mirror of the soul. The Oracle reveals your light of the moment, your shadow, and the message your soul needs today.</p>
+          <div class="tema-posiciones">
+            <span class="tema-pos">1 · Your light of the moment</span>
+            <span class="tema-pos">2 · Your shadow of the moment</span>
+            <span class="tema-pos">3 · The soul's message</span>
+          </div>
+          <button class="tema-btn">✦ Start spread</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SHUFFLE OVERLAY -->
+  <div id="shuffleOverlay">
+    <p class="shuffle-label" id="shuffleLabel">✦ BARAJANDO EL ORÁCULO ✦</p>
+    <div class="shuffle-deck" id="shuffleDeck"></div>
+  </div>
+
+  <!-- TIRADA -->
+  <section id="tirada-section">
+    <div class="tirada-inner">
+      <div class="tirada-header">
+        <span class="tirada-tema-badge" id="tiradaBadge">❤️ AMOR</span>
+        <h2 class="tirada-titulo" id="tiradaTitulo">Tirada de Amor</h2>
+        <p class="tirada-instruccion" id="tiradaInstruccion">Concéntrate en tu pregunta. Cuando sientas el llamado, voltea cada carta.</p>
+      </div>
+
+      <!-- PILE SELECTION -->
+      <div id="pileSection">
+        <span class="pile-label">☽ CHOOSE A PILE ☾</span>
+        <div class="piles-wrap" id="pilesWrap"></div>
+      </div>
+
+      <!-- 7 CARD SELECTION -->
+      <div id="seleccionSection">
+        <span class="seleccion-label">✦ CHOOSE YOUR 3 CARDS ✦</span>
+        <span class="seleccion-sublabel">Focus on your question and let your hands guide you</span>
+        <div class="seleccion-cards" id="seleccionCards"></div>
+        <span class="seleccion-counter" id="seleccionCounter">0 de 3 elegidas</span>
+      </div>
+
+      <!-- CARTAS REVELADAS -->
+      <div class="tirada-cartas" id="tiradaCartas" style="display:none"></div>
+      <div class="tirada-mensajes" id="tiradaMensajes"></div>
+
+      <div class="tirada-acciones">
+        <a href="diario.html" class="btn btn-violet">📖 Save to My Journal</a>
+        <button onclick="otraTirada()" class="btn btn-ghost">✦ Choose another theme</button>
+      </div>
+    </div>
+  </section>
+
+<script>
+// STARFIELD
+(function(){
+  const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');
+  let stars=[],W,H;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  function initStars(){stars=[];const n=Math.floor((W*H)/4000);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.2,alpha:Math.random()*.7+.1,ts:Math.random()*.02+.005,to:Math.random()*Math.PI*2,gold:Math.random()<.08});}
+  function draw(t){ctx.clearRect(0,0,W,H);stars.forEach(s=>{const a=s.alpha*(.6+.4*Math.sin(t*s.ts+s.to));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.gold?`rgba(201,168,76,${a*.8})`:`rgba(255,255,255,${a})`;ctx.fill();});requestAnimationFrame(draw);}
+  window.addEventListener('resize',()=>{resize();initStars();});resize();initStars();requestAnimationFrame(draw);
+})();
+
+// ── 31 CARTAS ──
+const cartas = [
+  {num:1,name:'Bruxa Tarot',subtitle:'Canalizadora del Prisma',cat:'esencias',img:'images/bruxa.png',
+    message:'Es tiempo de recuperar tu magia personal. Tienes el poder de cambiar tu mirada y elegir otra frecuencia. Esta carta es un llamado suave pero firme a recuperar el asombro.',
+    sombra:'En sombra: te desconectas de lo concreto y vives demasiado en potenciales. El prisma de posibilidades puede volverse laberinto. Hoy pregúntate: ¿estás creando o evadiendo?'},
+  {num:2,name:'Nabi',subtitle:'Cazadora de Espíritus',cat:'esencias',img:'images/nabi.png',
+    message:'Algo invisible necesita ser visto. Tu intuición será tu mejor aliada. Observa, discierte y actúa con sigilo, pero con firmeza.',
+    sombra:'En sombra: la hipervigilancia se convierte en ansiedad y sospecha. Ves peligro donde no lo hay. Hoy respira — no todo lo que percibes es una amenaza real.'},
+  {num:3,name:'Marta',subtitle:'Diosa de la Sanación',cat:'esencias',img:'images/marta.png',
+    message:'Sanar no implica evitar el dolor, sino atravesarlo con valentía. Marta te invita a confiar en que cada lágrima derramada riega tu camino hacia una versión más fuerte de ti.',
+    sombra:'En sombra: la paciencia se convierte en estancamiento. Te aferras a la esperanza aunque ya no haya señales. ¿Estás esperando o simplemente evitando avanzar?'},
+  {num:4,name:'Jade',subtitle:'Diosa del Karma',cat:'esencias',img:'images/jade.png',
+    message:'Jade aparece cuando el universo está haciendo ajustes. Todo lo que sembraste comienza a dar frutos. Esta carta te invita a perdonarte y soltar lo que ya no te corresponde cargar.',
+    sombra:'En sombra: la necesidad de equilibrio se vuelve rigidez y juicio excesivo. El peso de la justicia puede convertirse en condena. Suelta el veredicto.'},
+  {num:5,name:'Elena',subtitle:'Diosa del Camino',cat:'esencias',img:'images/elena.png',
+    message:'El camino ya está trazado dentro de ti. Aunque no veas todo el mapa, tienes suficiente claridad para el siguiente paso. Confía en tu intuición. No estás sola.',
+    sombra:'En sombra: la brújula interna se silencia por duda excesiva. No confías en lo que ya sabes. Hoy para el ruido externo y escucha lo que llevas dentro.'},
+  {num:6,name:'Mia',subtitle:'Diosa del Amor Propio',cat:'esencias',img:'images/mia.png',
+    message:'Mia llega cuando es momento de recordar quién eres y lo que vales. El amor empieza por ti. No temas alejarte de lo que no te valora.',
+    sombra:'En sombra: la autoprotección se vuelve cierre prematuro. Tu dignidad puede volverse distancia. ¿Estás protegiéndote... o alejando lo que sí te hace bien?'},
+  {num:7,name:'Tony',subtitle:'Dios del Tiempo',cat:'esencias',img:'images/tony.png',
+    message:'Tony aparece cuando el tiempo es ahora. Ya no hay espacio para el después. Lo que no eliges hoy, lo elige el tiempo por ti.',
+    sombra:'En sombra: la urgencia se convierte en ansiedad por el futuro. El miedo a que el tiempo se acabe te paraliza. Hoy respira — no todo necesita resolverse ahora.'},
+  {num:8,name:'Dante',subtitle:'Dios del Fuego y la Resurrección',cat:'esencias',img:'images/dante.png',
+    message:'Dante aparece cuando el deseo es tan fuerte que no puede ser ignorado. Atrévete a sentir sin censura. Del dolor más profundo nace la llama más brillante.',
+    sombra:'En sombra: la intensidad se convierte en adicción al drama emocional. Buscas el fuego aunque destruya. ¿Lo que sientes es pasión... o caos disfrazado?'},
+  {num:9,name:'La Voz Clara',subtitle:'Regreso Interior',cat:'esencias',img:'images/la-voz-clara.png',
+    message:'La Voz Clara es el momento en que el alma dice: ya no más huir. Estás lista para volver a ti. Es hora de tomar el micrófono de tu propia vida.',
+    sombra:'En sombra: el ruido externo ahoga la voz interior. No logras escucharte. Hoy apaga todo lo que no eres tú y siéntate en silencio aunque incomode.'},
+  {num:10,name:'El Llamado del Alma',subtitle:'Despertar Espiritual',cat:'esencias',img:'images/llama.png',
+    message:'Tu corazón desea otra vida. Cuando ya diste el primer paso y necesitas confirmación de que tu alma te guía — esta carta es esa señal.',
+    sombra:'En sombra: el despertar genera crisis de identidad. Te resistes al cambio que tu alma pide. Lo que se mueve en ti no es peligro — es evolución.'},
+  {num:11,name:'El Regreso a Casa',subtitle:'Reconexión',cat:'esencias',img:'images/regreso.png',
+    message:'Luego del caos, del despertar, del dolor — decides volver a ti. No es un regreso al pasado: es al presente más honesto, más tuyo.',
+    sombra:'En sombra: le temes a la calma. La estabilidad te parece aburrida o falsa. ¿Por qué te cuesta tanto permitirte estar en paz?'},
+  {num:12,name:'Álvaro',subtitle:'Tejedor de Sombras',cat:'dualidades',img:'images/alvaro.png',
+    message:'Esta carta surge cuando las emociones se vuelven un juego de poder. ¿Estás en un vínculo desequilibrado? Tu intuición ya sabe la verdad.',
+    sombra:'En sombra profunda: manipulación pasiva y dependencia emocional disfrazada. Usas la ambigüedad como escudo para no comprometerte. Hoy sé honesto/a — contigo primero.'},
+  {num:13,name:'Emmanuel',subtitle:'Eco de la Duda',cat:'dualidades',img:'images/emmanuel.png',
+    message:'Cuando estás atrapada entre lo que deseas y lo que te atreves a elegir. No elegir también es elegir. Y el alma lo sabe.',
+    sombra:'En sombra: nostalgia paralizante y apego a lo conocido aunque duela. Hoy el universo te pide que te decidas.'},
+  {num:14,name:'Valeria',subtitle:'El Veneno Sutil',cat:'dualidades',img:'images/valeria.png',
+    message:'Esta carta llega como susurro. ¿Lo que sientes es deseo o adicción? ¿Estás aceptando migajas disfrazadas de pasión?',
+    sombra:'En sombra: toxicidad pasiva y autoafirmación a costa de otros. Distorsionas percepciones sin confrontación directa. Hoy pregúntate desde dónde estás actuando realmente.'},
+  {num:15,name:'Karina',subtitle:'Intromisión Silenciosa',cat:'dualidades',img:'images/karina.png',
+    message:'El verdadero poder no viene del control externo, sino de la seguridad interna. Esta carta te invita a soltar el espejismo del control.',
+    sombra:'En sombra: cruzas límites sin confrontación abierta, desde la inseguridad disfrazada de poder. El verdadero control viene de adentro, no de manipular lo externo.'},
+  {num:16,name:'Tatiana',subtitle:'Prisionera del Ayer',cat:'dualidades',img:'images/tatiana.png',
+    message:'Tatiana aparece cuando estás aferrada a algo solo porque es familiar. ¿Estás en ciclos repetidos por costumbre, no por amor?',
+    sombra:'En sombra: vives emocionalmente anclada al pasado y repites ciclos por miedo al cambio. Hoy suelta una cosa — solo una — que ya no te sirve pero sigues cargando.'},
+  {num:17,name:'Lucía y Samuel',subtitle:'Susurro Eterno',cat:'dualidades',img:'images/lucia-samuel.png',
+    message:'Cuando sientes un amor tan profundo que trasciende lo tangible. A veces el alma está esperando otra vida, otro plano, otro momento.',
+    sombra:'En sombra: idealizas el pasado y te cierras al presente. Un amor no cerrado sigue ocupando espacio. Hoy date permiso de soltar sin olvidar.'},
+  {num:18,name:'Alberto',subtitle:'La Voz que Enfrenta la Injusticia',cat:'guardianes',img:'images/alberto.png',
+    message:'Alberto aparece cuando alguien necesita ser defendido. Sé trinchera cuando alguien más está cayendo. Un acto de intercesión puede cambiar el rumbo de una situación.',
+    sombra:'En sombra: rigidez moral o confrontación impulsiva. Luchas batallas que no son tuyas. Hoy pregúntate si estás defendiendo la justicia... o tu propio orgullo.'},
+  {num:19,name:'Oracio',subtitle:'Protector de los Corazones Rotos',cat:'guardianes',img:'images/oracio.png',
+    message:'Es momento de honrar lo que siempre ha estado ahí: un amor no correspondido, una amistad que te sostuvo, una parte de ti que nunca dejaste morir.',
+    sombra:'En sombra: invisibilidad emocional y autosacrificio. Te borras para que otros brillen. Hoy recuerda que tus necesidades también importan.'},
+  {num:20,name:'Rosario',subtitle:'La Druida del Espejo',cat:'guardianes',img:'images/rosario.png',
+    message:'Rosario no te da respuestas directas: te pone frente al espejo y te acompaña mientras las descubres. La amistad que escucha antes de hablar.',
+    sombra:'En sombra: exceso de autoanálisis o dureza emocional. La verdad se convierte en juicio. Hoy sé tan compasiva con otros como lo eres con la verdad.'},
+  {num:21,name:'Las Tres Aliadas',subtitle:'Renata, Cristina y Sofía',cat:'guardianes',img:'images/lastres.png',
+    message:'¿Estás dejando que te acompañen, o tratando de cargar todo sola? Es momento de honrar a quienes te sostienen sin condiciones.',
+    sombra:'En sombra: dispersión emocional o contradicción interna. Las voces que te apoyan se contradicen y te confunden. Hoy elige una sola dirección y confía en ella.'},
+  {num:22,name:'Jazmín',subtitle:'Cupido Encubierto',cat:'guardianes',img:'images/jazmin.png',
+    message:'Jazmín trabaja en silencio y confía en el tiempo del universo. El verdadero cupido no lanza flechas — lanza señales.',
+    sombra:'En sombra: conectas a todos menos a ti misma/o. Postergás tu propio deseo emocional. Hoy pregúntate qué necesitas tú.'},
+  {num:23,name:'Daniela',subtitle:'Cheerleader del Alma',cat:'guardianes',img:'images/daniela.png',
+    message:'Esta carta es el grito del alma que dice: vas mejor de lo que crees. No te escondas cuando es hora de brillar.',
+    sombra:'En sombra: niegas tu propio dolor para mantener la energía de todos. Te consumes ayudando y nadie lo nota. Hoy permite que alguien te cuide a ti.'},
+  {num:24,name:'Heimdall',subtitle:'Guardián de los Portales',cat:'llaves',img:'images/heimdall.png',
+    message:'Sigue tu curiosidad, explora lo que parecía insignificante. Algo está a punto de abrirse en tu vida. La magia no siempre llega con grandes rituales.',
+    sombra:'En sombra: hipercontrol y rigidez defensiva. Proteges tan bien los umbrales que nada bueno puede entrar. Hoy abre una puerta aunque dé miedo.'},
+  {num:25,name:'Erebus',subtitle:'El Iluminado',cat:'llaves',img:'images/erebus.png',
+    message:'Erebus aparece cuando estás listo para ver más allá de la superficie. Su presencia basta para hacerte encontrar respuestas donde antes solo había ruido.',
+    sombra:'En sombra: aislamiento emocional y sobreintelectualización. Te encierras tanto en tu mundo que pierdes contacto con los demás. Hoy sal de tu cabeza y entra en tu cuerpo.'},
+  {num:26,name:'Aetherius',subtitle:'El Viajero del Inframundo',cat:'llaves',img:'images/aetherius.png',
+    message:'Estás cruzando portales internos que antes no querías ver. No necesitas entenderlo todo: solo atreverte a seguir tu propio viaje.',
+    sombra:'En sombra: te pierdes tan profundo que pierdes contacto con la realidad cotidiana. Hoy ancla algo concreto — come, camina, respira la tierra.'},
+  {num:27,name:'El Umbral del Inframundo',subtitle:'Portal Místico',cat:'portales',img:'images/umbral.png',
+    message:'No entras para desaparecer — entras para recordar quién eras antes de olvidar. Para regresar a ti... a veces hay que bajar.',
+    sombra:'En sombra: te niegas a bajar. Evitas el dolor transformacional y te quedas en la superficie. Hoy date permiso de sentir lo que has estado evitando.'},
+  {num:28,name:'El Concilio de la Magia',subtitle:'Portal Místico',cat:'portales',img:'images/concilio.png',
+    message:'Ya hay un concilio energético reunido: tus guías, tus yo futuros, tus ancestros. Ya estás siendo sostenida por energías mayores.',
+    sombra:'En sombra: buscas apoyo externo cuando la respuesta ya está dentro. Dependes demasiado de la validación de otros. Hoy confía en tu propio concilio interior.'},
+  {num:29,name:'El Portal del Caos',subtitle:'Portal Místico',cat:'portales',img:'images/caos.png',
+    message:'El Portal del Caos no es tu enemigo. El universo sacude la mesa para que dejes de jugar a encajar. Te libera… aunque duela.',
+    sombra:'En sombra: el caos te paraliza en vez de liberarte. Le temes a lo que se rompe aunque ya no servía. Lo que cae no era tuyo para quedarse.'},
+  {num:30,name:'El Inframundo de las Pociones',subtitle:'Portal Místico',cat:'portales',img:'images/pociones.png',
+    message:'Tu alma está en proceso alquímico. No interrumpas la mezcla: confía en lo que se está cocinando dentro de ti.',
+    sombra:'En sombra: interrumpes el proceso antes de que termine. La impaciencia te impide ver los frutos. Hoy confía en la mezcla aunque no entiendas el resultado aún.'},
+  {num:31,name:'El Portal del Conocimiento Infinito',subtitle:'Portal Místico',cat:'portales',img:'images/conocimiento.png',
+    message:'La sabiduría no se encuentra… se recuerda. Estás lista para recibir respuestas que antes no podías sostener.',
+    sombra:'En sombra: recibes tanta información que no sabes cuál escuchar. El exceso de conocimiento se vuelve parálisis. Hoy elige una sola verdad y actúa desde ahí.'},
+];
+
+// ── CONFIGURACIÓN DE TEMAS ──
+const TEMAS = {
+  amor:{
+    emoji:'❤️', nombre:'LOVE', color:'rgba(220,80,100,.2)', border:'rgba(220,80,100,.5)',
+    titulo:'Love Spread',
+    posiciones:['What your heart feels','What is blocking it','What the Oracle advises']
+  },
+  trabajo:{
+    emoji:'✨', nombre:'WORK', color:'rgba(201,168,76,.15)', border:'rgba(201,168,76,.5)',
+    titulo:'Work Spread',
+    posiciones:['Where you are now','What you need to release','Where you are headed']
+  },
+  personal:{
+    emoji:'🌙', nombre:'PERSONAL', color:'rgba(80,100,220,.15)', border:'rgba(120,80,220,.5)',
+    titulo:'Personal Spread',
+    posiciones:['Your light of the moment','Your shadow of the moment','The soul\'s message']
+  }
+};
+
+// ── ESTADO ──
+let temaActual = null;
+let tiradaCartas = []; // 3 cartas sorteadas
+let reveladas = 0;
+
+// ── SHUFFLE ──
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+// ── ESTADO SELECCIÓN ──
+let cartasSeleccionadas = [];
+let pool7 = []; // 7 cartas del montón elegido
+
+// ── INICIAR TIRADA — SHUFFLE ANIMATION ──
+function iniciarTirada(tema) {
+  temaActual = tema;
+  reveladas = 0;
+  cartasSeleccionadas = [];
+
+  const t = TEMAS[tema];
+
+  // Setup header
+  document.getElementById('tiradaBadge').textContent = `${t.emoji} ${t.nombre}`;
+  document.getElementById('tiradaBadge').style.background = t.color;
+  document.getElementById('tiradaBadge').style.border = `1px solid ${t.border}`;
+  document.getElementById('tiradaBadge').style.color = '#f5e6b8';
+  document.getElementById('tiradaTitulo').textContent = t.titulo;
+  document.getElementById('tiradaInstruccion').textContent = 'Watch the shuffle... and let your intuition guide your choice.';
+
+  // Hide hero/temas, show tirada-section
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('temas').style.display = 'none';
+  document.getElementById('tirada-section').style.display = 'block';
+  document.getElementById('tiradaCartas').style.display = 'none';
+  document.getElementById('tiradaMensajes').innerHTML = '';
+  document.getElementById('pileSection').style.display = 'none';
+  document.getElementById('seleccionSection').style.display = 'none';
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  // START SHUFFLE ANIMATION
+  animarBarajado(() => mostrarMontones());
+}
+
+// ── SHUFFLE ANIMATION ──
+function animarBarajado(callback) {
+  const overlay = document.getElementById('shuffleOverlay');
+  const deck = document.getElementById('shuffleDeck');
+  const label = document.getElementById('shuffleLabel');
+  overlay.classList.add('active');
+  deck.innerHTML = '';
+
+  // Create 8 card visuals
+  for(let i=0;i<8;i++){
+    const card = document.createElement('div');
+    card.className = 'shuffle-card';
+    card.style.cssText = `top:${i*2}px;left:50%;transform:translateX(-50%) rotate(${(i-4)*1.5}deg)`;
+    card.innerHTML = `<img src="images/dorso.png" onerror="this.parentNode.style.background='linear-gradient(160deg,#1a1050,#0b1128)'">`;
+    deck.appendChild(card);
+  }
+
+  const messages = [
+    '✦ BARAJANDO EL ORÁCULO ✦',
+    '✦ LAS CARTAS SE MEZCLAN ✦',
+    '✦ EL ORÁCULO SE PREPARA ✦',
+    '✦ CONCENTRA TU ENERGÍA ✦'
+  ];
+  let msgIdx = 0;
+  let step = 0;
+
+  const animate = setInterval(() => {
+    step++;
+    const cards = deck.querySelectorAll('.shuffle-card');
+    label.textContent = messages[msgIdx % messages.length];
+
+    // Animate cards flying left/right
+    cards.forEach((card, i) => {
+      const side = (step + i) % 2 === 0 ? -1 : 1;
+      const angle = (Math.random()-0.5)*30 * side;
+      const tx = (Math.random()*40-20) * side;
+      const ty = -Math.random()*20;
+      card.style.transform = `translateX(calc(-50% + ${tx}px)) translateY(${ty}px) rotate(${angle}deg)`;
+      card.style.transitionDuration = '0.3s';
+    });
+
+    msgIdx++;
+
+    // After 1.5s reset to stack
+    if(step % 5 === 0){
+      cards.forEach((card,i) => {
+        card.style.transform = `translateX(-50%) rotate(${(i-4)*1.5}deg) translateY(${i*2}px)`;
+      });
+    }
+
+    if(step >= 18){
+      clearInterval(animate);
+      setTimeout(() => {
+        overlay.classList.remove('active');
+        callback();
+      }, 400);
+    }
+  }, 120);
+}
+
+// ── MOSTRAR 3 MONTONES ──
+function mostrarMontones() {
+  document.getElementById('tiradaInstruccion').textContent = 'The Oracle is ready. Choose the pile that feels like yours.';
+  document.getElementById('pileSection').style.display = 'block';
+
+  const pilesWrap = document.getElementById('pilesWrap');
+  pilesWrap.innerHTML = '';
+
+  // Shuffle full deck into 3 piles of ~10
+  const shuffled = shuffle(cartas);
+  const pile1 = shuffled.slice(0,10);
+  const pile2 = shuffled.slice(10,21);
+  const pile3 = shuffled.slice(21,31);
+  const piles = [pile1, pile2, pile3];
+  const pileLabels = ['I','II','III'];
+
+  piles.forEach((pileCards, pi) => {
+    const pile = document.createElement('div');
+    pile.className = 'pile';
+    // Stack of 5 visual cards
+    const stack = document.createElement('div');
+    stack.className = 'pile-stack';
+    for(let k=0;k<5;k++){
+      const pc = document.createElement('div');
+      pc.className = 'pile-card';
+      pc.style.cssText = `top:${k*-2}px;left:${k*1}px;z-index:${k};transform:rotate(${(k-2)*1.2}deg)`;
+      pc.innerHTML = `<img src="images/dorso.png" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.style.display='none'">`;
+      stack.appendChild(pc);
+    }
+    pile.appendChild(stack);
+    const hint = document.createElement('p');
+    hint.className = 'pile-hint';
+    hint.textContent = `Pile ${pileLabels[pi]}`;
+    pile.appendChild(hint);
+    pile.onclick = () => elegirMonton(pileCards);
+    pilesWrap.appendChild(pile);
+  });
+}
+
+// ── ELEGIR MONTÓN → 7 CARTAS ──
+function elegirMonton(pileCards) {
+  document.getElementById('pileSection').style.display = 'none';
+  document.getElementById('tiradaInstruccion').textContent = 'Elige 3 cartas. Tu intuición ya sabe cuáles son.';
+
+  // Take 7 from pile (or all if less)
+  pool7 = shuffle(pileCards).slice(0,7).map(c => ({
+    ...c, isReversed: Math.random() < 0.4
+  }));
+
+  cartasSeleccionadas = [];
+  const seleccionSection = document.getElementById('seleccionSection');
+  const seleccionCards = document.getElementById('seleccionCards');
+  seleccionSection.style.display = 'block';
+  seleccionCards.innerHTML = '';
+  document.getElementById('seleccionCounter').textContent = '0 de 3 elegidas';
+
+  pool7.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'seleccion-card';
+    card.id = `scard${i}`;
+    card.innerHTML = `
+      <div class="seleccion-card-inner">
+        <img src="images/dorso.png" alt="Carta"
+             onerror="this.style.display='none'">
+        <div class="shimmer-sm"></div>
+      </div>`;
+    card.onclick = () => seleccionarCarta(i);
+    seleccionCards.appendChild(card);
+
+    // Fan animation
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    setTimeout(() => {
+      card.style.transition = 'all .4s ease';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    }, i * 80);
+  });
+}
+
+// ── SELECCIONAR CARTA DEL POOL ──
+function seleccionarCarta(i) {
+  if(cartasSeleccionadas.length >= 3) return;
+  if(cartasSeleccionadas.includes(i)) return;
+
+  cartasSeleccionadas.push(i);
+  document.getElementById(`scard${i}`).classList.add('elegida');
+
+  // Dim others if 3 selected
+  if(cartasSeleccionadas.length === 3){
+    pool7.forEach((_, j) => {
+      if(!cartasSeleccionadas.includes(j)){
+        document.getElementById(`scard${j}`).classList.add('elegida-otro');
+      }
+    });
+    // After brief pause, build tirada
+    setTimeout(() => construirTirada(), 600);
+  }
+
+  const count = cartasSeleccionadas.length;
+  document.getElementById('seleccionCounter').textContent =
+    `${count} de 3 elegida${count !== 1 ? 's' : ''}`;
+}
+
+// ── CONSTRUIR TIRADA CON LAS 3 ELEGIDAS ──
+function construirTirada() {
+  const t = TEMAS[temaActual];
+  tiradaCartas = cartasSeleccionadas.map(i => pool7[i]);
+
+  document.getElementById('seleccionSection').style.display = 'none';
+  document.getElementById('tiradaInstruccion').textContent = 'Your cards have been chosen. Flip them when you are ready.';
+
+  const cartasEl = document.getElementById('tiradaCartas');
+  const mensajesEl = document.getElementById('tiradaMensajes');
+  cartasEl.style.display = 'grid';
+  cartasEl.innerHTML = '';
+  mensajesEl.innerHTML = '';
+  reveladas = 0;
+
+  tiradaCartas.forEach((c, i) => {
+    const slot = document.createElement('div');
+    slot.className = 'tirada-slot';
+    slot.innerHTML = `
+      <span class="tirada-slot-num">${['I','II','III'][i]}</span>
+      <span class="tirada-slot-label">${t.posiciones[i]}</span>
+      <div class="tirada-card-scene" id="tscene${i}" onclick="revelarCarta(${i})">
+        <div class="tirada-card-flip" id="tflip${i}">
+          <div class="tirada-card-face tirada-card-back">
+            <img src="images/dorso.png" alt="Carta"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="tirada-card-back-fb">🦋</div>
+            <div class="card-shimmer-over"></div>
+          </div>
+          <div class="tirada-card-face tirada-card-front">
+            <img id="timg${i}" src="" alt="" ${c.isReversed ? 'class="reversed"' : ''}>
+            <div class="tirada-card-front-foot">
+              <p class="tirada-card-front-name" id="tname${i}"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="tirada-tap-hint">Toca para revelar</p>`;
+    cartasEl.appendChild(slot);
+
+    const msg = document.createElement('div');
+    msg.className = 'tirada-mensaje';
+    msg.id = `tmsg${i}`;
+    msg.innerHTML = `
+      <p class="tirada-msg-pos">${['I','II','III'][i]} · ${t.posiciones[i].toUpperCase()}</p>
+      <p class="tirada-msg-nombre" id="tmsgname${i}"></p>
+      <p class="tirada-msg-posicion" id="tmsgnposicion${i}"></p>
+      <p class="tirada-msg-texto" id="tmsgtexto${i}"></p>`;
+    mensajesEl.appendChild(msg);
+  });
+
+  cartasEl.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ── TEMATICOS — Mensajes profundos por tema ──
+const TEMATICOS = { // EN version
+
+  1:{amor_d:["You are dimming tu brillo creativo y emocional como estrategia de supervivencia. The wound of not being enough te ha llevado a creer que tu intensidad ahuyenta el amor. This card invites you a desarmar esa creencia y permitir que your magic sea visible.","Your capacity to crear y amar están profundamente conectadas. Cuando te niegas el derecho a brillar, también te niegas la posibilidad de relaciones donde puedas ser vista en tu totalidad. Bruxa Tarot reminds you que mereces ser amada sin tener que reducirte.","You have built una versión de ti misma más fácil de querer. This card signals el momento de desmantelar esa versión y atreverte a ser la persona intensa, creativa y compleja que realmente eres.","El amor que buscas requiere que dejes de negociar your essence. As long as you continue ofreciendo una versión atenuada de ti, seguirás atrayendo relaciones que no pueden sostener tu profundidad real."],amor_s:["Your main shadow en el amor es fear of ser abandonada por ser demasiado. Esta creencia te ha llevado a desarrollar una hiper-independencia creativa como forma de protección. You are using your magic como escudo.","There is a part de ti que sigue creyendo que el amor se gana con esfuerzo, sacrificio o ser especial. Esta creencia proviene de una herida temprana y is leading you to a sobre-dar y sub-recibir.","Estás controlando la narrativa de tus relaciones para evitar disappointment. Esta necesidad de control emocional is preventing you from experimentar una conexión donde puedas realmente dejarte ver y ser sostenida.","Your most repeated pattern es encenderte y luego apagar your light cuando sientes que el otro no puede sostener tu intensidad. Esto genera ciclos de acercamiento y retirada que confunden tanto a los demás como a ti misma."],trab_d:["You are dimming tu creatividad y tu poder profesional out of fear a no ser suficiente. This card reminds you que your magic no se agota; se renueva cuando dejas de controlarla.","Your professional value está directamente ligado a tu capacidad de crear desde your essence y no desde what you believe se espera de ti. Bruxa Tarot invites you a recuperar your voice creativa en work.","You have been adaptando tu forma de trabajar para encajar en estructuras que no respetan tu ritmo ni tu profundidad. This card gives you permiso para hacer las cosas a tu manera.","El éxito que buscas requiere que dejes de negociar tu intensidad creativa. As long as you continue suavizándote, seguirás atrayendo oportunidades que no pueden sostener your truthero potencial."],trab_s:["Your main shadow en work es fear of que te vean como demasiado intensa o exigente. Esta creencia is leading you to a minimizar your contribution y a no cobrar lo que realmente vales.","You are using tu creatividad como forma de control y perfeccionismo, lo que te genera agotamiento y bloqueos. Estás produciendo desde el miedo instead of desde trust.","Your most repeated pattern es encenderte con un proyecto y luego apagarte cuando sientes que no estás a la altura. Esto genera ciclos de procrastinación y frustración.","There is a part of you that sigue creyendo que si lo hago fácil, no tiene valor. Esta creencia te está haciendo trabajar el doble y disfrutar la mitad."]},
+  2:{amor_d:["Tus miedos en el amor no son irracionales, pero muchos de ellos pertenecen al pasado y no a la relación actual. Nabi invites you a distinguir entre la amenaza real y la activación of your nervous system por heridas antiguas.","You are in a process donde tu intuición y tu miedo están compitiendo por el control. This card gives you permiso para confiar en tu percepción, pero también te pide que no dejes que el miedo tome todas las decisiones.","Your capacity to percibir peligro es alta. Ahora necesitas desarrollar la misma capacidad para percibir seguridad. Nabi accompanies you a entrenar esa otra mirada.","El mature love que buscas requiere que dejes de reaccionar desde la hipervigilancia y empieces a responder desde la presencia."],amor_s:["Tu hipervigilancia emocional se ha convertido en un mecanismo de defensa que sabotea conexiones antes de que puedan demostrarte que son seguras. Estás creando enemigos donde solo hay personas imperfectas.","You are using el miedo como forma de mantener el control emocional. As long as you continue anticipando el abandono, no dejas espacio real para que trust se construya.","Your strongest shadow aquí es la tendencia a magnificar amenazas para justificar withdrawal. Esto te mantiene en un estado constante de alerta que agota tanto tus relaciones como tu sistema nervioso.","You are repeating el patrón de probar al otro constantemente. Esta necesidad de evidencia continua de seguridad impide que se desarrolle una confianza orgánica."],trab_d:["Tus miedos profesionales (miedo a fracasar, a no ser suficiente, a que te critiquen) están activando tu sistema nervioso disproportionately. Nabi invites you a distinguir entre la amenaza real y the wound antigua.","You are in a process donde tu intuición profesional es fuerte, pero el miedo está interfiriendo con tu capacidad de actuar. This card gives you permiso para confiar en lo que percibes.","Tu hipervigilancia en work (revisar todo mil veces, anticipar problemas, no delegar) is exhausting you. Nabi reminds you que no todas las batallas merecen tu energía.","El éxito profesional que buscas requiere que bajes la guardia defensiva y empieces a operar desde trust instead of desde la alerta constante."],trab_s:["Estás creando problemas donde no los hay como forma de sentir que tienes el control. Esta tendencia al drama profesional te mantiene en un estado de estrés innecesario.","Your shadow here is la dificultad para delegar y confiar en otros. Crees que si no lo haces tú, se va a hacer mal, lo que te genera sobrecarga y resentimiento.","You are using el perfeccionismo como mecanismo de defensa para evitar la crítica. This position is impidiendo avanzar y compartir your work antes de que esté perfecto.","There is a part of you that sigue reaccionando de forma exagerada ante feedback o posibles rechazos. Esta hiper-sensibilidad is limiting you profesionalmente."]},
+  3:{amor_d:["You are in a process de sanación donde el dolor ya no puede ser evitado ni negado. Marta accompanies you a entender que tu capacidad de sentir profundamente no es una debilidad, sino la puerta hacia un amor más maduro.","You have been cargando heridas amorosas sin permitirte procesarlas del todo. This card signals que es momento de dejar de ser fuerte y permitir que las emociones que has postergado finalmente se muevan.","Tu sanación en el amor está directamente relacionada con tu capacidad de sostenerte a ti misma cuando el otro no puede hacerlo. Marta te está enseñando regulación emocional desde self-love.","El amor que viene hacia ti ya no va a pedirte que ignores tu dolor para mantener la paz. This card gives you permiso para sentir y sanar al mismo tiempo."],amor_s:["You are using el rol de la que siempre sana o la fuerte como forma de evitar sentir tu propio dolor. Esta identificación con resilience is preventing you from procesar lo que realmente te duele.","Your main shadow es la evasión emocional disfrazada de madurez. Dices ya lo superé cuando en realidad solo lo has guardado en un lugar donde sigue influyendo en tus elecciones.","You are projecting en las nuevas relaciones las heridas que no has integrado de las anteriores. Esto te hace reaccionar disproportionately ante situaciones que activan tu dolor no procesado.","There is a part of you that sigue usando el sufrimiento como identidad. Yo siempre termino sufriendo por amor se ha convertido en una narrativa que, aunque dolorosa, te resulta familiar y segura."],trab_d:["You are in a process de sanación profesional donde el agotamiento y el burnout ya no pueden ser ignorados. Marta accompanies you a reconocer que tu forma de trabajar necesita cambiar.","You have been sosteniendo cargas emocionales y responsabilidades que no te corresponden en work. This card gives you permiso para soltar lo que no es tuyo.","Tu sanación profesional está conectada con tu capacidad de regularte emocionalmente en entornos de alta exigencia. Marta te está enseñando a cuidarte mientras produces.","El trabajo que viene hacia ti ya no va a requerir que sacrifiques tu bienestar. This card accompanies you a redefinir tu relación con effort."],trab_s:["You are using el rol de la que siempre resiste y aguanta como forma de evitar sentir tu propio agotamiento. Esta identificación con resilience is making you sick.","Your main shadow en work es la evasión del descanso. You have internalized que parar es perder o que no te lo mereces hasta que termines todo.","You are projecting en your work actual las heridas de entornos laborales anteriores. Esto te hace reaccionar disproportionately.","There is a part of you that sigue usando work como forma de evitar sentir vacío o soledad. Esta compulsión productiva is preventing you from construir una vida más equilibrada."]},
+  4:{amor_d:["Estás frente a un espejo kármico en tus relaciones. Lo que estás recibiendo es, en gran medida, el reflejo de los patrones que has repetido. Jade invites you a mirar con honestidad.","There is an imbalance energético en tus relaciones que necesita ser visto. This card asks you que observes si estás en un ciclo de dar demasiado o recibir muy poco.","You are at a moment donde puedes cerrar ciclos amorosos antiguos con más conciencia. Jade gives you clarity para entender por qué ciertas relaciones se repiten.","El mature love que buscas requiere que asumas responsabilidad por la energía que pones en tus relaciones. Jade reminds you que el karma no castiga, sino que equilibra."],amor_s:["You are repeating patrones donde das más de lo que recibes y luego te sientes víctima. Jade confronts you con tu parte de responsabilidad en estos desequilibrios.","There is a tendency a culpar al otro o al destino de lo que te pasa en el amor, sin mirar tus propias elecciones repetidas. This position keeps you estancada.","Your shadow in love is called evitar responsibility. Prefieres creer que te pasan cosas antes que reconocer los patrones que sigues eligiendo.","Estás cargando culpas que no te corresponden o negándote a ver dónde sí has herido. Jade asks you equilibrio y honestidad."],trab_d:["Estás frente a un espejo kármico en your career. Lo que estás recibiendo es reflejo de los patrones que has repetido profesionalmente. Jade invites you a mirar con honestidad.","There is an imbalance entre lo que das y lo que recibes en your work. This card asks you que observes si estás sobre-dando o sub-valorando your contribution.","You are at a moment donde puedes cerrar ciclos profesionales desde responsibility y no desde guilt.","El éxito profesional maduro requiere que dejes de repetir patrones de autosabotaje. This card accompanies you a tomar responsabilidad de forma compasiva."],trab_s:["Your most repeated pattern es dar mucho más de lo que cobras y luego resentirte. Jade confronts you con tu dificultad para poner límites y cobrar lo que vales.","You are projecting responsibility de tu situación profesional en el mercado o la mala suerte, sin mirar dónde sí tienes poder de cambio.","Your shadow here is la dificultad para recibir dinero y reconocimiento. You have built una identidad alrededor deffort y el sacrificio.","You are repeating situaciones laborales donde el desequilibrio es similar. Jade invites you a mirar el patrón común instead of seguir culpando a cada nuevo trabajo o cliente."]},
+  5:{amor_d:["There is a decision importante en el amor que tu corazón ya sabe, aunque tu mente siga dudando. Elena invites you a confiar en esa voz interna que ya conoce el camino.","El amor que realmente quieres puede requerir que tomes una decisión valiente even if uncomfortable. This card reminds you que elegir desde el corazón siempre termina siendo lo correcto.","You are at a crossroads de caminos amoroso. Elena aparece para recordarte que el camino más fácil no siempre es el que te lleva a connection que tu alma necesita.","Tu verdad en el amor está pidiendo ser escuchada. Elena gives you fuerza para actuar con autenticidad."],amor_s:["Estás eligiendo desde fear of cambio o al abandono instead of desde lo que realmente deseas. This position is manteniendo en situaciones que no longer nourishes youn.","There is a tendency a posponer decisiones importantes en el amor por comodidad o out of fear a lastimar. Elena confronts you con el costo de no elegir.","Your shadow in love is called evitar truth. Sabes lo que necesitas hacer o decir, pero sigues postergándolo out of fear a las consecuencias.","You are clinging a una relación o a una idea de amor que no longer represents you, solo porque change da miedo."],trab_d:["There is a decision profesional importante que tu interior ya sabe, pero tu miedo al cambio o al fracaso sigue retrasando. Elena invites you a alinear tu acción con lo que ya percibes.","You are at a crossroads de caminos laboral donde elegir desde el miedo is costing you your purpose real. This card gives you fuerza para priorizar your truth.","Your current process en work está pidiendo que dejes de postergar lo inevitable. Elena accompanies you a actuar.","You are ready to tomar decisiones profesionales más alineadas con quien estás convirtiéndote, even if it impliesn incomodidad o pérdida temporal."],trab_s:["Estás eligiendo desde fear of fracaso o al abandono profesional más que desde lo que realmente deseas. This position keeps you en trabajos o proyectos que no longer represents youn.","Your shadow here is la evasión de la confrontación profesional. Sabes que necesitas tener conversaciones difíciles pero sigues postergándolas.","You are clinging a una situación laboral que no longer nourishes you porque fear of vacío es más grande que el dolor de quedarte.","There is a part of you that sigue priorizando no generar problemas por encima de honrar tu propio bienestar y propósito."]},
+  6:{amor_d:["It is time to soltar lo que no longer nourishes you en el amor. Mia reminds you que entregar demasiado de ti misma esperando algo a cambio solo te está vaciando. El amor real comienza cuando aprendes a priorizarte.","Estás entrando en una etapa donde ya no necesitas perseguir el amor ni validation. Mia appears para decirte que cuando te reconoces primero, atraes relaciones más sanas y auténticas.","There is a relationship o patrón donde has estado dando más de lo que recibes. This card invites you a poner límites claros.","Your wellbeing emocional es la base de cualquier relación sana. Mia reminds you que no necesitas hacerte más pequeña ni más disponible para ser elegida."],amor_s:["You are neglecting tu propio valor al permitir dinámicas donde das mucho más de lo que recibes. This position invites you a revisar si estás repitiendo el patrón de dar para ser amada.","Your shadow in love is called miedo a estar sola. Este miedo is leading you to a tolerar situaciones que no te respetan ni te nutren.","You are searching validación externa para sentirte suficiente. Mia confronts you con la necesidad de reconocer tu propio valor.","There is a part of you that sigue creyendo que si das más, eventualmente recibirás lo mismo. Esta creencia is keeping you en ciclos de agotamiento emocional."],trab_d:["You are giving away demasiado de ti misma en work esperando reconocimiento que no llega. Mia reminds you que your worth no se negocia.","It is time to poner límites claros en tu vida profesional. Mia appears para decirte que ya no necesitas sobre-dar para sentirte valiosa o merecedora de oportunidades.","Your wellbeing profesional y personal está pidiendo que dejes de priorizar work por encima de ti. This card invites you a redefinir tu relación con effort.","El éxito que buscas ya no requiere que te sacrifiques tanto. Mia reminds you que cuando te cuidas primero, your work también mejora."],trab_s:["You are neglecting tu propio valor profesional al permitir dinámicas de explotación o de dar mucho más de lo que recibes. This position invites you a revisar tu autoestima laboral.","Your shadow here is fear of poner límites por temor a que te vean como difícil o poco comprometida. Este miedo is keeping you en situaciones que te agotan.","You are using work como forma de validación externa. Mia confronts you con la necesidad de reconocer your worth sin depender de que work te lo confirme constantemente.","There is a part of you that sigue creyendo que si no doy todo, no merezco tener éxito. Esta creencia is leading you to a un agotamiento crónico."]},
+  7:{amor_d:["You have been postergando decisiones importantes en el amor. Tony reminds you que cada día que dejas pasar sin actuar es tiempo que no recuperas. It is time to ser honesta contigo misma.","There is a situation amorosa que requiere que dejes de postergar la conversación o la decisión que ya sabes que necesitas tomar. This card arrives como un llamado urgente.","Estás invirtiendo energía en dinámicas que no te están dando nada a cambio. Tony te invita a reflexionar sobre dónde estás malgastando tu tiempo y tu corazón.","El amor que deseas requiere que dejes de esperar el momento perfecto y empieces a actuar desde truth. Tony gives you el impulso para dejar de postergar tu felicidad."],amor_s:["You are trapped en patrones donde sigues invirtiendo en relaciones que ya sabes que no tienen futuro. This position confronts you con fear of soltar lo conocido.","Your shadow in love is called evitar el duelo. Prefieres quedarte en lo que ya no funciona antes que enfrentar el dolor de soltar.","You have been perdiendo tiempo en situaciones donde no hay reciprocidad real. Tony reminds you que mientras sigas postergando, más tiempo pierdes.","There is a part de ti que sigue aferrada a lo que podría ser instead of aceptar lo que realmente es. Esta ilusión is preventing you from avanzar."],trab_d:["You have been postergando decisiones importantes en your career. Tony reminds you que el tiempo que pierdes postergando no se recupera.","Estás invirtiendo energía en dinámicas laborales que no te están devolviendo valor proporcional. This card arrives como un llamado urgente.","Tu propósito profesional está pidiendo que dejes de esperar el momento perfecto y empieces a actuar desde truth.","El éxito que buscas requiere que dejes de postergar tu propio desarrollo. Tony gives you el impulso para dejar de aplazar lo que ya sabes que necesitas hacer."],trab_s:["You are trapped en el patrón de mañana empiezo. Esta procrastinación crónica suele esconder miedo al fracaso o a tener éxito y no saber gestionarlo.","Your shadow here is la evasión del duelo profesional. Prefieres quedarte en lo que ya no funciona antes que enfrentar el dolor de soltar un proyecto, un rol o una identidad laboral.","You are losing oportunidades reales mientras sigues invirtiendo en situaciones que ya sabes que no tienen futuro. Tony confronts you con el costo real de esa elección.","There is a part of you that sigue aferrada a lo que podría ser en your career, usando eso como excusa para no tomar decisiones concretas en the present."]},
+  8:{amor_d:["Estás enfrentando un momento difícil en el amor, pero tienes dentro de ti la fuerza necesaria para superarlo. Dante reminds you que tus cicatrices también son medallas de valentía.","El dolor que estás sintiendo ahora puede transformarse en una victoria si decides no rendirte. This card invites you a abrazar tu poder de renacer.","There is a situation amorosa que te está poniendo a prueba. Dante appears para recordarte que tienes la fuerza para atravesar esta adversidad y salir más fuerte.","Your capacity to transformar el dolor en crecimiento es uno de tus mayores dones. Dante accompanies you a convertir esta experiencia en una nueva versión de ti."],amor_s:["You are allowing que las derrotas amorosas te definan. Dante confronts you con la necesidad de dejar de identificarte con el dolor y empezar a verte como alguien que puede renacer.","Your shadow in love is called aferrarte al sufrimiento. You are using el dolor como refugio para no tener que volver a arriesgarte.","You have been dudando de tu propia fuerza después de una herida. This position invites you a recordar que no eres tus heridas.","You are repeating el patrón de quedarte en situaciones dolorosas porque crees que no mereces algo mejor. Dante reminds you que sí lo mereces."],trab_d:["You are going through un momento profesional difícil. Dante reminds you que tienes dentro de ti la fuerza para transformarlo.","El dolor o la frustración que sientes ahora en your work puede convertirse en una de tus mayores fuentes de poder si decides no rendirte ni identificarte con él.","Hay una adversidad profesional que está poniendo a prueba tu resiliencia y your purpose. This card invites you a abrazar tus cicatrices laborales como parte de tu autoridad.","Your capacity to renacer profesionalmente después de una caída es uno de tus mayores activos. Dante accompanies you a convertir esta experiencia en una versión más fuerte de ti."],trab_s:["You are allowing que los rechazos o fracasos profesionales te definan. Dante confronts you con la necesidad de dejar de identificarte con lo que no has logrado todavía.","Your shadow here is el uso del sufrimiento como identidad profesional. Esta narrativa is keeping you pequeña.","You are doubting de tu propia capacidad después de una herida laboral. This position is impidiendo volver a intentarlo con confianza.","There is a part of you that sigue repitiendo el patrón de quedarte en entornos laborales tóxicos o agotadores porque crees que no mereces algo mejor."]},
+  9:{amor_d:["It is time to romper el silencio en el amor. Hay cosas que necesitas decir o que necesitas escuchar y que ya no puedes seguir guardando. This card gives you fuerza para usar your voice.","You have been minimizando lo que sientes o cediendo tu poder en nombre de la paz. La Voz Clara appears para recordarte que mereces ser escuchada.","Tu verdad en las relaciones está pidiendo salir. Esta carta te impulsa a expresarla.","You are ready to recuperar tu tono y tu narrativa en el amor. La Voz Clara reminds you que callar lo que eres no protege tu paz, solo silencia tu alma."],amor_s:["Estás negando tus emociones o autocensurándote out of fear a generar conflicto. This position confronts you con el costo de no decir lo que realmente sientes.","Your shadow in love is called miedo a la confrontación. Prefieres callar antes que arriesgarte a expresar your truth.","You have been hablando mucho pero no desde your truth profunda. This card invites you a dejar de lado las palabras superficiales y decir lo que realmente importa.","You are allowing que el miedo bloquee tu garganta. La Voz Clara reminds you que callar lo que eres no te protege, solo te aleja de ti misma."],trab_d:["It is time to usar your voice en work. Hay cosas que necesitas decir y que ya no puedes seguir callando.","You have been minimizando tu opinión, tu expertise o tus necesidades profesionales out of fear a generar conflicto. This card gives you fuerza para expresarte.","Tu verdad profesional está pidiendo salir. La Voz Clara te impulsa a hablar.","You are ready to recuperar tu autoridad y tu narrativa en your career. This card reminds you que callar your worth no te protege, solo te invisibiliza."],trab_s:["You are self-censoring profesionalmente out of fear a la confrontación o al rechazo. This position is costando oportunidades, dinero y reconocimiento.","Your shadow here is la dificultad para pedir lo que mereces. Prefieres callar antes que arriesgarte a que te digan que no.","You have been hablando mucho en work pero no desde your truth profunda. This card invites you a decir lo que realmente piensas.","There is a part of you that sigue priorizando no generar problemas por encima de honrar tu propio valor y tus límites."]},
+  10:{amor_d:["Sientes un vacío o una inquietud en el amor que no sabes nombrar. This card appears para recordarte que tu alma está llamando a una conexión más profunda y auténtica.","Hay un deseo en tu corazón que va más allá de lo que has experimentado hasta ahora. El Llamado del Alma invites you a escuchar esa voz que pide algo más.","You are at a point donde ya diste pasos importantes y necesitas confirmación de que vas por el camino correcto. This card gives you esa confirmación.","Your soul está guiándote hacia un tipo de amor diferente al que has conocido. Confía en esa inquietud: es tu brújula."],amor_s:["You are ignoring los susurros of your soul out of fear al cambio. Esta posición te advierte que la negación solo alarga el proceso.","Your shadow in love is called miedo a lo desconocido. Prefieres quedarte en lo familiar aunque no te llene antes que seguir el llamado.","You have been llenando the void con distracciones o relaciones que no te nutren realmente. This card invites you a enfrentar esa verdad.","Estás resistiéndote a escuchar lo que tu corazón realmente quiere porque implica soltar o cambiar. El llamado volverá… stronger each time."],trab_d:["Sientes una inquietud o un vacío en your work actual que no sabes explicar del todo. This card appears para recordarte que your purpose está pidiendo algo más profundo.","Hay un deseo profesional que va más allá de lo que has logrado hasta ahora. El Llamado del Alma invites you a escuchar esa voz que pide más sentido.","You are at a point donde ya diste pasos importantes en your career y necesitas confirmación de que vas en la dirección correcta. Esta carta te la da.","Your soul está guiándote hacia un trabajo o una forma de trabajar que aún no conoces del todo. Confía en esa inquietud: es tu brújula profesional."],trab_s:["You are ignoring los susurros de your purpose out of fear al cambio o a perder la estabilidad que tienes. Esta negación is generating un vacío cada vez más grande.","Your shadow here is fear of lo desconocido profesional. Prefieres quedarte en lo que ya conoces aunque te esté apagando.","You have been llenando tu vida laboral con actividad y logros externos mientras evitas la pregunta más importante: ¿esto realmente me llena?","Estás resistiéndote a escuchar lo que tu interior realmente quiere porque implica soltar seguridad, identidad o ingresos actuales. El llamado volverá… stronger each time."]},
+  11:{amor_d:["Estás cerrando un ciclo importante en el amor. Even though the world continues en caos, dentro de ti está naciendo una calma nueva. This card celebrates ese regreso a ti.","El amor que buscas no está fuera, sino en la reconexión profunda contigo misma. El Regreso a Casa reminds you que ya no estás perdida.","You have arrived a un punto donde puedes soltar lo que no longer serves you y volver a casa, a ti. Esta carta es un abrazo de bienvenida.","Estás recordando que your truthero hogar está en la relación que tienes contigo misma. El Regreso a Casa te invita a habitarte plenamente."],amor_s:["Estás anhelando un regreso, pero aún no has cerrado el ciclo anterior. Hay nostalgia o deseo de volver a algo que no longer exists.","Your shadow in love is called idealizar the past. You are clinging a una versión romantizada de lo que fue instead of crear lo que puede ser.","Te estás negando el regreso a ti misma out of fear a estar sola. This position confronts you con la necesidad de elegirte even if it hurts.","You are searching fuera lo que solo puedes encontrar dentro. El Regreso a Casa reminds you que la paz que buscas comienza cuando dejas de huir de ti."],trab_d:["Estás cerrando un ciclo profesional importante. Dentro de ti está naciendo una nueva forma de relacionarte con your work. This card celebrates ese regreso a ti.","El éxito que buscas ya no está fuera, sino en la reconexión con your purpose real.","You have arrived a un punto donde puedes soltar roles, proyectos o identidades laborales que no longer represents youn. Esta carta es un abrazo de bienvenida a tu nueva versión profesional.","Estás recordando que your truthero hogar profesional está en la relación que tienes contigo misma y con your purpose, no en un título o en approval externa."],trab_s:["Estás anhelando un cambio profesional, pero aún no has cerrado el ciclo anterior. Hay nostalgia o miedo a soltar lo que no longer exists.","Your shadow here is la idealización dthe past laboral. You are clinging a una versión romantizada de cómo solía ser instead of crear lo que puede ser ahora.","Te estás negando el regreso a ti misma profesionalmente out of fear a estar sin rumbo. This position keeps you estancada.","You are searching fuera lo que solo puedes encontrar dentro: una forma de trabajar que realmente te represente."]},
+  12:{amor_d:["There is someone jugando contigo sin decirlo claramente. Álvaro reminds you que tu intuición ya sabe truth, aunque tu mente siga buscando excusas.","You are detecting dinámicas de manipulación emocional. This card invites you a cortar con honestidad esos hilos invisibles.","El amor que mereces no se construye con juegos ni con poder. Álvaro appears para recordarte que clarity y authenticity son la base de cualquier conexión sana.","There is a relationship donde sientes que te están tejiendo una red. This card gives you fuerza para ver con claridad y actuar en consecuencia."],amor_s:["You are allowing que alguien controle your light con hilos invisibles. Your shadow here is seguir justificando comportamientos que sabes que no están bien.","There is a part of you that está usando tácticas de manipulación emocional para conseguir lo que quieres. Álvaro confronts you con esa verdad.","Your shadow in love is called miedo a confrontar truth. Prefieres seguir en la confusión antes que admitir lo que ya sabes.","You are trapped en una dinámica donde nadie gana. This position invites you a cortar la red, even if it hurts."],trab_d:["Hay dinámicas de poder o manipulación en tu entorno laboral que tu intuición ya detectó. Álvaro reminds you que tu percepción es precisa.","You are perceiving que alguien está jugando con información, reconocimiento o poder de forma poco ética. This card gives you fuerza para ver con claridad y protegerte.","El éxito profesional que buscas no se construye con juegos de poder ni con manipulación.","There is a relationship laboral donde sientes que te están tejiendo una red. This card invites you a cortar con honestidad antes de que sea más difícil."],trab_s:["You are allowing que alguien en your work controle información o decisiones de forma que te afecta. Your shadow here is seguir justificando esa dinámica out of fear al conflicto.","There is a part of you that está usando tácticas de manipulación para avanzar profesionalmente. Álvaro confronts you con esa elección.","Your shadow at work is called miedo a confrontar el abuso de poder. Prefieres adaptarte o callar antes que poner límites claros.","You are trapped en una dinámica laboral donde el poder se ejerce de forma deshonesta. This position invites you a decidir si sigues participando o sales de esa red."]},
+  13:{amor_d:["You are waiting que alguien elija y esa espera te está haciendo daño. Emmanuel reminds you que el amor no es tibio. Es fuego o no es nada.","There is a situation de casi que duele más que un no. This card invites you a dejar de sostener lo que no te sostiene.","You are doubting de lo que sabes que quieres out of fear a lo que implica conseguirlo. Emmanuel gives you fuerza para elegir con claridad.","El amor que buscas no va a llegar mientras sigas sosteniendo espacios que no longer nourishes youn. It is time to soltar."],amor_s:["Estás reviviendo escenas y miradas una y otra vez. This position keeps you atrapada en un eco que no te deja vivir the present.","Your shadow in love is called aferrarte a lo que no te elige. As long as you continue esperando, te estás negando la posibilidad de ser elegida de verdad.","You are using la esperanza como forma de no cerrar ciclos. Emmanuel confronts you con la necesidad de soltar lo que no te sostiene.","There is a part of you that prefiere el casi doloroso antes que el riesgo de buscar algo que sí te corresponda."],trab_d:["You are waiting que algo o alguien elija por ti en your career y esa espera is generating frustración y estancamiento.","There is a situation laboral de casi que te está drenando más energía que un no claro. This card invites you a dejar de sostener lo que no te sostiene.","You are doubting de lo que realmente quieres profesionalmente out of fear a lo que implica conseguirlo. Emmanuel gives you fuerza para elegir con claridad.","El trabajo que realmente deseas no va a llegar mientras sigas sosteniendo espacios profesionales que no longer nourishes youn."],trab_s:["Estás reviviendo una y otra vez escenarios laborales pasados. Esta rumiación te mantiene atrapada en the past y te impide actuar en the present.","Your shadow here is aferrarte a lo que no te elige profesionalmente. As long as you continue esperando que alguien te escoja, te estás negando la posibilidad de elegirte tú.","You are using la esperanza como forma de no cerrar ciclos laborales que ya sabes que no tienen futuro.","There is a part of you that prefiere quedarse en la zona de casi porque es menos amenazante que tomar una decisión definitiva."]},
+  14:{amor_d:["You are perceiving que detrás de una sonrisa hay intenciones ocultas. Valeria reminds you que tu intuición es precisa. Confía en lo que ves más allá de las palabras.","There is someone usando tu deseo de conexión para sus propios fines. This card invites you a poner límites claros.","You are justifying comportamientos tóxicos en nombre del amor o connection. Valeria appears para recordarte que el respeto no se negocia.","El amor sano no se construye con manipulación ni con segundas intenciones. This card gives you fuerza para elegir authenticity."],amor_s:["You are adopting tácticas de manipulación without realizing it. Valeria confronts you con tu propio reflejo oscuro.","Your shadow in love is called usar el poder para controlar. You are repeating patrones que te han herido, pero ahora desde el otro lado.","You are justifying comportamientos tóxicos propios o ajenos porque el amor todo lo puede. This position invites you a revisar esa creencia.","There is a part of you that está usando la seducción o guilt para conseguir lo que quieres. Valeria asks you que elijas authenticity sobre el control."],trab_d:["You are perceiving que detrás de ciertas dinámicas laborales hay intenciones ocultas. Valeria reminds you que tu intuición es precisa.","There is someone en tu entorno profesional usando your work o tu esfuerzo para su propio beneficio. This card invites you a poner límites claros.","You are justifying comportamientos tóxicos en work en nombre de career o las oportunidades. Valeria appears para recordarte que integrity no se negocia.","El éxito profesional que buscas no se construye con manipulación ni con segundas intenciones. This card gives you fuerza para elegir authenticity."],trab_s:["You are adopting tácticas de manipulación en work without realizing it. Valeria confronts you con tu propio reflejo oscuro.","Your shadow here is usar el poder o la información para controlar situaciones laborales. You are repeating patrones que te han herido, pero ahora desde el otro lado.","You are justifying comportamientos poco éticos porque así funciona el mundo laboral. Esta creencia is distancing you from de tu propia integridad.","There is a part of you that está usando la información como herramienta de poder. Valeria asks you que elijas authenticity sobre el control."]},
+  15:{amor_d:["You are feeling resentimiento o envidia ante el éxito o la felicidad amorosa de alguien más. Karina invites you a mirar hacia dentro instead of comparar.","There is a tendency a sabotear las conexiones o logros de otros out of fear a perder tu lugar. This card asks you honestidad.","You are measuring tu camino amoroso con la vara de los demás. Karina appears para recordarte que tu historia es única.","El self-love incluye celebrar el amor ajeno sin que te reste. Esta carta te ayuda a soltar comparison tóxica."],amor_s:["Tu envidia se está volviendo contra ti: te niegas la alegría y te comparas sin piedad. Karina confronts you con el veneno que estás bebiendo.","Estás desmereciendo tus propios logros y tu camino por enfocarte en lo que otros tienen. This position keeps you en escasez emocional.","Your shadow in love is called competencia disfrazada de amistad. You are measuring your worth contra el de otros constantemente.","There is a part of you that siente alivio cuando otros fallan en el amor. Karina invites you a sanar esa herida de escasez."],trab_d:["You are feeling resentimiento o envidia ante el éxito, reconocimiento o ascenso de alguien en tu entorno laboral. Karina invites you a mirar hacia dentro instead of comparar.","There is a tendency a sabotear las oportunidades o el reconocimiento de otros out of fear a perder tu lugar. This card asks you honestidad.","You are measuring tu progreso profesional con la vara de los demás. Karina appears para recordarte que tu camino es único.","El éxito profesional maduro incluye la capacidad de celebrar el logro ajeno sin que te reste. Esta carta te ayuda a soltar envy tóxica."],trab_s:["Tu envidia profesional se está volviendo contra ti. Karina confronts you con el veneno que estás bebiendo.","Estás desmereciendo tus propios logros y avances porque estás demasiado enfocada en lo que otros han logrado. This position keeps you en escasez y desmotivación.","Your shadow here is la competencia disfrazada. You are measuring your worth profesional contra el de otros de forma constante.","There is a part of you that siente alivio o satisfacción cuando otros fallan. Karina invites you a sanar esa herida de escasez profesional."]},
+  16:{amor_d:["You are repeating patrones de relación que solo te dejan estancada. Tatiana reminds you que fear of cambio es más doloroso in the long run que el riesgo de soltar.","Your comfort zone se ha convertido en una jaula. This card invites you a atreverte a crear un presente que sea solo tuyo.","There is a pattern repetitivo en tus relaciones que no longer serves you. Tatiana appears para darte fuerza para romperlo.","El amor que mereces requiere que dejes de elegir desde fear of lo desconocido. This card accompanies you a soltar lo familiar."],amor_s:["You are idealizing un pasado que no longer exists para no tener que enfrentar the present. Tatiana confronts you con esa nostalgia tóxica.","Your shadow in love is called miedo al cambio. Prefieres quedarte en lo conocido aunque te duela antes que arriesgarte a lo nuevo.","You are justifying patrones repetitivos con frases como así soy yo o siempre me pasa lo mismo. This position keeps you estancada.","There is a part of you that sigue repitiendo lo mismo esperando resultados diferentes. Tatiana reminds you que change empieza con una decisión."],trab_d:["You are repeating patrones laborales que solo te dejan estancada. Tatiana reminds you que fear of cambio es más costoso in the long run que el riesgo de soltar.","Your comfort zone profesional se ha convertido en una jaula. This card invites you a atreverte a crear una forma de trabajar que sea realmente tuya.","There is a pattern repetitivo en your career que no longer serves you. Tatiana appears para darte fuerza para romperlo.","El trabajo que mereces requiere que dejes de elegir desde fear of lo desconocido. This card accompanies you a soltar lo familiar even if it hurts."],trab_s:["You are idealizing un pasado profesional para no tener que enfrentar the present. Tatiana confronts you con esa nostalgia tóxica.","Your shadow here is fear of cambio profesional. Prefieres quedarte en lo conocido aunque te esté agotando antes que arriesgarte a construir algo nuevo.","You are justifying patrones repetitivos con frases como así soy yo o en este rubro es normal. This position keeps you estancada.","There is a part of you that sigue repitiendo los mismos errores laborales esperando resultados diferentes. Tatiana reminds you que change empieza con una decisión consciente."]},
+  18:{amor_d:["You are feeling el impulso de apoyar o defender a alguien que está sufriendo. Alberto reminds you que un acto de intercesión puede cambiar el rumbo.","There is someone en tu entorno que necesita respaldo y tú tienes la capacidad de dárselo. This card invites you a actuar con el corazón.","El amor también se expresa protegiendo y sosteniendo a quienes amamos. Alberto appears para recordarte el poder de ser escudo para otro.","Tu sentido de justicia y protección está activado. This card gives you fuerza para interceder cuando sea necesario."],amor_s:["You are ignoring el sufrimiento de alguien cercano out of fear, conveniencia o para no involucrarte. Alberto confronts you con tu inacción.","Your shadow in love is called evitar responsibility. Sabes que alguien necesita apoyo y estás eligiendo mirar hacia otro lado.","You are prioritizing tu comodidad antes que ser un aliado para quien lo necesita. This position invites you a revisar tus valores.","There is a part of you that prefiere no involucrarse aunque vea injusticia. Alberto reminds you que el amor también es acción."],trab_d:["You are feeling el impulso de apoyar, defender o interceder por alguien en tu entorno laboral que está siendo tratado injustamente. Alberto reminds you que un acto de respaldo puede cambiar el rumbo.","There is someone en your work que necesita apoyo y tú tienes la capacidad y responsibility de dárselo. This card invites you a actuar con integridad.","El liderazgo maduro también incluye proteger y sostener a quienes están en una posición más vulnerable. Alberto appears para recordarte el poder de ser un aliado.","Tu sentido de justicia profesional está activado. This card gives you fuerza para interceder cuando sea necesario, aunque no te dé beneficio directo."],trab_s:["You are ignoring situaciones de injusticia o abuso de poder en your work out of fear, conveniencia o para no meterte en problemas. Alberto confronts you con tu inacción.","Your shadow here is la evasión de responsibility ética. Sabes que algo no está bien y estás eligiendo mirar hacia otro lado para proteger tu propia comodidad.","You are prioritizing tu seguridad o tu imagen profesional antes que defender lo correcto. This position is alejando de tu propia integridad.","There is a part of you that prefiere no involucrarse aunque vea comportamientos tóxicos o injustos. Alberto reminds you que el silencio también es una forma de participación."]},
+  19:{amor_d:["There is a love pasado o presente que sigue habitando en ti aunque la relación haya terminado. Oracio invites you a honrar esa conexión sin necesidad de mantenerla activa. Puedes soltar sin borrar lo que significó.","You are in a process de integrar una relación que te marcó profundamente. This card reminds you que el amor no siempre se resuelve con distancia; a veces se resuelve con reconocimiento interno.","There is a part of you that sigue sosteniendo emocionalmente a alguien que ya no está. Oracio gives you permiso para seguir queriendo sin tener que seguir esperando.","El mature love también incluye la capacidad de honrar lo que fue sin convertirlo en una carga. This card accompanies you a cerrar con dignidad y ternura."],amor_s:["Estás negándote el derecho a extrañar o a seguir sintiendo por alguien que ya no está en tu vida. Esta negación is preventing you from procesar el duelo real.","Your shadow here is el orgullo disfrazado de cierre. Estás rechazando el apoyo o el consuelo porque crees que deberías ya haber superado lo que pasó.","Estás manteniendo viva una conexión emocional como forma de no enfrentar solitude que vendría si realmente la sueltas.","There is a part of you that sigue usando el recuerdo de esa persona como refugio emocional. Oracio confronts you con la necesidad de volver a habitar tu presente."],trab_d:["There is a work, un proyecto o una etapa profesional que sigue habitando en ti aunque ya haya terminado. Oracio invites you a honrar lo que significó sin necesidad de mantenerlo activo.","You are in a process de integrar una experiencia laboral que te marcó. This card reminds you que el cierre profesional a veces se resuelve con reconocimiento interno.","There is a part of you that sigue sosteniendo emocionalmente un rol o una identidad laboral que ya no te corresponde. Oracio gives you permiso para seguir valorando esa etapa sin tener que seguir viviéndola.","El trabajo maduro también incluye la capacidad de honrar lo que fue sin convertirlo en una carga. This card accompanies you a cerrar ciclos profesionales con dignidad."],trab_s:["Estás negándote el derecho a extrañar o a seguir sintiendo por una etapa profesional que ya terminó. Esta negación is preventing you from procesar el duelo laboral real.","Your shadow here is el orgullo disfrazado de cierre profesional. Estás rechazando el apoyo porque crees que deberías ya haber superado esa etapa.","Estás manteniendo viva una conexión emocional con un trabajo o rol anterior como forma de no enfrentar la incertidumbre dthe present.","There is a part of you that sigue usando el recuerdo de cómo era antes como refugio emocional. Oracio confronts you con la necesidad de volver a habitar tu presente profesional."]},
+  20:{amor_d:["You are needing un espacio de silencio y observación interna respecto a tus emociones amorosas. Rosario invites you a dejar de buscar respuestas afuera y mirar lo que ya está ocurriendo dentro de ti.","There is a truth emocional que ya conoces, pero que requiere tu permiso para emerger. This card gives you ese permiso para sentir sin juicio lo que realmente está pasando.","Your current process pide que dejes de intelectualizar tanto el amor y vuelvas a sentirlo. Rosario appears como un refugio donde puedes estar con lo que sientes sin tener que explicarlo.","You are at a moment donde el silencio interior es más sanador que cualquier conversación. This card invites you a crear ese espacio."],amor_s:["You are avoiding mirar lo que realmente sientes out of fear a lo que puedas descubrir. Esta evasión te mantiene en una confusión que te resulta más segura que clarity.","Your shadow here is la dificultad para estar contigo misma sin distracciones. Has externalizado tanto tu regulación emocional que ahora te cuesta sostenerte en silencio.","You are using el ruido externo para no tener que escuchar lo que tu corazón ya sabe. Rosario confronts you con esa huida.","There is a part of you that sigue buscando validación o claridad fuera porque no confías en tu propia percepción emocional. This card invites you a volver a tu centro."],trab_d:["You are needing un espacio de silencio y observación interna respecto a tu situación laboral. Rosario invites you a dejar de buscar respuestas afuera y mirar lo que ya está ocurriendo dentro de ti.","There is a truth profesional que ya conoces, pero que requiere tu permiso para emerger. This card gives you ese permiso para sentir sin juicio lo que realmente está pasando con your work.","Your current process pide que dejes de intelectualizar tanto your career y vuelvas a sentir lo que realmente te mueve. Rosario appears como un refugio donde puedes estar con lo que sientes.","You are at a moment donde el silencio interior es más poderoso que cualquier plan de acción externo. This card invites you a crear ese espacio."],trab_s:["You are avoiding mirar lo que realmente sientes sobre your work out of fear a lo que puedas descubrir. Esta evasión te mantiene en una confusión que te resulta más segura que clarity.","Your shadow here is la dificultad para estar contigo misma sin distracciones laborales. Has externalizado tanto tu regulación emocional en work que ahora te cuesta sostenerte en silencio.","You are using el ruido externo para no tener que escuchar lo que tu interior ya sabe sobre tu situación laboral. Rosario confronts you con esa huida.","There is a part of you that sigue buscando opiniones y consejos externos sobre su carrera porque no confía en su propia percepción. This card invites you a volver a tu centro."]},
+  21:{amor_d:["You are needing recordar quiénes realmente te sostienen. This card appears cuando has estado invirtiendo energía en relaciones que no te devuelven lo mismo que das.","Hay una red de apoyo aunque sea pequeña que está disponible para ti. Las Tres Aliadas remind you que no tienes que cargar todo sola.","Your current process en el amor requiere que dejes de aislarte. This card invites you a reconocer y recibir el sostén que ya existe en tu vida.","You are at a moment donde ser aliada de ti misma también significa permitir que otros te acompañen. This card gives you permiso para necesitar."],amor_s:["You are isolating yourself emocionalmente out of pride, miedo o decepción pasada. This position is privando del sostén que podrías recibir.","Your shadow here is la dificultad para pedir y recibir. You have built una identidad de autosuficiencia que ahora is leaving you sola cuando más necesitas conexión.","Estás rodeada de relaciones superficiales mientras descuidas a las pocas personas que realmente podrían sostenerte. This card invites you a priorizar calidad sobre cantidad.","There is a part of you that sigue creyendo que molestas o que deberías poder sola. Esta creencia is preventing you from construir una red real de apoyo."],trab_d:["You are needing recordar quiénes realmente te sostienen en tu camino profesional. This card appears cuando has estado invirtiendo energía en relaciones laborales que no te devuelven lo mismo que das.","Hay una red de apoyo aunque sea pequeña que está disponible para ti. Las Tres Aliadas remind you que no tienes que cargar todo sola en your career.","Your current process profesional requiere que dejes de aislarte. This card invites you a reconocer y recibir el sostén que ya existe en tu vida laboral y personal.","You are at a moment donde ser aliada de ti misma también significa permitir que otros te acompañen. This card gives you permiso para necesitar apoyo."],trab_s:["You are isolating yourself profesionalmente out of pride, miedo o decepción pasada. This position is privando del sostén y las oportunidades que podrías recibir.","Your shadow here is la dificultad para pedir y recibir ayuda en work. You have built una identidad de autosuficiencia que ahora is leaving you sola cuando más necesitas conexión.","Estás rodeada de relaciones laborales superficiales mientras descuidas a las pocas personas que realmente podrían abrirte puertas. This card invites you a priorizar calidad sobre cantidad.","There is a part of you that sigue creyendo que molestas o que deberías poder sola. Esta creencia is preventing you from construir una red real de apoyo profesional."]},
+  22:{amor_d:["You are feeling una atracción o conexión que te genera expectativa y también miedo. Jazmín reminds you que el amor no se fuerza; se reconoce cuando está listo.","There is a possibility nueva que está surgiendo. This card invites you a no proyectar demasiado rápido ni a cerrar out of fear antes de tiempo.","Your heart está respondiendo a algo antes de que tu mente pueda explicarlo. Jazmín gives you permiso para sentir sin tener que definir inmediatamente.","You are in a process donde el amor puede aparecer de formas que no esperabas. This card accompanies you a mantener el corazón abierto sin perder el centro."],amor_s:["You are forcing una conexión o creando expectativas prematuras porque tienes miedo de que se escape lo bueno. Esta ansiedad está nublando tu percepción real.","Your shadow here is la idealización temprana. You are projecting en alguien todo lo que has estado esperando, sin ver quién o qué está realmente frente a ti.","You are clinging a una chispa porque tienes miedo de volver a solitude. Jazmín confronts you con la necesidad de no usar a otro como salvavidas emocional.","There is a part of you that está tejiendo historias y futuros antes de que connection tenga tiempo de desarrollarse naturalmente."],trab_d:["You are feeling una atracción o una oportunidad profesional que te genera expectativa y también miedo. Jazmín reminds you que las mejores oportunidades a veces aparecen cuando no las estás forzando.","There is a possibility nueva que está surgiendo. This card invites you a no proyectar demasiado rápido ni a cerrar out of fear antes de tiempo.","Tu intuición profesional está respondiendo a algo antes de que tu mente pueda explicarlo completamente. Jazmín gives you permiso para sentir la oportunidad sin tener que definirla inmediatamente.","You are in a process donde work puede aparecer de formas que no esperabas. This card accompanies you a mantener la receptividad sin perder el centro."],trab_s:["You are forcing oportunidades o creando expectativas prematuras porque tienes miedo de que se escape lo bueno. Esta ansiedad está nublando tu percepción real.","Your shadow here is la idealización temprana de oportunidades. You are projecting en un proyecto o cliente todo lo que has estado esperando, sin ver realmente qué está frente a ti.","You are clinging a una chispa profesional porque tienes miedo de volver a la incertidumbre. Jazmín confronts you con la necesidad de no usar una oportunidad como salvavidas.","There is a part of you that está tejiendo escenarios y futuros profesionales antes de que la oportunidad tenga tiempo de desarrollarse naturalmente."]},
+  23:{amor_d:["You are doubting de tu propio valor en el amor. Daniela reminds you que tu merecimiento no depende de que alguien te lo confirme. It is time to convertirte en tu propia fuente de reconocimiento.","You have been minimizando tus logros y cualidades out of fear a parecer arrogante. This card invites you a celebrar tu propio camino sin esperar aplausos externos.","Your motivation y tu autoestima en el amor están conectadas. Daniela appears para recordarte que mereces relaciones donde no tengas que probar constantemente tu valía.","You are in a process de dejar de buscar validación afuera y empezar a reconocerte desde dentro. This card gives you fuerza para eso."],amor_s:["You are waiting que alguien te dé el permiso para sentirte suficiente. Esta dependencia externa de validación is keeping you en una posición de inferioridad emocional.","Your shadow here is la dificultad para celebrar tus propios logros. You have internalized que brillar es peligroso o que te hace menos querible.","Estás desestimando tus avances y cualidades porque crees que no son suficientes. Esta autodesvalorización constante is preventing you from atraer relaciones que te vean realmente.","There is a part of you that sigue midiendo su valor según la respuesta del otro. Daniela confronts you con esta dependencia emocional de approval externa."],trab_d:["You are doubting de tu propio valor profesional. Daniela reminds you que tu merecimiento no depende de que alguien te lo confirme externamente. It is time to convertirte en tu propia fuente de reconocimiento.","You have been minimizando tus logros, tu expertise y your contribution out of fear a parecer arrogante. This card invites you a celebrar tu propio camino sin esperar aplausos.","Your motivation y tu autoestima profesional están conectadas. Daniela appears para recordarte que mereces oportunidades donde no tengas que probar constantemente tu valía.","You are in a process de dejar de buscar validación externa y empezar a reconocerte desde dentro. This card gives you fuerza para eso."],trab_s:["You are waiting que alguien te dé el permiso para sentirte suficiente profesionalmente. Esta dependencia externa de validación is keeping you en una posición de inferioridad.","Your shadow here is la dificultad para celebrar tus propios logros. You have internalized que brillar es peligroso o que te hace menos querible o colaborativa.","Estás desestimando tus avances y tu expertise porque crees que no son suficientes. Esta autodesvalorización constante is preventing you from atraer oportunidades acordes a tu real nivel.","There is a part of you that sigue midiendo su valor profesional según el reconocimiento del otro. Daniela confronts you con esta dependencia emocional de approval externa."]},
+  24:{amor_d:["Hay una puerta pequeña, una coincidencia, una conversación, una señal, que se está abriendo en tu vida amorosa. Heimdall invites you a no ignorarla por parecer poco importante.","You are at a moment donde lo nuevo puede llegar a través de caminos que no esperabas. This card reminds you que la magia a veces se esconde en lo cotidiano.","Tu resistencia a explorar lo desconocido está limitando tus posibilidades de conexión. Heimdall gives you permiso para abrir esa puerta aunque no sepas qué hay del otro lado.","You are needing soltar la rigidez de cómo debería llegar el amor para permitir que llegue de formas inesperadas."],amor_s:["You are ignoring señales y oportunidades out of fear al caos o a lo desconocido. This position keeps you estancada en lo conocido aunque ya no te nutra.","Your shadow here is la necesidad de control y previsibilidad. Prefieres no abrir ciertas puertas antes que arriesgarte a algo que no puedas manejar.","Estás rechazando oportunidades de conexión porque no encajan con la imagen que tenías de cómo debería ser. Esta rigidez te está cerrando caminos.","There is a part of you that sigue esperando que el amor llegue de forma segura y predecible. Heimdall confronts you con esa ilusión."],trab_d:["Hay una puerta pequeña, una conversación casual, una coincidencia, una idea fugaz, que se está abriendo en tu camino profesional. Heimdall invites you a no ignorarla por parecer poco importante.","You are at a moment donde las oportunidades pueden llegar a través de caminos que no esperabas. This card reminds you que la magia profesional a veces se esconde en lo cotidiano.","Tu resistencia a explorar lo desconocido está limitando tus posibilidades de crecimiento. Heimdall gives you permiso para abrir esa puerta aunque no sepas qué hay del otro lado.","You are needing soltar la rigidez de cómo debería llegar tu próximo paso profesional para permitir que llegue de formas inesperadas."],trab_s:["You are ignoring señales y oportunidades profesionales out of fear al caos o a lo desconocido. This position keeps you estancada en lo conocido aunque ya no te nutra.","Your shadow here is la necesidad de control y previsibilidad. Prefieres no abrir ciertas puertas antes que arriesgarte a algo que no puedas manejar completamente.","Estás rechazando oportunidades porque no encajan con la imagen que tenías de cómo debería ser mi carrera. Esta rigidez te está cerrando caminos reales.","There is a part of you that sigue esperando que el siguiente paso profesional llegue de forma segura y predecible. Heimdall confronts you con esa ilusión."]},
+  25:{amor_d:["You are needing ver con más claridad una situación amorosa que has estado evitando mirar de frente. Erebus invites you a entrar en la penumbra interna donde está truth.","There is something you know pero que no quieres ver. This card accompanies you a bajar el ruido externo para escuchar lo que tu interior ya está diciendo.","Your current process requiere que dejes de buscar respuestas en todas partes menos dentro de ti. Erebus invites you a la oscuridad fértil donde nace clarity real.","You are at a moment donde la revelación viene del silencio y no de más información. This card gives you permiso para apagar el ruido."],amor_s:["You are avoiding mirar lo que realmente sientes out of fear a lo que puedas descubrir. Esta evasión te mantiene en una confusión que te resulta más segura que clarity.","Your shadow here is fear of ver lo que ya sabes. Prefieres mantener la confusión antes que enfrentar una verdad que te obligaría a actuar.","You are using el ruido externo como forma de no tener que tomar decisiones que ya sabes que necesitas tomar. Erebus confronts you con esa huida.","There is a part of you that sigue buscando validación o claridad fuera porque no confías en tu propia percepción emocional."],trab_d:["You are needing ver con más claridad una situación profesional que has estado evitando mirar de frente. Erebus invites you a entrar en la penumbra interna donde está truth.","There is something you know sobre your work pero que no quieres ver. This card accompanies you a bajar el ruido externo para escuchar lo que tu interior ya está diciendo.","Your current process requiere que dejes de buscar respuestas en todas partes menos dentro de ti. Erebus invites you a la oscuridad fértil donde nace clarity profesional real.","You are at a moment donde la revelación viene del silencio y no de más información o más acción. This card gives you permiso para apagar el ruido."],trab_s:["You are blocking your voice interna con exceso de estímulos, análisis, reuniones y distracciones laborales. This position keeps you confundida a propósito.","Your shadow here is fear of ver lo que ya sabes sobre tu situación profesional. Prefieres mantener la confusión antes que enfrentar una verdad que te obligaría a actuar.","You are using el ruido externo como forma de no tener que tomar decisiones laborales que ya sabes que necesitas tomar. Erebus confronts you con esa huida.","There is a part of you that sigue recolectando opiniones y consejos externos sobre su carrera porque no confía en su propia percepción."]},
+  26:{amor_d:["You are feeling un llamado hacia algo más profundo en el amor. Aetherius accompanies you a confiar en esa búsqueda aunque no sepas exactamente qué estás buscando.","Hay una dimensión de tu ser que está pidiendo ser integrada en tus relaciones. This card invites you a conectar con esa parte más misteriosa y profunda de ti.","You are in a process donde las respuestas no van a venir de la lógica, sino de connection con algo más grande que tú. Aetherius gives you permiso para soltar el control.","Your soul está guiándote hacia un tipo de amor que aún no conoces del todo. This card accompanies you a confiar en ese camino aunque sea incierto."],amor_s:["Estás perdiéndote en laberintos internos y proyecciones sin guía. Aetherius confronts you con la necesidad de soltar cargas ajenas y volver a tu propio centro.","Your shadow here is la evasión espiritualizada. You are using conceptos elevados para no tener que enfrentar las realidades concretas de tus relaciones.","Estás recolectando información espiritual y mística sobre el amor mientras evitas hacer work emocional real que esas enseñanzas te piden.","There is a part of you that sigue buscando señales y guías externas porque tiene miedo de tomar decisiones desde su propia autoridad interna."],trab_d:["You are feeling un llamado hacia algo más profundo en your purpose profesional. Aetherius accompanies you a confiar en esa búsqueda aunque no sepas exactamente qué es.","Hay una dimensión de tu ser que está pidiendo ser integrada en your work. This card invites you a conectar con esa parte más misteriosa y profunda de your purpose.","You are in a process donde las respuestas profesionales no van a venir solo de la lógica o la estrategia. Aetherius gives you permiso para soltar el control.","Your soul está guiándote hacia una forma de trabajo o un propósito que aún no conoces del todo. This card accompanies you a confiar en ese camino aunque sea incierto."],trab_s:["Estás perdiéndote en laberintos mentales, proyecciones y búsquedas externas sin guía interna. Aetherius confronts you con la necesidad de soltar cargas ajenas y volver a tu propio centro profesional.","Your shadow here is la evasión espiritualizada dwork real. You are using conceptos elevados sobre propósito y misión para no tener que hacer work concreto que tu camino requiere.","Estás recolectando mucha información espiritual y de desarrollo personal mientras evitas hacer work emocional y práctico que esas enseñanzas te piden.","There is a part of you that sigue buscando señales y guías externas sobre su propósito porque tiene miedo de tomar decisiones desde su propia autoridad interna."]},
+  27:{amor_d:["You are in a process donde algo dentro de ti necesita morir para que algo nuevo nazca. This card accompanies you a soltar identidades amorosas que no longer represents youn.","There is a cycle que está cerrándose de forma definitiva. El Umbral invites you a no resistir la muerte de lo viejo, porque de ahí nace tu renacimiento.","You are being called a atravesar una transformación profunda en tu forma de amar. This card gives you fuerza para no quedarte en la orilla.","El amor que viene hacia ti requiere que dejes atrás una versión anterior de ti misma. This card accompanies you en ese tránsito."],amor_s:["You are resisting la transformación porque tienes miedo de quién serás después de soltar. Esta resistencia is keeping you en un estado de limbo doloroso.","Your shadow here is el apego al sufrimiento como identidad. You have built tanto alrededor de lo que te pasó que te cuesta soltar esa historia.","You are clinging a una versión de ti misma o de una relación que no longer exists. El Umbral confronts you con la necesidad de dejar morir lo que ya murió.","There is a part of you that prefiere quedarse en el umbral antes que dar el paso hacia lo desconocido. This card invites you a cruzar."],trab_d:["You are in a process donde algo dentro de ti necesita morir profesionalmente para que algo nuevo nazca. This card accompanies you a soltar con conciencia.","There is a cycle profesional que está cerrándose de forma definitiva. El Umbral invites you a no resistir la muerte de lo viejo, porque de ahí nace tu renacimiento laboral.","You are being called a atravesar una transformación profunda en tu forma de trabajar y de entender your purpose. This card gives you fuerza para no quedarte en la orilla.","El trabajo que viene hacia ti requiere que dejes atrás una versión anterior de ti misma. This card accompanies you en ese tránsito."],trab_s:["You are resisting la transformación profesional porque tienes miedo de quién serás después de soltar. Esta resistencia is keeping you en un estado de limbo doloroso y estancamiento.","Your shadow here is el apego a una identidad profesional que no longer represents you. You have built tanto alrededor de quién soy en mi trabajo que te cuesta soltar esa historia.","You are clinging a una versión de your career que no longer exists. El Umbral confronts you con la necesidad de dejar morir lo que ya murió.","There is a part of you that prefiere quedarse en el umbral profesional antes que dar el paso hacia lo desconocido. This card invites you a cruzar."]},
+  28:{amor_d:["You are needing recordar que no estás sola en tu proceso amoroso. Hay personas y también fuerzas internas que te sostienen aunque no siempre las veas.","There is a space de pertenencia y conexión que está disponible para ti. This card invites you a volver a la mesa donde eres recibida tal como eres.","Your heart está anhelando una tribu o una red donde puedas ser vulnerable sin miedo. El Concilio reminds you que esa red existe o puede construirse.","You are at a moment donde recibir amor y sostén también es un acto de self-love. This card gives you permiso para necesitar y ser sostenida."],amor_s:["You are neglecting tus conexiones más profundas out of haste, orgullo o decepción pasada. This position is dejando emocionalmente empobrecida.","Your shadow here is la dificultad para crear y mantener vínculos profundos. You have learned a funcionar en superficie y ahora te cuesta bajar a niveles más íntimos.","You are taking for granted la presencia de quienes te aman o, por el contrario, alejándote de ellos out of fear a necesitarlos.","There is a part of you that sigue eligiendo solitude como forma de protección. El Concilio te confronta con el costo de esa elección."],trab_d:["You are needing recordar que no estás sola en tu camino profesional. Hay personas y también fuerzas internas que te sostienen aunque no siempre las veas.","There is a space de pertenencia y conexión profesional que está disponible para ti. This card invites you a volver a la mesa donde eres recibida por quienes realmente valoran your work.","Tu propósito está anhelando una tribu o una red donde puedas ser vulnerable y auténtica sin miedo. El Concilio reminds you que esa red existe o puede construirse.","You are at a moment donde recibir apoyo y reconocimiento también es un acto de profesionalismo maduro. This card gives you permiso para necesitar y ser sostenida."],trab_s:["You are neglecting tus conexiones profesionales más profundas out of haste, orgullo o decepción pasada. This position is dejando emocional y profesionalmente empobrecida.","Your shadow here is la dificultad para crear y mantener relaciones profesionales profundas. You have learned a funcionar en superficie y ahora te cuesta bajar a niveles más íntimos.","You are taking for granted la presencia de quienes te apoyan o, por el contrario, alejándote de ellos out of fear a necesitarlos.","There is a part of you that sigue eligiendo solitude profesional como forma de protección. El Concilio te confronta con el costo real de esa elección."]},
+  29:{amor_d:["You are feeling que el estancamiento te asfixia y necesitas un impulso radical. El Portal del Caos accompanies you a soltar cargas acumuladas.","Hay una acumulación de patrones, expectativas y cargas que necesita ser liberada para que algo nuevo pueda entrar. This card accompanies you en esa limpieza.","Your current process requiere que dejes de hacer más de lo mismo y te atrevas a un cambio estructural en cómo te relacionas.","You are ready to un renacimiento. This card gives you fuerza para soltar lo viejo even if it hurts."],amor_s:["You are paralyzed por fear of soltar. Esta parálisis is keeping you en un caos interno que es más familiar que change.","Your shadow here is el apego acumulador. Sigues cargando cosas que no longer serves youn out of fear al vacío.","You are sabotaging tu propio proceso de renovación porque el caos controlado te resulta más seguro que el orden que vendría después de soltar.","There is a part of you that sigue repitiendo patrones destructivos porque cambiar implica enfrentar el duelo de todo lo que has invertido en ellos."],trab_d:["You are feeling que el estancamiento en tu vida profesional ya no es sostenible. This card invites you a generar un cambio radical even if it implies soltar mucho de lo que has construido.","Hay una acumulación de patrones, creencias y cargas laborales que necesita ser liberada para que algo nuevo pueda entrar. El Portal del Caos accompanies you en esa limpieza profunda.","Your current process requiere que dejes de hacer más de lo mismo y te atrevas a un cambio estructural en cómo trabajas y cómo te valoras.","You are ready to un renacimiento profesional. This card gives you fuerza para soltar lo viejo even if it hurts."],trab_s:["You are paralyzed por fear of soltar estructuras laborales que no longer serves youn. Esta parálisis is keeping you en un caos interno que es más familiar que change.","Your shadow here is el apego acumulador profesional. Sigues cargando cosas que no longer serves youn out of fear al vacío.","You are sabotaging tu propio proceso de renovación profesional porque el caos controlado te resulta más seguro que el orden que vendría después de soltar.","There is a part of you that sigue repitiendo patrones destructivos en work porque cambiar implica enfrentar el duelo de todo lo que has invertido en ellos."]},
+  30:{amor_d:["You are impatient por ver cambios y olvidas que change profundo lleva su tiempo. This card reminds you que el amor y la paciencia son los mejores condimentos para tu proceso.","There is a process interno que necesita ser cocido on a low flame. This card invites you a bajar el ritmo y permitir que las cosas se transformen a su tiempo.","You are trying arreglar todo de golpe, sin dar espacio a maturation emocional. This card asks you que confíes en los tiempos de maduración.","Tu crecimiento en el amor está pidiendo paciencia y presencia, no soluciones rápidas. This card accompanies you a honrar ese ritmo."],amor_s:["You are searching soluciones rápidas o parchear sin profundizar. This position invites you a regresar a la olla, bajar el fuego y permitir que el tiempo haga su magia.","Your shadow here is impatience disfrazada de progreso. Estás avanzando superficialmente sin darte tiempo a que los cambios se asienten.","You are searching atajos emocionales que te permitan evitar work profundo. This card confronts you con el costo de esa estrategia.","There is a part of you that sigue creyendo que si no pasa rápido, no va a pasar. Esta creencia is generating ansiedad y decisiones precipitadas."],trab_d:["You are wanting resultados rápidos en tu desarrollo profesional y esto is preventing you from madurar de verdad. This card reminds you que work profundo requiere tiempo y cocción lenta.","There is a process interno profesional que necesita ser cocido on a low flame. El Inframundo de las Pociones invites you a bajar el ritmo y permitir que las cosas se transformen a su tiempo.","You are trying arreglar your career desde la urgencia y impatience. This card asks you que confíes en los tiempos de maduración profesional y personal.","Tu crecimiento laboral está pidiendo paciencia y presencia, no soluciones rápidas ni atajos. This card accompanies you a honrar ese ritmo."],trab_s:["Estás saltando pasos importantes en tu desarrollo profesional porque quieres llegar rápido a un resultado. Esta prisa is preventing you from integrar lo que realmente necesitas aprender.","Your shadow here is impatience disfrazada de ambición. Estás avanzando superficialmente sin darte tiempo a que los cambios se asienten en tu sistema y en tu identidad.","You are searching atajos profesionales que te permitan evitar work profundo de transformación. This card confronts you con el costo de esa estrategia.","There is a part of you that sigue creyendo que si no pasa rápido, no va a pasar. Esta creencia is generating ansiedad y decisiones precipitadas que luego lamentas."]},
+  31:{amor_d:["You are receiving insights y revelaciones importantes sobre tu patrón en el amor. Este Portal te invita a prestar atención a las señales, sueños y comprensiones que están llegando.","Hay una respuesta que tu mente no puede alcanzar pero que tu ser ya está recibiendo. This card gives you permiso para confiar en esa sabiduría que viene de otro lugar.","You are at a moment donde una idea, una imagen o una comprensión puede cambiar tu forma de relacionarte. El Portal accompanies you a recibirla.","Your current process está siendo guiado por algo más grande que tu voluntad consciente. This card invites you a estar receptiva a esa guía."],amor_s:["You are blocking la revelación con exceso de análisis y control mental. This position keeps you en la superficie de lo que podrías entender.","Your shadow here is el rechazo de tu propia sabiduría interna. Sigues buscando respuestas afuera cuando la comprensión más importante ya está llegando desde dentro.","You are saturating yourself de información espiritual y psicológica sobre el amor mientras evitas integrar lo que ya has recibido. This card invites you a digerir.","There is a part of you that tiene miedo de recibir una verdad que te obligue a cambiar. El Portal confronts you con esa resistencia al conocimiento transformador."],trab_d:["You are receiving insights y revelaciones importantes sobre tu patrón profesional y your purpose. Este Portal te invita a prestar atención a las señales, sueños y comprensiones que están llegando.","Hay una respuesta profesional que tu mente no puede alcanzar pero que tu ser ya está recibiendo. This card gives you permiso para confiar en esa sabiduría que viene de otro lugar.","You are at a moment donde una idea, una imagen o una comprensión puede cambiar radicalmente tu forma de trabajar y de entender tu camino. El Portal accompanies you a recibirla.","Tu proceso profesional actual está siendo guiado por algo más grande que tu voluntad consciente. This card invites you a estar receptiva a esa guía."],trab_s:["You are blocking la revelación profesional con exceso de análisis, control mental y saturación de información. This position keeps you en la superficie de lo que podrías entender.","Your shadow here is el rechazo de tu propia sabiduría interna. Sigues buscando respuestas afuera cuando la comprensión más importante ya está llegando desde dentro.","You are saturating yourself de información, cursos, libros y consejos sobre desarrollo profesional mientras evitas integrar lo que ya has recibido. This card invites you a digerir.","There is a part of you that tiene miedo de recibir una verdad profesional que te obligue a cambiar de forma significativa. El Portal confronts you con esa resistencia al conocimiento transformador."]}
+};
+
+// Obtener mensaje temático si existe
+function getMensajeTematico(carta, tema, isReversed) {
+  const t = TEMATICOS[carta.num];
+  if (!t) return null;
+  
+  let pool;
+  if (tema === 'amor') {
+    pool = isReversed ? t.amor_s : t.amor_d;
+  } else if (tema === 'trabajo') {
+    pool = isReversed ? t.trab_s : t.trab_d;
+  }
+  
+  if (!pool || pool.length === 0) return null;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// ── REVELAR CARTA ──
+function revelarCarta(i) {
+  const scene = document.getElementById(`tscene${i}`);
+  if (scene.classList.contains('flipped')) return;
+
+  const c = tiradaCartas[i];
+  const img = document.getElementById(`timg${i}`);
+  img.src = c.img;
+  document.getElementById(`tname${i}`).textContent = c.name;
+
+  scene.classList.add('flipped');
+  reveladas++;
+
+  setTimeout(() => {
+    const badge = c.isReversed
+      ? `<span class="reversed-badge">🌑 Reversed — Shadow</span>`
+      : `<span class="upright-badge">☀️ Upright — Light</span>`;
+    document.getElementById(`tmsgnposicion${i}`).innerHTML = badge;
+    document.getElementById(`tmsgname${i}`).textContent = c.name;
+
+    // Use thematic message if available, fall back to general
+    const tematico = getMensajeTematico(c, temaActual, c.isReversed);
+    const mensaje = tematico || (c.isReversed ? c.sombra : c.message);
+    document.getElementById(`tmsgtexto${i}`).textContent = mensaje;
+
+    const msgEl = document.getElementById(`tmsg${i}`);
+    msgEl.classList.add('visible');
+    msgEl.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }, 800);
+}
+
+// ── OTRA TIRADA ──
+function otraTirada() {
+  document.getElementById('tirada-section').style.display = 'none';
+  document.getElementById('pileSection').style.display = 'none';
+  document.getElementById('seleccionSection').style.display = 'none';
+  document.getElementById('tiradaCartas').style.display = 'none';
+  document.getElementById('hero').style.display = 'flex';
+  document.getElementById('temas').style.display = 'block';
+  cartasSeleccionadas = [];
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
