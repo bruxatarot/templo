@@ -22,6 +22,10 @@
     .nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.3em;color:var(--gold);text-decoration:none}
     .nav-back{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.2em;color:#b8a87a;text-decoration:none;transition:color .3s}
     .nav-back:hover{color:var(--gold)}
+    .lang-selector{display:flex;align-items:center;gap:.35rem}
+    .lang-btn{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.12em;padding:.28rem .65rem;border-radius:100px;cursor:pointer;border:1px solid rgba(201,168,76,.2);background:transparent;color:#b8a87a;transition:all .3s}
+    .lang-btn:hover{border-color:rgba(201,168,76,.5);color:var(--gold)}
+    .lang-btn.active{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.6);color:var(--gold)}
 
     /* ── HERO ── */
     #hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;
@@ -295,6 +299,10 @@
   <nav>
     <a href="index.html" class="nav-back">← Volver al Templo</a>
     <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
+    <div class="lang-selector">
+      <button class="lang-btn active" onclick="window.location.href='tiradas.html'">ES</button>
+      <button class="lang-btn" onclick="window.location.href='tiradas-en.html'">EN</button>
+    </div>
   </nav>
 
   <!-- HERO -->
