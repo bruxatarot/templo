@@ -480,17 +480,35 @@
       <h2 class="section-title">Mensajes del Prisma</h2>
     </div>
     <div class="panel-grid reveal">
+      <!-- CARTA COLECTIVA -->
       <div class="panel-card">
         <span class="panel-card-icon">🎴</span>
         <span class="panel-card-label">✦ CARTA COLECTIVA DE HOY ✦</span>
         <span class="panel-card-title" id="panelCartaNombre">Cargando...</span>
         <p class="panel-card-text" id="panelCartaMensaje"></p>
       </div>
+      <!-- MENSAJE SEMANAL -->
       <div class="panel-card">
         <span class="panel-card-icon">🔮</span>
         <span class="panel-card-label">✦ MENSAJE SEMANAL ✦</span>
         <p class="panel-card-text" id="panelMensaje">Cargando...</p>
+        <div id="panelColorWrap" style="display:none;align-items:center;gap:.6rem;margin-top:.8rem;padding-top:.8rem;border-top:1px solid rgba(201,168,76,.1)">
+          <span id="panelColorCircle" style="width:14px;height:14px;border-radius:50%;display:inline-block;flex-shrink:0"></span>
+          <span style="font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;color:rgba(201,168,76,.5)">COLOR DE LA SEMANA:</span>
+          <span id="panelColorNombre" style="font-family:'Cinzel',serif;font-size:.6rem;color:var(--gold)"></span>
+        </div>
+        <div id="panelAngelesWrap" style="display:none;margin-top:.8rem;padding-top:.8rem;border-top:1px solid rgba(201,168,76,.1)">
+          <span style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;color:rgba(201,168,76,.4);display:block;margin-bottom:.4rem">✦ MENSAJE DE ÁNGELES ✦</span>
+          <p class="panel-card-text" id="panelAngeles" style="font-style:italic;color:#b090e0"></p>
+        </div>
+        <div id="panelLinkWrap" style="display:none;margin-top:.8rem">
+          <a id="panelLink" href="#" target="_blank"
+            style="font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.15em;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,.3);padding:.3rem .9rem;border-radius:100px;transition:all .3s">
+            ✦ Ver en redes sociales
+          </a>
+        </div>
       </div>
+      <!-- LUNA -->
       <div class="panel-card">
         <span class="panel-card-icon" id="panelLunaEmoji">🌙</span>
         <span class="panel-card-label">✦ LUNA DEL MES ✦</span>
@@ -1073,17 +1091,66 @@ async function cargarPanel() {
     const res = await fetch(JSONBIN_URL + PANEL_BIN + '/latest', { headers: { 'X-Access-Key': ACCESS_KEY } });
     const data = await res.json();
     const r = data.record;
+
+    // Carta colectiva
     if(r.carta_colectiva) {
-      document.getElementById('panelCartaNombre').textContent = r.carta_colectiva.nombre || '';
-      document.getElementById('panelCartaMensaje').textContent = r.carta_colectiva.mensaje || '';
+      const cc = r.carta_colectiva;
+      document.getElementById('panelCartaNombre').textContent = (cc.emoji||'🎴') + ' ' + (cc.nombre||'');
+      document.getElementById('panelCartaMensaje').textContent = cc.mensaje || '';
     }
+
+    // Mensaje semanal
     if(r.mensaje_semanal) {
-      document.getElementById('panelMensaje').textContent = r.mensaje_semanal.texto || '';
+      const m = r.mensaje_semanal;
+      document.getElementById('panelMensaje').textContent = m.texto || '';
+
+      // Color
+      if(m.color || m.color_nombre) {
+        const wrap = document.getElementById('panelColorWrap');
+        wrap.style.display = 'flex';
+        if(m.color) document.getElementById('panelColorCircle').style.background = m.color;
+        document.getElementById('panelColorNombre').textContent = m.color_nombre || '';
+      }
+
+      // Angeles
+      if(m.angeles) {
+        document.getElementById('panelAngelesWrap').style.display = 'block';
+        document.getElementById('panelAngeles').textContent = m.angeles;
+      }
+
+      // Link redes
+      if(m.link) {
+        const linkWrap = document.getElementById('panelLinkWrap');
+        linkWrap.style.display = 'block';
+        document.getElementById('panelLink').href = m.link;
+      }
     }
+
+    // Luna
     if(r.luna) {
       document.getElementById('panelLunaEmoji').textContent = r.luna.fase || '🌙';
       document.getElementById('panelLunaNombre').textContent = r.luna.nombre || '';
       document.getElementById('panelLunaMensaje').textContent = r.luna.mensaje || '';
+    } else {
+      // Auto calculate luna if not set
+      const hoy = new Date();
+      const lunaRef = new Date('2000-01-06T18:14:00Z');
+      const ciclo = 29.53058867;
+      const diff = (hoy - lunaRef) / (1000*60*60*24);
+      const edad = ((diff % ciclo) + ciclo) % ciclo;
+      const fases = [
+        {e:'🌑',n:'Luna Nueva',m:14.76},
+        {e:'🌒',n:'Luna Creciente',m:7.38},
+        {e:'🌓',n:'Cuarto Creciente',m:11.07},
+        {e:'🌔',n:'Gibosa Creciente',m:14.76},
+        {e:'🌕',n:'Luna Llena',m:16.61},
+        {e:'🌖',n:'Gibosa Menguante',m:20.3},
+        {e:'🌗',n:'Cuarto Menguante',m:23.99},
+        {e:'🌘',n:'Luna Menguante',m:29.53},
+      ];
+      const fase = fases.find(f => edad <= f.m) || fases[7];
+      document.getElementById('panelLunaEmoji').textContent = fase.e;
+      document.getElementById('panelLunaNombre').textContent = fase.n;
     }
   } catch(e) { console.log('Error panel:', e); }
 }
