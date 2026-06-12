@@ -287,27 +287,113 @@
       from{opacity:0;transform:scale(.2) translateY(20px)}
       to{opacity:.85;transform:scale(1) translateY(0)}
     }
+
+    /* ── SIDEBAR ── */
+    .sidebar-trigger{
+      display:flex;align-items:center;gap:.5rem;
+      background:transparent;border:1px solid rgba(201,168,76,.25);
+      border-radius:100px;padding:.4rem 1rem;
+      cursor:pointer;color:var(--gold);
+      font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.2em;
+      transition:all .3s;
+    }
+    .sidebar-trigger:hover{border-color:rgba(201,168,76,.6);background:rgba(201,168,76,.08)}
+    .sidebar-trigger-icon{font-size:1rem}
+    .sidebar-overlay{
+      position:fixed;inset:0;z-index:200;
+      background:rgba(4,6,15,.6);backdrop-filter:blur(4px);
+      opacity:0;visibility:hidden;transition:all .35s;
+    }
+    .sidebar-overlay.open{opacity:1;visibility:visible}
+    .sidebar{
+      position:fixed;top:0;left:0;bottom:0;z-index:201;
+      width:280px;
+      background:linear-gradient(180deg,#0b1128 0%,#07091a 100%);
+      border-right:1px solid rgba(201,168,76,.2);
+      transform:translateX(-100%);
+      transition:transform .4s cubic-bezier(.4,0,.2,1);
+      display:flex;flex-direction:column;
+      box-shadow:4px 0 40px rgba(0,0,0,.6);
+    }
+    .sidebar.open{transform:translateX(0)}
+    .sidebar-header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:1.5rem 1.5rem 1rem;
+      border-bottom:1px solid rgba(201,168,76,.1);
+    }
+    .sidebar-title{
+      font-family:'Cinzel Decorative',serif;font-size:.9rem;
+      color:var(--gold);letter-spacing:.15em;
+    }
+    .sidebar-close{
+      background:transparent;border:none;color:rgba(201,168,76,.5);
+      font-size:1.1rem;cursor:pointer;padding:.3rem;
+      transition:color .3s;line-height:1;
+    }
+    .sidebar-close:hover{color:var(--gold)}
+    .sidebar-nav{
+      flex:1;padding:1.2rem 0;overflow-y:auto;
+      display:flex;flex-direction:column;
+    }
+    .sidebar-link{
+      display:flex;align-items:center;gap:.9rem;
+      padding:1rem 1.5rem;width:100%;
+      text-decoration:none;color:#c4b090;
+      font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.15em;
+      transition:all .25s;border-left:2px solid transparent;
+      white-space:nowrap;box-sizing:border-box;
+    }
+    .sidebar-link:hover{
+      color:var(--gold);background:rgba(201,168,76,.06);
+      border-left-color:rgba(201,168,76,.5);
+    }
+    .sidebar-footer{
+      padding:1.2rem 1.5rem;
+      border-top:1px solid rgba(201,168,76,.08);text-align:center;
+    }
+    .sidebar-footer-text{
+      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.25);
+    }
   </style>
 </head>
 <body>
   <div id="starfield"><canvas id="stars"></canvas></div>
 
   <nav>
-    <a href="#" class="nav-logo">✦ BRUXA TAROT</a>
-    <ul class="nav-links">
-      <li><a href="#quien-soy" data-i18n="nav_bruja">La Bruja</a></li>
-      <li><a href="#templo"    data-i18n="nav_templo">El Templo</a></li>
-      <li><a href="#carta"     data-i18n="nav_carta">Carta del Día</a></li>
-      <li><a href="rituales.html" data-i18n="nav_rituales">Rituales</a></li>
-      <li><a href="#redes"     data-i18n="nav_redes">Conecta</a></li>
-    </ul>
+    <button class="sidebar-trigger" id="sidebarTrigger" aria-label="Menu">
+      <span class="sidebar-trigger-icon">☰</span>
+      <span class="sidebar-trigger-label">El Más Allá</span>
+    </button>
+    <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
     <div class="lang-selector">
-      <button class="lang-btn active" data-lang="es" onclick="LangEngine.set('es')">ES</button>
-      <button class="lang-btn" data-lang="en"  onclick="LangEngine.set('en')">EN</button>
-      <button class="lang-btn" data-lang="it"  onclick="LangEngine.set('it')">IT</button>
-      <button class="lang-btn" data-lang="ko"  onclick="LangEngine.set('ko')">한국</button>
+      <button class="lang-btn active" data-lang="es" onclick="LangEngine&&LangEngine.set('es')">ES</button>
+      <button class="lang-btn" data-lang="en" onclick="LangEngine&&LangEngine.set('en')">EN</button>
+      <button class="lang-btn" data-lang="it" onclick="LangEngine&&LangEngine.set('it')">IT</button>
+      <button class="lang-btn" data-lang="ko" onclick="LangEngine&&LangEngine.set('ko')">한국</button>
     </div>
   </nav>
+
+  <!-- SIDEBAR -->
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <p class="sidebar-title">✦ El Más Allá</p>
+      <button class="sidebar-close" id="sidebarClose">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="tiradas.html" class="sidebar-link">🔮 Oráculo Prisma</a>
+      <a href="rituales.html" class="sidebar-link">🕯️ Rituales del Prisma</a>
+      <a href="pozo.html" class="sidebar-link">⭐ Pozo de los Deseos</a>
+      <a href="diario.html" class="sidebar-link">📖 Diario del Alma</a>
+      <a href="test.html" class="sidebar-link">🌓 Luz y Sombra</a>
+      <a href="historias.html" class="sidebar-link">📚 Libro de Sabiduría</a>
+      <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="sidebar-link">🎵 Frecuencias Sagradas</a>
+    </nav>
+    <div class="sidebar-footer">
+      <p class="sidebar-footer-text">Templo del Prisma</p>
+    </div>
+  </aside>
 
   <!-- HERO -->
   <section id="hero">
@@ -358,50 +444,63 @@
 
   <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
 
-  <!-- EL TEMPLO -->
-  <section id="templo">
-    <div class="section-inner">
-      <div class="templo-intro reveal" style="text-align:center;max-width:700px;margin:0 auto 2rem">
-        <p class="section-label" data-i18n="templo_label">El Templo</p>
-        <h2 class="section-title" data-i18n="templo_title">¿Qué encontrarás aquí?</h2>
-        <p class="section-body" style="margin:0 auto;text-align:center" data-i18n="templo_body">El Templo del Prisma…</p>
-      </div>
-      <div class="portals-grid reveal">
-        <div class="portals-icon-grid">
-          <a href="tiradas.html" class="portal-card">
-            <span class="portal-symbol">🔮</span>
-            <span class="portal-name">Oráculo<br>Prisma</span>
-          </a>
-          <a href="rituales.html" class="portal-card">
-            <span class="portal-symbol">🕯️</span>
-            <span class="portal-name">Rituales<br>del Prisma</span>
-          </a>
-          <a href="pozo.html" class="portal-card">
-            <span class="portal-symbol">⭐</span>
-            <span class="portal-name">Pozo de<br>los Deseos</span>
-          </a>
-          <a href="diario.html" class="portal-card">
-            <span class="portal-symbol">📖</span>
-            <span class="portal-name">Diario<br>del Alma</span>
-          </a>
-          <a href="test.html" class="portal-card">
-            <span class="portal-symbol">🌓</span>
-            <span class="portal-name">Luz<br>y Sombra</span>
-          </a>
-          <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="portal-card">
-            <span class="portal-symbol">🎵</span>
-            <span class="portal-name">Frecuencias<br>Sagradas</span>
-          </a>
-          <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="portal-card">
-            <span class="portal-symbol">📚</span>
-            <span class="portal-name">Libro de<br>Sabiduría</span>
-          </a>
+  <!-- NOMBRE MÍSTICO -->
+  <section id="nombre-mistico" style="position:relative;z-index:1;padding:4rem 2rem;">
+    <div class="section-inner" style="max-width:700px;margin:0 auto;text-align:center;">
+      <div class="reveal">
+        <p class="section-label" style="text-align:center;">✦ ORÁCULO PRISMA</p>
+        <h2 class="section-title" style="text-align:center;">Tu Nombre Místico</h2>
+        <p class="section-body" style="margin:0 auto 2.5rem;text-align:center;">
+          El Oráculo Prisma te ha asignado un nombre desde antes de que nacieras.<br>
+          Ingresa tu fecha de nacimiento y descúbrelo.
+        </p>
+        <div style="background:rgba(11,17,40,.6);border:1px solid rgba(201,168,76,.15);border-radius:20px;padding:2rem;max-width:500px;margin:0 auto;">
+          <div class="nombre-mistico-form">
+            <input type="date" id="nombreFecha" placeholder="Tu fecha de nacimiento">
+            <button class="nombre-mistico-btn" onclick="calcularNombre()">✦ Revelar mi nombre</button>
+          </div>
+          <div class="nombre-resultado" id="nombreResultado">
+            <div style="margin:1.2rem 0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.2),transparent)"></div>
+            <p style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.35em;color:rgba(201,168,76,.65);margin-bottom:.8rem;">✦ TU NOMBRE DEL PRISMA ES ✦</p>
+            <p class="nombre-resultado-nombre" id="nombreTexto"></p>
+            <div style="margin:.8rem 0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.15),transparent)"></div>
+            <p class="nombre-resultado-sub" id="nombreSub"></p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="divider"><div class="divider-line"></div><span class="divider-symbol">☽ ✦ ☾</span><div class="divider-line"></div></div>
+  <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
+
+  <!-- PANEL DE BRUXA -->
+  <section id="panelBruxa" style="position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 2rem 4rem">
+    <div class="section-inner reveal" style="text-align:center;margin-bottom:2rem">
+      <p class="section-label">✦ Del Templo</p>
+      <h2 class="section-title">Mensajes del Prisma</h2>
+    </div>
+    <div class="panel-grid reveal">
+      <div class="panel-card">
+        <span class="panel-card-icon">🎴</span>
+        <span class="panel-card-label">✦ CARTA COLECTIVA DE HOY ✦</span>
+        <span class="panel-card-title" id="panelCartaNombre">Cargando...</span>
+        <p class="panel-card-text" id="panelCartaMensaje"></p>
+      </div>
+      <div class="panel-card">
+        <span class="panel-card-icon">🔮</span>
+        <span class="panel-card-label">✦ MENSAJE SEMANAL ✦</span>
+        <p class="panel-card-text" id="panelMensaje">Cargando...</p>
+      </div>
+      <div class="panel-card">
+        <span class="panel-card-icon" id="panelLunaEmoji">🌙</span>
+        <span class="panel-card-label">✦ LUNA DEL MES ✦</span>
+        <span class="panel-card-title" id="panelLunaNombre">Cargando...</span>
+        <p class="panel-card-text" id="panelLunaMensaje"></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
 
   <!-- CARTA DEL DÍA -->
   <section id="carta">
@@ -461,34 +560,23 @@
 
   <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
 
-  <!-- NOMBRE MÍSTICO -->
-  <section id="nombre-mistico" style="position:relative;z-index:1;padding:4rem 2rem;">
-    <div class="section-inner" style="max-width:700px;margin:0 auto;text-align:center;">
-      <div class="reveal">
-        <p class="section-label" style="text-align:center;">✦ ORÁCULO PRISMA</p>
-        <h2 class="section-title" style="text-align:center;">Tu Nombre Místico</h2>
-        <p class="section-body" style="margin:0 auto 2.5rem;text-align:center;">
-          El Oráculo Prisma te ha asignado un nombre desde antes de que nacieras.<br>
-          Ingresa tu fecha de nacimiento y descúbrelo.
-        </p>
-        <div style="background:rgba(11,17,40,.6);border:1px solid rgba(201,168,76,.15);border-radius:20px;padding:2rem;max-width:500px;margin:0 auto;">
-          <div class="nombre-mistico-form">
-            <input type="date" id="nombreFecha" placeholder="Tu fecha de nacimiento">
-            <button class="nombre-mistico-btn" onclick="calcularNombre()">✦ Revelar mi nombre</button>
-          </div>
-          <div class="nombre-resultado" id="nombreResultado">
-            <div style="margin:1.2rem 0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.2),transparent)"></div>
-            <p style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.35em;color:rgba(201,168,76,.65);margin-bottom:.8rem;">✦ TU NOMBRE DEL PRISMA ES ✦</p>
-            <p class="nombre-resultado-nombre" id="nombreTexto"></p>
-            <div style="margin:.8rem 0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.15),transparent)"></div>
-            <p class="nombre-resultado-sub" id="nombreSub"></p>
-          </div>
-        </div>
-      </div>
+  <!-- LIBRO DE ALMAS -->
+  <section id="libroAlmas" style="position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 2rem 4rem">
+    <div class="libro-header reveal" style="text-align:center;margin-bottom:2rem">
+      <p class="section-label">✦ Comunidad</p>
+      <h2 class="section-title">Libro de Almas</h2>
+      <p class="section-body" style="margin-bottom:1.5rem">Deja tu huella en el Templo. Comparte tu nombre místico con las almas que han pasado por aquí.</p>
+    </div>
+    <div class="libro-form reveal">
+      <input class="libro-input" id="libroNombre" placeholder="Tu nombre místico..." maxlength="60">
+      <input class="libro-input" id="libroCiudad" placeholder="Tu ciudad..." maxlength="40">
+      <input class="libro-input" id="libroBandera" placeholder="🇲🇽" maxlength="4" style="width:80px">
+      <button class="libro-btn" onclick="agregarAlma()">🦋 Dejar mi huella</button>
+    </div>
+    <div class="almas-grid reveal" id="almasGrid">
+      <p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem;text-align:center;grid-column:1/-1">Cargando almas...</p>
     </div>
   </section>
-
-  <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
 
   <!-- REDES -->
   <section id="redes">
@@ -505,53 +593,6 @@
           <a href="https://www.youtube.com/@BruxaTarot"    target="_blank" class="red-link"><span class="red-icon">📺</span> YouTube</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- PANEL DE BRUXA -->
-  <section id="panelBruxa" style="position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 2rem 4rem">
-    <div class="section-inner reveal" style="text-align:center;margin-bottom:2rem">
-      <p class="section-label">✦ Del Templo</p>
-      <h2 class="section-title">Mensajes del Prisma</h2>
-    </div>
-    <div class="panel-grid reveal">
-      <div class="panel-card">
-        <span class="panel-card-icon">🎴</span>
-        <span class="panel-card-label">✦ CARTA COLECTIVA DE HOY ✦</span>
-        <span class="panel-card-title" id="panelCartaNombre">Cargando...</span>
-        <p class="panel-card-text" id="panelCartaMensaje"></p>
-      </div>
-      <div class="panel-card">
-        <span class="panel-card-icon">🔮</span>
-        <span class="panel-card-label">✦ MENSAJE SEMANAL ✦</span>
-        <p class="panel-card-text" id="panelMensaje">Cargando...</p>
-      </div>
-      <div class="panel-card">
-        <span class="panel-card-icon" id="panelLunaEmoji">🌙</span>
-        <span class="panel-card-label">✦ LUNA DEL MES ✦</span>
-        <span class="panel-card-title" id="panelLunaNombre">Cargando...</span>
-        <p class="panel-card-text" id="panelLunaMensaje"></p>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
-
-  <!-- LIBRO DE ALMAS -->
-  <section id="libroAlmas" style="position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 2rem 4rem">
-    <div class="libro-header reveal" style="text-align:center;margin-bottom:2rem">
-      <p class="section-label">✦ Comunidad</p>
-      <h2 class="section-title">Libro de Almas</h2>
-      <p class="section-body" style="margin-bottom:1.5rem">Deja tu huella en el Templo. Comparte tu nombre místico con las almas que han pasado por aquí.</p>
-    </div>
-    <div class="libro-form reveal">
-      <input class="libro-input" id="libroNombre" placeholder="Tu nombre místico..." maxlength="60">
-      <input class="libro-input" id="libroCiudad" placeholder="Tu ciudad..." maxlength="40">
-      <input class="libro-input" id="libroBandera" placeholder="🇲🇽" maxlength="4" style="width:80px">
-      <button class="libro-btn" onclick="agregarAlma()">🦋 Dejar mi huella</button>
-    </div>
-    <div class="almas-grid reveal" id="almasGrid">
-      <p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem;text-align:center;grid-column:1/-1">Cargando almas...</p>
     </div>
   </section>
 
@@ -1052,6 +1093,31 @@ document.addEventListener('DOMContentLoaded', () => {
   cargarLibroYContador();
   cargarPanel();
 });
+</script>
+<script>
+// ── SIDEBAR ──
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('sidebarOverlay');
+const trigger = document.getElementById('sidebarTrigger');
+const closeBtn = document.getElementById('sidebarClose');
+
+function openSidebar(){
+  sidebar.classList.add('open');
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeSidebar(){
+  sidebar.classList.remove('open');
+  overlay.classList.remove('open');
+  document.body.style.overflow='';
+}
+
+trigger.addEventListener('click', openSidebar);
+closeBtn.addEventListener('click', closeSidebar);
+overlay.addEventListener('click', closeSidebar);
+
+// Close on ESC
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeSidebar(); });
 </script>
 </body>
 </html>
