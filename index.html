@@ -252,6 +252,41 @@
       font-family:'Cinzel',serif; font-size:.75rem; letter-spacing:.15em;
       color:rgba(201,168,76,.6); margin-top:.3rem;
     }
+
+    /* ── MARCADOR DE MARIPOSAS ── */
+    #mariposasBar{
+      position:relative;z-index:1;
+      text-align:center;padding:3rem 2rem 0;
+    }
+    .contador-almas-text{
+      font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.5);margin-bottom:1.2rem;display:block;
+    }
+    .contador-num{color:rgba(201,168,76,.85)}
+    .mariposas-enjambre{
+      display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+      gap:3px;max-width:960px;margin:0 auto;padding:1.2rem 1rem;
+      border-top:1px solid rgba(201,168,76,.08);
+      border-bottom:1px solid rgba(201,168,76,.08);
+    }
+    .m-svg{
+      display:inline-block;flex-shrink:0;
+      animation:mwiggle ease-in-out infinite, mbreath ease-in-out infinite;
+      transform-origin:center;
+    }
+    @keyframes mwiggle{
+      0%,100%{transform:rotate(-5deg) translateY(0)}
+      25%{transform:rotate(6deg) translateY(-4px)}
+      50%{transform:rotate(-3deg) translateY(-2px)}
+      75%{transform:rotate(5deg) translateY(-5px)}
+    }
+    @keyframes mbreath{
+      0%,100%{opacity:.5} 50%{opacity:.95}
+    }
+    @keyframes mfly-in{
+      from{opacity:0;transform:scale(.2) translateY(20px)}
+      to{opacity:.85;transform:scale(1) translateY(0)}
+    }
   </style>
 </head>
 <body>
@@ -472,6 +507,59 @@
       </div>
     </div>
   </section>
+
+  <!-- PANEL DE BRUXA -->
+  <section id="panelBruxa" style="position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 2rem 4rem">
+    <div class="section-inner reveal" style="text-align:center;margin-bottom:2rem">
+      <p class="section-label">✦ Del Templo</p>
+      <h2 class="section-title">Mensajes del Prisma</h2>
+    </div>
+    <div class="panel-grid reveal">
+      <div class="panel-card">
+        <span class="panel-card-icon">🎴</span>
+        <span class="panel-card-label">✦ CARTA COLECTIVA DE HOY ✦</span>
+        <span class="panel-card-title" id="panelCartaNombre">Cargando...</span>
+        <p class="panel-card-text" id="panelCartaMensaje"></p>
+      </div>
+      <div class="panel-card">
+        <span class="panel-card-icon">🔮</span>
+        <span class="panel-card-label">✦ MENSAJE SEMANAL ✦</span>
+        <p class="panel-card-text" id="panelMensaje">Cargando...</p>
+      </div>
+      <div class="panel-card">
+        <span class="panel-card-icon" id="panelLunaEmoji">🌙</span>
+        <span class="panel-card-label">✦ LUNA DEL MES ✦</span>
+        <span class="panel-card-title" id="panelLunaNombre">Cargando...</span>
+        <p class="panel-card-text" id="panelLunaMensaje"></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
+
+  <!-- LIBRO DE ALMAS -->
+  <section id="libroAlmas" style="position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 2rem 4rem">
+    <div class="libro-header reveal" style="text-align:center;margin-bottom:2rem">
+      <p class="section-label">✦ Comunidad</p>
+      <h2 class="section-title">Libro de Almas</h2>
+      <p class="section-body" style="margin-bottom:1.5rem">Deja tu huella en el Templo. Comparte tu nombre místico con las almas que han pasado por aquí.</p>
+    </div>
+    <div class="libro-form reveal">
+      <input class="libro-input" id="libroNombre" placeholder="Tu nombre místico..." maxlength="60">
+      <input class="libro-input" id="libroCiudad" placeholder="Tu ciudad..." maxlength="40">
+      <input class="libro-input" id="libroBandera" placeholder="🇲🇽" maxlength="4" style="width:80px">
+      <button class="libro-btn" onclick="agregarAlma()">🦋 Dejar mi huella</button>
+    </div>
+    <div class="almas-grid reveal" id="almasGrid">
+      <p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem;text-align:center;grid-column:1/-1">Cargando almas...</p>
+    </div>
+  </section>
+
+  <!-- ENJAMBRE DE MARIPOSAS -->
+  <div id="mariposasBar" style="position:relative;z-index:1;text-align:center;padding:3rem 2rem 0">
+    <span class="contador-almas-text">✦ <span class="contador-num" id="numAlmas">...</span> almas han cruzado este portal ✦</span>
+    <div class="mariposas-enjambre" id="enjambre"></div>
+  </div>
 
   <footer>
     <div class="divider" style="margin-bottom:2rem"><div class="divider-line"></div><span class="divider-symbol" style="color:rgba(201,168,76,.2)">✦</span><div class="divider-line"></div></div>
@@ -767,5 +855,203 @@
     setTimeout(()=>el.classList.remove('flash'), 700);
   }
   </script>
+<script>
+// ══════════════════════════════════════════
+// MARIPOSAS + CONTADOR + PANEL + LIBRO
+// ══════════════════════════════════════════
+
+const LIBRO_BIN  = '6a2bd7d3da38895dfeb3e94d';
+const PANEL_BIN  = '6a2bd799f5f4af5e29e56f1a';
+const ACCESS_KEY = '$2a$10$nen3ORRwjShyHRO9y/yLXOUNY9V9FtMpO7zoDsUuXv4Yo4Rce36xW';
+const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/';
+const HEADERS = { 'Content-Type': 'application/json', 'X-Access-Key': ACCESS_KEY };
+
+// ── CREAR MARIPOSA SVG ──
+function crearMariposa(size, hue) {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox','0 0 100 85');
+  svg.setAttribute('width', size);
+  svg.setAttribute('height', size * 0.85);
+  svg.classList.add('m-svg');
+  const dur = (3 + Math.random() * 4).toFixed(1);
+  const dur2 = (2 + Math.random() * 3).toFixed(1);
+  const delay = (Math.random() * 4).toFixed(1);
+  svg.style.animationDuration = `${dur}s, ${dur2}s`;
+  svg.style.animationDelay = `-${delay}s, -${delay}s`;
+
+  const c1 = `hsl(${hue},70%,72%)`;
+  const c2 = `hsl(${(hue+40)%360},75%,68%)`;
+  const c3 = `hsl(${(hue+80)%360},80%,74%)`;
+  const id = 'mg' + Math.random().toString(36).slice(2,7);
+
+  svg.innerHTML = `
+    <defs>
+      <radialGradient id="${id}a" cx="60%" cy="35%">
+        <stop offset="0%" stop-color="${c3}" stop-opacity=".95"/>
+        <stop offset="55%" stop-color="${c2}" stop-opacity=".85"/>
+        <stop offset="100%" stop-color="${c1}" stop-opacity=".65"/>
+      </radialGradient>
+      <radialGradient id="${id}b" cx="40%" cy="60%">
+        <stop offset="0%" stop-color="${c2}" stop-opacity=".9"/>
+        <stop offset="100%" stop-color="${c1}" stop-opacity=".6"/>
+      </radialGradient>
+    </defs>
+    <path d="M50,42 C40,28 12,8 6,19 C0,30 14,46 50,42Z" fill="url(#${id}a)"/>
+    <path d="M50,42 C60,28 88,8 94,19 C100,30 86,46 50,42Z" fill="url(#${id}a)"/>
+    <path d="M50,46 C37,54 16,64 12,74 C8,82 28,80 50,46Z" fill="url(#${id}b)"/>
+    <path d="M50,46 C63,54 84,64 88,74 C92,82 72,80 50,46Z" fill="url(#${id}b)"/>
+    <ellipse cx="50" cy="46" rx="2.5" ry="11" fill="${c2}" opacity=".75"/>
+    <line x1="50" y1="35" x2="37" y2="21" stroke="${c1}" stroke-width="1" opacity=".6"/>
+    <line x1="50" y1="35" x2="63" y2="21" stroke="${c1}" stroke-width="1" opacity=".6"/>
+    <circle cx="37" cy="21" r="1.8" fill="${c1}" opacity=".8"/>
+    <circle cx="63" cy="21" r="1.8" fill="${c1}" opacity=".8"/>
+    <circle cx="33" cy="31" r="1" fill="white" opacity=".55"/>
+    <circle cx="67" cy="29" r="1.1" fill="white" opacity=".5"/>
+    <circle cx="25" cy="42" r=".8" fill="white" opacity=".4"/>
+    <circle cx="75" cy="40" r=".8" fill="white" opacity=".4"/>
+  `;
+  return svg;
+}
+
+// ── POBLAR ENJAMBRE ──
+// Mariposas se van haciendo más pequeñas según cuántas hay
+function poblarEnjambre(count) {
+  const enjambre = document.getElementById('enjambre');
+  if(!enjambre) return;
+  enjambre.innerHTML = '';
+
+  const num = Math.min(count, 200); // máximo 200 mariposas
+  // Tamaño base según cantidad: pocas = grandes, muchas = pequeñas
+  // 1 mariposa = 48px, 200 mariposas = 14px
+  const sizeBase = Math.max(14, Math.round(48 - (num / 200) * 34));
+
+  for(let i = 0; i < num; i++) {
+    // Variación ligera de tamaño para naturalidad
+    const size = sizeBase + Math.round((Math.random() - 0.5) * 4);
+    const hue = (i / num) * 360; // colores distribuidos en todo el espectro
+    const m = crearMariposa(size, hue);
+    enjambre.appendChild(m);
+  }
+}
+
+// ── NUEVA MARIPOSA CON ANIMACIÓN ──
+function lanzarMariposa(totalCount) {
+  poblarEnjambre(totalCount);
+  // Animar la última mariposa
+  const enjambre = document.getElementById('enjambre');
+  const ultima = enjambre.lastChild;
+  if(ultima) {
+    ultima.style.animation = `mfly-in .6s ease forwards`;
+    setTimeout(() => {
+      ultima.style.animation = '';
+      ultima.classList.add('m-svg');
+    }, 650);
+  }
+}
+
+// ── CARGAR LIBRO + CONTADOR ──
+async function cargarLibroYContador() {
+  try {
+    const res = await fetch(JSONBIN_URL + LIBRO_BIN + '/latest', {
+      headers: { 'X-Access-Key': ACCESS_KEY }
+    });
+    const data = await res.json();
+    const record = data.record;
+
+    const count = record.contador || 0;
+    document.getElementById('numAlmas').textContent = count.toLocaleString('es-MX');
+    poblarEnjambre(count);
+    renderAlmas(record.almas || []);
+
+    // Incrementar contador silenciosamente
+    fetch(JSONBIN_URL + LIBRO_BIN, {
+      method: 'PUT',
+      headers: HEADERS,
+      body: JSON.stringify({ ...record, contador: count + 1 })
+    });
+
+  } catch(e) {
+    console.log('Error libro:', e);
+    poblarEnjambre(5);
+    document.getElementById('numAlmas').textContent = '∞';
+  }
+}
+
+// ── RENDER ALMAS ──
+function renderAlmas(almas) {
+  const grid = document.getElementById('almasGrid');
+  if(!grid) return;
+  if(!almas || almas.length === 0) {
+    grid.innerHTML = '<p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem;text-align:center;grid-column:1/-1">Sé la primera alma en dejar tu huella ✦</p>';
+    return;
+  }
+  const recent = [...almas].reverse().slice(0, 50);
+  grid.innerHTML = recent.map((a, i) => `
+    <div class="alma-card" style="animation-delay:${i * 0.04}s">
+      <span class="alma-card-butterfly">🦋</span>
+      <p class="alma-card-nombre">${a.nombre || ''}</p>
+      <p class="alma-card-lugar">${a.bandera || ''} ${a.ciudad || ''}</p>
+      <p class="alma-card-fecha">${a.fecha || ''}</p>
+    </div>
+  `).join('');
+}
+
+// ── AGREGAR ALMA ──
+async function agregarAlma() {
+  const nombre  = document.getElementById('libroNombre').value.trim();
+  const ciudad  = document.getElementById('libroCiudad').value.trim();
+  const bandera = document.getElementById('libroBandera').value.trim();
+  if(!nombre) { alert('Ingresa tu nombre místico ✨'); return; }
+
+  const hoy = new Date().toLocaleDateString('es-MX', {day:'2-digit',month:'2-digit',year:'numeric'});
+
+  try {
+    const res = await fetch(JSONBIN_URL + LIBRO_BIN + '/latest', { headers: { 'X-Access-Key': ACCESS_KEY } });
+    const data = await res.json();
+    const record = data.record;
+    const almas = record.almas || [];
+    almas.push({ nombre, ciudad, bandera, fecha: hoy });
+
+    await fetch(JSONBIN_URL + LIBRO_BIN, {
+      method: 'PUT', headers: HEADERS,
+      body: JSON.stringify({ ...record, almas })
+    });
+
+    lanzarMariposa(record.contador || almas.length);
+    document.getElementById('libroNombre').value = '';
+    document.getElementById('libroCiudad').value = '';
+    document.getElementById('libroBandera').value = '';
+    renderAlmas(almas);
+
+  } catch(e) { alert('No se pudo guardar tu huella 😢 Intenta de nuevo'); }
+}
+
+// ── CARGAR PANEL DE BRUXA ──
+async function cargarPanel() {
+  try {
+    const res = await fetch(JSONBIN_URL + PANEL_BIN + '/latest', { headers: { 'X-Access-Key': ACCESS_KEY } });
+    const data = await res.json();
+    const r = data.record;
+    if(r.carta_colectiva) {
+      document.getElementById('panelCartaNombre').textContent = r.carta_colectiva.nombre || '';
+      document.getElementById('panelCartaMensaje').textContent = r.carta_colectiva.mensaje || '';
+    }
+    if(r.mensaje_semanal) {
+      document.getElementById('panelMensaje').textContent = r.mensaje_semanal.texto || '';
+    }
+    if(r.luna) {
+      document.getElementById('panelLunaEmoji').textContent = r.luna.fase || '🌙';
+      document.getElementById('panelLunaNombre').textContent = r.luna.nombre || '';
+      document.getElementById('panelLunaMensaje').textContent = r.luna.mensaje || '';
+    }
+  } catch(e) { console.log('Error panel:', e); }
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  cargarLibroYContador();
+  cargarPanel();
+});
+</script>
 </body>
 </html>
