@@ -452,11 +452,12 @@
       color:rgba(201,168,76,.4);margin-bottom:.5rem;
     }
     .perfil-nm-nombre{
-      font-family:'Cinzel Decorative',serif;font-size:1.1rem;
-      color:var(--gold-pale);line-height:1.4;margin-bottom:.3rem;
+      font-family:'Cinzel Decorative',serif;font-size:clamp(1.1rem,2.5vw,1.5rem);
+      color:var(--gold-pale);line-height:1.4;margin-bottom:.5rem;
     }
     .perfil-nm-sub{
-      font-style:italic;font-size:.82rem;color:#a09070;
+      font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.6);margin-top:.4rem;
     }
     .perfil-nm-form{
       display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap;justify-content:center;
@@ -729,7 +730,7 @@
     const frase    = NM_ANIOS[idxAnio];
     return {
       nombre: `${palabra} ${adjetivo} ${frase}`,
-      sub: `${dia}/${mes+1}/${anio} · Tu nombre del Prisma`
+      sub: `✦ ${dia}/${mes+1}/${anio} · Tu nombre del Prisma ✦`
     };
   }
 
