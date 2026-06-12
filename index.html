@@ -388,6 +388,7 @@
       <a href="diario.html" class="sidebar-link">📖 Diario del Alma</a>
       <a href="test.html" class="sidebar-link">🌓 Luz y Sombra</a>
       <a href="historias.html" class="sidebar-link">📚 Libro de Sabiduría</a>
+      <a href="mapa.html" class="sidebar-link">🗺️ Mapa de Almas</a>
       <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="sidebar-link">🎵 Frecuencias Sagradas</a>
     </nav>
     <div class="sidebar-footer">
@@ -579,7 +580,7 @@
   <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
 
   <!-- LIBRO DE ALMAS -->
-  <section id="libroAlmas" style="position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 2rem 4rem">
+  <section id="libroAlmas" style="position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 2rem 4rem">
     <div class="libro-header reveal" style="text-align:center;margin-bottom:2rem">
       <p class="section-label">✦ Comunidad</p>
       <h2 class="section-title">Libro de Almas</h2>
@@ -587,12 +588,26 @@
     </div>
     <div class="libro-form reveal">
       <input class="libro-input" id="libroNombre" placeholder="Tu nombre místico..." maxlength="60">
-      <input class="libro-input" id="libroCiudad" placeholder="Tu ciudad..." maxlength="40">
+      <input class="libro-input" id="libroCiudad" placeholder="Tu país... (ej: México)" maxlength="40">
       <input class="libro-input" id="libroBandera" placeholder="🇲🇽" maxlength="4" style="width:80px">
       <button class="libro-btn" onclick="agregarAlma()">🦋 Dejar mi huella</button>
     </div>
     <div class="almas-grid reveal" id="almasGrid">
       <p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem;text-align:center;grid-column:1/-1">Cargando almas...</p>
+    </div>
+
+    <!-- MAPA INLINE -->
+    <div style="margin-top:2.5rem">
+      <p style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.35em;color:rgba(201,168,76,.4);text-align:center;margin-bottom:1rem">✦ DÓNDE ESTÁN LAS ALMAS ✦</p>
+      <div id="mapaInline" style="height:380px;border-radius:16px;border:1px solid rgba(201,168,76,.15);overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,.4)"></div>
+      <div style="display:flex;justify-content:center;gap:2rem;margin-top:1rem;flex-wrap:wrap">
+        <span style="font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;color:rgba(201,168,76,.35)">
+          🌍 <span id="mapaStatPaises">-</span> países
+        </span>
+        <span style="font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;color:rgba(201,168,76,.35)">
+          🦋 <span id="mapaStatAlmas">-</span> almas en el mapa
+        </span>
+      </div>
     </div>
   </section>
 
