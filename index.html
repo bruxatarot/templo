@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bruxa Tarot • Templo del Prisma</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <script src="lang.js"></script>
   <style>
@@ -355,6 +356,73 @@
       font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.3em;
       color:rgba(201,168,76,.25);
     }
+
+    /* ── PANEL CARTAS ABANICO ── */
+    .prisma-card{
+      position:absolute;width:115px;height:195px;
+      cursor:pointer;left:calc(50% - 57px);bottom:0;
+      transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1),z-index 0s;
+    }
+    .prisma-card-inner{
+      width:100%;height:100%;position:relative;
+      transform-style:preserve-3d;
+      transition:transform .7s cubic-bezier(.4,0,.2,1);
+      border-radius:12px;
+    }
+    .prisma-card.flipped .prisma-card-inner{transform:rotateY(180deg)}
+    .prisma-card-back,.prisma-card-front{
+      position:absolute;inset:0;border-radius:12px;
+      backface-visibility:hidden;-webkit-backface-visibility:hidden;
+      overflow:hidden;
+    }
+    #prismaFan{
+      transition:filter .8s ease;
+    }
+    .prisma-card-back{
+      background:#0b1128;
+      border:1px solid rgba(201,168,76,.2);
+      box-shadow:0 8px 30px rgba(0,0,0,.6);
+      transition:box-shadow .8s ease, border-color .8s ease;
+    }
+    .prisma-card-back img{
+      width:100%;height:100%;object-fit:cover;
+      display:block;border-radius:12px;
+      transition:transform .3s;
+    }
+    .prisma-card:hover .prisma-card-back img{transform:scale(1.04)}
+    .prisma-card-back-overlay{
+      position:absolute;inset:0;border-radius:12px;
+      background:linear-gradient(to top,rgba(4,6,15,.8) 0%,transparent 60%);
+      display:flex;align-items:flex-end;justify-content:center;padding-bottom:.8rem;
+    }
+    .prisma-card-back-label{
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.7);text-align:center;line-height:1.5;
+    }
+    .prisma-card-front{
+      transform:rotateY(180deg);
+      background:linear-gradient(160deg,#0b1128,#060d20);
+      border:1px solid rgba(201,168,76,.4);
+      box-shadow:0 0 30px rgba(201,168,76,.1),0 8px 40px rgba(0,0,0,.7);
+      display:flex;flex-direction:column;padding:1rem .9rem .9rem;
+    }
+    .prisma-card-front-icon{font-size:1.8rem;text-align:center;margin-bottom:.5rem}
+    .prisma-card-front-title{
+      font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.15em;
+      color:var(--gold);text-align:center;margin-bottom:.6rem;line-height:1.5;
+    }
+    .prisma-card-front-divider{
+      width:28px;height:1px;background:rgba(201,168,76,.3);margin:0 auto .7rem;
+    }
+    .prisma-card-front-text{
+      font-style:italic;font-size:.82rem;color:#c4b090;
+      line-height:1.7;text-align:center;flex:1;overflow:hidden;
+    }
+    .prisma-card-front-extra{
+      margin-top:.6rem;padding-top:.5rem;border-top:1px solid rgba(201,168,76,.1);
+      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;
+      color:rgba(201,168,76,.45);text-align:center;
+    }
   </style>
 </head>
 <body>
@@ -476,160 +544,79 @@
 
   <!-- PANEL DE BRUXA -->
   <section id="panelBruxa" style="position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 2rem 4rem">
-    <div class="section-inner reveal" style="text-align:center;margin-bottom:2rem">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
       <p class="section-label">✦ Del Templo</p>
       <h2 class="section-title">Mensajes del Prisma</h2>
+      <p class="section-body">Toca una carta para revelar el mensaje de esta semana</p>
     </div>
-    <div class="panel-grid reveal">
-      <!-- CARTA COLECTIVA -->
-      <div class="panel-card">
-        <span class="panel-card-icon">🎴</span>
-        <span class="panel-card-label">✦ CARTA COLECTIVA DE HOY ✦</span>
-        <span class="panel-card-title" id="panelCartaNombre">Cargando...</span>
-        <p class="panel-card-text" id="panelCartaMensaje"></p>
-      </div>
-      <!-- MENSAJE SEMANAL -->
-      <div class="panel-card">
-        <span class="panel-card-icon">🔮</span>
-        <span class="panel-card-label">✦ MENSAJE SEMANAL ✦</span>
-        <p class="panel-card-text" id="panelMensaje">Cargando...</p>
-        <div id="panelColorWrap" style="display:none;align-items:center;gap:.6rem;margin-top:.8rem;padding-top:.8rem;border-top:1px solid rgba(201,168,76,.1)">
-          <span id="panelColorCircle" style="width:14px;height:14px;border-radius:50%;display:inline-block;flex-shrink:0"></span>
-          <span style="font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;color:rgba(201,168,76,.5)">COLOR DE LA SEMANA:</span>
-          <span id="panelColorNombre" style="font-family:'Cinzel',serif;font-size:.6rem;color:var(--gold)"></span>
-        </div>
-        <div id="panelAngelesWrap" style="display:none;margin-top:.8rem;padding-top:.8rem;border-top:1px solid rgba(201,168,76,.1)">
-          <span style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;color:rgba(201,168,76,.4);display:block;margin-bottom:.4rem">✦ MENSAJE DE ÁNGELES ✦</span>
-          <p class="panel-card-text" id="panelAngeles" style="font-style:italic;color:#b090e0"></p>
-        </div>
-        <div id="panelLinkWrap" style="display:none;margin-top:.8rem">
-          <a id="panelLink" href="#" target="_blank"
-            style="font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.15em;color:var(--gold);text-decoration:none;border:1px solid rgba(201,168,76,.3);padding:.3rem .9rem;border-radius:100px;transition:all .3s">
-            ✦ Ver en redes sociales
-          </a>
-        </div>
-      </div>
-      <!-- LUNA -->
-      <div class="panel-card">
-        <span class="panel-card-icon" id="panelLunaEmoji">🌙</span>
-        <span class="panel-card-label">✦ LUNA DEL MES ✦</span>
-        <span class="panel-card-title" id="panelLunaNombre">Cargando...</span>
-        <p class="panel-card-text" id="panelLunaMensaje"></p>
-      </div>
-    </div>
+    <div class="reveal" id="prismaFan" style="position:relative;height:280px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:1.5rem;perspective:800px"></div>
+    <p id="prismaHint" style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.3em;color:rgba(201,168,76,.35);text-align:center;transition:all .4s">✦ Selecciona una carta ✦</p>
   </section>
 
-  <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
-
-  <!-- CARTA DEL DÍA -->
-  <section id="carta">
-    <div class="section-inner">
-      <div class="carta-wrap">
-        <div class="reveal">
-          <p class="section-label" data-i18n="carta_label">Oráculo Prisma del Alma</p>
-          <h2 class="section-title" data-i18n="carta_title">Carta del Día</h2>
-          <p class="carta-instructions" data-i18n="carta_instruction">Respira profundo…</p>
-          <div class="carta-reading" id="cartaReading">
-            <div id="catBadgeWrap"></div>
-            <div id="posicionBadge"></div>
-            <p class="carta-reading-title" id="cartaReadingTitle" data-i18n="carta_reading_title">✦ MENSAJE DEL ORÁCULO ✦</p>
-            <p id="cartaMessage"></p>
-            <div class="carta-keywords" id="cartaKeywords"></div>
-          </div>
-
-          <!-- DIARIO REMINDER -->
-          <div class="diario-reminder" id="diarioReminder">
-            <p class="diario-reminder-text">
-              🦋 <strong>No olvides escribir tu carta en el Diario del Alma.</strong><br>
-              Guarda este mensaje, tu reflexión y cómo te habló hoy el Oráculo.
-            </p>
-            <a href="diario.html" class="diario-link">📖 Ir al Diario del Alma →</a>
-          </div>
-
-
-          <div id="nuevoBtn" style="display:none;margin-top:1.5rem">
-            <button onclick="resetCard()" class="btn btn-ghost" style="font-size:.65rem;padding:.7rem 1.8rem" data-i18n="carta_nuevo">✦ Nueva tirada</button>
-          </div>
-        </div>
-        <div class="reveal reveal-delay-2">
-          <div class="card-scene" id="cardScene" onclick="flipCard()">
-            <div class="card-flip" id="cardFlip">
-              <div class="card-face card-back">
-                <img src="images/dorso.png" alt="Reverso Oráculo Prisma"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                <div class="card-back-fallback"><span style="font-size:3rem">🦋</span></div>
-                <div class="card-shimmer"></div>
-                <div class="hover-pulse"></div>
-                <div class="card-tap-hint" data-i18n="carta_tap">Toca la carta para voltearla</div>
-              </div>
-              <div class="card-face card-front" id="cardFront">
-                <img class="card-front-img" id="cardImg" src="" alt="">
-                <div class="card-front-footer">
-                  <p class="card-front-name" id="cardName">—</p>
-                  <p class="card-front-subtitle" id="cardSubtitle">—</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <p style="text-align:center;margin-top:1.2rem;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.3em;color:rgba(201,168,76,.4)" data-i18n="carta_tap">Toca la carta para voltearla</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
-
-  <!-- LIBRO DE ALMAS -->
+    <!-- LIBRO DE ALMAS -->
   <section id="libroAlmas" style="position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 2rem 4rem">
-    <div class="libro-header reveal" style="text-align:center;margin-bottom:2rem">
+    <div class="reveal" style="text-align:center;margin-bottom:2.5rem">
       <p class="section-label">✦ Comunidad</p>
       <h2 class="section-title">Libro de Almas</h2>
-      <p class="section-body" style="margin-bottom:1.5rem">Deja tu huella en el Templo. Comparte tu nombre místico con las almas que han pasado por aquí.</p>
-    </div>
-    <div class="libro-form reveal">
-      <input class="libro-input" id="libroNombre" placeholder="Tu nombre místico..." maxlength="60">
-      <input class="libro-input" id="libroCiudad" placeholder="Tu país... (ej: México)" maxlength="40">
-      <input class="libro-input" id="libroBandera" placeholder="🇲🇽" maxlength="4" style="width:80px">
-      <button class="libro-btn" onclick="agregarAlma()">🦋 Dejar mi huella</button>
-    </div>
-    <div class="almas-grid reveal" id="almasGrid">
-      <p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem;text-align:center;grid-column:1/-1">Cargando almas...</p>
+      <p class="section-body">Deja tu huella en el Templo del Prisma.<br>Tu mariposa aparecerá en el mapa de las almas.</p>
     </div>
 
-    <!-- MAPA INLINE -->
-    <div style="margin-top:2.5rem">
-      <p style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.35em;color:rgba(201,168,76,.4);text-align:center;margin-bottom:1rem">✦ DÓNDE ESTÁN LAS ALMAS ✦</p>
-      <div id="mapaInline" style="height:380px;border-radius:16px;border:1px solid rgba(201,168,76,.15);overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,.4)"></div>
-      <div style="display:flex;justify-content:center;gap:2rem;margin-top:1rem;flex-wrap:wrap">
-        <span style="font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;color:rgba(201,168,76,.35)">
+    <!-- FORMULARIO MÍSTICO -->
+    <div class="reveal" style="max-width:600px;margin:0 auto 3rem">
+      <div style="display:flex;flex-direction:column;gap:1rem;align-items:center">
+        <div style="position:relative;width:100%">
+          <span style="position:absolute;left:1.2rem;top:50%;transform:translateY(-50%);font-size:1rem;opacity:.5">🦋</span>
+          <input id="libroNombre" maxlength="60" placeholder="Tu nombre místico..."
+            style="width:100%;padding:.9rem 1.2rem .9rem 3rem;border-radius:100px;
+            border:1px solid rgba(201,168,76,.25);background:rgba(11,17,40,.6);
+            color:#e8dfc8;font-family:'Cormorant Garamond',serif;font-size:1.05rem;
+            font-style:italic;outline:none;transition:all .3s;backdrop-filter:blur(4px);"
+            onfocus="this.style.borderColor='rgba(201,168,76,.6)';this.style.boxShadow='0 0 20px rgba(201,168,76,.1)'"
+            onblur="this.style.borderColor='rgba(201,168,76,.25)';this.style.boxShadow='none'">
+        </div>
+        <div style="position:relative;width:100%">
+          <span style="position:absolute;left:1.2rem;top:50%;transform:translateY(-50%);font-size:1rem;opacity:.5">🌍</span>
+          <input id="libroCiudad" maxlength="40" placeholder="Tu país... (ej: México)"
+            style="width:100%;padding:.9rem 1.2rem .9rem 3rem;border-radius:100px;
+            border:1px solid rgba(201,168,76,.25);background:rgba(11,17,40,.6);
+            color:#e8dfc8;font-family:'Cormorant Garamond',serif;font-size:1.05rem;
+            font-style:italic;outline:none;transition:all .3s;backdrop-filter:blur(4px);"
+            onfocus="this.style.borderColor='rgba(201,168,76,.6)';this.style.boxShadow='0 0 20px rgba(201,168,76,.1)'"
+            onblur="this.style.borderColor='rgba(201,168,76,.25)';this.style.boxShadow='none'">
+        </div>
+        <button onclick="agregarAlma()"
+          style="font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.3em;
+          padding:1rem 3rem;border-radius:100px;border:none;cursor:pointer;
+          background:linear-gradient(135deg,#c9a84c,#a07828);color:#04060f;
+          box-shadow:0 0 30px rgba(201,168,76,.25);transition:all .4s;width:100%"
+          onmouseover="this.style.boxShadow='0 0 50px rgba(201,168,76,.45)';this.style.transform='translateY(-2px)'"
+          onmouseout="this.style.boxShadow='0 0 30px rgba(201,168,76,.25)';this.style.transform='translateY(0)'">
+          🦋 Dejar mi huella en el Templo
+        </button>
+        <p id="libroStatus" style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;
+          color:rgba(201,168,76,.5);display:none;text-align:center"></p>
+      </div>
+    </div>
+
+    <!-- MAPA -->
+    <div class="reveal">
+      <p style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.35em;
+        color:rgba(201,168,76,.35);text-align:center;margin-bottom:1rem">✦ DÓNDE ESTÁN LAS ALMAS ✦</p>
+      <div id="mapaInline" style="height:400px;border-radius:20px;
+        border:1px solid rgba(201,168,76,.15);overflow:hidden;
+        box-shadow:0 0 60px rgba(0,0,0,.5)"></div>
+      <div style="display:flex;justify-content:center;gap:3rem;margin-top:1rem;flex-wrap:wrap">
+        <span style="font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.2em;color:rgba(201,168,76,.35)">
           🌍 <span id="mapaStatPaises">-</span> países
         </span>
-        <span style="font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;color:rgba(201,168,76,.35)">
+        <span style="font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.2em;color:rgba(201,168,76,.35)">
           🦋 <span id="mapaStatAlmas">-</span> almas en el mapa
         </span>
       </div>
     </div>
   </section>
 
-  <!-- REDES -->
-  <section id="redes">
-    <div class="section-inner">
-      <div class="redes-inner reveal">
-        <p class="section-label" data-i18n="redes_label">Conecta con la Bruja</p>
-        <h2 class="section-title" data-i18n="redes_title">Encuéntrame en el cosmos</h2>
-        <p class="section-body" style="margin:0 auto;text-align:center" data-i18n="redes_body">Cada red es un portal…</p>
-        <div class="redes-grid">
-          <a href="https://www.facebook.com/bruxatarot"    target="_blank" class="red-link"><span class="red-icon">📘</span> Facebook</a>
-          <a href="https://www.instagram.com/bruxa_tarot"  target="_blank" class="red-link"><span class="red-icon">📷</span> Instagram</a>
-          <a href="https://www.tiktok.com/@bruxatarot31"   target="_blank" class="red-link"><span class="red-icon">🎵</span> TikTok</a>
-          <a href="https://www.threads.net/@bruxa_tarot"   target="_blank" class="red-link"><span class="red-icon">🧵</span> Threads</a>
-          <a href="https://www.youtube.com/@BruxaTarot"    target="_blank" class="red-link"><span class="red-icon">📺</span> YouTube</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ENJAMBRE DE MARIPOSAS -->
+    <!-- ENJAMBRE DE MARIPOSAS -->
   <div id="mariposasBar" style="position:relative;z-index:1;text-align:center;padding:3rem 2rem 0">
     <span class="contador-almas-text">✦ <span class="contador-num" id="numAlmas">...</span> almas han cruzado este portal ✦</span>
     <div class="mariposas-enjambre" id="enjambre"></div>
@@ -1035,7 +1022,7 @@ async function cargarLibroYContador() {
     const count = record.contador || 0;
     document.getElementById('numAlmas').textContent = count.toLocaleString('es-MX');
     poblarEnjambre(count);
-    renderAlmas(record.almas || []);
+    if(window.L) iniciarMapaInline(record.almas || []);
 
     // Incrementar contador silenciosamente
     fetch(JSONBIN_URL + LIBRO_BIN, {
@@ -1051,14 +1038,6 @@ async function cargarLibroYContador() {
   }
 }
 
-// ── RENDER ALMAS ──
-function renderAlmas(almas) {
-  const grid = document.getElementById('almasGrid');
-  if(!grid) return;
-  if(!almas || almas.length === 0) {
-    grid.innerHTML = '<p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem;text-align:center;grid-column:1/-1">Sé la primera alma en dejar tu huella ✦</p>';
-    return;
-  }
   const recent = [...almas].reverse().slice(0, 50);
   grid.innerHTML = recent.map((a, i) => `
     <div class="alma-card" style="animation-delay:${i * 0.04}s">
@@ -1074,7 +1053,6 @@ function renderAlmas(almas) {
 async function agregarAlma() {
   const nombre  = document.getElementById('libroNombre').value.trim();
   const ciudad  = document.getElementById('libroCiudad').value.trim();
-  const bandera = document.getElementById('libroBandera').value.trim();
   if(!nombre) { alert('Ingresa tu nombre místico ✨'); return; }
 
   const hoy = new Date().toLocaleDateString('es-MX', {day:'2-digit',month:'2-digit',year:'numeric'});
@@ -1084,7 +1062,7 @@ async function agregarAlma() {
     const data = await res.json();
     const record = data.record;
     const almas = record.almas || [];
-    almas.push({ nombre, ciudad, bandera, fecha: hoy });
+    almas.push({ nombre, pais: ciudad, fecha: hoy });
 
     await fetch(JSONBIN_URL + LIBRO_BIN, {
       method: 'PUT', headers: HEADERS,
@@ -1094,8 +1072,9 @@ async function agregarAlma() {
     lanzarMariposa(record.contador || almas.length);
     document.getElementById('libroNombre').value = '';
     document.getElementById('libroCiudad').value = '';
-    document.getElementById('libroBandera').value = '';
-    renderAlmas(almas);
+    const st=document.getElementById('libroStatus');
+    if(st){st.style.display='block';st.textContent='✦ Tu huella ha quedado grabada en el Templo ✦';
+      setTimeout(()=>st.style.display='none',4000);}
 
   } catch(e) { alert('No se pudo guardar tu huella 😢 Intenta de nuevo'); }
 }
@@ -1167,16 +1146,306 @@ async function cargarPanel() {
       document.getElementById('panelLunaEmoji').textContent = fase.e;
       document.getElementById('panelLunaNombre').textContent = fase.n;
     }
+    llenarTextosCarta(r);
   } catch(e) { console.log('Error panel:', e); }
+}
+
+// ── MAPA INLINE ──
+const PAIS_COORDS_IDX = {
+  'mexico':[23.6,-102.5],'méxico':[23.6,-102.5],'colombia':[4.5,-74.3],
+  'venezuela':[8.0,-66.6],'argentina':[-38.4,-63.6],'chile':[-35.7,-71.5],
+  'peru':[-9.2,-75.0],'perú':[-9.2,-75.0],'bolivia':[-16.3,-63.6],
+  'ecuador':[-1.8,-78.2],'paraguay':[-23.4,-58.4],'uruguay':[-32.5,-55.8],
+  'brasil':[-14.2,-51.9],'brazil':[-14.2,-51.9],'cuba':[21.5,-79.5],
+  'puerto rico':[18.2,-66.5],'republica dominicana':[18.7,-70.2],
+  'costa rica':[9.7,-83.8],'panama':[8.5,-80.8],'panamá':[8.5,-80.8],
+  'guatemala':[15.8,-90.2],'honduras':[15.2,-86.2],'el salvador':[13.8,-88.9],
+  'nicaragua':[12.9,-85.2],'haiti':[18.9,-72.3],'haití':[18.9,-72.3],
+  'estados unidos':[37.1,-95.7],'usa':[37.1,-95.7],'eeuu':[37.1,-95.7],
+  'united states':[37.1,-95.7],'canada':[56.1,-106.3],'canadá':[56.1,-106.3],
+  'españa':[40.5,-3.7],'spain':[40.5,-3.7],'portugal':[39.4,-8.2],
+  'italia':[41.9,12.6],'italy':[41.9,12.6],'francia':[46.2,2.2],'france':[46.2,2.2],
+  'alemania':[51.2,10.4],'germany':[51.2,10.4],'reino unido':[55.4,-3.4],'uk':[55.4,-3.4],
+  'korea':[35.9,127.8],'corea':[35.9,127.8],'corea del sur':[35.9,127.8],
+  'japón':[36.2,138.3],'japan':[36.2,138.3],'japon':[36.2,138.3],
+  'china':[35.9,104.2],'india':[20.6,79.1],'australia':[-25.3,133.8],
+  'marruecos':[31.8,-7.1],'turquía':[38.9,35.2],'turquia':[38.9,35.2],
+  'israel':[31.5,34.8],'filipinas':[12.9,121.8],'indonesia':[-0.8,113.9],
+};
+const MAP_COLORS = [
+  ['#b090e0','#70b0f0'],['#f0a0b0','#80d0c0'],['#f0c060','#a0d060'],
+  ['#80c0f0','#f090c0'],['#e090e0','#90e0d0'],['#c9a84c','#e8c97a'],
+];
+let mapaInlineObj = null;
+
+function normalizarPaisIdx(s){
+  if(!s)return null;
+  return s.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z\s]/g,'');
+}
+function getCoordsIdx(paisStr){
+  if(!paisStr)return null;
+  const n=normalizarPaisIdx(paisStr);
+  if(PAIS_COORDS_IDX[n])return PAIS_COORDS_IDX[n];
+  const c=paisStr.toLowerCase().trim();
+  if(PAIS_COORDS_IDX[c])return PAIS_COORDS_IDX[c];
+  for(const[k,v]of Object.entries(PAIS_COORDS_IDX)){
+    if(n&&k&&(n.includes(k)||k.includes(n)))return v;
+  }
+  return null;
+}
+function svgMini(c1,c2){
+  return `<svg width="28" height="24" viewBox="0 0 100 85" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50,42 C40,28 12,8 6,19 C0,30 14,46 50,42Z" fill="${c2}" opacity=".9"/>
+    <path d="M50,42 C60,28 88,8 94,19 C100,30 86,46 50,42Z" fill="${c2}" opacity=".9"/>
+    <path d="M50,46 C37,54 16,64 12,74 C8,82 28,80 50,46Z" fill="${c1}" opacity=".8"/>
+    <path d="M50,46 C63,54 84,64 88,74 C92,82 72,80 50,46Z" fill="${c1}" opacity=".8"/>
+    <ellipse cx="50" cy="46" rx="2" ry="10" fill="${c2}" opacity=".7"/>
+    <circle cx="33" cy="31" r="1" fill="white" opacity=".5"/>
+    <circle cx="67" cy="29" r="1" fill="white" opacity=".5"/>
+  </svg>`;
+}
+function iniciarMapaInline(almas){
+  if(!window.L||!document.getElementById('mapaInline'))return;
+  if(!mapaInlineObj){
+    mapaInlineObj=L.map('mapaInline',{
+      center:[20,10],zoom:2,minZoom:1,maxZoom:5,
+      zoomControl:true,scrollWheelZoom:false,
+    });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+      attribution:'',subdomains:'abcd',maxZoom:19
+    }).addTo(mapaInlineObj);
+  } else {
+    mapaInlineObj.eachLayer(l=>{if(l instanceof L.Marker)mapaInlineObj.removeLayer(l);});
+  }
+  const paises=new Set();
+  const coordCount={};
+  let conMapa=0;
+  almas.forEach((alma,idx)=>{
+    const paisRaw=alma.pais||alma.ciudad||'';
+    const coords=getCoordsIdx(paisRaw);
+    if(!coords)return;
+    paises.add(paisRaw.toLowerCase().trim());
+    const key=coords.join(',');
+    coordCount[key]=(coordCount[key]||0)+1;
+    const jitter=coordCount[key]>1?[(Math.random()-.5)*6,(Math.random()-.5)*6]:[0,0];
+    const cp=MAP_COLORS[idx%MAP_COLORS.length];
+    const icon=L.divIcon({
+      html:svgMini(cp[0],cp[1]),
+      iconSize:[28,24],iconAnchor:[14,24],popupAnchor:[0,-26],className:'',
+    });
+    L.marker([coords[0]+jitter[0],coords[1]+jitter[1]],{icon})
+      .bindPopup(`<div style="font-family:'Cinzel',serif;padding:2px">
+        <p style="font-size:.7rem;color:#c9a84c;margin:0 0 3px">🦋 ${alma.nombre||'Alma del Prisma'}</p>
+        <p style="font-size:.8rem;color:#a09070;font-style:italic;margin:0">${alma.bandera||''} ${paisRaw}</p>
+      </div>`)
+      .addTo(mapaInlineObj);
+    conMapa++;
+  });
+  const ps=document.getElementById('mapaStatPaises');
+  const as=document.getElementById('mapaStatAlmas');
+  if(ps)ps.textContent=paises.size;
+  if(as)as.textContent=conMapa;
 }
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
   cargarLibroYContador();
   cargarPanel();
+  buildPrismaFan();
 });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
+// ── PANEL CARTAS ABANICO ──
+const PRISMA_CARTAS = [
+  {
+    img:'images/colectiva.png',
+    label:'Carta
+Colectiva',
+    icon:'🎴',
+    titulo:'Carta Colectiva de la Semana',
+    idTexto:'panelCartaMensaje',
+    idTitulo:'panelCartaNombre',
+    extra: null,
+  },
+  {
+    img:'images/energia.png',
+    label:'Energía
+Semanal',
+    icon:'✨',
+    titulo:'Energía de la Semana',
+    idTexto:'panelMensaje',
+    idColor:'panelColorNombre',
+    extra:'panelColorNombre',
+  },
+  {
+    img:'images/arcangel.png',
+    label:'Arcángel
+Guardián',
+    icon:'👼',
+    titulo:'Arcángel que nos Acompaña',
+    idTexto:'panelAngeles',
+    extra:null,
+  },
+  {
+    img:'images/Luna.png',
+    label:'Luna
+Activa',
+    icon:'🌙',
+    titulo:'Luna Activa & Ritual',
+    idTexto:'panelLunaMensaje',
+    idTituloEl:'panelLunaNombre',
+    extra:null,
+  },
+];
+
+const FAN_ANGLES  = [-28, -9, 9, 28];
+const FAN_OFFSETS = [-95, -32, 32, 95];
+
+let prismaSelected = -1;
+let prismaTexts = {}; // filled after cargarPanel
+
+function buildPrismaFan() {
+  const fan = document.getElementById('prismaFan');
+  if(!fan) return;
+  fan.innerHTML = '';
+
+  PRISMA_CARTAS.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'prisma-card';
+    card.id = 'pc' + i;
+    card.style.cssText = `
+      transform: translateX(${FAN_OFFSETS[i]}px) rotate(${FAN_ANGLES[i]}deg);
+      z-index: ${i + 1};
+      transition-delay: ${i * 0.04}s;
+    `;
+    card.innerHTML = `
+      <div class="prisma-card-inner">
+        <div class="prisma-card-back">
+          <img src="${c.img}" alt="${c.titulo}"
+            onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(160deg,#1a1050,#0d1830)'">
+          <div class="prisma-card-back-overlay">
+            <span class="prisma-card-back-label">${c.label.replace('
+','<br>')}</span>
+          </div>
+        </div>
+        <div class="prisma-card-front" id="pcfront${i}">
+          <div class="prisma-card-front-icon">${c.icon}</div>
+          <div class="prisma-card-front-title">${c.titulo}</div>
+          <div class="prisma-card-front-divider"></div>
+          <div class="prisma-card-front-text" id="pctxt${i}">Cargando...</div>
+          <div class="prisma-card-front-extra" id="pcextra${i}" style="display:none"></div>
+        </div>
+      </div>`;
+    card.addEventListener('click', () => selectPrismaCard(i));
+    fan.appendChild(card);
+  });
+}
+
+function selectPrismaCard(idx) {
+  const hint = document.getElementById('prismaHint');
+
+  if(prismaSelected === idx) {
+    // Deselect
+    prismaSelected = -1;
+    PRISMA_CARTAS.forEach((_, i) => {
+      const el = document.getElementById('pc' + i);
+      el.classList.remove('flipped');
+      el.style.transform = `translateX(${FAN_OFFSETS[i]}px) rotate(${FAN_ANGLES[i]}deg)`;
+      el.style.zIndex = i + 1;
+    });
+    if(hint) hint.textContent = '✦ Selecciona una carta ✦';
+    return;
+  }
+
+  prismaSelected = idx;
+
+  PRISMA_CARTAS.forEach((_, i) => {
+    const el = document.getElementById('pc' + i);
+    if(i === idx) {
+      el.classList.add('flipped');
+      el.style.transform = 'translateX(0) rotate(0deg) translateY(-16px)';
+      el.style.zIndex = 20;
+    } else {
+      el.classList.remove('flipped');
+      const dir = i < idx ? -1 : 1;
+      el.style.transform = `translateX(${FAN_OFFSETS[i] + dir * 18}px) rotate(${FAN_ANGLES[i]}deg)`;
+      el.style.zIndex = i + 1;
+    }
+  });
+
+  if(hint) hint.textContent = `✦ ${PRISMA_CARTAS[idx].titulo} ✦`;
+}
+
+// ── GLOW DEL COLOR SEMANAL ──
+function applyColorGlow(hexColor) {
+  if(!hexColor) return;
+  // Convert hex to rgb for rgba usage
+  const r = parseInt(hexColor.slice(1,3),16);
+  const g = parseInt(hexColor.slice(3,5),16);
+  const b = parseInt(hexColor.slice(5,7),16);
+
+  // Apply glow to fan container
+  const fan = document.getElementById('prismaFan');
+  if(fan) {
+    fan.style.filter = `drop-shadow(0 0 18px rgba(${r},${g},${b},0.35))`;
+  }
+
+  // Apply glow border to each card back
+  document.querySelectorAll('.prisma-card-back').forEach(card => {
+    card.style.boxShadow = `0 8px 30px rgba(0,0,0,.6), 0 0 20px rgba(${r},${g},${b},0.25)`;
+    card.style.borderColor = `rgba(${r},${g},${b},0.4)`;
+  });
+
+  // Apply glow to hint text
+  const hint = document.getElementById('prismaHint');
+  if(hint) hint.style.color = `rgba(${r},${g},${b},0.6)`;
+}
+
+// Fill card texts from panel data
+function llenarTextosCarta(panelData) {
+  if(!panelData) return;
+
+  // Carta 0 — Colectiva
+  const cc = panelData.carta_colectiva;
+  if(cc) {
+    const t0 = document.getElementById('pctxt0');
+    if(t0) t0.textContent = cc.mensaje || 'El Oráculo Prisma te acompaña esta semana.';
+  }
+
+  // Carta 1 — Energía
+  const ms = panelData.mensaje_semanal;
+  if(ms) {
+    const t1 = document.getElementById('pctxt1');
+    if(t1) t1.textContent = ms.texto || '';
+    const e1 = document.getElementById('pcextra1');
+    if(e1 && ms.color_nombre) {
+      e1.style.display = 'block';
+      e1.innerHTML = `<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${ms.color||'#c9a84c'};vertical-align:middle;margin-right:4px"></span>${ms.color_nombre}`;
+    }
+    // Apply color glow to fan
+    if(ms.color) applyColorGlow(ms.color);
+  }
+
+  // Carta 2 — Arcángel
+  if(ms && ms.angeles) {
+    const t2 = document.getElementById('pctxt2');
+    if(t2) t2.textContent = ms.angeles;
+  }
+
+  // Carta 3 — Luna
+  const luna = panelData.luna;
+  if(luna) {
+    const t3 = document.getElementById('pctxt3');
+    if(t3) t3.textContent = luna.mensaje || '';
+    const e3 = document.getElementById('pcextra3');
+    if(e3 && luna.nombre) {
+      e3.style.display = 'block';
+      e3.textContent = `${luna.fase || '🌙'} ${luna.nombre}`;
+    }
+  }
+}
+
 // ── SIDEBAR ──
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('sidebarOverlay');
