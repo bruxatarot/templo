@@ -275,32 +275,48 @@
         <p class="status-err" id="cartaErr">Error al publicar. Intenta de nuevo.</p>
       </div>
 
-      <!-- MENSAJE SEMANAL -->
+      <!-- ENERGÍA SEMANAL -->
       <div class="admin-card">
-        <span class="admin-card-icon">🔮</span>
-        <span class="admin-card-title">MENSAJE SEMANAL</span>
+        <span class="admin-card-icon">✨</span>
+        <span class="admin-card-title">ENERGÍA DE LA SEMANA</span>
 
-        <span class="admin-label">Mensaje de energía semanal</span>
-        <textarea class="admin-textarea" id="mensajeSemanal" style="min-height:120px"
+        <span class="admin-label">Mensaje de energía</span>
+        <textarea class="admin-textarea" id="mensajeSemanal" style="min-height:100px"
           placeholder="Escribe la energía de esta semana para las almas del Templo..."></textarea>
 
         <span class="admin-label">Color de la semana</span>
         <div style="display:flex;gap:.6rem;align-items:center;margin-top:.3rem">
           <input type="color" id="colorSemana" value="#c9a84c"
             style="width:44px;height:44px;border-radius:50%;border:2px solid rgba(201,168,76,.3);background:transparent;cursor:pointer;padding:2px">
-          <input class="admin-input" id="colorNombre" placeholder="Nombre del color (ej: Dorado, Violeta...)" style="flex:1">
+          <input class="admin-input" id="colorNombre" placeholder="Nombre del color (ej: Verde Salvia, Violeta...)" style="flex:1">
         </div>
-
-        <span class="admin-label">Mensaje de ángeles / guías</span>
-        <textarea class="admin-textarea" id="mensajeAngeles" style="min-height:70px"
-          placeholder="Mensaje de los ángeles o guías espirituales..."></textarea>
+        <p style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.15em;color:rgba(201,168,76,.35);margin-top:.5rem">
+          ✦ Este color iluminará el abanico de cartas en el Templo
+        </p>
 
         <span class="admin-label">Link a redes sociales (opcional)</span>
         <input class="admin-input" id="mensajeLink" placeholder="https://...">
 
-        <button class="save-btn" onclick="guardarMensaje()">✦ Publicar Mensaje Semanal</button>
-        <p class="status-ok" id="mensajeOk">✦ Mensaje publicado correctamente</p>
+        <button class="save-btn" onclick="guardarMensaje()">✦ Publicar Energía Semanal</button>
+        <p class="status-ok" id="mensajeOk">✦ Energía publicada correctamente</p>
         <p class="status-err" id="mensajeErr">Error al publicar. Intenta de nuevo.</p>
+      </div>
+
+      <!-- ARCÁNGEL -->
+      <div class="admin-card">
+        <span class="admin-card-icon">👼</span>
+        <span class="admin-card-title">ARCÁNGEL QUE NOS ACOMPAÑA</span>
+
+        <span class="admin-label">Nombre del Arcángel</span>
+        <input class="admin-input" id="arcángelNombre" placeholder="ej: Rafael, Miguel, Gabriel...">
+
+        <span class="admin-label">Mensaje del Arcángel</span>
+        <textarea class="admin-textarea" id="mensajeAngeles" style="min-height:110px"
+          placeholder="Escribe el mensaje del Arcángel para esta semana..."></textarea>
+
+        <button class="save-btn" onclick="guardarMensaje()">✦ Publicar Mensaje del Arcángel</button>
+        <p class="status-ok" id="angelOk">✦ Arcángel publicado correctamente</p>
+        <p class="status-err" id="angelErr">Error al publicar. Intenta de nuevo.</p>
       </div>
 
       <!-- LUNA DEL MES -->
@@ -506,27 +522,40 @@ async function guardarCarta() {
 
 async function guardarMensaje() {
   const btn = event.target;
+  const originalText = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'Publicando...';
 
   try {
     const record = await obtenerPanelActual();
     const desde = new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'});
+    // Arcángel nombre
+    const arcNombreEl = document.getElementById('arcángelNombre');
+    const arcNombre = arcNombreEl ? arcNombreEl.value : '';
+    // Mensaje ángeles
+    const angelesEl = document.getElementById('mensajeAngeles');
+    const angelesTexto = angelesEl ? angelesEl.value : '';
+
     record.mensaje_semanal = {
-      texto: document.getElementById('mensajeSemanal').value,
-      color: document.getElementById('colorSemana').value,
-      color_nombre: document.getElementById('colorNombre').value,
-      angeles: document.getElementById('mensajeAngeles').value,
-      link: document.getElementById('mensajeLink').value,
+      texto: document.getElementById('mensajeSemanal')?.value || record.mensaje_semanal?.texto || '',
+      color: document.getElementById('colorSemana')?.value || record.mensaje_semanal?.color || '#c9a84c',
+      color_nombre: document.getElementById('colorNombre')?.value || record.mensaje_semanal?.color_nombre || '',
+      angeles: arcNombre
+        ? `${arcNombre}${angelesTexto ? ' — ' + angelesTexto : ''}`
+        : angelesTexto,
+      link: document.getElementById('mensajeLink')?.value || record.mensaje_semanal?.link || '',
       desde
     };
     await fetch(JSONBIN_URL + PANEL_BIN, { method:'PUT', headers:HEADERS, body:JSON.stringify(record) });
     mostrarStatus('mensajeOk', 'mensajeErr', true);
+    // Also show angel status if that button was clicked
+    if(document.getElementById('angelOk')) mostrarStatus('angelOk','angelErr', true);
   } catch(e) {
     mostrarStatus('mensajeOk', 'mensajeErr', false);
+    if(document.getElementById('angelErr')) mostrarStatus('angelOk','angelErr', false);
   } finally {
     btn.disabled = false;
-    btn.textContent = '✦ Publicar Mensaje Semanal';
+    btn.textContent = originalText;
   }
 }
 
@@ -651,7 +680,18 @@ async function cargarPanelActual() {
       document.getElementById('mensajeSemanal').value = m.texto || '';
       if(m.color) document.getElementById('colorSemana').value = m.color;
       document.getElementById('colorNombre').value = m.color_nombre || '';
-      document.getElementById('mensajeAngeles').value = m.angeles || '';
+      // Split arcángel nombre from mensaje if format is "Nombre — Mensaje"
+      if(m.angeles) {
+        const parts = m.angeles.split(' — ');
+        const arcEl = document.getElementById('arcángelNombre');
+        const angEl = document.getElementById('mensajeAngeles');
+        if(parts.length > 1 && arcEl && angEl) {
+          arcEl.value = parts[0];
+          angEl.value = parts.slice(1).join(' — ');
+        } else if(angEl) {
+          angEl.value = m.angeles;
+        }
+      }
       document.getElementById('mensajeLink').value = m.link || '';
     }
 
