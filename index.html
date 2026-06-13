@@ -423,6 +423,97 @@
       font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;
       color:rgba(201,168,76,.45);text-align:center;
     }
+
+    /* ── CARTA DEL DÍA ── */
+    .carta-scene-wrap{width:220px;margin:0 auto}
+    .carta-scene{
+      width:220px;height:380px;perspective:1000px;cursor:pointer;
+      margin:0 auto;
+    }
+    .carta-flip{
+      width:100%;height:100%;position:relative;
+      transform-style:preserve-3d;
+      transition:transform 1.2s cubic-bezier(.4,.2,.2,1);
+    }
+    .carta-scene.flipped .carta-flip{transform:rotateY(180deg)}
+    .carta-face{
+      position:absolute;inset:0;border-radius:14px;
+      backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;
+    }
+    .carta-back{
+      background:#0b1128;border:1px solid rgba(201,168,76,.3);
+      box-shadow:0 0 30px rgba(201,168,76,.1),0 20px 60px rgba(0,0,0,.5);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      cursor:pointer;transition:box-shadow .4s,border-color .4s;
+    }
+    .carta-back:hover{
+      border-color:rgba(201,168,76,.6);
+      box-shadow:0 0 50px rgba(201,168,76,.2),0 20px 60px rgba(0,0,0,.5);
+    }
+    .carta-back-placeholder{text-align:center}
+    .carta-front{
+      transform:rotateY(180deg);
+      border:1px solid rgba(201,168,76,.5);
+      box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px rgba(201,168,76,.15);
+      background:#0b1128;display:flex;flex-direction:column;
+    }
+    .carta-front img{flex:1;width:100%;object-fit:cover;display:block}
+    .carta-front-footer{
+      background:linear-gradient(to top,rgba(4,6,15,.97),rgba(4,6,15,.7));
+      padding:.9rem 1rem 1rem;text-align:center;
+    }
+    .card-front-name{
+      font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.15em;
+      color:var(--gold);margin-bottom:.2rem;line-height:1.3;
+    }
+    .card-front-subtitle{
+      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.5);
+    }
+    .carta-reading{
+      margin-top:2rem;padding:1.5rem;
+      border:1px solid rgba(201,168,76,.15);border-radius:16px;
+      background:rgba(11,17,40,.4);backdrop-filter:blur(4px);
+      opacity:0;max-height:0;overflow:hidden;
+      transition:opacity .6s ease,max-height .8s ease;
+      text-align:left;
+    }
+    .carta-reading.visible{opacity:1;max-height:700px}
+    .carta-reading-title{
+      font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.3em;
+      color:var(--gold);margin-bottom:1rem;text-align:center;display:block;
+    }
+    .carta-reading p{font-style:italic;font-size:1rem;color:#b0a07a;line-height:1.8}
+    .carta-keywords{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+    .carta-kw{
+      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;
+      padding:.25rem .7rem;border-radius:100px;
+      border:1px solid rgba(201,168,76,.2);color:rgba(201,168,76,.6);
+    }
+    .nueva-carta-btn{
+      font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.25em;
+      padding:.7rem 2rem;border-radius:100px;
+      border:1px solid rgba(201,168,76,.3);background:transparent;
+      color:var(--gold);cursor:pointer;margin-top:1.5rem;
+      transition:all .3s;
+    }
+    .nueva-carta-btn:hover{background:rgba(201,168,76,.08)}
+    .diario-link{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.3)}
+    .diario-link:hover{border-bottom-color:var(--gold)}
+    .reversed-badge{
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      padding:.2rem .7rem;border-radius:100px;display:inline-block;margin:.3rem 0;
+      background:rgba(120,80,220,.15);border:1px solid rgba(120,80,220,.3);color:#b090e0;
+    }
+    .upright-badge{
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      padding:.2rem .7rem;border-radius:100px;display:inline-block;margin:.3rem 0;
+      background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);color:var(--gold);
+    }
+    .cat-badge{
+      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;
+      padding:.2rem .8rem;border-radius:100px;display:inline-block;margin-bottom:.5rem;
+    }
   </style>
 </head>
 <body>
@@ -554,50 +645,61 @@
   </section>
 
     <!-- CARTA DEL DÍA -->
-  <section id="carta" style="position:relative;z-index:1;padding:4rem 2rem;">
-    <div class="section-inner reveal" style="max-width:700px;margin:0 auto;text-align:center;">
+  <section id="carta" style="position:relative;z-index:1;padding:4rem 2rem">
+    <div class="section-inner reveal" style="max-width:900px;margin:0 auto;text-align:center">
       <p class="section-label" data-i18n="carta_label">✦ Oráculo Prisma</p>
       <h2 class="section-title" data-i18n="carta_title">Carta del Día</h2>
-      <p class="section-body" data-i18n="carta_body">El Oráculo Prisma te entrega una carta cada día. Concéntrate y descubre su mensaje.</p>
+      <p class="section-body" data-i18n="carta_body">Cada día el Oráculo Prisma te entrega un mensaje. Respira, concéntrate y voltea la carta.</p>
 
-      <!-- CARD SCENE -->
-      <div class="carta-scene-wrap reveal" style="margin:2.5rem auto">
-        <div class="carta-scene" id="cardScene">
-          <div class="carta-flip">
-            <!-- DORSO -->
-            <div class="carta-face carta-back" onclick="flipCard()" id="cardBack">
-              <img src="images/dorso.png" alt="Carta" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"
-                   onerror="this.style.display='none'">
-              <div class="carta-back-placeholder" id="backPlaceholder">
-                <span style="font-size:2rem">🌙</span>
-                <p style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;color:rgba(201,168,76,.5);margin-top:.5rem" data-i18n="carta_tap">Toca para revelar</p>
+      <div class="carta-wrap reveal" style="margin-top:3rem">
+        <!-- CARTA -->
+        <div>
+          <div class="carta-scene" id="cardScene">
+            <div class="carta-flip">
+              <div class="carta-face carta-back" onclick="flipCard()">
+                <img src="images/dorso.png" alt="Dorso"
+                  style="width:100%;height:100%;object-fit:cover;border-radius:14px"
+                  onerror="this.style.display='none'">
+                <div class="carta-back-placeholder">
+                  <span style="font-size:2.5rem">🌙</span>
+                  <p style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;
+                    color:rgba(201,168,76,.5);margin-top:.8rem" data-i18n="carta_tap">
+                    Toca para revelar
+                  </p>
+                </div>
               </div>
-            </div>
-            <!-- FRENTE -->
-            <div class="carta-face carta-front">
-              <img id="cardImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;border-radius:inherit;">
-              <div class="carta-front-footer">
-                <p class="card-front-name" id="cardName"></p>
-                <p class="card-front-subtitle" id="cardSubtitle"></p>
+              <div class="carta-face carta-front">
+                <img id="cardImg" src="" alt="" style="display:none">
+                <div class="carta-front-footer">
+                  <p class="card-front-name" id="cardName"></p>
+                  <p class="card-front-subtitle" id="cardSubtitle"></p>
+                </div>
               </div>
             </div>
           </div>
+          <button class="nueva-carta-btn" id="nuevoBtn"
+            onclick="resetCard()" style="display:none"
+            data-i18n="carta_nueva">✦ Nueva Carta Mañana</button>
+        </div>
+
+        <!-- LECTURA -->
+        <div>
+          <p class="carta-instructions" data-i18n="carta_instructions">
+            Breathe deeply, Alma Brillante. The Oracle has a message for you today.
+          </p>
+          <div class="carta-reading" id="cartaReading">
+            <div id="catBadgeWrap"></div>
+            <div id="posicionBadge"></div>
+            <p class="carta-reading-title" id="cartaReadingTitle">✦ MENSAJE DEL ORÁCULO ✦</p>
+            <p id="cartaMessage"></p>
+            <div class="carta-keywords" id="cartaKeywords"></div>
+          </div>
         </div>
       </div>
-
-      <!-- READING -->
-      <div class="carta-reading" id="cartaReading">
-        <div id="catBadgeWrap"></div>
-        <div id="posicionBadge"></div>
-        <p class="carta-reading-title" id="cartaReadingTitle" data-i18n="carta_reading_title">✦ MENSAJE DEL ORÁCULO ✦</p>
-        <p id="cartaMessage"></p>
-        <div class="carta-keywords" id="cartaKeywords"></div>
-      </div>
-
-      <button class="nueva-carta-btn" id="nuevoBtn" onclick="resetCard()" style="display:none" data-i18n="carta_nueva">✦ Nueva Carta Mañana</button>
     </div>
   </section>
 
+  <!-- DIARIO REMINDER -->
   <!-- DIARIO REMINDER -->
   <div id="diarioReminder" class="diario-reminder" style="position:relative;z-index:1;max-width:600px;margin:-1rem auto 2rem;text-align:center;padding:0 2rem">
     <p style="font-style:italic;font-size:.9rem;color:rgba(201,168,76,.45)" data-i18n="carta_diario_hint">
@@ -1553,15 +1655,19 @@ function closeSidebar(){
   document.body.style.overflow='';
 }
 
-trigger.addEventListener('click', openSidebar);
-closeBtn.addEventListener('click', closeSidebar);
-overlay.addEventListener('click', closeSidebar);
+if(trigger) trigger.addEventListener('click', openSidebar);
+if(closeBtn) closeBtn.addEventListener('click', closeSidebar);
+if(overlay) overlay.addEventListener('click', closeSidebar);
 
 // Close on ESC
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeSidebar(); });
 
 // Build fan after all scripts loaded
-buildPrismaFan();
+if(document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', buildPrismaFan);
+} else {
+  buildPrismaFan();
+}
 </script>
 </body>
 </html>
