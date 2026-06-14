@@ -1498,6 +1498,8 @@ function iniciarMapaInline(almas){
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
+  // Build fan FIRST so pctxt elements exist before cargarPanel fills them
+  if(typeof buildPrismaFan === 'function') buildPrismaFan();
   cargarLibroYContador();
   cargarPanel();
 });
@@ -1530,10 +1532,13 @@ document.addEventListener('DOMContentLoaded', function() {
   if(overlayEl)  overlayEl.addEventListener('click', closeSidebar);
   document.addEventListener('keydown', e => { if(e.key === 'Escape') closeSidebar(); });
 
-  // Prisma fan — runs after all scripts parsed
-  setTimeout(function(){
-    if(typeof buildPrismaFan === 'function') buildPrismaFan();
-  }, 100);
+  // Fan already built in main DOMContentLoaded
+  // (keeping this as fallback in case of race condition)
+  if(!document.getElementById('pc0')) {
+    setTimeout(function(){
+      if(typeof buildPrismaFan === 'function') buildPrismaFan();
+    }, 200);
+  }
 });
 </script>
 </body>
