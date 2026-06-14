@@ -1209,9 +1209,9 @@ function selectPrismaCard(idx) {
   prismaSelected = idx;
   const c = PRISMA_CARTAS[idx];
 
-  // Get text content from pctxt elements
-  const msg   = document.getElementById('pctxt'+idx)?.textContent || 'Cargando...';
-  const extra = document.getElementById('pcextra'+idx)?.innerHTML || '';
+  // Get text from stored data (not DOM - fan might be hidden)
+  const msg   = PRISMA_DATA.texts[idx] || 'Cargando...';
+  const extra = PRISMA_DATA.extras[idx] || '';
 
   // Hide fan, show reveal card
   if(fan) fan.style.display = 'none';
@@ -1231,6 +1231,9 @@ function selectPrismaCard(idx) {
   if(hint) hint.textContent = `✦ ${c.titulo} ✦`;
 }
 
+// Store panel data for reveal cards
+const PRISMA_DATA = { texts: ['','','',''], extras: ['','','',''] };
+
 function llenarTextosCarta(r) {
   console.log('llenarTextosCarta called with:', r);
   if(!r) { console.log('❌ r is null/undefined'); return; }
@@ -1240,16 +1243,20 @@ function llenarTextosCarta(r) {
   console.log('carta_colectiva:', cc);
   const t0 = document.getElementById('pctxt0');
   console.log('pctxt0 element:', t0);
-  if(cc && t0) { t0.textContent = cc.mensaje || ''; console.log('✅ pctxt0 filled:', cc.mensaje); }
-  else console.log('❌ pctxt0 missing or cc empty');
+  if(cc) {
+    PRISMA_DATA.texts[0] = cc.mensaje || '';
+    if(t0) { t0.textContent = cc.mensaje || ''; console.log('✅ pctxt0 filled:', cc.mensaje); }
+  } else console.log('❌ pctxt0 missing or cc empty');
 
   // Carta 1 — Energía
   const ms = r.mensaje_semanal;
   console.log('mensaje_semanal:', ms);
   const t1 = document.getElementById('pctxt1');
   console.log('pctxt1 element:', t1);
-  if(ms && t1) { t1.textContent = ms.texto || ''; console.log('✅ pctxt1 filled:', ms.texto); }
-  else console.log('❌ pctxt1 missing or ms empty');
+  if(ms) {
+    PRISMA_DATA.texts[1] = ms.texto || '';
+    if(t1) { t1.textContent = ms.texto || ''; console.log('✅ pctxt1 filled:', ms.texto); }
+  } else console.log('❌ pctxt1 missing or ms empty');
 
   if(ms) {
     const e1 = document.getElementById('pcextra1');
@@ -1260,10 +1267,13 @@ function llenarTextosCarta(r) {
     if(ms.color) applyColorGlow(ms.color);
 
     // Carta 2 — Arcángel
+    PRISMA_DATA.texts[2] = ms.angeles || '';
     const t2 = document.getElementById('pctxt2');
     console.log('pctxt2 element:', t2, 'angeles:', ms.angeles);
     if(ms.angeles && t2) { t2.textContent = ms.angeles; console.log('✅ pctxt2 filled'); }
     else console.log('❌ pctxt2 missing or angeles empty');
+    // Save color extra
+    if(ms.color_nombre) PRISMA_DATA.extras[1] = `<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${ms.color||'#c9a84c'};vertical-align:middle;margin-right:4px"></span>${ms.color_nombre}`;
   }
 
   // Carta 3 — Luna
@@ -1271,8 +1281,11 @@ function llenarTextosCarta(r) {
   console.log('luna:', luna);
   const t3 = document.getElementById('pctxt3');
   console.log('pctxt3 element:', t3);
-  if(luna && t3) { t3.textContent = luna.mensaje || ''; console.log('✅ pctxt3 filled'); }
-  else console.log('❌ pctxt3 missing or luna empty');
+  if(luna) {
+    PRISMA_DATA.texts[3] = luna.mensaje || '';
+    if(luna.nombre) PRISMA_DATA.extras[3] = `${luna.fase||'🌙'} ${luna.nombre}`;
+    if(t3) { t3.textContent = luna.mensaje || ''; console.log('✅ pctxt3 filled'); }
+  } else console.log('❌ pctxt3 missing or luna empty');
 
   if(luna) {
     const e3 = document.getElementById('pcextra3');
