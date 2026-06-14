@@ -285,10 +285,14 @@
           placeholder="Escribe la energía de esta semana para las almas del Templo..."></textarea>
 
         <span class="admin-label">Color de la semana</span>
-        <div style="display:flex;gap:.6rem;align-items:center;margin-top:.3rem">
+        <div style="display:flex;gap:.6rem;align-items:center;margin-top:.3rem;flex-wrap:wrap">
           <input type="color" id="colorSemana" value="#c9a84c"
-            style="width:44px;height:44px;border-radius:50%;border:2px solid rgba(201,168,76,.3);background:transparent;cursor:pointer;padding:2px">
-          <input class="admin-input" id="colorNombre" placeholder="Nombre del color (ej: Verde Salvia, Violeta...)" style="flex:1">
+            style="width:44px;height:44px;border-radius:50%;border:2px solid rgba(201,168,76,.3);background:transparent;cursor:pointer;padding:2px;flex-shrink:0"
+            oninput="syncColorHex(this.value)">
+          <input class="admin-input" id="colorHex" placeholder="#c9a84c" maxlength="7"
+            style="width:110px;font-family:monospace;letter-spacing:.1em"
+            oninput="syncColorPicker(this.value)">
+          <input class="admin-input" id="colorNombre" placeholder="Nombre (ej: Verde Salvia, Violeta...)" style="flex:1;min-width:160px">
         </div>
         <p style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.15em;color:rgba(201,168,76,.35);margin-top:.5rem">
           ✦ Este color iluminará el abanico de cartas en el Templo
@@ -364,6 +368,18 @@ const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/';
 const HEADERS = { 'Content-Type': 'application/json', 'X-Access-Key': ACCESS_KEY };
 
 // ⚠️ CAMBIA ESTA CONTRASEÑA
+// ── COLOR SYNC ──
+function syncColorHex(val) {
+  const hexEl = document.getElementById('colorHex');
+  if(hexEl) hexEl.value = val;
+}
+function syncColorPicker(val) {
+  if(/^#[0-9A-Fa-f]{6}$/.test(val)) {
+    const picker = document.getElementById('colorSemana');
+    if(picker) picker.value = val;
+  }
+}
+
 const ADMIN_PASSWORD = 'templo2026';
 
 // ══════════════════════════════════════════
@@ -538,7 +554,7 @@ async function guardarMensaje() {
 
     record.mensaje_semanal = {
       texto: document.getElementById('mensajeSemanal')?.value || record.mensaje_semanal?.texto || '',
-      color: document.getElementById('colorSemana')?.value || record.mensaje_semanal?.color || '#c9a84c',
+      color: (()=>{ const h=document.getElementById('colorHex')?.value; return (h&&/^#[0-9A-Fa-f]{6}$/.test(h))?h:document.getElementById('colorSemana')?.value||record.mensaje_semanal?.color||'#c9a84c'; })(),
       color_nombre: document.getElementById('colorNombre')?.value || record.mensaje_semanal?.color_nombre || '',
       angeles: arcNombre
         ? `${arcNombre}${angelesTexto ? ' — ' + angelesTexto : ''}`
@@ -678,7 +694,11 @@ async function cargarPanelActual() {
     if(record.mensaje_semanal) {
       const m = record.mensaje_semanal;
       document.getElementById('mensajeSemanal').value = m.texto || '';
-      if(m.color) document.getElementById('colorSemana').value = m.color;
+      if(m.color) {
+          document.getElementById('colorSemana').value = m.color;
+          const hexEl = document.getElementById('colorHex');
+          if(hexEl) hexEl.value = m.color;
+        }
       document.getElementById('colorNombre').value = m.color_nombre || '';
       // Split arcángel nombre from mensaje if format is "Nombre — Mensaje"
       if(m.angeles) {
