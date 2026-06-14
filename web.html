@@ -419,6 +419,7 @@
       <p class="section-body">Toca una carta para revelar el mensaje de esta semana</p>
     </div>
     <div class="reveal" id="prismaFan" style="position:relative;height:280px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:1.5rem;perspective:800px"></div>
+        <div id="prismaReveal" style="display:none;margin-top:0"></div>
     <p id="prismaHint" style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.3em;color:rgba(201,168,76,.35);text-align:center;transition:all .4s">✦ Selecciona una carta ✦</p>
   </section>
 
@@ -689,6 +690,11 @@
   }
   </script>
 <script>
+// ── CONSTANTES JSONBIN ──
+const PANEL_BIN  = '6a2bd799f5f4af5e29e56f1a';
+const ACCESS_KEY = '$2a$10$nen3ORRwjShyHRO9y/yLXOUNY9V9FtMpO7zoDsUuXv4Yo4Rce36xW';
+const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/';
+
 // ── PANEL CARTAS ABANICO ──
 const PRISMA_CARTAS = [
   { img:'images/colectiva.png', label:'Carta\nColectiva', icon:'🎴',
@@ -704,6 +710,10 @@ const FAN_ANGLES  = [-28, -9, 9, 28];
 const FAN_OFFSETS = [-95, -32, 32, 95];
 let prismaSelected = -1;
 
+// ── DATOS DEL PANEL (guardados para reveal) ──
+const PRISMA_DATA = { texts: ['','','',''], extras: ['','','',''] };
+
+// ── FUNCIONES ──
 function buildPrismaFan() {
   const fan = document.getElementById('prismaFan');
   if(!fan) { console.log('prismaFan not found'); return; }
@@ -781,13 +791,18 @@ function selectPrismaCard(idx) {
   if(hint) hint.textContent = `✦ ${c.titulo} ✦`;
 }
 
-// ── JSONBIN CONFIG ──
-const PANEL_BIN  = '6a2bd799f5f4af5e29e56f1a';
-const ACCESS_KEY = '$2a$10$nen3ORRwjShyHRO9y/yLXOUNY9V9FtMpO7zoDsUuXv4Yo4Rce36xW';
-const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/';
-
-// Store panel data for reveal cards
-const PRISMA_DATA = { texts: ['','','',''], extras: ['','','',''] };
+function applyColorGlow(hex) {
+  if(!hex) return;
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  const fan=document.getElementById('prismaFan');
+  if(fan) fan.style.filter=`drop-shadow(0 0 18px rgba(${r},${g},${b},0.35))`;
+  document.querySelectorAll('.prisma-card-back').forEach(c=>{
+    c.style.boxShadow=`0 8px 30px rgba(0,0,0,.6),0 0 20px rgba(${r},${g},${b},0.25)`;
+    c.style.borderColor=`rgba(${r},${g},${b},0.4)`;
+  });
+  const hint=document.getElementById('prismaHint');
+  if(hint) hint.style.color=`rgba(${r},${g},${b},0.6)`;
+}
 
 function llenarTextosCarta(r) {
   if(!r) return;
@@ -831,20 +846,6 @@ function llenarTextosCarta(r) {
   }
 }
 
-function applyColorGlow(hex) {
-  if(!hex) return;
-  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-  const fan=document.getElementById('prismaFan');
-  if(fan) fan.style.filter=`drop-shadow(0 0 18px rgba(${r},${g},${b},0.35))`;
-  document.querySelectorAll('.prisma-card-back').forEach(c=>{
-    c.style.boxShadow=`0 8px 30px rgba(0,0,0,.6),0 0 20px rgba(${r},${g},${b},0.25)`;
-    c.style.borderColor=`rgba(${r},${g},${b},0.4)`;
-  });
-  const hint=document.getElementById('prismaHint');
-  if(hint) hint.style.color=`rgba(${r},${g},${b},0.6)`;
-}
-
-// ── CARGAR PANEL DE BRUXA ──
 async function cargarPanel() {
   try {
     const res = await fetch(JSONBIN_URL + PANEL_BIN + '/latest', {
@@ -874,11 +875,12 @@ async function cargarPanel() {
   } catch(e) { console.log('Error panel:', e); }
 }
 
+// ── INIT ──
 document.addEventListener("DOMContentLoaded", function() {
-  // Build fan FIRST so pctxt elements exist
-  if(typeof buildPrismaFan === 'function') buildPrismaFan();
-  // Then load panel data
-  if(typeof cargarPanel === 'function') cargarPanel();
+  // 1. Build fan first so DOM elements exist
+  buildPrismaFan();
+  // 2. Load panel data — fills PRISMA_DATA via llenarTextosCarta
+  cargarPanel();
 });
 </script>
 </body>
