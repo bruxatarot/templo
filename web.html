@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- TIMESTAMP: 2026-06-14 11:02 -->
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -313,6 +314,29 @@
       font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;
       color:rgba(201,168,76,.45);text-align:center;
     }
+
+    /* ── PRISMA REVEAL CARD ── */
+    .prisma-reveal-card{
+      max-width:480px;margin:0 auto;
+      background:linear-gradient(160deg,#0d1535,#060d20);
+      border:1px solid rgba(201,168,76,.4);border-radius:20px;
+      padding:2rem 2rem 1.5rem;
+      box-shadow:0 0 40px rgba(201,168,76,.12),0 20px 60px rgba(0,0,0,.5);
+      cursor:pointer;position:relative;
+      animation:revealIn .4s cubic-bezier(.4,0,.2,1) both;
+    }
+    @keyframes revealIn{
+      from{opacity:0;transform:scale(.9) translateY(10px)}
+      to{opacity:1;transform:scale(1) translateY(0)}
+    }
+    .prisma-reveal-close{position:absolute;top:1rem;right:1rem;font-size:.9rem;color:rgba(201,168,76,.4);transition:color .3s}
+    .prisma-reveal-card:hover .prisma-reveal-close{color:var(--gold)}
+    .prisma-reveal-icon{font-size:2.2rem;text-align:center;margin-bottom:.6rem}
+    .prisma-reveal-title{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.2em;color:var(--gold);text-align:center;margin-bottom:.8rem}
+    .prisma-reveal-divider{width:40px;height:1px;background:rgba(201,168,76,.3);margin:0 auto .9rem}
+    .prisma-reveal-text{font-style:italic;font-size:1rem;color:#c4b090;line-height:1.8;text-align:center;margin-bottom:.8rem}
+    .prisma-reveal-extra{text-align:center;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.15em;color:rgba(201,168,76,.5);margin-top:.5rem}
+    .prisma-reveal-hint{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;color:rgba(201,168,76,.25);text-align:center;margin-top:1rem}
   </style>
 </head>
 <body>
@@ -714,8 +738,14 @@ function buildPrismaFan() {
 
 function selectPrismaCard(idx) {
   const hint = document.getElementById('prismaHint');
+  const fan  = document.getElementById('prismaFan');
+  const reveal = document.getElementById('prismaReveal');
+
   if(prismaSelected === idx) {
+    // Deselect — back to fan
     prismaSelected = -1;
+    if(fan) fan.style.display = 'flex';
+    if(reveal) reveal.style.display = 'none';
     PRISMA_CARTAS.forEach((_, i) => {
       const el = document.getElementById('pc'+i);
       if(el){ el.classList.remove('flipped');
@@ -725,22 +755,30 @@ function selectPrismaCard(idx) {
     if(hint) hint.textContent = '✦ Selecciona una carta ✦';
     return;
   }
+
   prismaSelected = idx;
-  PRISMA_CARTAS.forEach((_, i) => {
-    const el = document.getElementById('pc'+i);
-    if(!el) return;
-    if(i === idx) {
-      el.classList.add('flipped');
-      el.style.transform = 'translateX(0) rotate(0deg) translateY(-16px)';
-      el.style.zIndex = 20;
-    } else {
-      el.classList.remove('flipped');
-      const dir = i < idx ? -1 : 1;
-      el.style.transform = `translateX(${FAN_OFFSETS[i]+dir*18}px) rotate(${FAN_ANGLES[i]}deg)`;
-      el.style.zIndex = i+1;
-    }
-  });
-  if(hint) hint.textContent = `✦ ${PRISMA_CARTAS[idx].titulo} ✦`;
+  const c = PRISMA_CARTAS[idx];
+
+  // Get text content from pctxt elements
+  const msg   = document.getElementById('pctxt'+idx)?.textContent || 'Cargando...';
+  const extra = document.getElementById('pcextra'+idx)?.innerHTML || '';
+
+  // Hide fan, show reveal card
+  if(fan) fan.style.display = 'none';
+  if(reveal) {
+    reveal.style.display = 'block';
+    reveal.innerHTML = `
+      <div class="prisma-reveal-card" onclick="selectPrismaCard(${idx})">
+        <div class="prisma-reveal-close">✕</div>
+        <div class="prisma-reveal-icon">${c.icon}</div>
+        <div class="prisma-reveal-title">${c.titulo}</div>
+        <div class="prisma-reveal-divider"></div>
+        <div class="prisma-reveal-text">${msg}</div>
+        ${extra ? `<div class="prisma-reveal-extra">${extra}</div>` : ''}
+        <div class="prisma-reveal-hint">Toca para cerrar</div>
+      </div>`;
+  }
+  if(hint) hint.textContent = `✦ ${c.titulo} ✦`;
 }
 
 function llenarTextosCarta(r) {
@@ -809,7 +847,12 @@ async function cargarPanel() {
   } catch(e) { console.log('Error panel:', e); }
 }
 
-document.addEventListener("DOMContentLoaded",function(){cargarPanel();setTimeout(buildPrismaFan,100)});
+document.addEventListener("DOMContentLoaded", function() {
+  // Build fan FIRST so pctxt elements exist
+  if(typeof buildPrismaFan === 'function') buildPrismaFan();
+  // Then load panel data
+  if(typeof cargarPanel === 'function') cargarPanel();
+});
 </script>
 </body>
 </html>
