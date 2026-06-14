@@ -1348,16 +1348,6 @@ async function cargarLibroYContador() {
   }
 }
 
-  const recent = [...almas].reverse().slice(0, 50);
-  grid.innerHTML = recent.map((a, i) => `
-    <div class="alma-card" style="animation-delay:${i * 0.04}s">
-      <span class="alma-card-butterfly">🦋</span>
-      <p class="alma-card-nombre">${a.nombre || ''}</p>
-      <p class="alma-card-lugar">${a.bandera || ''} ${a.ciudad || ''}</p>
-      <p class="alma-card-fecha">${a.fecha || ''}</p>
-    </div>
-  `).join('');
-}
 
 // ── AGREGAR ALMA ──
 async function agregarAlma() {
