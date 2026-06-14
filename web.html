@@ -782,71 +782,30 @@ function applyColorGlow(hex) {
 // ── CARGAR PANEL DE BRUXA ──
 async function cargarPanel() {
   try {
-    const res = await fetch(JSONBIN_URL + PANEL_BIN + '/latest', { headers: { 'X-Access-Key': ACCESS_KEY } });
+    const res = await fetch(JSONBIN_URL + PANEL_BIN + '/latest', {
+      headers: { 'X-Access-Key': ACCESS_KEY }
+    });
     const data = await res.json();
     const r = data.record;
+    if(!r) return;
 
-    // Carta colectiva
-    if(r.carta_colectiva) {
-      const cc = r.carta_colectiva;
-      document.getElementById('panelCartaNombre').textContent = (cc.emoji||'🎴') + ' ' + (cc.nombre||'');
-      document.getElementById('panelCartaMensaje').textContent = cc.mensaje || '';
-    }
+    if(typeof llenarTextosCarta === 'function') llenarTextosCarta(r);
 
-    // Mensaje semanal
-    if(r.mensaje_semanal) {
-      const m = r.mensaje_semanal;
-      document.getElementById('panelMensaje').textContent = m.texto || '';
-
-      // Color
-      if(m.color || m.color_nombre) {
-        const wrap = document.getElementById('panelColorWrap');
-        wrap.style.display = 'flex';
-        if(m.color) document.getElementById('panelColorCircle').style.background = m.color;
-        document.getElementById('panelColorNombre').textContent = m.color_nombre || '';
-      }
-
-      // Angeles
-      if(m.angeles) {
-        document.getElementById('panelAngelesWrap').style.display = 'block';
-        document.getElementById('panelAngeles').textContent = m.angeles;
-      }
-
-      // Link redes
-      if(m.link) {
-        const linkWrap = document.getElementById('panelLinkWrap');
-        linkWrap.style.display = 'block';
-        document.getElementById('panelLink').href = m.link;
-      }
-    }
-
-    // Luna
-    if(r.luna) {
-      document.getElementById('panelLunaEmoji').textContent = r.luna.fase || '🌙';
-      document.getElementById('panelLunaNombre').textContent = r.luna.nombre || '';
-      document.getElementById('panelLunaMensaje').textContent = r.luna.mensaje || '';
-    } else {
-      // Auto calculate luna if not set
-      const hoy = new Date();
+    if(!r.luna) {
       const lunaRef = new Date('2000-01-06T18:14:00Z');
       const ciclo = 29.53058867;
-      const diff = (hoy - lunaRef) / (1000*60*60*24);
+      const diff = (new Date() - lunaRef) / (1000*60*60*24);
       const edad = ((diff % ciclo) + ciclo) % ciclo;
       const fases = [
-        {e:'🌑',n:'Luna Nueva',m:14.76},
-        {e:'🌒',n:'Luna Creciente',m:7.38},
-        {e:'🌓',n:'Cuarto Creciente',m:11.07},
-        {e:'🌔',n:'Gibosa Creciente',m:14.76},
-        {e:'🌕',n:'Luna Llena',m:16.61},
-        {e:'🌖',n:'Gibosa Menguante',m:20.3},
-        {e:'🌗',n:'Cuarto Menguante',m:23.99},
-        {e:'🌘',n:'Luna Menguante',m:29.53},
+        {e:'🌑',n:'Luna Nueva',m:1.84},{e:'🌒',n:'Luna Creciente',m:7.38},
+        {e:'🌓',n:'Cuarto Creciente',m:11.07},{e:'🌔',n:'Gibosa Creciente',m:14.76},
+        {e:'🌕',n:'Luna Llena',m:16.61},{e:'🌖',n:'Gibosa Menguante',m:20.3},
+        {e:'🌗',n:'Cuarto Menguante',m:23.99},{e:'🌘',n:'Luna Menguante',m:29.53},
       ];
       const fase = fases.find(f => edad <= f.m) || fases[7];
-      document.getElementById('panelLunaEmoji').textContent = fase.e;
-      document.getElementById('panelLunaNombre').textContent = fase.n;
+      if(typeof llenarTextosCarta === 'function')
+        llenarTextosCarta({...r, luna:{fase:fase.e,nombre:fase.n,mensaje:''}});
     }
-    llenarTextosCarta(r);
   } catch(e) { console.log('Error panel:', e); }
 }
 
