@@ -1164,26 +1164,53 @@ function selectPrismaCard(idx) {
 }
 
 function llenarTextosCarta(r) {
-  if(!r) return;
+  console.log('llenarTextosCarta called with:', r);
+  if(!r) { console.log('❌ r is null/undefined'); return; }
+
+  // Carta 0 — Colectiva
   const cc = r.carta_colectiva;
-  if(cc){ const t=document.getElementById('pctxt0'); if(t) t.textContent=cc.mensaje||''; }
+  console.log('carta_colectiva:', cc);
+  const t0 = document.getElementById('pctxt0');
+  console.log('pctxt0 element:', t0);
+  if(cc && t0) { t0.textContent = cc.mensaje || ''; console.log('✅ pctxt0 filled:', cc.mensaje); }
+  else console.log('❌ pctxt0 missing or cc empty');
+
+  // Carta 1 — Energía
   const ms = r.mensaje_semanal;
-  if(ms){
-    const t=document.getElementById('pctxt1'); if(t) t.textContent=ms.texto||'';
-    const e=document.getElementById('pcextra1');
-    if(e&&ms.color_nombre){
-      e.style.display='block';
-      e.innerHTML=`<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${ms.color||'#c9a84c'};vertical-align:middle;margin-right:4px"></span>${ms.color_nombre}`;
+  console.log('mensaje_semanal:', ms);
+  const t1 = document.getElementById('pctxt1');
+  console.log('pctxt1 element:', t1);
+  if(ms && t1) { t1.textContent = ms.texto || ''; console.log('✅ pctxt1 filled:', ms.texto); }
+  else console.log('❌ pctxt1 missing or ms empty');
+
+  if(ms) {
+    const e1 = document.getElementById('pcextra1');
+    if(e1 && ms.color_nombre){
+      e1.style.display='block';
+      e1.innerHTML=`<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${ms.color||'#c9a84c'};vertical-align:middle;margin-right:4px"></span>${ms.color_nombre}`;
     }
     if(ms.color) applyColorGlow(ms.color);
-    if(ms.angeles){ const t=document.getElementById('pctxt2'); if(t) t.textContent=ms.angeles; }
+
+    // Carta 2 — Arcángel
+    const t2 = document.getElementById('pctxt2');
+    console.log('pctxt2 element:', t2, 'angeles:', ms.angeles);
+    if(ms.angeles && t2) { t2.textContent = ms.angeles; console.log('✅ pctxt2 filled'); }
+    else console.log('❌ pctxt2 missing or angeles empty');
   }
+
+  // Carta 3 — Luna
   const luna = r.luna;
-  if(luna){
-    const t=document.getElementById('pctxt3'); if(t) t.textContent=luna.mensaje||'';
-    const e=document.getElementById('pcextra3');
-    if(e&&luna.nombre){ e.style.display='block'; e.textContent=`${luna.fase||'🌙'} ${luna.nombre}`; }
+  console.log('luna:', luna);
+  const t3 = document.getElementById('pctxt3');
+  console.log('pctxt3 element:', t3);
+  if(luna && t3) { t3.textContent = luna.mensaje || ''; console.log('✅ pctxt3 filled'); }
+  else console.log('❌ pctxt3 missing or luna empty');
+
+  if(luna) {
+    const e3 = document.getElementById('pcextra3');
+    if(e3 && luna.nombre){ e3.style.display='block'; e3.textContent=`${luna.fase||'🌙'} ${luna.nombre}`; }
   }
+  console.log('✅ llenarTextosCarta complete');
 }
 
 function applyColorGlow(hex) {
@@ -1364,15 +1391,22 @@ async function agregarAlma() {
 
 // ── CARGAR PANEL DE BRUXA ──
 async function cargarPanel() {
+  console.log('cargarPanel called');
+  console.log('PANEL_BIN:', PANEL_BIN);
+  console.log('JSONBIN_URL:', JSONBIN_URL);
   try {
     const res = await fetch(JSONBIN_URL + PANEL_BIN + '/latest', {
       headers: { 'X-Access-Key': ACCESS_KEY }
     });
+    console.log('fetch status:', res.status);
     const data = await res.json();
+    console.log('data received:', data);
     const r = data.record;
-    if(!r) return;
+    if(!r) { console.log('❌ no record in data'); return; }
+    console.log('record keys:', Object.keys(r));
 
     // Fill fan cards
+    console.log('calling llenarTextosCarta, type:', typeof llenarTextosCarta);
     if(typeof llenarTextosCarta === 'function') llenarTextosCarta(r);
 
     // Auto luna if not set
