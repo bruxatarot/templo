@@ -759,9 +759,9 @@ function selectPrismaCard(idx) {
   prismaSelected = idx;
   const c = PRISMA_CARTAS[idx];
 
-  // Get text content from pctxt elements
-  const msg   = document.getElementById('pctxt'+idx)?.textContent || 'Cargando...';
-  const extra = document.getElementById('pcextra'+idx)?.innerHTML || '';
+  // Get text from stored data
+  const msg   = PRISMA_DATA.texts[idx] || 'Cargando...';
+  const extra = PRISMA_DATA.extras[idx] || '';
 
   // Hide fan, show reveal card
   if(fan) fan.style.display = 'none';
@@ -781,26 +781,53 @@ function selectPrismaCard(idx) {
   if(hint) hint.textContent = `✦ ${c.titulo} ✦`;
 }
 
+// ── JSONBIN CONFIG ──
+const PANEL_BIN  = '6a2bd799f5f4af5e29e56f1a';
+const ACCESS_KEY = '$2a$10$nen3ORRwjShyHRO9y/yLXOUNY9V9FtMpO7zoDsUuXv4Yo4Rce36xW';
+const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/';
+
+// Store panel data for reveal cards
+const PRISMA_DATA = { texts: ['','','',''], extras: ['','','',''] };
+
 function llenarTextosCarta(r) {
   if(!r) return;
+
+  // Carta 0 — Colectiva
   const cc = r.carta_colectiva;
-  if(cc){ const t=document.getElementById('pctxt0'); if(t) t.textContent=cc.mensaje||''; }
-  const ms = r.mensaje_semanal;
-  if(ms){
-    const t=document.getElementById('pctxt1'); if(t) t.textContent=ms.texto||'';
-    const e=document.getElementById('pcextra1');
-    if(e&&ms.color_nombre){
-      e.style.display='block';
-      e.innerHTML=`<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${ms.color||'#c9a84c'};vertical-align:middle;margin-right:4px"></span>${ms.color_nombre}`;
-    }
-    if(ms.color) applyColorGlow(ms.color);
-    if(ms.angeles){ const t=document.getElementById('pctxt2'); if(t) t.textContent=ms.angeles; }
+  if(cc) {
+    PRISMA_DATA.texts[0] = cc.mensaje || '';
+    const t = document.getElementById('pctxt0');
+    if(t) t.textContent = cc.mensaje || '';
   }
+
+  // Carta 1 — Energía
+  const ms = r.mensaje_semanal;
+  if(ms) {
+    PRISMA_DATA.texts[1] = ms.texto || '';
+    const t = document.getElementById('pctxt1');
+    if(t) t.textContent = ms.texto || '';
+    const e = document.getElementById('pcextra1');
+    if(ms.color_nombre) {
+      PRISMA_DATA.extras[1] = `<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${ms.color||'#c9a84c'};vertical-align:middle;margin-right:4px"></span>${ms.color_nombre}`;
+      if(e) { e.style.display='block'; e.innerHTML = PRISMA_DATA.extras[1]; }
+    }
+    if(ms.color && typeof applyColorGlow==='function') applyColorGlow(ms.color);
+
+    // Carta 2 — Arcángel
+    PRISMA_DATA.texts[2] = ms.angeles || '';
+    const t2 = document.getElementById('pctxt2');
+    if(t2) t2.textContent = ms.angeles || '';
+  }
+
+  // Carta 3 — Luna
   const luna = r.luna;
-  if(luna){
-    const t=document.getElementById('pctxt3'); if(t) t.textContent=luna.mensaje||'';
-    const e=document.getElementById('pcextra3');
-    if(e&&luna.nombre){ e.style.display='block'; e.textContent=`${luna.fase||'🌙'} ${luna.nombre}`; }
+  if(luna) {
+    PRISMA_DATA.texts[3] = luna.mensaje || '';
+    if(luna.nombre) PRISMA_DATA.extras[3] = `${luna.fase||'🌙'} ${luna.nombre}`;
+    const t = document.getElementById('pctxt3');
+    if(t) t.textContent = luna.mensaje || '';
+    const e = document.getElementById('pcextra3');
+    if(e && luna.nombre) { e.style.display='block'; e.textContent = PRISMA_DATA.extras[3]; }
   }
 }
 
