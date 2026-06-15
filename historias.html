@@ -1,1 +1,477 @@
-EN CONSTRUCCION
+<!DOCTYPE html>
+<!-- TIMESTAMP: 2026-06-15 17:35 -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biblioteca de Historias • Bruxa Tarot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root{--gold:#c9a84c;--gold-light:#e8c97a;--gold-pale:#f5e6b8;--deep:#04060f;--midnight:#0b1128;}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--deep);color:#e8dfc8;font-family:'Cormorant Garamond',serif;min-height:100vh;overflow-x:hidden}
+
+    /* STARFIELD */
+    #starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;
+      justify-content:space-between;padding:1.2rem 2rem;
+      background:linear-gradient(to bottom,rgba(4,6,15,.97),transparent)}
+    .nav-back{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.2em;
+      color:#b8a87a;text-decoration:none;transition:color .3s}
+    .nav-back:hover{color:var(--gold)}
+    .nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.3em;
+      color:var(--gold);text-decoration:none}
+
+    /* HERO */
+    .hero{position:relative;z-index:1;text-align:center;padding:7rem 2rem 3rem}
+    .hero-badge{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.45em;color:var(--gold);
+      border:1px solid rgba(201,168,76,.3);padding:.45rem 1.8rem;border-radius:100px;
+      background:rgba(201,168,76,.05);display:inline-block;margin-bottom:1.5rem}
+    .hero-title{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,5vw,3.5rem);
+      color:var(--gold-pale);font-weight:400;margin-bottom:1rem}
+    .hero-body{font-style:italic;font-size:1.1rem;color:#a09070;max-width:600px;
+      margin:0 auto;line-height:1.8}
+
+    /* DIVIDER */
+    .divider{display:flex;align-items:center;gap:1rem;max-width:700px;margin:2rem auto;
+      position:relative;z-index:1;padding:0 2rem}
+    .divider-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.3),transparent)}
+    .divider-symbol{color:var(--gold);font-size:.8rem}
+
+    /* BIBLIOTECA */
+    .biblioteca{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 2rem 6rem}
+
+    /* LIBROS GRID */
+    .libros-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+      gap:2rem;justify-items:center}
+    @media(max-width:600px){.libros-grid{grid-template-columns:repeat(2,1fr);gap:1rem}}
+
+    /* LIBRO */
+    .libro-wrap{width:100%;max-width:220px;perspective:1200px;cursor:pointer}
+    .libro{position:relative;width:100%;transform-style:preserve-3d;transition:transform .1s}
+    .libro:hover{transform:translateY(-4px)}
+
+    .libro-cover{
+      width:100%;aspect-ratio:3/4.5;
+      background:linear-gradient(135deg,#1a0a2e 0%,#2d1a4a 50%,#1a0832 100%);
+      border-radius:4px 14px 14px 4px;
+      border:1px solid rgba(201,168,76,.3);
+      box-shadow:6px 6px 30px rgba(0,0,0,.6),-2px 0 8px rgba(0,0,0,.4),
+                 inset -3px 0 10px rgba(0,0,0,.3);
+      position:relative;overflow:hidden;
+      display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+      padding:0 0 1.2rem;
+      transition:all .4s cubic-bezier(.4,0,.2,1);
+    }
+    .libro-wrap:hover .libro-cover{
+      box-shadow:10px 10px 40px rgba(0,0,0,.7),-2px 0 8px rgba(0,0,0,.4),
+                 0 0 30px rgba(201,168,76,.15),inset -3px 0 10px rgba(0,0,0,.3);
+      border-color:rgba(201,168,76,.5);
+    }
+    .libro-cover-img{
+      position:absolute;inset:0;width:100%;height:100%;
+      object-fit:cover;opacity:.6;border-radius:4px 14px 14px 4px;
+      transition:opacity .4s;
+    }
+    .libro-wrap:hover .libro-cover-img{opacity:.8}
+    .libro-cover-img-fallback{
+      position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+      font-size:3.5rem;opacity:.4;
+    }
+    .libro-spine{
+      position:absolute;left:0;top:0;bottom:0;width:16px;
+      background:linear-gradient(180deg,#3d2060,#1a0a2e,#3d2060);
+      border-radius:4px 0 0 4px;
+      box-shadow:inset -2px 0 6px rgba(0,0,0,.4);
+    }
+    .libro-cover-overlay{
+      position:absolute;inset:0;
+      background:linear-gradient(to top,rgba(4,6,15,.95) 0%,rgba(4,6,15,.4) 50%,transparent 100%);
+      border-radius:4px 14px 14px 4px;
+    }
+    .libro-cover-content{position:relative;z-index:2;text-align:center;padding:0 .8rem}
+    .libro-cover-title{
+      font-family:'Cormorant Garamond',serif;font-size:.95rem;font-style:italic;
+      color:var(--gold-pale);line-height:1.3;margin-bottom:.3rem;
+    }
+    .libro-cover-sub{
+      font-family:'Cinzel',serif;font-size:.45rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.5);
+    }
+    .libro-cover-badge{
+      position:absolute;top:.7rem;right:.7rem;z-index:3;
+      font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.15em;
+      padding:.2rem .6rem;border-radius:100px;
+      background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);
+      color:var(--gold);
+    }
+    .libro-cover-badge.proxima{
+      background:rgba(100,100,120,.2);border-color:rgba(150,150,180,.3);
+      color:rgba(200,200,220,.5);
+    }
+    .libro-cover-hint{
+      font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.4);margin-top:.5rem;
+      transition:color .3s;
+    }
+    .libro-wrap:hover .libro-cover-hint{color:rgba(201,168,76,.8)}
+
+    /* LIBRO ABIERTO — MODAL */
+    .libro-modal-overlay{
+      position:fixed;inset:0;z-index:200;
+      background:rgba(4,6,15,.85);backdrop-filter:blur(8px);
+      display:none;align-items:center;justify-content:center;
+      padding:2rem 1rem;
+    }
+    .libro-modal-overlay.open{display:flex}
+    .libro-modal{
+      background:var(--deep);
+      border:1px solid rgba(201,168,76,.3);
+      border-radius:4px 20px 20px 4px;
+      max-width:600px;width:100%;
+      max-height:85vh;overflow-y:auto;
+      display:flex;position:relative;
+      animation:libroOpen .5s cubic-bezier(.4,0,.2,1) both;
+      box-shadow:0 0 60px rgba(0,0,0,.8),0 0 30px rgba(201,168,76,.1);
+    }
+    @keyframes libroOpen{
+      from{opacity:0;transform:perspective(800px) rotateY(-20deg) scale(.9)}
+      to{opacity:1;transform:perspective(800px) rotateY(0) scale(1)}
+    }
+    .libro-modal-spine{
+      width:20px;flex-shrink:0;
+      background:linear-gradient(180deg,#3d2060,#1a0a2e,#3d2060);
+      border-radius:4px 0 0 4px;
+    }
+    .libro-modal-content{flex:1;padding:2rem}
+    .libro-modal-close{
+      position:absolute;top:1rem;right:1rem;
+      background:transparent;border:none;
+      color:rgba(201,168,76,.4);font-size:1.2rem;cursor:pointer;
+      transition:color .3s;font-family:'Cinzel',serif;
+    }
+    .libro-modal-close:hover{color:var(--gold)}
+    .libro-modal-img{
+      width:100%;max-height:200px;object-fit:cover;
+      border-radius:8px;margin-bottom:1.2rem;
+      border:1px solid rgba(201,168,76,.2);
+    }
+    .libro-modal-badge{
+      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;
+      padding:.25rem .8rem;border-radius:100px;
+      background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);
+      color:var(--gold);display:inline-block;margin-bottom:.8rem;
+    }
+    .libro-modal-title{
+      font-family:'Cinzel Decorative',serif;font-size:1.3rem;
+      color:var(--gold-pale);font-weight:400;margin-bottom:.4rem;line-height:1.3;
+    }
+    .libro-modal-sub{
+      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.4);margin-bottom:1rem;
+    }
+    .libro-modal-desc{
+      font-style:italic;font-size:.95rem;color:#a09070;
+      line-height:1.8;margin-bottom:1.5rem;
+    }
+    .libro-modal-divider{
+      height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.25),transparent);
+      margin:1rem 0;
+    }
+    .libro-modal-chapters-title{
+      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.4);margin-bottom:.8rem;
+    }
+    .capitulo-row{
+      display:flex;align-items:center;gap:.8rem;
+      padding:.7rem 0;
+      border-bottom:1px solid rgba(201,168,76,.08);
+    }
+    .capitulo-row:last-child{border-bottom:none}
+    .cap-num{
+      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.4);width:70px;flex-shrink:0;
+    }
+    .cap-name{font-style:italic;font-size:.9rem;color:#c4b090;flex:1}
+    .cap-btn{
+      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.15em;
+      padding:.35rem .9rem;border-radius:100px;text-decoration:none;
+      border:1px solid rgba(201,168,76,.3);color:var(--gold);
+      background:transparent;transition:all .3s;white-space:nowrap;
+      display:inline-flex;align-items:center;gap:.3rem;
+    }
+    .cap-btn:hover{background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.6)}
+    .cap-btn.soon{
+      color:rgba(200,200,220,.3);border-color:rgba(150,150,180,.15);
+      pointer-events:none;
+    }
+    .cap-btn.leer{
+      background:rgba(201,168,76,.05);
+    }
+    .libro-modal-escuchar{
+      margin-top:1.2rem;
+      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.4);margin-bottom:.6rem;
+    }
+
+    @media(max-width:500px){
+      .libro-modal{flex-direction:column}
+      .libro-modal-spine{width:100%;height:16px;border-radius:4px 4px 0 0}
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-back">← Volver al Templo</a>
+  <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-badge">✦ MUNDOS POR DESCUBRIR ✦</span>
+  <h1 class="hero-title">Biblioteca de Historias</h1>
+  <p class="hero-body">
+    Historias mágicas nacidas del corazón y conjuradas por el alma de Bruxa Tarot.<br>
+    Cada libro guarda un mundo que te espera.
+  </p>
+</div>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <span class="divider-symbol">✦</span>
+  <div class="divider-line"></div>
+</div>
+
+<!-- BIBLIOTECA -->
+<section class="biblioteca">
+  <div class="libros-grid">
+
+    <!-- 1. En Busca de Tus Ojos Verdes -->
+    <div class="libro-wrap" onclick="abrirLibro('ojos-verdes')">
+      <div class="libro">
+        <div class="libro-cover">
+          <div class="libro-spine"></div>
+          <img src="historias/assets/banner-en-busca.jpeg" alt="En busca de tus ojos verdes"
+            class="libro-cover-img" onerror="this.style.display='none'">
+          <div class="libro-cover-img-fallback">💚</div>
+          <div class="libro-cover-overlay"></div>
+          <span class="libro-cover-badge">✦ Disponible</span>
+          <div class="libro-cover-content">
+            <p class="libro-cover-title">En Busca de Tus Ojos Verdes</p>
+            <p class="libro-cover-sub">5 capítulos</p>
+            <p class="libro-cover-hint">Toca para abrir</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Susurros de mi Alma -->
+    <div class="libro-wrap" onclick="abrirLibro('susurros')">
+      <div class="libro">
+        <div class="libro-cover">
+          <div class="libro-spine"></div>
+          <img src="historias/assets/susurros-de-mi-alma.jpg" alt="Susurros de mi alma"
+            class="libro-cover-img" onerror="this.style.display='none'">
+          <div class="libro-cover-img-fallback">🎧</div>
+          <div class="libro-cover-overlay"></div>
+          <span class="libro-cover-badge">✦ Disponible</span>
+          <div class="libro-cover-content">
+            <p class="libro-cover-title">Susurros de mi Alma</p>
+            <p class="libro-cover-sub">4 capítulos</p>
+            <p class="libro-cover-hint">Toca para abrir</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Última Jugada -->
+    <div class="libro-wrap">
+      <div class="libro">
+        <div class="libro-cover" style="opacity:.6;cursor:default">
+          <div class="libro-spine"></div>
+          <img src="historias/assets/banner-ultima.jpg" alt="Última Jugada"
+            class="libro-cover-img" onerror="this.style.display='none'">
+          <div class="libro-cover-img-fallback">⚽</div>
+          <div class="libro-cover-overlay"></div>
+          <span class="libro-cover-badge proxima">Próximamente</span>
+          <div class="libro-cover-content">
+            <p class="libro-cover-title">Última Jugada</p>
+            <p class="libro-cover-sub">6 capítulos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. No Soy Una Fan Más -->
+    <div class="libro-wrap">
+      <div class="libro">
+        <div class="libro-cover" style="opacity:.6;cursor:default">
+          <div class="libro-spine"></div>
+          <img src="historias/assets/banner-no-soy.jpg" alt="No Soy Una Fan Más"
+            class="libro-cover-img" onerror="this.style.display='none'">
+          <div class="libro-cover-img-fallback">🌟</div>
+          <div class="libro-cover-overlay"></div>
+          <span class="libro-cover-badge proxima">Próximamente</span>
+          <div class="libro-cover-content">
+            <p class="libro-cover-title">No Soy Una Fan Más</p>
+            <p class="libro-cover-sub">6 capítulos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Eco En Tu Piel -->
+    <div class="libro-wrap">
+      <div class="libro">
+        <div class="libro-cover" style="opacity:.6;cursor:default">
+          <div class="libro-spine"></div>
+          <img src="historias/eco-en-tu-piel/assets/cover-eco.jpeg" alt="Eco En Tu Piel"
+            class="libro-cover-img" onerror="this.style.display='none'">
+          <div class="libro-cover-img-fallback">🌙</div>
+          <div class="libro-cover-overlay"></div>
+          <span class="libro-cover-badge proxima">Próximamente</span>
+          <div class="libro-cover-content">
+            <p class="libro-cover-title">Eco En Tu Piel</p>
+            <p class="libro-cover-sub">6 capítulos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MODAL LIBRO ABIERTO -->
+<div class="libro-modal-overlay" id="modalOverlay" onclick="cerrarLibro(event)">
+  <div class="libro-modal" id="libroModal">
+    <div class="libro-modal-spine"></div>
+    <div class="libro-modal-content" id="libroModalContent"></div>
+    <button class="libro-modal-close" onclick="cerrarLibro()">✕</button>
+  </div>
+</div>
+
+<script>
+// ── STARFIELD ──
+(function(){
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  function initStars(){
+    stars = Array.from({length:120}, () => ({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height,
+      r: Math.random()*.8+.2,
+      a: Math.random(),
+      s: (Math.random()-.5)*.003
+    }));
+  }
+  function drawStars(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s=>{
+      s.a = Math.max(.1, Math.min(1, s.a+s.s));
+      if(s.a<=.1||s.a>=1) s.s*=-1;
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,240,${s.a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  resize(); initStars(); drawStars();
+  window.addEventListener('resize',()=>{resize();initStars();});
+})();
+
+// ── DATOS DE LIBROS ──
+const LIBROS = {
+  'ojos-verdes': {
+    titulo: 'En Busca de Tus Ojos Verdes',
+    img: 'historias/assets/banner-en-busca.jpeg',
+    fallback: '💚',
+    badge: '✦ Disponible · 5 capítulos',
+    desc: 'Embárcate en una dulce travesía de adolescencia, sueños y primeras emociones intensas. Una historia sobre ese primer amor que te desarma sin avisar, donde una mirada basta para cambiarlo todo. Narrada por Bruxa Tarot.',
+    capitulos: [
+      { num:'Capítulo 1', nombre:'El llamado', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-1.html', escuchar:'https://open.spotify.com/episode/5iNrLn5CXhmn1XgE158KQ6' },
+      { num:'Capítulo 2', nombre:'La mirada', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-2.html', escuchar:'https://open.spotify.com/episode/5KRLfbXXkSWhZwgMvrmaHB' },
+      { num:'Capítulo 3', nombre:'Mariposas', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-3.html', escuchar:'https://open.spotify.com/episode/0z2rWBxoEt6ScxOD9jk53i' },
+      { num:'Capítulo 4', nombre:'La promesa', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-4.html', escuchar:'https://open.spotify.com/episode/4DOgksBjqmiokZGsGslztn' },
+      { num:'Capítulo 5', nombre:'El final', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-5.html', escuchar:'https://open.spotify.com/episode/1OzVrhPoH6jYgGtg0l4gx9' },
+    ]
+  },
+  'susurros': {
+    titulo: 'Susurros de mi Alma',
+    img: 'historias/assets/susurros-de-mi-alma.jpg',
+    fallback: '🎧',
+    badge: '✦ Disponible · 4 capítulos',
+    desc: 'Una historia narrada entre susurros, ausencias y decisiones que llegan tarde. Un amor que no pudo ser, contado con la voz de Chaly y acompañado por una banda sonora original que acaricia y rompe al mismo tiempo.',
+    capitulos: [
+      { num:'Capítulo 1', nombre:'', leer:'historias/susurros-de-mi-alma/capitulo-1.html', escuchar:'https://open.spotify.com/episode/6J1ARu7WYNsHlhJR4GZRaI' },
+      { num:'Capítulo 2', nombre:'', leer:'historias/susurros-de-mi-alma/capitulo-2.html', escuchar:'https://open.spotify.com/episode/68zc8RQcDloi4aOjLFmHOw' },
+      { num:'Capítulo 3', nombre:'', leer:'historias/susurros-de-mi-alma/capitulo-3.html', escuchar:'https://open.spotify.com/episode/4QQisVyZxP6j9HfNkYCGlh' },
+      { num:'Capítulo Final', nombre:'El Eco de un Amor Eterno', leer:'', escuchar:'' },
+    ]
+  }
+};
+
+function abrirLibro(id) {
+  const libro = LIBROS[id];
+  if(!libro) return;
+
+  const caps = libro.capitulos.map((c,i) => {
+    const tieneContenido = c.leer || c.escuchar;
+    return `
+      <div class="capitulo-row">
+        <span class="cap-num">${c.num}</span>
+        <span class="cap-name">${c.nombre || ''}</span>
+        <div style="display:flex;gap:.4rem;flex-shrink:0">
+          ${c.leer
+            ? `<a href="${c.leer}" class="cap-btn leer">📖 Leer</a>`
+            : `<span class="cap-btn soon">Próximamente</span>`
+          }
+          ${c.escuchar
+            ? `<a href="${c.escuchar}" target="_blank" class="cap-btn">🎧 Escuchar</a>`
+            : ''
+          }
+        </div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('libroModalContent').innerHTML = `
+    <img src="${libro.img}" alt="${libro.titulo}" class="libro-modal-img"
+      onerror="this.style.display='none'">
+    <span class="libro-modal-badge">${libro.badge}</span>
+    <h2 class="libro-modal-title">${libro.titulo}</h2>
+    <div class="libro-modal-divider"></div>
+    <p class="libro-modal-desc">${libro.desc}</p>
+    <div class="libro-modal-divider"></div>
+    <p class="libro-modal-chapters-title">✦ CAPÍTULOS</p>
+    ${caps}
+  `;
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarLibro(e) {
+  if(e && e.target !== document.getElementById('modalOverlay')) return;
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+</script>
+</body>
+</html>
