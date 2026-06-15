@@ -357,91 +357,9 @@
       font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.3em;
       color:rgba(201,168,76,.25);
     }
-
-    /* ── PANEL CARTAS ABANICO ── */
-    .prisma-card{
-      position:absolute;width:115px;height:195px;
-      cursor:pointer;left:calc(50% - 57px);bottom:0;
-      transform-style:preserve-3d;
-      transition:transform .4s cubic-bezier(.4,0,.2,1), filter .3s ease;
-    }
     /* HOVER — se levanta sin voltear, se ve la imagen completa */
-    .prisma-card:hover{
-      transform:translateX(var(--tx,0px)) rotate(var(--rot,0deg)) translateY(-30px) scale(1.15) !important;
-      z-index:30 !important;
-    }
-    .prisma-card:hover .prisma-card-back{
-      box-shadow:0 20px 50px rgba(0,0,0,.7),
-                 0 0 30px var(--glow-color, rgba(201,168,76,.35)),
-                 0 0 60px rgba(201,168,76,.15) !important;
-      filter:brightness(1.1);
-    }
-    .prisma-card-inner{
-      width:100%;height:100%;position:relative;
-      transform-style:preserve-3d;
-      transition:transform .7s cubic-bezier(.4,0,.2,1);
-      border-radius:12px;
-    }
-    .prisma-card.flipped .prisma-card-inner{
-      height:auto;
-    }
-    .prisma-card.flipped .prisma-card-front{
-      position:relative;min-height:200px;height:auto;
-    }
-    .prisma-card.flipped .prisma-card-inner{transform:rotateY(180deg)}
-    .prisma-card-back,.prisma-card-front{
-      position:absolute;inset:0;border-radius:12px;
-      backface-visibility:hidden;-webkit-backface-visibility:hidden;
-      overflow:hidden;
-    }
     #prismaFan{
       transition:filter .8s ease;
-    }
-    .prisma-card-back{
-      background:#0b1128;
-      border:1px solid rgba(201,168,76,.2);
-      box-shadow:0 8px 30px rgba(0,0,0,.6);
-      transition:box-shadow .8s ease, border-color .8s ease;
-    }
-    .prisma-card-back img{
-      width:100%;height:100%;object-fit:cover;
-      display:block;border-radius:12px;
-      transition:transform .3s;
-    }
-    .prisma-card:hover .prisma-card-back img{transform:scale(1.04)}
-    .prisma-card-back-overlay{
-      position:absolute;inset:0;border-radius:12px;
-      background:linear-gradient(to top,rgba(4,6,15,.8) 0%,transparent 60%);
-      display:flex;align-items:flex-end;justify-content:center;padding-bottom:.8rem;
-    }
-    .prisma-card-back-label{
-      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
-      color:rgba(201,168,76,.7);text-align:center;line-height:1.5;
-    }
-    .prisma-card-front{
-      transform:rotateY(180deg);
-      background:linear-gradient(160deg,#0b1128,#060d20);
-      border:1px solid rgba(201,168,76,.4);
-      box-shadow:0 0 30px rgba(201,168,76,.1),0 8px 40px rgba(0,0,0,.7);
-      display:flex;flex-direction:column;padding:1rem .9rem .9rem;
-    }
-    .prisma-card-front-icon{font-size:1.8rem;text-align:center;margin-bottom:.5rem}
-    .prisma-card-front-title{
-      font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.15em;
-      color:var(--gold);text-align:center;margin-bottom:.6rem;line-height:1.5;
-    }
-    .prisma-card-front-divider{
-      width:28px;height:1px;background:rgba(201,168,76,.3);margin:0 auto .7rem;
-    }
-    .prisma-card-front-text{
-      font-style:italic;font-size:.82rem;color:#c4b090;
-      line-height:1.7;text-align:center;flex:1;overflow:visible;
-      word-wrap:break-word;
-    }
-    .prisma-card-front-extra{
-      margin-top:.6rem;padding-top:.5rem;border-top:1px solid rgba(201,168,76,.1);
-      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;
-      color:rgba(201,168,76,.45);text-align:center;
     }
   
     
@@ -506,49 +424,81 @@
       transition:all .3s;
     }
     .diario-link:hover{ background:rgba(201,168,76,.1); border-color:rgba(201,168,76,.45); }
-
-    /* ── PRISMA REVEAL CARD (index card style) ── */
-    .prisma-reveal-card{
-      max-width:480px;margin:0 auto;
-      background:linear-gradient(160deg,#0d1535,#060d20);
-      border:1px solid rgba(201,168,76,.4);border-radius:20px;
-      padding:2rem 2rem 1.5rem;
-      box-shadow:0 0 40px rgba(201,168,76,.12),0 20px 60px rgba(0,0,0,.5);
-      cursor:pointer;position:relative;
-      animation:revealIn .4s cubic-bezier(.4,0,.2,1) both;
+  
+    /* ══ MENSAJES DEL PRISMA ══ */
+    #prismaFan{
+      position:relative;height:320px;
+      display:flex;align-items:flex-end;justify-content:center;
+      margin-bottom:1.5rem;perspective:1000px;
     }
-    @keyframes revealIn{
-      from{opacity:0;transform:scale(.9) translateY(10px)}
+    .pc{
+      position:absolute;width:120px;height:200px;
+      cursor:pointer;bottom:0;left:calc(50% - 60px);
+      transform-style:preserve-3d;
+      transition:transform .4s cubic-bezier(.4,0,.2,1);
+    }
+    .pc:hover{
+      filter:brightness(1.12) drop-shadow(0 0 12px rgba(201,168,76,.4));
+      z-index:50 !important;
+    }
+    .pc img{
+      width:100%;height:100%;object-fit:cover;
+      border-radius:12px;display:block;
+      border:1px solid rgba(201,168,76,.3);
+      box-shadow:0 8px 30px rgba(0,0,0,.6);
+    }
+    .pc-label{
+      position:absolute;bottom:0;left:0;right:0;
+      background:linear-gradient(to top,rgba(4,6,15,.95),transparent);
+      border-radius:0 0 12px 12px;
+      padding:.5rem .4rem .4rem;text-align:center;
+      font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.75);line-height:1.4;
+    }
+
+    /* REVEAL CARD */
+    #prismaReveal{
+      display:none;
+      max-width:520px;margin:0 auto 2rem;padding:0 1rem;
+    }
+    .reveal-card{
+      background:linear-gradient(160deg,#0d1535 0%,#060d20 100%);
+      border:1px solid rgba(201,168,76,.45);border-radius:20px;
+      padding:2rem;position:relative;cursor:pointer;
+      box-shadow:0 0 40px rgba(201,168,76,.12),0 20px 60px rgba(0,0,0,.6);
+      animation:rcIn .35s cubic-bezier(.4,0,.2,1) both;
+    }
+    @keyframes rcIn{
+      from{opacity:0;transform:scale(.93) translateY(8px)}
       to{opacity:1;transform:scale(1) translateY(0)}
     }
-    .prisma-reveal-close{
-      position:absolute;top:1rem;right:1rem;
-      font-size:.9rem;color:rgba(201,168,76,.4);
-      transition:color .3s;
+    .reveal-card-close{
+      position:absolute;top:.9rem;right:1rem;
+      font-size:.85rem;color:rgba(201,168,76,.35);
     }
-    .prisma-reveal-card:hover .prisma-reveal-close{color:var(--gold)}
-    .prisma-reveal-icon{font-size:2.2rem;text-align:center;margin-bottom:.6rem}
-    .prisma-reveal-title{
-      font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.2em;
-      color:var(--gold);text-align:center;margin-bottom:.8rem;
+    .reveal-card-icon{font-size:2rem;text-align:center;margin-bottom:.5rem}
+    .reveal-card-title{
+      font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.2em;
+      color:var(--gold);text-align:center;margin-bottom:.7rem;
     }
-    .prisma-reveal-divider{
-      width:40px;height:1px;background:rgba(201,168,76,.3);
-      margin:0 auto .9rem;
+    .reveal-card-line{
+      width:36px;height:1px;background:rgba(201,168,76,.3);
+      margin:0 auto .8rem;
     }
-    .prisma-reveal-text{
+    .reveal-card-text{
       font-style:italic;font-size:1rem;color:#c4b090;
-      line-height:1.8;text-align:center;margin-bottom:.8rem;
+      line-height:1.8;text-align:center;
     }
-    .prisma-reveal-extra{
-      text-align:center;font-family:'Cinzel',serif;font-size:.58rem;
-      letter-spacing:.15em;color:rgba(201,168,76,.5);margin-top:.5rem;
+    .reveal-card-extra{
+      margin-top:.8rem;text-align:center;
+      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.5);
     }
-    .prisma-reveal-hint{
-      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;
-      color:rgba(201,168,76,.25);text-align:center;margin-top:1rem;
-    }
-  </style>
+    .reveal-card-hint{
+      margin-top:1rem;text-align:center;
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.2);
+    }</style>
 </head>
 <body>
   <div id="starfield"><canvas id="stars"></canvas></div>
@@ -668,16 +618,22 @@
   <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
 
   <!-- PANEL DE BRUXA -->
-  <section id="panelBruxa" style="position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 2rem 4rem">
-    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+  <section id="panelBruxa" style="position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 2rem 3rem">
+    <div class="reveal" style="text-align:center;margin-bottom:2.5rem">
       <p class="section-label">✦ Del Templo</p>
       <h2 class="section-title">Mensajes del Prisma</h2>
       <p class="section-body">Toca una carta para revelar el mensaje de esta semana</p>
     </div>
-    <div class="reveal" id="prismaFan" style="position:relative;height:320px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:1.5rem;perspective:800px"></div>
-        <div id="prismaReveal" style="display:none;margin-top:0"></div>
-    <p id="prismaHint" style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.3em;color:rgba(201,168,76,.35);text-align:center;transition:all .4s">✦ Selecciona una carta ✦</p>
+    <div id="prismaFan"></div>
+    <p id="prismaHint" style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.35);text-align:center;margin-top:.5rem;transition:color .4s">
+      ✦ Selecciona una carta ✦
+    </p>
   </section>
+
+  <!-- PRISMA REVEAL -->
+  <div id="prismaReveal"></div>
+
 
     <!-- CARTA DEL DÍA -->
   <section id="carta">
@@ -1162,168 +1118,99 @@ const HEADERS = { 'Content-Type': 'application/json', 'X-Access-Key': ACCESS_KEY
 
 // ── PANEL CARTAS ABANICO ──
 const PRISMA_CARTAS = [
-  { img:'images/colectiva.png', label:'Carta\nColectiva', icon:'🎴',
-    titulo:'Carta Colectiva de la Semana' },
-  { img:'images/energia.png', label:'Energía\nSemanal', icon:'✨',
-    titulo:'Energía de la Semana' },
-  { img:'images/arcangel.png', label:'Arcángel\nGuardián', icon:'👼',
-    titulo:'Arcángel que nos Acompaña' },
-  { img:'images/Luna.png', label:'Luna\nActiva', icon:'🌙',
-    titulo:'Luna Activa & Ritual' },
+  { img:'images/colectiva.png', label:'Carta\nColectiva',  icon:'🎴', titulo:'Carta Colectiva de la Semana' },
+  { img:'images/energia.png',   label:'Energía\nSemanal',  icon:'✨', titulo:'Energía de la Semana' },
+  { img:'images/arcangel.png',  label:'Arcángel\nGuardián',icon:'👼', titulo:'Arcángel que nos Acompaña' },
+  { img:'images/Luna.png',      label:'Luna\nActiva',      icon:'🌙', titulo:'Luna Activa & Ritual' },
 ];
 const FAN_ANGLES  = [-28, -9, 9, 28];
 const FAN_OFFSETS = [-95, -32, 32, 95];
 let prismaSelected = -1;
+const PRISMA_DATA  = { texts:['','','',''], extras:['','','',''] };
 
-// ── DATOS DEL PANEL ──
-const PRISMA_DATA = { texts: ['','','',''], extras: ['','','',''] };
-
-// ── FUNCIONES DEL ABANICO ──
 function buildPrismaFan() {
   const fan = document.getElementById('prismaFan');
-  if(!fan) { console.log('prismaFan not found'); return; }
+  if(!fan) return;
   fan.innerHTML = '';
   PRISMA_CARTAS.forEach((c, i) => {
-    const card = document.createElement('div');
-    card.className = 'prisma-card';
-    card.id = 'pc' + i;
-    card.style.cssText = `
-      --tx:${FAN_OFFSETS[i]}px;
-      --rot:${FAN_ANGLES[i]}deg;
-      transform:translateX(${FAN_OFFSETS[i]}px) rotate(${FAN_ANGLES[i]}deg);
-      z-index:${i+1};
-      transition-delay:${i*0.04}s;`;
-    card.innerHTML = `
-      <div class="prisma-card-inner">
-        <div class="prisma-card-back">
-          <img src="${c.img}" alt="${c.titulo}"
-            onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(160deg,#1a1050,#0d1830)'">
-          <div class="prisma-card-back-overlay">
-            <span class="prisma-card-back-label">${c.label.replace('\n','<br>')}</span>
-          </div>
-        </div>
-        <div class="prisma-card-front">
-          <div class="prisma-card-front-icon">${c.icon}</div>
-          <div class="prisma-card-front-title">${c.titulo}</div>
-          <div class="prisma-card-front-divider"></div>
-          <div class="prisma-card-front-text" id="pctxt${i}">Cargando...</div>
-          <div class="prisma-card-front-extra" id="pcextra${i}" style="display:none"></div>
-        </div>
-      </div>`;
-    card.addEventListener('click', () => selectPrismaCard(i));
-    fan.appendChild(card);
+    const div = document.createElement('div');
+    div.className = 'pc';
+    div.id = 'pc' + i;
+    div.style.cssText = `transform:translateX(${FAN_OFFSETS[i]}px) rotate(${FAN_ANGLES[i]}deg);z-index:${i+1};`;
+    div.innerHTML = `
+      <img src="${c.img}" alt="${c.titulo}"
+        onerror="this.style.background='#1a1050';this.style.height='100%'">
+      <div class="pc-label">${c.label.replace('\n','<br>')}</div>`;
+    div.addEventListener('click', () => selectPrismaCard(i));
+    fan.appendChild(div);
   });
-  console.log('Fan built with', PRISMA_CARTAS.length, 'cards');
 }
 
 function selectPrismaCard(idx) {
-  const hint = document.getElementById('prismaHint');
-  const fan  = document.getElementById('prismaFan');
+  const fan    = document.getElementById('prismaFan');
   const reveal = document.getElementById('prismaReveal');
+  const hint   = document.getElementById('prismaHint');
 
+  // Toggle off
   if(prismaSelected === idx) {
-    // Deselect — back to fan
     prismaSelected = -1;
-    if(fan) fan.style.display = 'flex';
-    if(reveal) reveal.style.display = 'none';
-    PRISMA_CARTAS.forEach((_, i) => {
-      const el = document.getElementById('pc'+i);
-      if(el){
-        el.classList.remove('flipped');
-        el.style.setProperty('--tx', FAN_OFFSETS[i]+'px');
-        el.style.setProperty('--rot', FAN_ANGLES[i]+'deg');
-        el.style.transform = `translateX(${FAN_OFFSETS[i]}px) rotate(${FAN_ANGLES[i]}deg)`;
-        el.style.zIndex = i+1;
-      }
-    });
+    fan.style.display    = '';
+    reveal.style.display = 'none';
+    reveal.innerHTML     = '';
     if(hint) hint.textContent = '✦ Selecciona una carta ✦';
     return;
   }
 
   prismaSelected = idx;
-  const c = PRISMA_CARTAS[idx];
+  const c   = PRISMA_CARTAS[idx];
+  const msg = PRISMA_DATA.texts[idx] || '';
+  const ext = PRISMA_DATA.extras[idx] || '';
 
-  // Get text from stored data (not DOM - fan might be hidden)
-  const msg   = PRISMA_DATA.texts[idx] || 'Cargando...';
-  const extra = PRISMA_DATA.extras[idx] || '';
-
-  // Hide fan, show reveal card
-  if(fan) fan.style.display = 'none';
-  if(reveal) {
-    reveal.style.display = 'block';
-    reveal.innerHTML = `
-      <div class="prisma-reveal-card" onclick="selectPrismaCard(${idx})">
-        <div class="prisma-reveal-close">✕</div>
-        <div class="prisma-reveal-icon">${c.icon}</div>
-        <div class="prisma-reveal-title">${c.titulo}</div>
-        <div class="prisma-reveal-divider"></div>
-        <div class="prisma-reveal-text">${msg}</div>
-        ${extra ? `<div class="prisma-reveal-extra">${extra}</div>` : ''}
-        <div class="prisma-reveal-hint">Toca para cerrar</div>
-      </div>`;
-  }
+  fan.style.display    = 'none';
+  reveal.style.display = 'block';
+  reveal.innerHTML = `
+    <div class="reveal-card" onclick="selectPrismaCard(${idx})">
+      <div class="reveal-card-close">✕ cerrar</div>
+      <div class="reveal-card-icon">${c.icon}</div>
+      <div class="reveal-card-title">${c.titulo}</div>
+      <div class="reveal-card-line"></div>
+      <div class="reveal-card-text">${msg || 'El mensaje llegará pronto...'}</div>
+      ${ext ? `<div class="reveal-card-extra">${ext}</div>` : ''}
+      <div class="reveal-card-hint">✦ Toca para cerrar ✦</div>
+    </div>`;
   if(hint) hint.textContent = `✦ ${c.titulo} ✦`;
-}
-
-function applyColorGlow(hex) {
-  if(!hex) return;
-  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-  // Use box-shadow on cards (not filter) so hover filter works independently
-  document.querySelectorAll('.prisma-card-back').forEach(c=>{
-    c.style.boxShadow=`0 8px 30px rgba(0,0,0,.6),0 0 22px rgba(${r},${g},${b},0.3)`;
-    c.style.borderColor=`rgba(${r},${g},${b},0.45)`;
-  });
-  // Color glow on the fan container via outline/box-shadow trick
-  const fan=document.getElementById('prismaFan');
-  if(fan) {
-    fan.style.setProperty('--glow-color', `rgba(${r},${g},${b},0.3)`);
-  }
-  const hint=document.getElementById('prismaHint');
-  if(hint) hint.style.color=`rgba(${r},${g},${b},0.6)`;
 }
 
 function llenarTextosCarta(r) {
   if(!r) return;
-
-  // Carta 0 — Colectiva
   const cc = r.carta_colectiva;
-  if(cc) {
-    PRISMA_DATA.texts[0] = cc.mensaje || '';
-    const t = document.getElementById('pctxt0');
-    if(t) t.textContent = cc.mensaje || '';
-  }
+  if(cc) PRISMA_DATA.texts[0] = cc.mensaje || '';
 
-  // Carta 1 — Energía
   const ms = r.mensaje_semanal;
   if(ms) {
-    PRISMA_DATA.texts[1] = ms.texto || '';
-    const t = document.getElementById('pctxt1');
-    if(t) t.textContent = ms.texto || '';
-    const e = document.getElementById('pcextra1');
-    if(ms.color_nombre) {
-      PRISMA_DATA.extras[1] = `<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${ms.color||'#c9a84c'};vertical-align:middle;margin-right:4px"></span>${ms.color_nombre}`;
-      if(e) { e.style.display='block'; e.innerHTML = PRISMA_DATA.extras[1]; }
-    }
-    if(ms.color && typeof applyColorGlow==='function') applyColorGlow(ms.color);
-
-    // Carta 2 — Arcángel
+    PRISMA_DATA.texts[1] = ms.texto   || '';
     PRISMA_DATA.texts[2] = ms.angeles || '';
-    const t2 = document.getElementById('pctxt2');
-    if(t2) t2.textContent = ms.angeles || '';
+    if(ms.color_nombre) PRISMA_DATA.extras[1] =
+      `<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${ms.color||'#c9a84c'};vertical-align:middle;margin-right:4px"></span>${ms.color_nombre}`;
+    if(ms.color) applyColorGlow(ms.color);
   }
 
-  // Carta 3 — Luna
   const luna = r.luna;
   if(luna) {
-    PRISMA_DATA.texts[3] = luna.mensaje || '';
-    if(luna.nombre) PRISMA_DATA.extras[3] = `${luna.fase||'🌙'} ${luna.nombre}`;
-    const t = document.getElementById('pctxt3');
-    if(t) t.textContent = luna.mensaje || '';
-    const e = document.getElementById('pcextra3');
-    if(e && luna.nombre) { e.style.display='block'; e.textContent = PRISMA_DATA.extras[3]; }
+    PRISMA_DATA.texts[3]  = luna.mensaje || '';
+    PRISMA_DATA.extras[3] = `${luna.fase||'🌙'} ${luna.nombre||''}`;
   }
 }
 
+function applyColorGlow(hex) {
+  if(!hex||hex.length<7) return;
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  document.querySelectorAll('.pc img').forEach(img=>{
+    img.style.boxShadow=`0 0 20px rgba(${r},${g},${b},0.3),0 8px 30px rgba(0,0,0,.6)`;
+  });
+  const hint=document.getElementById('prismaHint');
+  if(hint) hint.style.color=`rgba(${r},${g},${b},0.6)`;
+}
 // ── CARGAR PANEL ──
 async function cargarPanel() {
   try {
