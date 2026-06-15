@@ -121,105 +121,181 @@
     /* LIBRO ABIERTO — MODAL */
     .libro-modal-overlay{
       position:fixed;inset:0;z-index:200;
-      background:rgba(4,6,15,.85);backdrop-filter:blur(8px);
+      background:rgba(4,6,15,.88);backdrop-filter:blur(10px);
       display:none;align-items:center;justify-content:center;
-      padding:2rem 1rem;
+      padding:1.5rem 1rem;
     }
     .libro-modal-overlay.open{display:flex}
+
+    /* El libro abierto — dos páginas */
     .libro-modal{
-      background:var(--deep);
-      border:1px solid rgba(201,168,76,.3);
-      border-radius:4px 20px 20px 4px;
-      max-width:600px;width:100%;
-      max-height:85vh;overflow-y:auto;
-      display:flex;position:relative;
-      animation:libroOpen .5s cubic-bezier(.4,0,.2,1) both;
-      box-shadow:0 0 60px rgba(0,0,0,.8),0 0 30px rgba(201,168,76,.1);
+      display:flex;max-width:860px;width:100%;
+      max-height:88vh;
+      position:relative;
+      animation:libroOpen .6s cubic-bezier(.4,0,.2,1) both;
+      box-shadow:0 0 80px rgba(0,0,0,.9),0 0 40px rgba(201,168,76,.08);
+      border-radius:4px 16px 16px 4px;
     }
     @keyframes libroOpen{
-      from{opacity:0;transform:perspective(800px) rotateY(-20deg) scale(.9)}
-      to{opacity:1;transform:perspective(800px) rotateY(0) scale(1)}
+      from{opacity:0;transform:perspective(1200px) rotateY(-25deg) scale(.88)}
+      to{opacity:1;transform:perspective(1200px) rotateY(0) scale(1)}
     }
-    .libro-modal-spine{
-      width:20px;flex-shrink:0;
-      background:linear-gradient(180deg,#3d2060,#1a0a2e,#3d2060);
+
+    /* PÁGINA IZQUIERDA — portada/imagen */
+    .libro-page-left{
+      width:42%;flex-shrink:0;
+      position:relative;overflow:hidden;
       border-radius:4px 0 0 4px;
+      border-right:3px solid #0a0518;
+      box-shadow:inset -8px 0 20px rgba(0,0,0,.5);
     }
-    .libro-modal-content{flex:1;padding:2rem}
-    .libro-modal-close{
-      position:absolute;top:1rem;right:1rem;
-      background:transparent;border:none;
-      color:rgba(201,168,76,.4);font-size:1.2rem;cursor:pointer;
-      transition:color .3s;font-family:'Cinzel',serif;
+    .libro-page-left img{
+      width:100%;height:100%;object-fit:cover;
+      display:block;
     }
-    .libro-modal-close:hover{color:var(--gold)}
-    .libro-modal-img{
-      width:100%;max-height:200px;object-fit:cover;
-      border-radius:8px;margin-bottom:1.2rem;
+    .libro-page-left-overlay{
+      position:absolute;inset:0;
+      background:linear-gradient(to right,transparent 60%,rgba(4,6,15,.7));
+    }
+    .libro-spine-center{
+      width:18px;flex-shrink:0;
+      background:linear-gradient(180deg,#3d2060,#1a0a2e 30%,#2d1650 70%,#1a0a2e);
+      box-shadow:2px 0 12px rgba(0,0,0,.6),-2px 0 12px rgba(0,0,0,.4);
+      position:relative;z-index:2;
+    }
+    .libro-spine-center::after{
+      content:'';position:absolute;top:0;bottom:0;left:50%;
+      width:1px;background:rgba(201,168,76,.15);
+    }
+
+    /* PÁGINA DERECHA — capítulos */
+    .libro-page-right{
+      flex:1;overflow-y:auto;
+      background:linear-gradient(160deg,#07091a 0%,#0b1128 100%);
+      border-radius:0 16px 16px 0;
       border:1px solid rgba(201,168,76,.2);
+      border-left:none;
+      padding:1.8rem 1.6rem 2rem;
     }
+    .libro-modal-close{
+      position:absolute;top:.8rem;right:.8rem;z-index:10;
+      background:rgba(4,6,15,.7);border:1px solid rgba(201,168,76,.2);
+      color:rgba(201,168,76,.5);font-size:.9rem;cursor:pointer;
+      transition:all .3s;font-family:'Cinzel',serif;
+      width:28px;height:28px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .libro-modal-close:hover{color:var(--gold);border-color:rgba(201,168,76,.6)}
     .libro-modal-badge{
-      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;
-      padding:.25rem .8rem;border-radius:100px;
-      background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);
-      color:var(--gold);display:inline-block;margin-bottom:.8rem;
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      padding:.22rem .7rem;border-radius:100px;
+      background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);
+      color:var(--gold);display:inline-block;margin-bottom:.7rem;
     }
     .libro-modal-title{
-      font-family:'Cinzel Decorative',serif;font-size:1.3rem;
-      color:var(--gold-pale);font-weight:400;margin-bottom:.4rem;line-height:1.3;
+      font-family:'Cinzel Decorative',serif;font-size:clamp(1rem,2.5vw,1.4rem);
+      color:var(--gold-pale);font-weight:400;margin-bottom:.3rem;line-height:1.3;
     }
     .libro-modal-sub{
-      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;
-      color:rgba(201,168,76,.4);margin-bottom:1rem;
+      font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.35);margin-bottom:.9rem;
     }
     .libro-modal-desc{
-      font-style:italic;font-size:.95rem;color:#a09070;
-      line-height:1.8;margin-bottom:1.5rem;
+      font-style:italic;font-size:.9rem;color:#a09070;
+      line-height:1.75;margin-bottom:1rem;
     }
     .libro-modal-divider{
-      height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.25),transparent);
-      margin:1rem 0;
+      height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.2),transparent);
+      margin:.9rem 0;
     }
     .libro-modal-chapters-title{
-      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.3em;
-      color:rgba(201,168,76,.4);margin-bottom:.8rem;
+      font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.35);margin-bottom:.7rem;
     }
     .capitulo-row{
-      display:flex;align-items:center;gap:.8rem;
-      padding:.7rem 0;
-      border-bottom:1px solid rgba(201,168,76,.08);
+      display:flex;align-items:center;gap:.6rem;
+      padding:.6rem 0;border-bottom:1px solid rgba(201,168,76,.07);
     }
     .capitulo-row:last-child{border-bottom:none}
     .cap-num{
-      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.15em;
-      color:rgba(201,168,76,.4);width:70px;flex-shrink:0;
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.12em;
+      color:rgba(201,168,76,.35);width:65px;flex-shrink:0;
     }
-    .cap-name{font-style:italic;font-size:.9rem;color:#c4b090;flex:1}
+    .cap-name{font-style:italic;font-size:.88rem;color:#c4b090;flex:1}
     .cap-btn{
-      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.15em;
-      padding:.35rem .9rem;border-radius:100px;text-decoration:none;
-      border:1px solid rgba(201,168,76,.3);color:var(--gold);
+      font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:.12em;
+      padding:.3rem .75rem;border-radius:100px;text-decoration:none;
+      border:1px solid rgba(201,168,76,.25);color:var(--gold);
       background:transparent;transition:all .3s;white-space:nowrap;
-      display:inline-flex;align-items:center;gap:.3rem;
+      display:inline-flex;align-items:center;gap:.25rem;cursor:pointer;
     }
-    .cap-btn:hover{background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.6)}
+    .cap-btn:hover{background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.5)}
     .cap-btn.soon{
-      color:rgba(200,200,220,.3);border-color:rgba(150,150,180,.15);
-      pointer-events:none;
+      color:rgba(200,200,220,.25);border-color:rgba(150,150,180,.12);
+      pointer-events:none;cursor:default;
     }
-    .cap-btn.leer{
-      background:rgba(201,168,76,.05);
-    }
-    .libro-modal-escuchar{
-      margin-top:1.2rem;
-      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;
-      color:rgba(201,168,76,.4);margin-bottom:.6rem;
+    .cap-btn.leer{background:rgba(201,168,76,.05)}
+
+    @media(max-width:600px){
+      .libro-modal{flex-direction:column;max-height:92vh}
+      .libro-page-left{width:100%;height:200px;border-radius:4px 4px 0 0;border-right:none;border-bottom:3px solid #0a0518}
+      .libro-spine-center{width:100%;height:14px}
+      .libro-page-right{border-radius:0 0 16px 16px;border-left:1px solid rgba(201,168,76,.2);border-top:none}
     }
 
-    @media(max-width:500px){
-      .libro-modal{flex-direction:column}
-      .libro-modal-spine{width:100%;height:16px;border-radius:4px 4px 0 0}
+    /* ── LECTOR DE CAPÍTULO ── */
+    .cap-reader{
+      display:none;position:fixed;inset:0;z-index:300;
+      background:rgba(4,6,15,.98);overflow-y:auto;
+      padding:2rem 1rem 4rem;animation:readerIn .4s ease both;
     }
+    @keyframes readerIn{
+      from{opacity:0;transform:translateY(20px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    .cap-reader.open{display:block}
+    .cap-reader-nav{
+      display:flex;align-items:center;justify-content:space-between;
+      max-width:700px;margin:0 auto 2rem;
+      padding-bottom:1rem;border-bottom:1px solid rgba(201,168,76,.15);
+    }
+    .cap-reader-back{
+      font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.5);background:transparent;border:none;cursor:pointer;
+    }
+    .cap-reader-back:hover{color:var(--gold)}
+    .cap-reader-title{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;color:rgba(201,168,76,.35)}
+    .cap-reader-body{max-width:680px;margin:0 auto}
+    .cap-reader-chapter-title{
+      font-family:'Cinzel Decorative',serif;font-size:clamp(1.3rem,3vw,1.8rem);
+      color:var(--gold-pale);font-weight:400;margin-bottom:.3rem;text-align:center;
+    }
+    .cap-reader-chapter-sub{
+      font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.4);text-align:center;margin-bottom:.4rem;
+    }
+    .cap-reader-author{font-style:italic;color:rgba(201,168,76,.4);font-size:.9rem;text-align:center;margin-bottom:1.5rem}
+    .cap-reader-divider{height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.25),transparent);margin:1.2rem 0}
+    .cap-reader-text{font-size:1.05rem;color:#c4b090;line-height:1.9}
+    .cap-reader-text p{margin-bottom:1rem}
+    .cap-reader-text strong{color:var(--gold-pale)}
+    .cap-reader-text em{color:#a09070}
+    .cap-reader-banner{
+      width:100%;max-height:220px;object-fit:cover;border-radius:12px;
+      margin-bottom:1.5rem;border:1px solid rgba(201,168,76,.15);opacity:.8;
+    }
+    .cap-reader-footer{
+      max-width:700px;margin:2.5rem auto 0;padding-top:1.2rem;
+      border-top:1px solid rgba(201,168,76,.1);
+      display:flex;justify-content:space-between;align-items:center;
+    }
+    .cap-reader-spotify{
+      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;
+      padding:.55rem 1.4rem;border-radius:100px;text-decoration:none;
+      border:1px solid rgba(201,168,76,.3);color:var(--gold);
+      background:rgba(201,168,76,.05);transition:all .3s;
+    }
+    .cap-reader-spotify:hover{background:rgba(201,168,76,.12)}
   </style>
 </head>
 <body>
@@ -256,7 +332,7 @@
       <div class="libro">
         <div class="libro-cover">
           <div class="libro-spine"></div>
-          <img src="historias/assets/banner-en-busca.jpeg" alt="En busca de tus ojos verdes"
+          <img src="images/ojosverdes.png" alt="En busca de tus ojos verdes"
             class="libro-cover-img" onerror="this.style.display='none'">
           <div class="libro-cover-img-fallback">💚</div>
           <div class="libro-cover-overlay"></div>
@@ -349,9 +425,33 @@
 <!-- MODAL LIBRO ABIERTO -->
 <div class="libro-modal-overlay" id="modalOverlay" onclick="cerrarLibro(event)">
   <div class="libro-modal" id="libroModal">
-    <div class="libro-modal-spine"></div>
-    <div class="libro-modal-content" id="libroModalContent"></div>
+    <!-- Página izquierda — imagen de portada -->
+    <div class="libro-page-left" id="modalPageLeft">
+      <img id="modalCoverImg" src="" alt="">
+      <div class="libro-page-left-overlay"></div>
+    </div>
+    <!-- Lomo central -->
+    <div class="libro-spine-center"></div>
+    <!-- Página derecha — capítulos -->
+    <div class="libro-page-right" id="libroModalContent"></div>
     <button class="libro-modal-close" onclick="cerrarLibro()">✕</button>
+  </div>
+</div>
+
+
+<!-- LECTOR DE CAPÍTULO -->
+<div class="cap-reader" id="capReader">
+  <div class="cap-reader-nav">
+    <button class="cap-reader-back" onclick="cerrarLector()">← Volver al libro</button>
+    <span class="cap-reader-title" id="readerTitle"></span>
+    <span></span>
+  </div>
+  <div class="cap-reader-body">
+    <div id="readerContent"></div>
+    <div class="cap-reader-footer">
+      <a id="readerSpotify" href="#" target="_blank" class="cap-reader-spotify">🎧 Escuchar en Spotify</a>
+      <span style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;color:rgba(201,168,76,.25)">✦ Bruxa Tarot ✦</span>
+    </div>
   </div>
 </div>
 
@@ -390,16 +490,51 @@
   window.addEventListener('resize',()=>{resize();initStars();});
 })();
 
+
+// ── LECTOR DE CAPÍTULOS ──
+const CAP_CONTENIDO = {};
+CAP_CONTENIDO['ojos-verdes-1'] = {
+  titulo: 'En Busca de Tus Ojos Verdes',
+  sub: 'Capítulo 1 — Las Escaleras',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/ojosverdes.png',
+  spotify: 'https://open.spotify.com/episode/5iNrLn5CXhmn1XgE158KQ6'
+};
+CAP_CONTENIDO['ojos-verdes-1'].texto = '<p>Marta estaba en octavo grado y decidió pasar su recreo sentada en las escaleras de la escuela, admirando unos dibujos que había hecho su amiga. 🎨 Mientras observaba cada detalle, sintió una presencia a su lado. Al levantar la vista, descubrió a un muchacho de último año que se había sentado junto a ella.</p><p><strong>Tony:</strong> <em>(se acerca y se sienta junto a ella)</em> ¿Hiciste esos dibujos?</p><p>Marta, tomada por sorpresa, volteó a verlo y se encontró con unos ojos verdes profundos que la miraban atentamente. 😲💚 Su corazón comenzó a latir más rápido, y con un leve sonrojo, respondió:</p><p><strong>Marta:</strong> <em>(levantando la vista)</em> No, son de mi amiga. <em>(se sonroja)</em></p><p><strong>Tony:</strong> <em>(sonríe intrigado)</em> Son geniales. Soy Tony, por cierto. ¿Cómo te llamas?</p><p><strong>Marta:</strong> <em>(nerviosa)</em> Soy Marta. <em>(se sonroja aún más)</em></p><p><strong>Tony:</strong> <em>(mirándola atentamente)</em> Es un placer conocerte, Marta. Estudio con tu primo José. ¿Por qué están fuera del salón?</p><p><strong>Marta:</strong> <em>(asiente)</em> Faltó la profe de artística.</p><p><strong>Tony:</strong> <em>(con una sonrisa)</em> Me alegro que haya faltado. Es bueno conocer gente nueva.</p><p><strong>Marta:</strong> <em>(sonriendo tímidamente)</em> Sí, supongo que sí.</p><p><strong>Tony:</strong> <em>(levantándose)</em> Bueno, tengo que irme. Nos vemos por aquí, Marta.</p><p><strong>Marta:</strong> <em>(con el corazón acelerado)</em> Sí, nos vemos, Tony.</p><p>Desde ese momento comenzaron a saludarse regularmente, y cada vez que lo hacían, Tony le daba un beso en la mejilla, muy cerca de la comisura de los labios. 😘💓 Marta encontraba excusas para salir del salón, siempre esperando verlo de nuevo.</p><p><strong>Marta:</strong> <em>(en la cafetería con su amiga Daniela)</em> Dani, tengo que contarte algo.</p><p><strong>Daniela:</strong> <em>(curiosa)</em> ¿Qué pasó, Marta?</p><p><strong>Marta:</strong> Conocí a un chico. Se llama Tony, está en último año. Es tan amable y... sus ojos, Dani, son de un verde profundo. Cada vez que nos saludamos, me da un beso en la mejilla, pero casi en los labios. ¡Me pone tan nerviosa!</p><p><strong>Daniela:</strong> <em>(sonriendo)</em> ¡Vaya, Marta! ¿Y qué sientes cuando lo ves?</p><p><strong>Marta:</strong> <em>(suspira)</em> Mi corazón late tan rápido. Me pongo roja y siento que el tiempo se detiene. No puedo dejar de pensar en él. Cada vez que salgo del salón, espero encontrármelo.</p><p><strong>Daniela:</strong> <em>(animada)</em> ¡Entonces tienes que seguirlo viendo y ver qué pasa! Quizás tú también le gustes.</p><p>El año escolar terminó, el verano pasó y Marta no volvió a ver a Tony, pero su imagen permanecía en su mente. 💭🔮 Al comenzar el noveno grado, un día en el laboratorio, Marta encontró un trabajo con el nombre de Tony. Emocionada y con una pizca de nerviosismo, exclamó en broma:</p><p><strong>Marta:</strong> <em>(exclamando en broma)</em> ¡Oh! Un trabajo de mi novio.</p><p><strong>Jazmín:</strong> <em>(sorprendida)</em> ¿Tony? ¡Es mi primo!</p><p><strong>Marta:</strong> <em>(riendo)</em> ¡Hola, prima!</p><p><strong>Jazmín:</strong> <em>(riendo también)</em> ¡No puedo creerlo! Tony viene seguido a casa, te invitaré a la próxima reunión.</p><p><strong>Marta:</strong> <em>(emocionada)</em> ¡Gracias, Jazmín!</p><p><strong>Jazmín:</strong> <em>(entusiasta)</em> Así que empecemos la "Operación Encuentro Casual". Siempre va a las reuniones familiares. Estoy segura de que podré arreglar algo.</p>';
+
+function abrirLector(capId, spotify) {
+  const cap = CAP_CONTENIDO[capId];
+  if(!cap) return;
+  document.getElementById('readerTitle').textContent = cap.sub;
+  document.getElementById('readerSpotify').href = spotify || cap.spotify;
+  document.getElementById('readerContent').innerHTML =
+    '<img src="' + cap.img + '" alt="' + cap.titulo + '" class="cap-reader-banner" onerror="this.style.display=\'none\'">' +
+    '<h2 class="cap-reader-chapter-title">' + cap.titulo + '</h2>' +
+    '<p class="cap-reader-chapter-sub">' + cap.sub + '</p>' +
+    '<p class="cap-reader-author">' + cap.autor + '</p>' +
+    '<div class="cap-reader-divider"></div>' +
+    '<div class="cap-reader-text">' + cap.texto + '</div>';
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.getElementById('capReader').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  window.scrollTo(0,0);
+}
+
+function cerrarLector() {
+  document.getElementById('capReader').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 // ── DATOS DE LIBROS ──
 const LIBROS = {
   'ojos-verdes': {
     titulo: 'En Busca de Tus Ojos Verdes',
-    img: 'historias/assets/banner-en-busca.jpeg',
+    img: 'images/ojosverdes.png',
     fallback: '💚',
     badge: '✦ Disponible · 5 capítulos',
     desc: 'Embárcate en una dulce travesía de adolescencia, sueños y primeras emociones intensas. Una historia sobre ese primer amor que te desarma sin avisar, donde una mirada basta para cambiarlo todo. Narrada por Bruxa Tarot.',
     capitulos: [
-      { num:'Capítulo 1', nombre:'El llamado', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-1.html', escuchar:'https://open.spotify.com/episode/5iNrLn5CXhmn1XgE158KQ6' },
+      { num:'Capítulo 1', nombre:'Las Escaleras', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-1.html', escuchar:'https://open.spotify.com/episode/5iNrLn5CXhmn1XgE158KQ6' },
       { num:'Capítulo 2', nombre:'La mirada', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-2.html', escuchar:'https://open.spotify.com/episode/5KRLfbXXkSWhZwgMvrmaHB' },
       { num:'Capítulo 3', nombre:'Mariposas', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-3.html', escuchar:'https://open.spotify.com/episode/0z2rWBxoEt6ScxOD9jk53i' },
       { num:'Capítulo 4', nombre:'La promesa', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-4.html', escuchar:'https://open.spotify.com/episode/4DOgksBjqmiokZGsGslztn' },
@@ -432,10 +567,12 @@ function abrirLibro(id) {
         <span class="cap-num">${c.num}</span>
         <span class="cap-name">${c.nombre || ''}</span>
         <div style="display:flex;gap:.4rem;flex-shrink:0">
-          ${c.leer
-            ? `<a href="${c.leer}" class="cap-btn leer">📖 Leer</a>`
-            : `<span class="cap-btn soon">Próximamente</span>`
-          }
+          ${(()=>{
+            if(!c.leer) return '<span class="cap-btn soon">Próximamente</span>';
+            const inlineKey = id==='ojos-verdes' && i===0 ? 'ojos-verdes-1' : null;
+            if(inlineKey) return '<button class="cap-btn leer" onclick="abrirLector(\'' + inlineKey + '\',\'' + c.escuchar + '\')">📖 Leer aquí</button>';
+            return '<a href="' + c.leer + '" class="cap-btn leer">📖 Leer</a>';
+          })()}
           ${c.escuchar
             ? `<a href="${c.escuchar}" target="_blank" class="cap-btn">🎧 Escuchar</a>`
             : ''
@@ -444,9 +581,11 @@ function abrirLibro(id) {
       </div>`;
   }).join('');
 
+  // Set left page cover image
+  const coverImg = document.getElementById('modalCoverImg');
+  if(coverImg) { coverImg.src = libro.img; coverImg.alt = libro.titulo; }
+
   document.getElementById('libroModalContent').innerHTML = `
-    <img src="${libro.img}" alt="${libro.titulo}" class="libro-modal-img"
-      onerror="this.style.display='none'">
     <span class="libro-modal-badge">${libro.badge}</span>
     <h2 class="libro-modal-title">${libro.titulo}</h2>
     <div class="libro-modal-divider"></div>
