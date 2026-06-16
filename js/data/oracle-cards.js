@@ -1,13 +1,3 @@
-// =====================================================
-// BRUXA TAROT - ORÁCULO PRISMA DEL ALMA
-// English Translations - 31 Cards Complete
-// =====================================================
-// Structure:
-// - upright / reversed → General message (Card of the Day)
-// - themes.amor        → Specific message for Love spreads
-// - themes.trabajo     → Specific message for Work spreads
-// =====================================================
-
 const ORACLE_CARDS = {
 
   en: [
@@ -911,3 +901,4 @@ function getCardMessage(card, context = 'general', isReversed = false) {
 }
 
 console.log('%c[Bruxa Tarot] Oracle Cards EN loaded successfully (31 cards)', 'color:#7c3aed');
+
