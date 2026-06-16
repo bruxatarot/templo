@@ -6,6 +6,7 @@
   <title>Oráculo Prisma • Tiradas • Bruxa Tarot</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <script src="lang.js"></script>
+  <script src="js/data/oracle-cards.js"></script>
   <style>
     :root{--gold:#c9a84c;--gold-light:#e8c97a;--gold-pale:#f5e6b8;--deep:#04060f;--midnight:#0b1128;}
     *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
@@ -833,16 +834,26 @@ const TEMATICOS = {
 
 // Obtener mensaje temático si existe
 function getMensajeTematico(carta, tema, isReversed) {
+  const lang = (typeof LangEngine !== 'undefined') ? LangEngine.current : 'es';
+
+  // Non-ES: use ORACLE_CARDS translations
+  if (lang !== 'es' && typeof ORACLE_CARDS !== 'undefined' && ORACLE_CARDS[lang]) {
+    const oc = ORACLE_CARDS[lang][carta.num - 1];
+    if (oc) {
+      if (tema === 'amor' && oc.themes?.amor)
+        return isReversed ? oc.themes.amor.reversed : oc.themes.amor.upright;
+      if (tema === 'trabajo' && oc.themes?.trabajo)
+        return isReversed ? oc.themes.trabajo.reversed : oc.themes.trabajo.upright;
+      return isReversed ? oc.reversed.message : oc.upright.message;
+    }
+  }
+
+  // Spanish: use TEMATICOS pool (4 random versions)
   const t = TEMATICOS[carta.num];
   if (!t) return null;
-  
   let pool;
-  if (tema === 'amor') {
-    pool = isReversed ? t.amor_s : t.amor_d;
-  } else if (tema === 'trabajo') {
-    pool = isReversed ? t.trab_s : t.trab_d;
-  }
-  
+  if (tema === 'amor') pool = isReversed ? t.amor_s : t.amor_d;
+  else if (tema === 'trabajo') pool = isReversed ? t.trab_s : t.trab_d;
   if (!pool || pool.length === 0) return null;
   return pool[Math.floor(Math.random() * pool.length)];
 }
@@ -861,9 +872,10 @@ function revelarCarta(i) {
   reveladas++;
 
   setTimeout(() => {
+    const _lbl = (typeof LangEngine !== 'undefined') ? LangEngine : { t: k => k };
     const badge = c.isReversed
-      ? `<span class="reversed-badge">🌑 Invertida — Sombra</span>`
-      : `<span class="upright-badge">☀️ Derecha — Luz</span>`;
+      ? `<span class="reversed-badge">🌑 ${_lbl.t('card_reversed')}</span>`
+      : `<span class="upright-badge">☀️ ${_lbl.t('card_upright')}</span>`;
     document.getElementById(`tmsgnposicion${i}`).innerHTML = badge;
     document.getElementById(`tmsgname${i}`).textContent = c.name;
 
