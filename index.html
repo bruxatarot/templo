@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <script src="lang.js"></script>
+  <script src="js/data/oracle-cards.js"></script>
   <style>
     :root { --gold:#c9a84c;--gold-light:#e8c97a;--gold-pale:#f5e6b8;--deep:#04060f;--navy:#070c1a;--midnight:#0b1128; }
     *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
@@ -294,7 +295,7 @@
     #floatOnline{
       position:fixed;left:0;top:50%;transform:translateY(-50%);
       z-index:150;
-      transition:transform .4s cubic-bezier(.4,0,.2,1), opacity .4s;
+      transition:opacity .4s;
       opacity:0;pointer-events:none;
     }
     #floatOnline.visible{
@@ -310,7 +311,7 @@
       backdrop-filter:blur(8px);
       box-shadow:4px 0 24px rgba(120,80,220,.2), inset 0 0 20px rgba(120,80,220,.05);
       cursor:default;
-      transition:padding .3s, box-shadow .3s;
+      transition:box-shadow .3s;
     }
     #floatOnline.visible:hover #floatOnlineInner{
       box-shadow:4px 0 40px rgba(120,80,220,.4), inset 0 0 20px rgba(120,80,220,.1);
@@ -335,10 +336,24 @@
       margin-top:.25rem;
       white-space:nowrap;
     }
-    @media(max-width:480px){
-      #floatOnlineInner{ padding:.5rem .8rem .5rem .7rem; }
-      #floatNum{ font-size:.9rem; }
-      #floatLabel{ font-size:.4rem; }
+
+    /* MÓVIL — barra inferior centrada */
+    @media(max-width:768px){
+      #floatOnline{
+        left:50%;top:auto;bottom:1rem;
+        transform:translateX(-50%);
+      }
+      #floatOnline.visible{
+        opacity:1;
+      }
+      #floatOnlineInner{
+        border-left:1px solid rgba(120,80,220,.35);
+        border-radius:50px;
+        padding:.55rem 1.2rem;
+        box-shadow:0 4px 24px rgba(120,80,220,.3), inset 0 0 20px rgba(120,80,220,.05);
+      }
+      #floatNum{ font-size:.95rem; }
+      #floatLabel{ font-size:.42rem; }
     }
 
     /* ── SIDEBAR ── */
@@ -1025,9 +1040,11 @@
     const sub=tr?tr.subtitle:c.subtitle;
     const catLbl=LangEngine.getCatLabel(c.cat)||c.catLabel;
 
-    // Use sombra message if reversed, luz message if upright
+    // Use oracle-cards.js for reversed message in non-ES languages
+    const _lang=LangEngine.current;
+    const _oc=(typeof ORACLE_CARDS!=='undefined'&&ORACLE_CARDS[_lang])?ORACLE_CARDS[_lang][c.num-1]:null;
     const msg = isReversed
-      ? (c.sombra || c.message)
+      ? (_oc?_oc.reversed.message:(c.sombra||c.message))
       : (tr?tr.message:c.message);
     const kws=tr?tr.keywords:c.keywords;
 
@@ -1039,8 +1056,8 @@
 
       // Show upright/reversed badge
       const posLabel = isReversed
-        ? `<span class="reversed-badge">🌑 Carta Invertida — Sombra</span>`
-        : `<span class="upright-badge">☀️ Carta Derecha — Luz</span>`;
+        ? `<span class="reversed-badge">🌑 ${LangEngine.t('card_reversed_index')}</span>`
+        : `<span class="upright-badge">☀️ ${LangEngine.t('card_upright_index')}</span>`;
       document.getElementById('posicionBadge').innerHTML = posLabel;
 
       document.getElementById('cartaReadingTitle').textContent=`✦ ${c.name.toUpperCase()} ✦`;
@@ -1531,6 +1548,19 @@ function iniciarMapaInline(almas) {
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19
   }).addTo(map);
+
+  // Cuando el contenedor .reveal se hace visible, recalcular tamaño del mapa
+  const revealParent = container.closest('.reveal');
+  if(revealParent) {
+    new MutationObserver((mutations, obs) => {
+      if(revealParent.classList.contains('visible')) {
+        setTimeout(() => map.invalidateSize(), 50);
+        obs.disconnect();
+      }
+    }).observe(revealParent, { attributes: true, attributeFilter: ['class'] });
+  }
+  // También invalidar después de un momento por si ya era visible
+  setTimeout(() => map.invalidateSize(), 300);
 
   const mIcon = L.divIcon({
     html: '<span style="font-size:1.3rem;line-height:1;filter:drop-shadow(0 0 4px rgba(201,168,76,.8))">🦋</span>',
