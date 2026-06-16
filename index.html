@@ -839,6 +839,22 @@
     </div>
   </section>
 
+  <!-- CONTADORES FIREBASE -->
+  <div id="firebaseContadores" style="position:relative;z-index:1;text-align:center;padding:2.5rem 2rem 0;display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem">
+    <div style="display:inline-flex;align-items:center;gap:.7rem;padding:.8rem 2rem;border-radius:100px;border:1px solid rgba(201,168,76,.2);background:rgba(11,17,40,.6);backdrop-filter:blur(4px)">
+      <span style="font-size:1.1rem">🌟</span>
+      <span style="font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.2em;color:rgba(201,168,76,.7)">
+        <span id="fbVisitas" style="color:var(--gold-light);font-size:.85rem">...</span> almas brillantes han visitado el Templo
+      </span>
+    </div>
+    <div style="display:inline-flex;align-items:center;gap:.7rem;padding:.8rem 2rem;border-radius:100px;border:1px solid rgba(120,80,220,.25);background:rgba(11,17,40,.6);backdrop-filter:blur(4px)">
+      <span style="font-size:1.1rem;animation:mbreath 2s ease-in-out infinite">🦋</span>
+      <span style="font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.2em;color:rgba(180,150,220,.7)">
+        <span id="fbOnline" style="color:#c8a8f0;font-size:.85rem">...</span> almas perdidas actualmente en el Templo
+      </span>
+    </div>
+  </div>
+
   <!-- ENJAMBRE DE MARIPOSAS -->
   <div id="mariposasBar" style="position:relative;z-index:1;text-align:center;padding:3rem 2rem 0">
     <span class="contador-almas-text">✦ <span class="contador-num" id="numAlmas">...</span> almas han cruzado este portal ✦</span>
@@ -1539,6 +1555,71 @@ function closeSidebar(){
   document.body.style.overflow='';
 }
 
+// ── FIREBASE PRESENCIA Y VISITAS ──
+const FB_URL = 'https://diario-del-alma-default-rtdb.firebaseio.com';
+const FB_SID = 'sid_' + Math.random().toString(36).slice(2) + Date.now();
+let fbHeartbeatTimer = null;
+
+async function fbGet(path) {
+  try {
+    const r = await fetch(FB_URL + path + '.json');
+    return r.ok ? await r.json() : null;
+  } catch(e) { return null; }
+}
+async function fbPut(path, data) {
+  try {
+    await fetch(FB_URL + path + '.json', {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+  } catch(e) {}
+}
+async function fbDelete(path) {
+  try {
+    await fetch(FB_URL + path + '.json', { method: 'DELETE' });
+  } catch(e) {}
+}
+
+async function fbRegistrarVisita() {
+  // Incrementar visitas totales
+  const actual = await fbGet('/templo/visitas');
+  const nuevas = (actual || 0) + 1;
+  await fbPut('/templo/visitas', nuevas);
+  document.getElementById('fbVisitas').textContent = nuevas.toLocaleString('es-MX');
+}
+
+async function fbRegistrarPresencia() {
+  const ahora = Date.now();
+  await fbPut('/templo/presencia/' + FB_SID, { t: ahora });
+
+  // Heartbeat cada 30s para mantener presencia activa
+  fbHeartbeatTimer = setInterval(async () => {
+    await fbPut('/templo/presencia/' + FB_SID, { t: Date.now() });
+    fbActualizarOnline();
+  }, 30000);
+
+  fbActualizarOnline();
+}
+
+async function fbActualizarOnline() {
+  const presencia = await fbGet('/templo/presencia');
+  if(!presencia) { document.getElementById('fbOnline').textContent = '1'; return; }
+  const limite = Date.now() - 90000; // activo en los últimos 90s
+  const activos = Object.values(presencia).filter(v => v && v.t > limite).length;
+  document.getElementById('fbOnline').textContent = Math.max(1, activos).toLocaleString('es-MX');
+
+  // Limpiar sesiones caducadas (solo la propia para no saturar)
+  Object.entries(presencia).forEach(([sid, v]) => {
+    if(v && v.t < Date.now() - 300000) fbDelete('/templo/presencia/' + sid);
+  });
+}
+
+function fbSalida() {
+  fbDelete('/templo/presencia/' + FB_SID);
+  if(fbHeartbeatTimer) clearInterval(fbHeartbeatTimer);
+}
+
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', function() {
   // Sidebar
@@ -1555,7 +1636,13 @@ document.addEventListener('DOMContentLoaded', function() {
   // 2. Load data
   cargarLibroYContador();
   cargarPanel();
+  // 3. Firebase contadores
+  fbRegistrarVisita();
+  fbRegistrarPresencia();
 });
+
+window.addEventListener('beforeunload', fbSalida);
+window.addEventListener('pagehide', fbSalida);
 </script>
 
 
