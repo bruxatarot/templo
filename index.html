@@ -290,6 +290,57 @@
       to{opacity:.85;transform:scale(1) translateY(0)}
     }
 
+    /* ── FLOTANTE ALMAS EN LÍNEA ── */
+    #floatOnline{
+      position:fixed;left:0;top:50%;transform:translateY(-50%);
+      z-index:150;
+      transition:transform .4s cubic-bezier(.4,0,.2,1), opacity .4s;
+      opacity:0;pointer-events:none;
+    }
+    #floatOnline.visible{
+      opacity:1;pointer-events:auto;
+    }
+    #floatOnlineInner{
+      display:flex;align-items:center;gap:.6rem;
+      padding:.7rem 1.1rem .7rem .9rem;
+      background:rgba(8,6,28,.85);
+      border:1px solid rgba(120,80,220,.35);
+      border-left:none;
+      border-radius:0 50px 50px 0;
+      backdrop-filter:blur(8px);
+      box-shadow:4px 0 24px rgba(120,80,220,.2), inset 0 0 20px rgba(120,80,220,.05);
+      cursor:default;
+      transition:padding .3s, box-shadow .3s;
+    }
+    #floatOnline.visible:hover #floatOnlineInner{
+      box-shadow:4px 0 40px rgba(120,80,220,.4), inset 0 0 20px rgba(120,80,220,.1);
+    }
+    #floatButterfly{
+      font-size:1.4rem;
+      animation:mwiggle 3s ease-in-out infinite, mbreath 2s ease-in-out infinite;
+      display:block;
+    }
+    #floatNum{
+      font-family:'Cinzel Decorative',serif;
+      font-size:1.1rem;
+      color:#c8a8f0;
+      line-height:1;
+      letter-spacing:.05em;
+    }
+    #floatLabel{
+      font-family:'Cinzel',serif;
+      font-size:.48rem;
+      letter-spacing:.18em;
+      color:rgba(180,150,220,.6);
+      margin-top:.25rem;
+      white-space:nowrap;
+    }
+    @media(max-width:480px){
+      #floatOnlineInner{ padding:.5rem .8rem .5rem .7rem; }
+      #floatNum{ font-size:.9rem; }
+      #floatLabel{ font-size:.4rem; }
+    }
+
     /* ── SIDEBAR ── */
     .sidebar-trigger{
       display:flex;align-items:center;gap:.5rem;
@@ -847,11 +898,16 @@
         <span id="fbVisitas" style="color:var(--gold-light);font-size:.85rem">...</span> almas brillantes han visitado el Templo
       </span>
     </div>
-    <div style="display:inline-flex;align-items:center;gap:.7rem;padding:.8rem 2rem;border-radius:100px;border:1px solid rgba(120,80,220,.25);background:rgba(11,17,40,.6);backdrop-filter:blur(4px)">
-      <span style="font-size:1.1rem;animation:mbreath 2s ease-in-out infinite">🦋</span>
-      <span style="font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.2em;color:rgba(180,150,220,.7)">
-        <span id="fbOnline" style="color:#c8a8f0;font-size:.85rem">...</span> almas perdidas actualmente en el Templo
-      </span>
+  </div>
+
+  <!-- FLOTANTE ALMAS EN LÍNEA -->
+  <div id="floatOnline">
+    <div id="floatOnlineInner">
+      <span id="floatButterfly">🦋</span>
+      <div>
+        <div id="floatNum">...</div>
+        <div id="floatLabel">almas en el Templo</div>
+      </div>
     </div>
   </div>
 
@@ -1604,16 +1660,31 @@ async function fbRegistrarPresencia() {
 
 async function fbActualizarOnline() {
   const presencia = await fbGet('/templo/presencia');
-  if(!presencia) { document.getElementById('fbOnline').textContent = '1'; return; }
-  const limite = Date.now() - 90000; // activo en los últimos 90s
-  const activos = Object.values(presencia).filter(v => v && v.t > limite).length;
-  document.getElementById('fbOnline').textContent = Math.max(1, activos).toLocaleString('es-MX');
+  const limite = Date.now() - 90000;
+  const activos = presencia
+    ? Math.max(1, Object.values(presencia).filter(v => v && v.t > limite).length)
+    : 1;
+  const txt = activos.toLocaleString('es-MX');
 
-  // Limpiar sesiones caducadas (solo la propia para no saturar)
-  Object.entries(presencia).forEach(([sid, v]) => {
+  // Actualizar flotante
+  const fn = document.getElementById('floatNum');
+  if(fn) fn.textContent = txt;
+
+  // Limpiar sesiones caducadas
+  if(presencia) Object.entries(presencia).forEach(([sid, v]) => {
     if(v && v.t < Date.now() - 300000) fbDelete('/templo/presencia/' + sid);
   });
 }
+
+// Mostrar flotante tras primer scroll
+let floatShown = false;
+window.addEventListener('scroll', function() {
+  if(!floatShown && window.scrollY > 120) {
+    floatShown = true;
+    const fl = document.getElementById('floatOnline');
+    if(fl) fl.classList.add('visible');
+  }
+}, { passive: true });
 
 function fbSalida() {
   fbDelete('/templo/presencia/' + FB_SID);
