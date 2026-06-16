@@ -1,913 +1,1745 @@
-// =====================================================
-// BRUXA TAROT - ORÁCULO PRISMA DEL ALMA
-// English Translations - 31 Cards Complete
-// =====================================================
-// Structure:
-// - upright / reversed → General message (Card of the Day)
-// - themes.amor        → Specific message for Love spreads
-// - themes.trabajo     → Specific message for Work spreads
-// =====================================================
-
-const ORACLE_CARDS = {
-
-  en: [
-    {
-      id: 1,
-      name: "Bruxa Tarot",
-      subtitle: "Prism Channeler",
-      category: "essences",
-      keywords: ["Inspiration", "Rebirth", "Clarity", "Transformation"],
-
-      upright: {
-        message: "It is time to reclaim your personal magic. You have the power to change your gaze and choose another frequency. This card is a gentle but firm call to recover your sense of wonder.",
-        whenAppears: "Bruxa Tarot appears when it is time to see life through new eyes. You have the power to change your perspective and choose another frequency. What areas of your life have become gray?",
-        ritual: "Take something old, forgotten or 'gray' and transform it with color, flowers, light or intention. Make it beautiful again."
-      },
-      reversed: {
-        message: "In shadow: you disconnect from the concrete and live too much in potentials. The prism of possibilities can become a labyrinth. Today ask yourself: are you creating or evading?",
-        whenAppears: "When this card appears reversed, the creative mind disconnects from the concrete. You are living in potentials without materializing them.",
-        ritual: "Choose an area of your life that feels dull and commit to giving it color or concrete form this week."
-      },
-      themes: {
-        amor: {
-          upright: "You are dimming your creative and emotional brightness as a survival strategy. The wound of not being enough has led you to believe that your intensity scares love away. This card invites you to dismantle that belief and allow your magic to be visible.",
-          reversed: "Your main shadow in love is the fear of being abandoned for being 'too much'. This belief has led you to develop creative hyper-independence as a form of protection. You are using your magic as a shield."
-        },
-        trabajo: {
-          upright: "You are dimming your creativity and professional power out of fear of not being enough. This card reminds you that your magic does not run out; it renews when you stop controlling it.",
-          reversed: "Your main shadow at work is the fear of being seen as too intense or demanding. This belief is leading you to minimize your contribution and not charge what you are really worth."
-        }
-      }
-    },
-    {
-      id: 2,
-      name: "Nabi",
-      subtitle: "Spirit Hunter",
-      category: "essences",
-      keywords: ["Energetic Protection", "Sharp Intuition", "Observation", "Spiritual Alertness"],
-
-      upright: {
-        message: "Something invisible needs to be seen. Your intuition will be your greatest ally. Observe, discern and act with stealth, but with firmness.",
-        whenAppears: "When Nabi appears, something subtle but important needs attention. It could be an energy that does not belong, a trapped emotion or a hidden intention.",
-        ritual: "Clean an important space for you with natural light, bells or rose water. Place a butterfly as guardian of the portal."
-      },
-      reversed: {
-        message: "In shadow: hypervigilance turns into anxiety and suspicion. You see danger where there is none. Today breathe — not everything you perceive is a real threat.",
-        whenAppears: "When Nabi appears reversed, you are ignoring important signals or generating spiritual paranoia.",
-        ritual: "Do a gentle energetic cleansing and then sit in silence for 10 minutes without analyzing anything."
-      },
-      themes: {
-        amor: {
-          upright: "Your fears in love are not irrational, but many of them belong to the past and not to the current relationship. Nabi invites you to distinguish between real threat and nervous system activation from old wounds.",
-          reversed: "Your emotional hypervigilance has become a defense mechanism that sabotages connections before they can prove they are safe. You are creating enemies where there are only imperfect people."
-        },
-        trabajo: {
-          upright: "Your professional fears are activating your nervous system disproportionately. Nabi invites you to distinguish between real threat and old wound.",
-          reversed: "You are creating problems where there are none as a way to feel you have control. This tendency toward professional drama keeps you in unnecessary stress."
-        }
-      }
-    },
-    {
-      id: 3,
-      name: "Marta",
-      subtitle: "Goddess of Healing",
-      category: "essences",
-      keywords: ["Healing", "Patience", "Cultivated Love", "Cycles"],
-
-      upright: {
-        message: "Healing does not mean avoiding pain, but going through it with courage. Marta invites you to trust that every tear shed waters your path toward a stronger version of yourself.",
-        whenAppears: "You are in a process of healing or emotional growth. Do not pressure yourself to move fast. Take care of yourself as you would care for a delicate plant.",
-        ritual: "Write a letter to your 'future self' telling them what you are healing now. Keep it where you keep your treasures."
-      },
-      reversed: {
-        message: "In shadow: patience turns into stagnation. You cling to hope even when there are no longer any signs. Are you waiting or simply avoiding moving forward?",
-        whenAppears: "When Marta appears reversed, healing stagnates. You are denying the pain or waiting for time to solve everything without doing anything.",
-        ritual: "Acknowledge a wound you have been avoiding feeling. Sit with it for 10 minutes without trying to 'fix' it."
-      },
-      themes: {
-        amor: {
-          upright: "You are in a healing process where pain can no longer be avoided or denied. Marta accompanies you to understand that your ability to feel deeply is not a weakness, but the door to a more mature love.",
-          reversed: "You are using the role of the one who always heals or the strong one as a way to avoid feeling your own pain. This identification with resilience is preventing you from processing what really hurts you."
-        },
-        trabajo: {
-          upright: "You are in a professional healing process where exhaustion and burnout can no longer be ignored. Marta accompanies you to recognize that your way of working needs to change.",
-          reversed: "You are using the role of the one who always resists and endures as a way to avoid feeling your own exhaustion. This identification with resilience is making you sick."
-        }
-      }
-    },
-    {
-      id: 4,
-      name: "Jade",
-      subtitle: "Goddess of Karma",
-      category: "essences",
-      keywords: ["Balance", "Energetic Justice", "Emotional Harvest", "Responsibility"],
-
-      upright: {
-        message: "Jade appears when the universe is making adjustments. Everything you sowed begins to bear fruit. This card invites you to forgive yourself and release what no longer belongs to you.",
-        whenAppears: "A situation is reaching its point of balance. A truth will come to light, a cycle closes, an energy is released.",
-        ritual: "Make a list of your 'harvests'. What are you receiving now that you sowed before? What would you like to sow today for your future?"
-      },
-      reversed: {
-        message: "In shadow: the need for balance turns into rigidity and excessive judgment. The weight of justice can become condemnation. Release the verdict.",
-        whenAppears: "When Jade appears reversed, balance has been lost. You may be repeating a pattern you didn't want to see or carrying karma that isn't yours.",
-        ritual: "Write down what patterns are repeating and what responsibility you have in them. Burn the paper as an act of release."
-      },
-      themes: {
-        amor: {
-          upright: "You are facing a karmic mirror in your relationships. What you are receiving is largely a reflection of the patterns you have repeated. Jade invites you to look honestly.",
-          reversed: "You are repeating patterns where you give more than you receive and then feel like a victim. Jade confronts you with your share of responsibility in these imbalances."
-        },
-        trabajo: {
-          upright: "You are facing a karmic mirror in your career. What you are receiving is a reflection of the patterns you have repeated professionally. Jade invites you to look honestly.",
-          reversed: "Your most repeated pattern is giving much more than you charge and then resenting it. Jade confronts you with your difficulty in setting boundaries and charging what you are worth."
-        }
-      }
-    },
-    {
-      id: 5,
-      name: "Elena",
-      subtitle: "Goddess of the Path",
-      category: "essences",
-      keywords: ["Intuition", "Inner Guidance", "Emotional Clarity", "Spiritual Calling"],
-
-      upright: {
-        message: "The path is already traced within you. Even if you don't see the whole map, you have enough clarity for the next step. Trust your intuition. You are not alone.",
-        whenAppears: "Elena appears when you are lost or about to give up. Her energy does not impose, it simply appears as a soft, constant light.",
-        ritual: "Take a slow, conscious walk in silence. Ask yourself mentally: 'What is the next step I need to take?' Allow your body and intuition to respond."
-      },
-      reversed: {
-        message: "In shadow: the inner compass is silenced by excessive doubt. You do not trust what you already know. Today stop the external noise and listen to what you carry inside.",
-        whenAppears: "When Elena appears reversed, you are ignoring your intuition or seeking answers outside yourself.",
-        ritual: "Turn off all distractions for 15 minutes and write what your inner self already knows but you don't want to admit."
-      },
-      themes: {
-        amor: {
-          upright: "There is an important decision in love that your heart already knows, even if your mind continues to doubt. Elena invites you to trust that inner voice that already knows the way.",
-          reversed: "You are choosing from the fear of change or abandonment rather than from what you really desire. This position keeps you in situations that no longer nourish you."
-        },
-        trabajo: {
-          upright: "There is an important professional decision that your inner self already knows, but your fear of change continues to delay. Elena invites you to align your action with what you already perceive.",
-          reversed: "You are choosing from the fear of failure or professional abandonment rather than from what you really desire. This position keeps you in jobs that no longer represent you."
-        }
-      }
-    },
-    {
-      id: 6,
-      name: "Mia",
-      subtitle: "Goddess of Self-Love",
-      category: "essences",
-      keywords: ["Self-affirmation", "Dignity", "Emotional Liberation", "Self-worth"],
-
-      upright: {
-        message: "Mia arrives when it is time to remember who you are and what you are worth. Love begins with you. Do not be afraid to walk away from what does not value you.",
-        whenAppears: "You are reclaiming your personal power. You are closing an emotional cycle or learning to set boundaries.",
-        ritual: "Write on a sheet everything you deserve. Read it out loud as a declaration. Then burn it or keep it as an amulet."
-      },
-      reversed: {
-        message: "In shadow: self-protection turns into premature closure. Your dignity can turn into distance. Are you protecting yourself... or pushing away what is actually good for you?",
-        whenAppears: "When Mia appears reversed, you may be giving more than you receive or accepting less than you deserve.",
-        ritual: "Review a relationship or situation where you are tolerating less than you deserve. Write what boundary you need to set."
-      },
-      themes: {
-        amor: {
-          upright: "It is time to release what no longer nourishes you in love. Mia reminds you that giving too much of yourself expecting something in return is only emptying you.",
-          reversed: "You are neglecting your own worth by allowing dynamics where you give much more than you receive. This position invites you to review if you are repeating the pattern of giving in order to be loved."
-        },
-        trabajo: {
-          upright: "You are giving too much of yourself at work expecting recognition that does not come. Mia reminds you that your worth is not negotiable.",
-          reversed: "You are neglecting your own professional worth by allowing dynamics of exploitation or giving much more than you receive."
-        }
-      }
-    },
-    {
-      id: 7,
-      name: "Tony",
-      subtitle: "God of Time",
-      category: "essences",
-      keywords: ["Urgency", "Action", "Decision", "Imminent Change"],
-
-      upright: {
-        message: "Tony appears when time is now. There is no more room for 'later'. What you do not choose today, time chooses for you.",
-        whenAppears: "You are at a key moment. Something needs to be decided, initiated or left behind. You have been going in circles for a while.",
-        ritual: "Write down what is holding you back and what you know you need to release or decide. Set a timer and take the first step when it ends."
-      },
-      reversed: {
-        message: "In shadow: urgency turns into anxiety about the future. The fear that time is running out paralyzes you. Today breathe — not everything needs to be resolved now.",
-        whenAppears: "When Tony appears reversed, you are trapped in procrastination or letting time make decisions for you.",
-        ritual: "Choose one thing you have been postponing and commit to doing it in the next 24 hours, even if it is small."
-      },
-      themes: {
-        amor: {
-          upright: "You have been postponing important decisions in love. Tony reminds you that every day you let pass without acting is time you will not recover.",
-          reversed: "You are trapped in patterns where you continue investing in relationships you already know have no future. This position confronts you with the fear of letting go of the known."
-        },
-        trabajo: {
-          upright: "You have been postponing important decisions in your career. Tony reminds you that the time you lose postponing is not recovered.",
-          reversed: "You are trapped in the pattern of 'I'll start tomorrow'. This chronic procrastination usually hides fear of failure or of succeeding."
-        }
-      }
-    },
-    {
-      id: 8,
-      name: "Dante",
-      subtitle: "God of Fire and Resurrection",
-      category: "essences",
-      keywords: ["Deep Desire", "Rebirth", "Passion", "Emotional Courage"],
-
-      upright: {
-        message: "Dante appears when desire is so strong that it cannot be ignored. It is the fire that burns what no longer serves to be reborn. Dare to feel without censorship.",
-        whenAppears: "Something is awakening in you. It may be a dormant passion, an intense connection or a desire you had repressed out of fear.",
-        ritual: "Write a letter to that desire that never dies. It can be a person, a version of yourself, a dream. Burn it in a safe fire."
-      },
-      reversed: {
-        message: "In shadow: intensity turns into addiction to emotional drama. You seek fire even if it destroys. Is what you feel passion... or chaos in disguise?",
-        whenAppears: "When Dante appears reversed, the fire may be out of control or completely extinguished.",
-        ritual: "Identify whether you are seeking intensity out of addiction or if there is truly an authentic desire. Write the difference."
-      },
-      themes: {
-        amor: {
-          upright: "You are facing a difficult moment in love, but you have within you the strength necessary to overcome it. Dante reminds you that your scars are also medals of courage.",
-          reversed: "You are allowing love defeats to define you. Dante confronts you with the need to stop identifying with pain."
-        },
-        trabajo: {
-          upright: "You are going through a difficult professional moment. Dante reminds you that you have within you the strength to transform it.",
-          reversed: "You are allowing professional rejections or failures to define you. Dante confronts you with the need to stop identifying with what you have not yet achieved."
-        }
-      }
-    },
-    {
-      id: 9,
-      name: "The Clear Voice",
-      subtitle: "Inner Return",
-      category: "essences",
-      keywords: ["Reconnection", "Inner Truth", "Intuition", "Expression"],
-
-      upright: {
-        message: "The Clear Voice is the moment when the soul says: no more running away. You are ready to return to yourself. It is time to take the microphone of your own life.",
-        whenAppears: "You have been minimizing what you feel or giving away your power in the name of peace. It is time to express yourself.",
-        ritual: "Write what you need to say but have not dared to. Read it out loud even if no one hears you."
-      },
-      reversed: {
-        message: "In shadow: external noise drowns the inner voice. You cannot hear yourself. Today turn off everything that is not you.",
-        whenAppears: "When The Clear Voice appears reversed, you are denying your emotions or self-censoring out of fear of generating conflict.",
-        ritual: "Sit in total silence for 15 minutes. Ask yourself what you are silencing and why."
-      },
-      themes: {
-        amor: {
-          upright: "It is time to break the silence in love. There are things you need to say or hear that you can no longer keep holding in.",
-          reversed: "You are denying your emotions or self-censoring out of fear of generating conflict. The cost of not saying what you feel is very high."
-        },
-        trabajo: {
-          upright: "It is time to use your voice at work. There are things you need to say and that you can no longer keep silent.",
-          reversed: "You are self-censoring professionally out of fear of confrontation or rejection."
-        }
-      }
-    },
-    {
-      id: 10,
-      name: "The Call of the Soul",
-      subtitle: "Spiritual Awakening",
-      category: "essences",
-      keywords: ["Awakening", "Inner Search", "Spiritual Calling", "Purpose"],
-
-      upright: {
-        message: "Your heart desires another life. When you have already taken the first step and need confirmation that your soul is guiding you — this card is that sign.",
-        whenAppears: "You feel an emptiness or restlessness that you cannot name. Your soul is calling for something deeper.",
-        ritual: "Write what your heart really desires, even if it seems impossible or crazy."
-      },
-      reversed: {
-        message: "In shadow: awakening generates an identity crisis. You resist the change that your soul asks for.",
-        whenAppears: "When The Call of the Soul appears reversed, you are ignoring the whispers of your soul out of fear of change.",
-        ritual: "Recognize what part of your current life no longer fulfills you and write what you are afraid to let go of."
-      },
-      themes: {
-        amor: {
-          upright: "You feel an emptiness or restlessness in love that you cannot name. Your soul is calling for a deeper and more authentic connection.",
-          reversed: "You are ignoring the whispers of your soul out of fear of change. Denial only prolongs the process."
-        },
-        trabajo: {
-          upright: "You feel a restlessness or emptiness in your current work that you cannot fully explain. Your purpose is asking for something deeper.",
-          reversed: "You are ignoring the whispers of your purpose out of fear of change or losing the stability you have."
-        }
-      }
-    },
-    {
-      id: 11,
-      name: "The Return Home",
-      subtitle: "Reconnection",
-      category: "essences",
-      keywords: ["Reencounter with the soul", "Deep calm", "Cycle closure", "Inner home"],
-
-      upright: {
-        message: "After the chaos, the awakening, the pain — you decide to return to yourself. It is not a return to the past: it is to the most honest, most yours present.",
-        whenAppears: "You are closing an important cycle. Within you a new calm is being born.",
-        ritual: "Create a closing ritual: burn something symbolic, write a farewell letter or perform an act that represents 'coming home'."
-      },
-      reversed: {
-        message: "In shadow: you fear calm. Stability seems boring or false to you.",
-        whenAppears: "When The Return Home appears reversed, you are longing for a return, but you have not yet closed the previous cycle.",
-        ritual: "Recognize what cycle you have not closed and what you are afraid to let go of in order to return to yourself."
-      },
-      themes: {
-        amor: {
-          upright: "You are closing an important cycle in love. Even if the world remains in chaos, within you a new calm is being born.",
-          reversed: "You are longing for a return, but you have not yet closed the previous cycle. There is nostalgia or desire to return to something that no longer exists."
-        },
-        trabajo: {
-          upright: "You are closing an important professional cycle. Within you a new way of relating to your work is being born.",
-          reversed: "You are longing for a professional change, but you have not yet closed the previous cycle."
-        }
-      }
-    },
-    {
-      id: 12,
-      name: "Álvaro",
-      subtitle: "Weaver of Shadows",
-      category: "dualities",
-      keywords: ["Emotional manipulation", "Ambiguity", "Control", "Power games"],
-
-      upright: {
-        message: "This card arises when someone is playing with you without saying it. Your intuition already knows the truth. It also appears when you yourself are falling into dynamics of manipulation.",
-        whenAppears: "Someone is playing with you without saying it clearly. Álvaro reminds you that your intuition already knows the truth.",
-        ritual: "Observe for 3 days the power dynamics in your close relationships. Note what you feel in your body when something does not add up."
-      },
-      reversed: {
-        message: "In deep shadow: passive manipulation and disguised emotional dependency. You use ambiguity as a shield to avoid committing.",
-        whenAppears: "When Álvaro appears reversed, you are allowing someone to control your light with invisible threads.",
-        ritual: "Choose a relationship where you feel there is manipulation and decide what boundary you are going to set this week."
-      },
-      themes: {
-        amor: {
-          upright: "Someone is playing with you without saying it clearly. Álvaro reminds you that your intuition already knows the truth, even if your mind continues to look for excuses.",
-          reversed: "You are allowing someone to control your light with invisible threads. Your shadow here is continuing to justify behaviors you know are not right."
-        },
-        trabajo: {
-          upright: "There are power dynamics or manipulation in your work environment that your intuition has already detected. Álvaro reminds you that your perception is accurate.",
-          reversed: "You are allowing someone at work to control information or decisions in a way that affects you."
-        }
-      }
-    },
-    {
-      id: 13,
-      name: "Emmanuel",
-      subtitle: "Echo of Doubt",
-      category: "dualities",
-      keywords: ["Indecision", "Emotional insecurity", "Unfinished choices", "Almost"],
-
-      upright: {
-        message: "When you are waiting for someone to choose… and they do not. Not choosing is also choosing. And the soul knows it.",
-        whenAppears: "You are trapped between what you desire and what you dare to choose. Not choosing is also choosing.",
-        ritual: "Write down the three options you have in front of you. Next to each one write: 'If I choose this, what am I avoiding feeling?'"
-      },
-      reversed: {
-        message: "In shadow: paralyzing nostalgia and attachment to the known even if it hurts. Not choosing is also a choice.",
-        whenAppears: "When Emmanuel appears reversed, you are reliving scenes and glances over and over again.",
-        ritual: "Consciously choose not to choose for 48 hours and observe how you feel. Then make a small decision."
-      },
-      themes: {
-        amor: {
-          upright: "You are waiting for someone to choose and that wait is hurting you. Emmanuel reminds you that love is not lukewarm. It is fire or it is nothing.",
-          reversed: "You are reliving scenes and glances over and over again. Your shadow in love is called clinging to what does not choose you."
-        },
-        trabajo: {
-          upright: "You are waiting for something or someone to choose for you in your career and that wait is generating frustration and stagnation.",
-          reversed: "You are reliving work scenarios from the past over and over again. This rumination keeps you trapped in the past."
-        }
-      }
-    },
-    {
-      id: 14,
-      name: "Valeria",
-      subtitle: "The Subtle Poison",
-      category: "dualities",
-      keywords: ["Manipulation", "Dark seduction", "Hidden danger", "Passive toxicity"],
-
-      upright: {
-        message: "Valeria arrives as a whisper. Is what you feel desire or addiction? Are you accepting crumbs disguised as passion?",
-        whenAppears: "You are perceiving that behind a smile there are hidden intentions. Valeria reminds you that your intuition is accurate.",
-        ritual: "Observe a relationship or dynamic where you feel something does not add up. Write what it makes you feel in your body."
-      },
-      reversed: {
-        message: "In shadow: passive toxicity and self-affirmation at the expense of others. You distort perceptions without direct confrontation.",
-        whenAppears: "When Valeria appears reversed, you are adopting manipulation tactics without realizing it.",
-        ritual: "Recognize if you are using any form of manipulation (guilt, silence, seduction) to get what you want."
-      },
-      themes: {
-        amor: {
-          upright: "You are perceiving that behind a smile there are hidden intentions. Valeria reminds you that your intuition is accurate. Trust what you see beyond the words.",
-          reversed: "You are adopting manipulation tactics without realizing it. Valeria confronts you with your own dark reflection."
-        },
-        trabajo: {
-          upright: "You are perceiving that behind certain work dynamics there are hidden intentions. Valeria reminds you that your intuition is accurate.",
-          reversed: "You are adopting manipulation tactics at work without realizing it."
-        }
-      }
-    },
-    {
-      id: 15,
-      name: "Karina",
-      subtitle: "Silent Intrusion",
-      category: "dualities",
-      keywords: ["Emotional control", "Jealousy", "Hidden insecurity", "Comparison"],
-
-      upright: {
-        message: "True power does not come from external control, but from internal security. This card invites you to release the illusion of control.",
-        whenAppears: "You are feeling resentment or envy toward someone else's success or happiness. Karina invites you to look inward instead of comparing.",
-        ritual: "When you feel envy or comparison, ask yourself: 'What is it that I really desire for myself?' Write the answer."
-      },
-      reversed: {
-        message: "In shadow: you cross boundaries without open confrontation, from insecurity disguised as power.",
-        whenAppears: "When Karina appears reversed, your envy is turning against you.",
-        ritual: "The next time you feel envy, stop and bless that person out loud. Observe what happens in your body."
-      },
-      themes: {
-        amor: {
-          upright: "You are feeling resentment or envy toward someone else's success or happiness in love. Karina invites you to look inward instead of comparing.",
-          reversed: "Your envy is turning against you: you deny yourself joy and compare yourself mercilessly."
-        },
-        trabajo: {
-          upright: "You are feeling resentment or envy toward the success, recognition or promotion of someone in your work environment.",
-          reversed: "Your professional envy is turning against you. Karina confronts you with the poison you are drinking."
-        }
-      }
-    },
-    {
-      id: 16,
-      name: "Tatiana",
-      subtitle: "Prisoner of Yesterday",
-      category: "dualities",
-      keywords: ["Stagnation", "Nostalgia", "Fear of change", "Repetitive patterns"],
-
-      upright: {
-        message: "Tatiana appears when you are clinging to something only because it is familiar. Are you in repeated cycles out of habit, not out of love?",
-        whenAppears: "You are repeating relationship patterns that only leave you stagnant. Tatiana reminds you that fear of change is more painful in the long run than the risk of letting go.",
-        ritual: "Write down a pattern that repeats in your life. Next to it write: 'What do I gain by staying here' and 'What do I lose if I leave'."
-      },
-      reversed: {
-        message: "In shadow: you live emotionally anchored to the past and repeat cycles out of fear of change.",
-        whenAppears: "When Tatiana appears reversed, you are idealizing a past that no longer exists in order not to have to face the present.",
-        ritual: "Choose one thing from the past that you continue to carry (object, memory, story) and decide whether to keep it, transform it or let it go."
-      },
-      themes: {
-        amor: {
-          upright: "You are repeating relationship patterns that only leave you stagnant. Tatiana reminds you that fear of change is more painful in the long run than the risk of letting go.",
-          reversed: "You are idealizing a past that no longer exists in order not to have to face the present. Your shadow in love is called fear of change."
-        },
-        trabajo: {
-          upright: "You are repeating work patterns that only leave you stagnant. Tatiana reminds you that fear of change is more costly in the long run.",
-          reversed: "You are idealizing a professional past in order not to have to face the present."
-        }
-      }
-    },
-    {
-      id: 17,
-      name: "Lucía and Samuel",
-      subtitle: "Eternal Whisper",
-      category: "dualities",
-      keywords: ["Impossible love", "Deep connection", "Burning silence", "Unrequited love"],
-
-      upright: {
-        message: "When you feel a love so deep that it transcends the tangible. Sometimes the soul is waiting for another life, another plane, another moment.",
-        whenAppears: "There is a love or connection that you feel very deeply but that cannot materialize at this moment.",
-        ritual: "Write a letter to that person or to that impossible love. Do not send it. Burn it or keep it as a ritual of closure or honor."
-      },
-      reversed: {
-        message: "In shadow: you idealize the past and close yourself to the present. An unclosed love continues to occupy space that could be yours.",
-        whenAppears: "When Lucía and Samuel appear reversed, you are clinging to a love that no longer corresponds to you.",
-        ritual: "Recognize if there is a love from the past that continues to occupy emotional space. Decide what closure ritual you need to do."
-      },
-      themes: {
-        amor: {
-          upright: "When you feel a love so deep that it transcends the tangible. Sometimes the soul is waiting for another life, another plane, another moment.",
-          reversed: "You are idealizing the past and closing yourself to the present. An unclosed love continues to occupy space that could be yours."
-        },
-        trabajo: {
-          upright: "There is a project, a dream or a professional version of yourself that you feel very deeply but that still cannot materialize.",
-          reversed: "You are clinging to a professional version from the past that no longer represents you."
-        }
-      }
-    },
-    {
-      id: 18,
-      name: "Alberto",
-      subtitle: "The Voice that Confronts Injustice",
-      category: "guardians",
-      keywords: ["Justice", "Loyalty", "Courage", "Intercession"],
-
-      upright: {
-        message: "Alberto appears when someone needs to be defended, even if they do not dare to ask. Be a trench when someone else is falling.",
-        whenAppears: "You are feeling the impulse to support or defend someone who is suffering. Alberto reminds you that an act of intercession can change the course.",
-        ritual: "Think of someone who is going through an injustice or difficulty. Perform a concrete act of support (even if it is small)."
-      },
-      reversed: {
-        message: "In shadow: moral rigidity or impulsive confrontation. You fight battles that are not yours.",
-        whenAppears: "When Alberto appears reversed, you are ignoring the suffering of someone close out of fear, convenience or to avoid getting involved.",
-        ritual: "Recognize if there is a situation of injustice that you are avoiding seeing or confronting. Write what you are afraid to do about it."
-      },
-      themes: {
-        amor: {
-          upright: "You are feeling the impulse to support or defend someone who is suffering. Alberto reminds you that an act of intercession can change the course.",
-          reversed: "You are ignoring the suffering of someone close out of fear, convenience or to avoid getting involved."
-        },
-        trabajo: {
-          upright: "You are feeling the impulse to support, defend or intercede for someone in your work environment who is being treated unjustly.",
-          reversed: "You are ignoring situations of injustice or abuse of power at work out of fear, convenience or to avoid getting into trouble."
-        }
-      }
-    },
-    {
-      id: 19,
-      name: "Oracio",
-      subtitle: "Protector of Broken Hearts",
-      category: "guardians",
-      keywords: ["Unconditional loyalty", "Silent love", "Constant presence", "Honor"],
-
-      upright: {
-        message: "It is time to honor what has always been there: an unrequited love, a friendship that sustained you, a part of you that you never let die.",
-        whenAppears: "There is a past or present love that continues to inhabit you even though the relationship has ended. Oracio invites you to honor that connection without needing to keep it active.",
-        ritual: "Write the name of someone who supported you at some point and who is no longer as present. Thank them out loud for what that person gave you."
-      },
-      reversed: {
-        message: "In shadow: emotional invisibility and self-sacrifice. You erase yourself so that others shine.",
-        whenAppears: "When Oracio appears reversed, you are denying yourself the right to miss or continue feeling for someone who is no longer there.",
-        ritual: "Allow yourself to miss or feel for someone who is no longer in your life. Cry, write or perform a ritual of honor without guilt."
-      },
-      themes: {
-        amor: {
-          upright: "There is a past or present love that continues to inhabit you even though the relationship has ended. Oracio invites you to honor that connection without needing to keep it active.",
-          reversed: "You are denying yourself the right to miss or continue feeling for someone who is no longer in your life."
-        },
-        trabajo: {
-          upright: "There is a job, a project or a professional stage that continues to inhabit you even though it has already ended. Oracio invites you to honor what it meant.",
-          reversed: "You are denying yourself the right to miss or continue feeling for a professional stage that has already ended."
-        }
-      }
-    },
-    {
-      id: 20,
-      name: "Rosario",
-      subtitle: "The Druid of the Mirror",
-      category: "guardians",
-      keywords: ["Emotional reflection", "Intuitive clarity", "Unforced truth", "Healing silence"],
-
-      upright: {
-        message: "Rosario does not give you direct answers: she puts you in front of the mirror and accompanies you while you discover them. The friendship that listens before speaking.",
-        whenAppears: "You are needing a space of silence and internal observation regarding your emotions. Rosario invites you to stop seeking answers outside.",
-        ritual: "Dedicate 20 minutes to being with yourself without distractions. Just observe what arises when there is no external noise."
-      },
-      reversed: {
-        message: "In shadow: excessive self-analysis or emotional harshness. The truth becomes judgment.",
-        whenAppears: "When Rosario appears reversed, you are avoiding looking at what you really feel out of fear of what you might discover.",
-        ritual: "The next time you want to seek external advice, first ask yourself: 'What is it that I already know but don't want to see?'"
-      },
-      themes: {
-        amor: {
-          upright: "You are needing a space of silence and internal observation regarding your love emotions. Rosario invites you to stop seeking answers outside.",
-          reversed: "You are avoiding looking at what you really feel out of fear of what you might discover."
-        },
-        trabajo: {
-          upright: "You are needing a space of silence and internal observation regarding your work situation. Rosario invites you to stop seeking answers outside.",
-          reversed: "You are avoiding looking at what you really feel about your work out of fear of what you might discover."
-        }
-      }
-    },
-    {
-      id: 21,
-      name: "The Three Allies",
-      subtitle: "Renata, Cristina and Sofía",
-      category: "guardians",
-      keywords: ["Unconditional support", "Sorority", "Shared strength", "Support network"],
-
-      upright: {
-        message: "Are you allowing yourself to be accompanied, or trying to carry everything alone? It is time to honor those who sustain you.",
-        whenAppears: "You are needing to remember who really sustains you. This card appears when you have been investing energy in relationships that do not give back what you give.",
-        ritual: "Write the names of 3 people who truly sustain you. Then send them a sincere message of gratitude."
-      },
-      reversed: {
-        message: "In shadow: emotional dispersion or internal contradiction. The voices that support you contradict each other and confuse you.",
-        whenAppears: "When The Three Allies appear reversed, you are emotionally isolating yourself out of pride, fear or past disappointment.",
-        ritual: "Recognize if you are rejecting support that is being offered to you. Ask yourself why."
-      },
-      themes: {
-        amor: {
-          upright: "You are needing to remember who really sustains you in your love process. The Three Allies remind you that you do not have to carry everything alone.",
-          reversed: "You are emotionally isolating yourself out of pride, fear or past disappointment. This position is depriving you of the support you could receive."
-        },
-        trabajo: {
-          upright: "You are needing to remember who really sustains you on your professional path. The Three Allies remind you that you do not have to carry everything alone.",
-          reversed: "You are professionally isolating yourself out of pride, fear or past disappointment."
-        }
-      }
-    },
-    {
-      id: 22,
-      name: "Jazmín",
-      subtitle: "Hidden Cupid",
-      category: "guardians",
-      keywords: ["True love", "Subtle union", "Silent intuition", "Signs"],
-
-      upright: {
-        message: "Jazmín works in silence and trusts in the timing of the universe. The true cupid does not shoot arrows, but launches signs.",
-        whenAppears: "You are feeling an attraction or connection that generates expectation and also fear in you. Jazmín reminds you that love is not forced; it is recognized when it is ready.",
-        ritual: "For 7 days, observe the subtle signs that appear in your life (dreams, coincidences, sensations). Write them down without judging."
-      },
-      reversed: {
-        message: "In shadow: you connect everyone except yourself. You postpone your own emotional desire to be a bridge for others.",
-        whenAppears: "When Jazmín appears reversed, you are forcing a connection or creating premature expectations because you are afraid that the good will escape.",
-        ritual: "Recognize if you are projecting onto someone everything you have been waiting for. Ask yourself what you need to release from that projection."
-      },
-      themes: {
-        amor: {
-          upright: "You are feeling an attraction or connection that generates expectation and also fear in you. Jazmín reminds you that love is not forced; it is recognized when it is ready.",
-          reversed: "You are forcing a connection or creating premature expectations because you are afraid that the good will escape."
-        },
-        trabajo: {
-          upright: "You are feeling an attraction or professional opportunity that generates expectation and also fear in you. Jazmín reminds you that the best opportunities sometimes appear when you are not forcing them.",
-          reversed: "You are forcing opportunities or creating premature expectations because you are afraid that the good will escape."
-        }
-      }
-    },
-    {
-      id: 23,
-      name: "Daniela",
-      subtitle: "Soul Cheerleader",
-      category: "guardians",
-      keywords: ["Authentic motivation", "Borrowed faith", "Contagious energy", "Self-recognition"],
-
-      upright: {
-        message: "This card is the cry of the soul that says: you are doing better than you think. Do not hide when it is time to shine.",
-        whenAppears: "You are doubting your own worth. Daniela reminds you that your deservingness does not depend on someone confirming it.",
-        ritual: "Write 5 things you have achieved or overcome that make you proud. Read them out loud in front of the mirror."
-      },
-      reversed: {
-        message: "In shadow: you deny your own pain to maintain everyone's energy. You consume yourself helping and no one notices.",
-        whenAppears: "When Daniela appears reversed, you are waiting for someone to give you permission to feel enough.",
-        ritual: "The next time you feel you need external validation, ask yourself: 'What is it that I already know I am capable of doing?'"
-      },
-      themes: {
-        amor: {
-          upright: "You are doubting your own worth in love. Daniela reminds you that your deservingness does not depend on someone confirming it.",
-          reversed: "You are waiting for someone to give you permission to feel enough. This external dependence on validation keeps you in a position of emotional inferiority."
-        },
-        trabajo: {
-          upright: "You are doubting your own professional worth. Daniela reminds you that your deservingness does not depend on someone confirming it externally.",
-          reversed: "You are waiting for someone to give you permission to feel enough professionally."
-        }
-      }
-    },
-    {
-      id: 24,
-      name: "Heimdall",
-      subtitle: "Guardian of the Portals",
-      category: "keys",
-      keywords: ["Powerful curiosity", "Magical beginnings", "Hidden keys", "Exploration"],
-
-      upright: {
-        message: "Follow your curiosity, explore what seemed insignificant. Something is about to open in your life.",
-        whenAppears: "There is a small door, a coincidence, a conversation, a sign, that is opening in your life. Heimdall invites you not to ignore it.",
-        ritual: "For 3 days, follow any small curiosity that appears (even if it seems silly). Note what happens."
-      },
-      reversed: {
-        message: "In shadow: hypercontrol and defensive rigidity. You protect the thresholds so well that nothing good can enter.",
-        whenAppears: "When Heimdall appears reversed, you are ignoring signals and opportunities out of fear of chaos or the unknown.",
-        ritual: "Choose a small door you have been avoiding opening (a conversation, an opportunity, an idea) and open it even if it is scary."
-      },
-      themes: {
-        amor: {
-          upright: "There is a small door, a coincidence, a conversation, a sign, that is opening in your love life. Heimdall invites you not to ignore it because it seems unimportant.",
-          reversed: "You are ignoring signals and opportunities out of fear of chaos or the unknown. This position keeps you stagnant in what is known even if it no longer nourishes you."
-        },
-        trabajo: {
-          upright: "There is a small door, a casual conversation, a coincidence, a fleeting idea, that is opening in your professional path.",
-          reversed: "You are ignoring professional signals and opportunities out of fear of chaos or the unknown."
-        }
-      }
-    },
-    {
-      id: 25,
-      name: "Erebus",
-      subtitle: "The Enlightened One",
-      category: "keys",
-      keywords: ["Inner wisdom", "Mental clarity", "Sacred silence", "Revelation"],
-
-      upright: {
-        message: "Erebus appears when you are ready to see beyond the surface. His presence is enough to make you find answers where before there was only noise.",
-        whenAppears: "You are needing to see with more clarity a situation you have been avoiding looking at directly. Erebus invites you to enter the internal penumbra where the truth is.",
-        ritual: "Dedicate 20 minutes to being in complete darkness or with your eyes closed. Ask yourself what it is that you already know but do not want to see."
-      },
-      reversed: {
-        message: "In shadow: emotional isolation and over-intellectualization. You lock yourself so much in your world that you lose contact with others.",
-        whenAppears: "When Erebus appears reversed, you are blocking your inner voice with excessive analysis and mental control.",
-        ritual: "Turn off all screens and distractions for 1 hour. Allow what is beneath the noise to emerge."
-      },
-      themes: {
-        amor: {
-          upright: "You are needing to see with more clarity a love situation you have been avoiding looking at directly. Erebus invites you to enter the internal penumbra where the truth is.",
-          reversed: "You are avoiding looking at what you really feel out of fear of what you might discover."
-        },
-        trabajo: {
-          upright: "You are needing to see with more clarity a professional situation you have been avoiding looking at directly.",
-          reversed: "You are blocking your inner voice with excessive analysis, mental control and information saturation."
-        }
-      }
-    },
-    {
-      id: 26,
-      name: "Aetherius",
-      subtitle: "The Traveler of the Underworld",
-      category: "keys",
-      keywords: ["Inner journey", "Divine mystery", "Silent transformation", "Depth"],
-
-      upright: {
-        message: "You are crossing internal portals that you did not want to see before. You do not need to understand everything: just dare to follow your own journey.",
-        whenAppears: "You are feeling a call toward something deeper. Aetherius accompanies you to trust in that search even if you do not know exactly what you are looking for.",
-        ritual: "Dedicate time to being in nature or in a place that makes you feel small in front of something greater. Ask yourself what is calling your attention."
-      },
-      reversed: {
-        message: "In shadow: you get lost so deep in the unknown that you lose contact with everyday reality.",
-        whenAppears: "When Aetherius appears reversed, you are getting lost in internal labyrinths and projections without guidance.",
-        ritual: "Anchor something concrete today: eat, walk, breathe the earth. Return to the body after any deep internal work."
-      },
-      themes: {
-        amor: {
-          upright: "You are feeling a call toward something deeper in love. Aetherius accompanies you to trust in that search even if you do not know exactly what you are looking for.",
-          reversed: "You are getting lost in internal labyrinths and projections without guidance. Your shadow here is spiritualized evasion."
-        },
-        trabajo: {
-          upright: "You are feeling a call toward something deeper in your professional purpose. Aetherius accompanies you to trust in that search even if you do not know exactly what it is.",
-          reversed: "You are getting lost in mental labyrinths, projections and external searches without internal guidance."
-        }
-      }
-    },
-    {
-      id: 27,
-      name: "The Threshold of the Underworld",
-      subtitle: "Mystical Portal",
-      category: "portals",
-      keywords: ["Conscious descent", "Rebirth", "Fertile darkness", "Transformation"],
-
-      upright: {
-        message: "You do not enter to disappear, but to remember who you were before forgetting. To return to yourself… sometimes you have to go down.",
-        whenAppears: "You are in a process where something within you needs to die so that something new can be born. The Threshold accompanies you to release identities that no longer represent you.",
-        ritual: "Write what part of you is dying or needs to die. Perform a farewell ritual (burn, bury, release into water)."
-      },
-      reversed: {
-        message: "In shadow: you refuse to go down. You avoid transformational pain and stay on the surface.",
-        whenAppears: "When The Threshold of the Underworld appears reversed, you are resisting transformation because you are afraid of who you will be after letting go.",
-        ritual: "Recognize what you are most afraid of letting go of. Write what would happen if you really let it go."
-      },
-      themes: {
-        amor: {
-          upright: "You are in a process where something within you needs to die so that something new can be born. This card accompanies you to release love identities that no longer represent you.",
-          reversed: "You are resisting transformation because you are afraid of who you will be after letting go."
-        },
-        trabajo: {
-          upright: "You are in a process where something within you needs to die professionally so that something new can be born.",
-          reversed: "You are resisting professional transformation because you are afraid of who you will be after letting go."
-        }
-      }
-    },
-    {
-      id: 28,
-      name: "The Council of Magic",
-      subtitle: "Mystical Portal",
-      category: "portals",
-      keywords: ["Spiritual support", "Invisible guides", "Synchronicities", "Belonging"],
-
-      upright: {
-        message: "There is already an energetic council gathered: your guides, your future selves, your ancestors. You are already being sustained by greater energies.",
-        whenAppears: "You are needing to remember that you are not alone in your process. There are people and also internal forces that sustain you even if you do not always see them.",
-        ritual: "Create a small altar or symbolic space where you invite your guides, ancestors or future versions of yourself. Speak with them."
-      },
-      reversed: {
-        message: "In shadow: you seek external support when the answer is already within. You depend too much on the validation of others.",
-        whenAppears: "When The Council of Magic appears reversed, you are neglecting your deepest connections out of haste, pride or past disappointment.",
-        ritual: "Recognize if you are seeking answers outside when in reality you already know what you need to do. Trust your own inner council."
-      },
-      themes: {
-        amor: {
-          upright: "You are needing to remember that you are not alone in your love process. There are people and also internal forces that sustain you even if you do not always see them.",
-          reversed: "You are neglecting your deepest connections out of haste, pride or past disappointment."
-        },
-        trabajo: {
-          upright: "You are needing to remember that you are not alone on your professional path. There are people and also internal forces that sustain you even if you do not always see them.",
-          reversed: "You are neglecting your deepest professional connections out of haste, pride or past disappointment."
-        }
-      }
-    },
-    {
-      id: 29,
-      name: "The Portal of Chaos",
-      subtitle: "Mystical Portal",
-      category: "portals",
-      keywords: ["Radical transformation", "Awakening", "Renewal", "Liberation"],
-
-      upright: {
-        message: "The Portal of Chaos is not your enemy. The universe shakes the table so that you stop playing at fitting in. It liberates you… even if it hurts.",
-        whenAppears: "You are feeling that stagnation is suffocating you and you need a radical impulse. The Portal of Chaos accompanies you to release accumulated burdens.",
-        ritual: "Make a list of everything you are carrying that no longer serves you. Burn the list or throw it into water as an act of liberation."
-      },
-      reversed: {
-        message: "In shadow: chaos paralyzes you instead of liberating you. You fear what breaks even if it no longer served.",
-        whenAppears: "When The Portal of Chaos appears reversed, you are paralyzed by the fear of letting go.",
-        ritual: "Choose one thing you know you need to let go of but that scares you. Perform a symbolic act of liberation even if it is small."
-      },
-      themes: {
-        amor: {
-          upright: "You are feeling that stagnation is suffocating you and you need a radical impulse. The Portal of Chaos accompanies you to release accumulated burdens.",
-          reversed: "You are paralyzed by the fear of letting go. This paralysis is keeping you in an internal chaos that is more familiar than change."
-        },
-        trabajo: {
-          upright: "You are feeling that stagnation in your professional life is no longer sustainable. This card invites you to generate a radical change even if it involves letting go of a lot.",
-          reversed: "You are paralyzed by the fear of letting go of work structures that no longer serve you."
-        }
-      }
-    },
-    {
-      id: 30,
-      name: "The Underworld of Potions",
-      subtitle: "Mystical Portal",
-      category: "portals",
-      keywords: ["Emotional alchemy", "Deep healing", "Process", "Patience"],
-
-      upright: {
-        message: "Your soul is in an alchemical process. Do not interrupt the mixture: trust what is cooking within you.",
-        whenAppears: "You are impatient to see changes and you forget that deep change takes time. This card reminds you that love and patience are the best ingredients.",
-        ritual: "Choose a process that is underway in your life and commit to not forcing it for 7 days. Observe what happens when you give it time."
-      },
-      reversed: {
-        message: "In shadow: you interrupt the process before it finishes. Impatience prevents you from seeing the fruits.",
-        whenAppears: "When The Underworld of Potions appears reversed, you are seeking quick solutions or patching without going deeper.",
-        ritual: "Recognize what process you are interrupting out of impatience. Write what would happen if you gave it more time."
-      },
-      themes: {
-        amor: {
-          upright: "You are impatient to see changes and you forget that deep change takes time. This card reminds you that love and patience are the best ingredients for your process.",
-          reversed: "You are seeking quick solutions or patching without going deeper. This position invites you to return to the pot, lower the fire and allow time to work its magic."
-        },
-        trabajo: {
-          upright: "You are wanting quick results in your professional development and this is preventing you from truly maturing.",
-          reversed: "You are skipping important steps in your professional development because you want to reach a result quickly."
-        }
-      }
-    },
-    {
-      id: 31,
-      name: "The Portal of Infinite Knowledge",
-      subtitle: "Mystical Portal",
-      category: "portals",
-      keywords: ["Mental awakening", "Spiritual clarity", "Channeling", "Revelation"],
-
-      upright: {
-        message: "Wisdom is not found… it is remembered. You are ready to receive answers that you could not sustain before.",
-        whenAppears: "You are receiving important insights and revelations. This Portal invites you to pay attention to the signs, dreams and understandings that are arriving.",
-        ritual: "Dedicate 10 minutes before sleeping to ask your unconscious: 'What is it that I need to understand now?' Write down what you dream or what arises upon waking."
-      },
-      reversed: {
-        message: "In shadow: you receive so much information that you do not know which one to listen to. The excess of knowledge becomes paralysis.",
-        whenAppears: "When The Portal of Infinite Knowledge appears reversed, you are blocking revelation with excessive analysis and mental control.",
-        ritual: "Choose a single truth or insight you have recently received and act from there for 7 days. Stop collecting more information."
-      },
-      themes: {
-        amor: {
-          upright: "You are receiving important insights and revelations about your pattern in love. This Portal invites you to pay attention to the signs, dreams and understandings that are arriving.",
-          reversed: "You are blocking revelation with excessive analysis and mental control. This position keeps you on the surface of what you could understand."
-        },
-        trabajo: {
-          upright: "You are receiving important insights and revelations about your professional pattern and your purpose. This Portal invites you to pay attention to the signs, dreams and understandings that are arriving.",
-          reversed: "You are blocking professional revelation with excessive analysis, mental control and information saturation."
-        }
-      }
+<!DOCTYPE html>
+<!-- TIMESTAMP: 2026-06-14 10:59 -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bruxa Tarot • Templo del Prisma</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <script src="lang.js"></script>
+  <style>
+    :root { --gold:#c9a84c;--gold-light:#e8c97a;--gold-pale:#f5e6b8;--deep:#04060f;--navy:#070c1a;--midnight:#0b1128; }
+    *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+    body{background:var(--deep);color:#e8dfc8;font-family:'Cormorant Garamond',serif;overflow-x:hidden}
+    #starfield{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:radial-gradient(ellipse at 20% 30%,#0d1a3a,#04060f 60%),radial-gradient(ellipse at 80% 70%,#100828,transparent 60%)}
+    #starfield canvas{position:absolute;inset:0;width:100%;height:100%}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+      padding:1.2rem 3rem;background:linear-gradient(to bottom,rgba(4,6,15,.95),transparent)}
+    .nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.3em;color:var(--gold);text-decoration:none}
+    .nav-links{display:flex;gap:2rem;list-style:none;align-items:center}
+    .nav-links a{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.2em;color:#b8a87a;text-decoration:none;transition:color .3s}
+    .nav-links a:hover{color:var(--gold-light)}
+    /* LANG SELECTOR */
+    .lang-selector{display:flex;align-items:center;gap:.35rem}
+    .lang-btn{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.12em;padding:.28rem .65rem;border-radius:100px;cursor:pointer;
+      border:1px solid rgba(201,168,76,.2);background:transparent;color:#b8a87a;transition:all .3s}
+    .lang-btn:hover{border-color:rgba(201,168,76,.5);color:var(--gold)}
+    .lang-btn.active{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.6);color:var(--gold)}
+    /* HERO */
+    #hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem 4rem}
+    .hero-badge{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.4em;color:var(--gold);border:1px solid rgba(201,168,76,.35);padding:.5rem 2rem;border-radius:100px;margin-bottom:2.5rem;background:rgba(201,168,76,.06);animation:fadeUp 1s ease .2s both}
+    .hero-greeting{font-style:italic;font-weight:300;font-size:clamp(1.5rem,3.5vw,2.4rem);color:#d4c4a0;margin-bottom:1rem;animation:fadeUp 1s ease .4s both}
+    .hero-name{font-family:'Cinzel Decorative',serif;font-size:clamp(3rem,9vw,7rem);font-weight:700;line-height:1;color:transparent;
+      background:linear-gradient(135deg,#c9a84c,#f5e6b8 40%,#c9a84c 70%,#8a6420);-webkit-background-clip:text;background-clip:text;letter-spacing:.05em;margin-bottom:.3rem;animation:fadeUp 1s ease .6s both}
+    .hero-sub{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.5em;color:var(--gold);margin-bottom:2.5rem;animation:fadeUp 1s ease .8s both}
+    .hero-tagline{font-size:clamp(1.1rem,2.5vw,1.5rem);font-style:italic;font-weight:300;color:#c4b090;line-height:1.7;max-width:600px;animation:fadeUp 1s ease 1s both;margin-bottom:3.5rem}
+    .hero-cta{display:inline-flex;gap:1.2rem;animation:fadeUp 1s ease 1.2s both;flex-wrap:wrap;justify-content:center}
+    .btn{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.25em;padding:.95rem 2.5rem;border-radius:100px;text-decoration:none;transition:all .4s ease;cursor:pointer;border:none}
+    .btn-primary{background:linear-gradient(135deg,#c9a84c,#a07828);color:var(--deep);box-shadow:0 0 30px rgba(201,168,76,.3)}
+    .btn-primary:hover{box-shadow:0 0 50px rgba(201,168,76,.5);transform:translateY(-2px)}
+    .btn-ghost{background:transparent;color:var(--gold);border:1px solid rgba(201,168,76,.4)}
+    .btn-ghost:hover{background:rgba(201,168,76,.08);transform:translateY(-2px)}
+    .scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;animation:fadeUp 1.5s ease 2s both}
+    .scroll-hint span{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.3em;color:rgba(201,168,76,.5)}
+    .scroll-hint .line{width:1px;height:50px;background:linear-gradient(to bottom,rgba(201,168,76,.5),transparent);animation:scroll-line 2s ease-in-out infinite}
+    @keyframes scroll-line{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+    .divider{display:flex;align-items:center;gap:1.5rem;padding:0 3rem;margin:0 auto;max-width:600px;position:relative;z-index:1}
+    .divider-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.4),transparent)}
+    .divider-symbol{color:var(--gold);font-size:1.2rem}
+    section{position:relative;z-index:1;padding:6rem 2rem}
+    .section-inner{max-width:1100px;margin:0 auto}
+    .section-label{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.5em;color:var(--gold);margin-bottom:1rem;opacity:.8}
+    .section-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:400;line-height:1.2;color:var(--gold-pale);margin-bottom:1.5rem}
+    .section-body{font-size:1.15rem;font-style:italic;font-weight:300;line-height:1.9;color:#c4b090;max-width:650px}
+    /* QUIEN SOY */
+    #quien-soy{background:linear-gradient(to bottom,transparent,rgba(15,21,53,.4),transparent)}
+    .quiensoy-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+    .quiensoy-image-wrap{position:relative;display:flex;justify-content:center}
+    .quiensoy-frame{width:340px;height:440px;border-radius:200px 200px 160px 160px;background:linear-gradient(160deg,#1a1050,#0b1128);border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:0 0 60px rgba(120,80,220,.15),inset 0 0 40px rgba(201,168,76,.05)}
+    .quiensoy-placeholder{text-align:center;padding:2rem;color:rgba(201,168,76,.5)}
+    .quiensoy-placeholder .icon{font-size:4rem;margin-bottom:1rem}
+    .quiensoy-placeholder p{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;line-height:1.8}
+    .frame-glow{position:absolute;inset:-2px;border-radius:inherit;background:linear-gradient(135deg,rgba(201,168,76,.3),transparent 50%,rgba(120,80,220,.2));pointer-events:none}
+    .orb{position:absolute;border-radius:50%;animation:float-orb 6s ease-in-out infinite}
+    .orb-1{width:120px;height:120px;background:radial-gradient(circle,rgba(120,80,220,.2),transparent 70%);top:-30px;right:-30px}
+    .orb-2{width:80px;height:80px;background:radial-gradient(circle,rgba(201,168,76,.15),transparent 70%);bottom:30px;left:-20px;animation-delay:-3s}
+    @keyframes float-orb{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+    .highlight-quote{font-size:1.5rem;font-style:italic;font-weight:300;color:var(--gold-light);line-height:1.6;margin-bottom:2rem;padding-left:1.5rem;border-left:2px solid rgba(201,168,76,.4)}
+    .tags{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem}
+    .tag{
+      font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;
+      padding:.4rem 1.2rem;border-radius:100px;
+      border:1px solid rgba(201,168,76,.3);color:var(--gold);
+      background:rgba(201,168,76,.05);
+      text-decoration:none;
+      position:relative;overflow:hidden;
+      transition:border-color .3s, color .3s, background .3s;
+      cursor:pointer;
     }
-  ]
+    .tag::before{
+      content:'';
+      position:absolute;inset:0;border-radius:100px;
+      background:radial-gradient(circle at 50% 50%, rgba(201,168,76,.7) 0%, transparent 70%);
+      opacity:0;transform:scale(0);
+      transition:none;
+      pointer-events:none;
+    }
+    .tag.flash::before{
+      animation:tag-flash .6s ease forwards;
+    }
+    @keyframes tag-flash{
+      0%  {opacity:0;transform:scale(0);}
+      30% {opacity:.8;transform:scale(1.2);}
+      60% {opacity:.4;transform:scale(1.5);}
+      100%{opacity:0;transform:scale(2);}
+    }
+    .tag:hover{
+      border-color:rgba(201,168,76,.7);
+      color:var(--gold-pale);
+      background:rgba(201,168,76,.12);
+      box-shadow:0 0 16px rgba(201,168,76,.2);
+    }
+    .tags-hint{
+      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.35);font-style:italic;
+      margin-top:.8rem;line-height:1.6;
+    }
+    /* PORTALES — grilla de iconos */
+    .portals-grid{ display:flex; justify-content:center; }
+    .portals-icon-grid{
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:.7rem; max-width:580px; width:100%;
+    }
+    .portal-card{
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:.5rem; padding:.9rem .5rem;
+      text-decoration:none; color:inherit;
+      border:1px solid rgba(201,168,76,.15); border-radius:14px;
+      background:rgba(11,17,40,.6);
+      transition:all .3s cubic-bezier(.4,0,.2,1);
+      cursor:pointer; text-align:center; backdrop-filter:blur(4px);
+    }
+    .portal-card:hover{
+      border-color:rgba(201,168,76,.5); background:rgba(201,168,76,.1);
+      transform:translateY(-4px);
+      box-shadow:0 8px 24px rgba(0,0,0,.3),0 0 16px rgba(201,168,76,.08);
+    }
+    .portal-symbol{ font-size:1.6rem; line-height:1; }
+    .portal-name{ font-family:'Cinzel',serif; font-size:.55rem; letter-spacing:.15em; color:var(--gold); line-height:1.4; }
+    .portal-arrow{ display:none; }
+    .portal-text{ display:none; }
+    .portal-card:hover .portal-arrow{ display:none; }
+    /* CARTA */
+    #carta{background:radial-gradient(ellipse at center,rgba(26,16,80,.4),transparent 70%)}
+    .carta-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+    .carta-instructions{font-size:.95rem;font-style:italic;color:#a09070;margin:1.5rem 0 2.5rem;line-height:1.8}
+    .cat-badge{display:inline-block;font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.25em;padding:.3rem 1rem;border-radius:100px;margin-bottom:1.2rem}
+    .cat-esencias{background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);color:#ffd700}
+    .cat-dualidades{background:rgba(100,60,180,.1);border:1px solid rgba(100,60,180,.3);color:#b090e0}
+    .cat-guardianes{background:rgba(60,180,140,.1);border:1px solid rgba(60,180,140,.3);color:#7ecab0}
+    .cat-llaves{background:rgba(180,60,180,.1);border:1px solid rgba(180,60,180,.3);color:#d090d0}
+    .cat-portales{background:rgba(220,120,60,.1);border:1px solid rgba(220,120,60,.3);color:#f0a070}
+    .card-scene{width:240px;height:415px;perspective:1000px;cursor:pointer;margin:0 auto}
+    .card-flip{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 1.2s cubic-bezier(.4,.2,.2,1)}
+    .card-scene.flipped .card-flip{transform:rotateY(180deg)}
+    .card-face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+    .card-back{border:1px solid rgba(201,168,76,.35);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 30px rgba(201,168,76,.1);background:#0b1128;display:flex;align-items:center;justify-content:center}
+    .card-back img{width:100%;height:100%;object-fit:cover;border-radius:18px;display:block}
+    .card-back-fallback{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.5rem;gap:1rem;width:100%;height:100%;background:linear-gradient(160deg,#1a1050,#0b1128)}
+    .card-shimmer{position:absolute;inset:0;background:linear-gradient(135deg,transparent 30%,rgba(201,168,76,.05) 50%,transparent 70%);animation:shimmer 3s ease-in-out infinite;pointer-events:none;border-radius:18px}
+    @keyframes shimmer{0%,100%{opacity:0}50%{opacity:1}}
+    .hover-pulse{position:absolute;inset:-1px;border-radius:19px;border:1px solid rgba(201,168,76,.15);animation:card-pulse 2s ease-in-out infinite;pointer-events:none}
+    @keyframes card-pulse{0%,100%{opacity:.5}50%{opacity:1;box-shadow:0 0 20px 5px rgba(201,168,76,.1)}}
+    .card-tap-hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.25em;color:rgba(201,168,76,.5);pointer-events:none}
+    .card-front{transform:rotateY(180deg);border:1px solid rgba(201,168,76,.5);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px rgba(201,168,76,.15);background:#0b1128;display:flex;flex-direction:column}
+    .card-front-img{flex:1;width:100%;object-fit:cover;display:block;transition:transform 0s}
+    .card-front-img.reversed{transform:rotate(180deg)}
+    .card-front-footer{background:linear-gradient(to top,rgba(4,6,15,.97),rgba(4,6,15,.7));padding:.9rem 1rem 1rem;text-align:center}
+    .card-front-name{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.15em;color:var(--gold);margin-bottom:.2rem;line-height:1.3}
+    .card-front-subtitle{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;color:rgba(201,168,76,.5)}
+    /* REVERSED badge */
+    .reversed-badge{
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      padding:.2rem .7rem;border-radius:100px;display:inline-block;margin-top:.4rem;
+      background:rgba(120,80,220,.15);border:1px solid rgba(120,80,220,.3);color:#b090e0;
+    }
+    .upright-badge{
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      padding:.2rem .7rem;border-radius:100px;display:inline-block;margin-top:.4rem;
+      background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);color:var(--gold);
+    }
+    .carta-reading{margin-top:2rem;padding:1.5rem;border:1px solid rgba(201,168,76,.15);border-radius:12px;background:rgba(15,21,53,.5);opacity:0;max-height:0;overflow:hidden;transition:opacity .8s ease,max-height .8s ease}
+    .carta-reading.visible{opacity:1;max-height:700px}
+    .carta-reading-title{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.3em;color:var(--gold);margin-bottom:.8rem}
+    .carta-reading p{font-style:italic;font-size:1rem;color:#b0a07a;line-height:1.8}
+    .carta-keywords{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+    .carta-kw{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;padding:.25rem .7rem;border-radius:100px;border:1px solid rgba(201,168,76,.2);color:rgba(201,168,76,.7)}
+    /* REDES */
+    #redes{background:linear-gradient(to bottom,transparent,rgba(4,6,15,.9))}
+    .redes-inner{text-align:center;max-width:700px;margin:0 auto}
+    .redes-grid{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-top:3rem}
+    .red-link{display:flex;align-items:center;gap:.8rem;padding:.9rem 1.8rem;border-radius:100px;border:1px solid rgba(201,168,76,.2);background:rgba(15,21,53,.6);text-decoration:none;transition:all .4s;font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.15em;color:#b8a87a}
+    .red-link:hover{border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.08);color:var(--gold);transform:translateY(-3px)}
+    .red-icon{font-size:1.3rem}
+    footer{position:relative;z-index:1;text-align:center;padding:3rem 2rem;border-top:1px solid rgba(201,168,76,.1)}
+    footer p{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.3em;color:rgba(201,168,76,.35)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-delay-1{transition-delay:.1s}.reveal-delay-2{transition-delay:.2s}
+    .reveal-delay-3{transition-delay:.3s}.reveal-delay-4{transition-delay:.4s}
+    @media(max-width:768px){nav{padding:1rem 1.5rem}.nav-links{display:none}.quiensoy-grid{grid-template-columns:1fr;gap:3rem}.quiensoy-frame{width:280px;height:360px}.carta-wrap{grid-template-columns:1fr;gap:3rem}section{padding:4rem 1.5rem}}
+
+    /* DIARIO REMINDER + NOMBRE MISTICO */
+    .diario-reminder{
+      margin-top:1.5rem; padding:1rem 1.4rem;
+      border:1px solid rgba(201,168,76,.15); border-radius:12px;
+      background:rgba(11,17,40,.5); backdrop-filter:blur(4px);
+      display:none;
+    }
+    .diario-reminder.visible{ display:block; animation:fadeUp .6s ease both; }
+    .diario-reminder-text{
+      font-style:italic; font-size:.9rem; color:#a09070; line-height:1.7; margin-bottom:.8rem;
+    }
+    .diario-reminder-text strong{ color:var(--gold-light); font-style:normal; }
+    .diario-link{
+      display:inline-flex; align-items:center; gap:.5rem;
+      font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.2em;
+      color:var(--gold); text-decoration:none;
+      border:1px solid rgba(201,168,76,.25); border-radius:100px;
+      padding:.4rem 1.1rem; background:rgba(201,168,76,.05);
+      transition:all .3s;
+    }
+    .diario-link:hover{ background:rgba(201,168,76,.1); border-color:rgba(201,168,76,.45); }
+
+    /* NOMBRE MISTICO */
+    .nombre-mistico-wrap{
+      margin-top:1rem; padding:1rem 1.4rem;
+      border:1px solid rgba(120,80,220,.2); border-radius:12px;
+      background:rgba(15,10,40,.5); text-align:center;
+    }
+    /* standalone section styles already in .nombre-mistico-form etc */
+    .nombre-mistico-label{
+      font-family:'Cinzel',serif; font-size:.55rem; letter-spacing:.35em;
+      color:rgba(201,168,76,.45); margin-bottom:.5rem;
+    }
+    .nombre-mistico-form{
+      display:flex; gap:.5rem; margin-bottom:.8rem; flex-wrap:wrap;
+    }
+    .nombre-mistico-form input{
+      flex:1; min-width:0; padding:.5rem .8rem; border-radius:100px;
+      border:1px solid rgba(201,168,76,.2); background:rgba(4,6,15,.5);
+      color:#f5e6b8; font-family:'Cormorant Garamond',serif; font-size:.9rem;
+      outline:none; transition:border-color .3s;
+    }
+    .nombre-mistico-form input:focus{ border-color:rgba(201,168,76,.45); }
+    .nombre-mistico-btn{
+      font-family:'Cinzel',serif; font-size:.58rem; letter-spacing:.15em;
+      padding:.5rem 1.2rem; border-radius:100px; border:none; cursor:pointer;
+      background:linear-gradient(135deg,rgba(120,80,220,.6),rgba(80,40,160,.6));
+      color:#e8dfc8; transition:all .3s; white-space:nowrap;
+    }
+    .nombre-mistico-btn:hover{ background:linear-gradient(135deg,rgba(120,80,220,.8),rgba(80,40,160,.8)); }
+    .nombre-resultado{
+      display:none; margin-top:.6rem;
+    }
+    .nombre-resultado.visible{ display:block; animation:fadeUp .5s ease both; }
+    .nombre-resultado-nombre{
+      font-family:'Cinzel Decorative',serif; font-size:clamp(1.1rem,2.5vw,1.5rem);
+      color:var(--gold-pale); margin-bottom:.5rem; line-height:1.4;
+    }
+    .nombre-resultado-sub{
+      font-family:'Cinzel',serif; font-size:.75rem; letter-spacing:.15em;
+      color:rgba(201,168,76,.6); margin-top:.3rem;
+    }
+
+    /* ── MARCADOR DE MARIPOSAS ── */
+    #mariposasBar{
+      position:relative;z-index:1;
+      text-align:center;padding:3rem 2rem 0;
+    }
+    .contador-almas-text{
+      font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.5);margin-bottom:1.2rem;display:block;
+    }
+    .contador-num{color:rgba(201,168,76,.85)}
+    .mariposas-enjambre{
+      display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+      gap:3px;max-width:960px;margin:0 auto;padding:1.2rem 1rem;
+      border-top:1px solid rgba(201,168,76,.08);
+      border-bottom:1px solid rgba(201,168,76,.08);
+    }
+    .m-svg{
+      display:inline-block;flex-shrink:0;
+      animation:mwiggle ease-in-out infinite, mbreath ease-in-out infinite;
+      transform-origin:center;
+    }
+    @keyframes mwiggle{
+      0%,100%{transform:rotate(-5deg) translateY(0)}
+      25%{transform:rotate(6deg) translateY(-4px)}
+      50%{transform:rotate(-3deg) translateY(-2px)}
+      75%{transform:rotate(5deg) translateY(-5px)}
+    }
+    @keyframes mbreath{
+      0%,100%{opacity:.5} 50%{opacity:.95}
+    }
+    @keyframes mfly-in{
+      from{opacity:0;transform:scale(.2) translateY(20px)}
+      to{opacity:.85;transform:scale(1) translateY(0)}
+    }
+
+    /* ── FLOTANTE ALMAS EN LÍNEA ── */
+    #floatOnline{
+      position:fixed;left:0;top:50%;transform:translateY(-50%);
+      z-index:150;
+      transition:transform .4s cubic-bezier(.4,0,.2,1), opacity .4s;
+      opacity:0;pointer-events:none;
+    }
+    #floatOnline.visible{
+      opacity:1;pointer-events:auto;
+    }
+    #floatOnlineInner{
+      display:flex;align-items:center;gap:.6rem;
+      padding:.7rem 1.1rem .7rem .9rem;
+      background:rgba(8,6,28,.85);
+      border:1px solid rgba(120,80,220,.35);
+      border-left:none;
+      border-radius:0 50px 50px 0;
+      backdrop-filter:blur(8px);
+      box-shadow:4px 0 24px rgba(120,80,220,.2), inset 0 0 20px rgba(120,80,220,.05);
+      cursor:default;
+      transition:padding .3s, box-shadow .3s;
+    }
+    #floatOnline.visible:hover #floatOnlineInner{
+      box-shadow:4px 0 40px rgba(120,80,220,.4), inset 0 0 20px rgba(120,80,220,.1);
+    }
+    #floatButterfly{
+      font-size:1.4rem;
+      animation:mwiggle 3s ease-in-out infinite, mbreath 2s ease-in-out infinite;
+      display:block;
+    }
+    #floatNum{
+      font-family:'Cinzel Decorative',serif;
+      font-size:1.1rem;
+      color:#c8a8f0;
+      line-height:1;
+      letter-spacing:.05em;
+    }
+    #floatLabel{
+      font-family:'Cinzel',serif;
+      font-size:.48rem;
+      letter-spacing:.18em;
+      color:rgba(180,150,220,.6);
+      margin-top:.25rem;
+      white-space:nowrap;
+    }
+    @media(max-width:480px){
+      #floatOnlineInner{ padding:.5rem .8rem .5rem .7rem; }
+      #floatNum{ font-size:.9rem; }
+      #floatLabel{ font-size:.4rem; }
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar-trigger{
+      display:flex;align-items:center;gap:.5rem;
+      background:transparent;border:1px solid rgba(201,168,76,.25);
+      border-radius:100px;padding:.4rem 1rem;
+      cursor:pointer;color:var(--gold);
+      font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.2em;
+      transition:all .3s;
+    }
+    .sidebar-trigger:hover{border-color:rgba(201,168,76,.6);background:rgba(201,168,76,.08)}
+    .sidebar-trigger-icon{font-size:1rem}
+    .sidebar-overlay{
+      position:fixed;inset:0;z-index:200;
+      background:rgba(4,6,15,.6);backdrop-filter:blur(4px);
+      opacity:0;visibility:hidden;transition:all .35s;
+    }
+    .sidebar-overlay.open{opacity:1;visibility:visible}
+    .sidebar{
+      position:fixed;top:0;left:0;bottom:0;z-index:201;
+      width:280px;
+      background:linear-gradient(180deg,#0b1128 0%,#07091a 100%);
+      border-right:1px solid rgba(201,168,76,.2);
+      transform:translateX(-100%);
+      transition:transform .4s cubic-bezier(.4,0,.2,1);
+      display:flex;flex-direction:column;
+      box-shadow:4px 0 40px rgba(0,0,0,.6);
+    }
+    .sidebar.open{transform:translateX(0)}
+    .sidebar-header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:1.5rem 1.5rem 1rem;
+      border-bottom:1px solid rgba(201,168,76,.1);
+    }
+    .sidebar-title{
+      font-family:'Cinzel Decorative',serif;font-size:.9rem;
+      color:var(--gold);letter-spacing:.15em;
+    }
+    .sidebar-close{
+      background:transparent;border:none;color:rgba(201,168,76,.5);
+      font-size:1.1rem;cursor:pointer;padding:.3rem;
+      transition:color .3s;line-height:1;
+    }
+    .sidebar-close:hover{color:var(--gold)}
+    .sidebar-nav{
+      flex:1;padding:1.2rem 0;overflow-y:auto;
+      display:flex;flex-direction:column;
+    }
+    .sidebar-link{
+      display:flex;align-items:center;gap:.9rem;
+      padding:1rem 1.5rem;width:100%;
+      text-decoration:none;color:#c4b090;
+      font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.15em;
+      transition:all .25s;border-left:2px solid transparent;
+      white-space:nowrap;box-sizing:border-box;
+    }
+    .sidebar-link:hover{
+      color:var(--gold);background:rgba(201,168,76,.06);
+      border-left-color:rgba(201,168,76,.5);
+    }
+    .sidebar-footer{
+      padding:1.2rem 1.5rem;
+      border-top:1px solid rgba(201,168,76,.08);text-align:center;
+    }
+    .sidebar-footer-text{
+      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.25);
+    }
+    /* HOVER — se levanta sin voltear, se ve la imagen completa */
+    #prismaFan{
+      transition:filter .8s ease;
+    }
+  
+    
+    /* ── CARTA DEL DÍA — CSS ORIGINAL ── */
+    .btn-primary{background:linear-gradient(135deg,#c9a84c,#a07828);color:var(--deep);box-shadow:0 0 30px rgba(201,168,76,.3)}
+    .btn-primary:hover{box-shadow:0 0 50px rgba(201,168,76,.5);transform:translateY(-2px)}
+    .btn-ghost{background:transparent;color:var(--gold);border:1px solid rgba(201,168,76,.4)}
+    .btn-ghost:hover{background:rgba(201,168,76,.08);transform:translateY(-2px)}
+    .carta-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+    .carta-instructions{font-size:.95rem;font-style:italic;color:#a09070;margin:1.5rem 0 2.5rem;line-height:1.8}
+    .card-scene{width:240px;height:415px;perspective:1000px;cursor:pointer;margin:0 auto}
+    .card-flip{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 1.2s cubic-bezier(.4,.2,.2,1)}
+    .card-scene.flipped .card-flip{transform:rotateY(180deg)}
+    .card-face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+    .card-back{border:1px solid rgba(201,168,76,.35);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 30px rgba(201,168,76,.1);background:#0b1128;display:flex;align-items:center;justify-content:center}
+    .card-back img{width:100%;height:100%;object-fit:cover;border-radius:18px;display:block}
+    .card-back-fallback{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.5rem;gap:1rem;width:100%;height:100%;background:linear-gradient(160deg,#1a1050,#0b1128)}
+    .card-shimmer{position:absolute;inset:0;background:linear-gradient(135deg,transparent 30%,rgba(201,168,76,.05) 50%,transparent 70%);animation:shimmer 3s ease-in-out infinite;pointer-events:none;border-radius:18px}
+    @keyframes shimmer{0%,100%{opacity:0}
+    .hover-pulse{position:absolute;inset:-1px;border-radius:19px;border:1px solid rgba(201,168,76,.15);animation:card-pulse 2s ease-in-out infinite;pointer-events:none}
+    .card-tap-hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.25em;color:rgba(201,168,76,.5);pointer-events:none}
+    .card-front{transform:rotateY(180deg);border:1px solid rgba(201,168,76,.5);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px rgba(201,168,76,.15);background:#0b1128;display:flex;flex-direction:column}
+    .card-front-img{flex:1;width:100%;object-fit:cover;display:block;transition:transform 0s}
+    .card-front-img.reversed{transform:rotate(180deg)}
+    .card-front-footer{background:linear-gradient(to top,rgba(4,6,15,.97),rgba(4,6,15,.7));padding:.9rem 1rem 1rem;text-align:center}
+    .card-front-name{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.15em;color:var(--gold);margin-bottom:.2rem;line-height:1.3}
+    .card-front-subtitle{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;color:rgba(201,168,76,.5)}
+    .reversed-badge{
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      padding:.2rem .7rem;border-radius:100px;display:inline-block;margin-top:.4rem;
+      background:rgba(120,80,220,.15);border:1px solid rgba(120,80,220,.3);color:#b090e0;
+    }
+    .upright-badge{
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      padding:.2rem .7rem;border-radius:100px;display:inline-block;margin-top:.4rem;
+      background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);color:var(--gold);
+    }
+    .carta-reading{margin-top:2rem;padding:1.5rem;border:1px solid rgba(201,168,76,.15);border-radius:12px;background:rgba(15,21,53,.5);opacity:0;max-height:0;overflow:hidden;transition:opacity .8s ease,max-height .8s ease}
+    .carta-reading.visible{opacity:1;max-height:700px}
+    .carta-reading-title{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.3em;color:var(--gold);margin-bottom:.8rem}
+    .carta-reading p{font-style:italic;font-size:1rem;color:#b0a07a;line-height:1.8}
+    .carta-keywords{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+    .carta-kw{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;padding:.25rem .7rem;border-radius:100px;border:1px solid rgba(201,168,76,.2);color:rgba(201,168,76,.7)}
+    .carta-wrap{grid-template-columns:1fr;gap:3rem}
+    .diario-reminder{
+      margin-top:1.5rem; padding:1rem 1.4rem;
+      border:1px solid rgba(201,168,76,.15); border-radius:12px;
+      background:rgba(11,17,40,.5); backdrop-filter:blur(4px);
+      display:none;
+    }
+    .diario-reminder.visible{ display:block; animation:fadeUp .6s ease both; }
+    .diario-reminder-text{
+      font-style:italic; font-size:.9rem; color:#a09070; line-height:1.7; margin-bottom:.8rem;
+    }
+    .diario-reminder-text strong{ color:var(--gold-light); font-style:normal; }
+    .diario-link{
+      display:inline-flex; align-items:center; gap:.5rem;
+      font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.2em;
+      color:var(--gold); text-decoration:none;
+      border:1px solid rgba(201,168,76,.25); border-radius:100px;
+      padding:.4rem 1.1rem; background:rgba(201,168,76,.05);
+      transition:all .3s;
+    }
+    .diario-link:hover{ background:rgba(201,168,76,.1); border-color:rgba(201,168,76,.45); }
+
+    /* REVEAL CARD */
+    .reveal-card{
+      background:linear-gradient(160deg,#0d1535 0%,#060d20 100%);
+      border:1px solid rgba(201,168,76,.45);border-radius:20px;
+      padding:2rem;position:relative;cursor:pointer;
+      box-shadow:0 0 40px rgba(201,168,76,.12),0 20px 60px rgba(0,0,0,.6);
+      animation:rcIn .35s cubic-bezier(.4,0,.2,1) both;
+    }
+      to{opacity:1;transform:scale(1) translateY(0)}
+    }
+
+    /* ── MENSAJES DEL PRISMA ── */
+    #prismaFan{
+      transition:filter .8s ease;
+    }
+
+    /* ── MENSAJES DEL PRISMA ── */
+    .prisma-card{
+      position:absolute;width:115px;height:195px;
+      cursor:pointer;left:calc(50% - 57px);bottom:0;
+      transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1),z-index 0s;
+    }
+    .prisma-card:hover{
+      transform:translateX(var(--tx,0px)) rotate(var(--rot,0deg)) translateY(-30px) scale(1.15) !important;
+      z-index:30 !important;
+    }
+    .prisma-card:hover .prisma-card-back{
+      box-shadow:0 20px 50px rgba(0,0,0,.7),0 0 30px var(--glow-color,rgba(201,168,76,.35)) !important;
+      filter:brightness(1.1);
+    }
+    .prisma-card-inner{
+      width:100%;height:100%;position:relative;
+      transform-style:preserve-3d;
+      transition:transform .7s cubic-bezier(.4,0,.2,1);
+      border-radius:12px;
+    }
+    .prisma-card.flipped .prisma-card-inner{transform:rotateY(180deg)}
+    .prisma-card-back,.prisma-card-front{
+      position:absolute;inset:0;border-radius:12px;
+      backface-visibility:hidden;-webkit-backface-visibility:hidden;
+      overflow:hidden;
+    }
+    #prismaFan{
+      transition:filter .8s ease;
+    }
+    .prisma-card-back{
+      background:#0b1128;
+      border:1px solid rgba(201,168,76,.2);
+      box-shadow:0 8px 30px rgba(0,0,0,.6);
+      transition:box-shadow .8s ease, border-color .8s ease;
+    }
+    .prisma-card-back img{
+      width:100%;height:100%;object-fit:cover;
+      display:block;border-radius:12px;
+      transition:transform .3s;
+    }
+    .prisma-card:hover .prisma-card-back img{transform:scale(1.04)}
+    .prisma-card-back-overlay{
+      position:absolute;inset:0;border-radius:12px;
+      background:linear-gradient(to top,rgba(4,6,15,.8) 0%,transparent 60%);
+      display:flex;align-items:flex-end;justify-content:center;padding-bottom:.8rem;
+    }
+    .prisma-card-back-label{
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;
+      color:rgba(201,168,76,.7);text-align:center;line-height:1.5;
+    }
+    .prisma-card-front{
+      transform:rotateY(180deg);
+      background:linear-gradient(160deg,#0b1128,#060d20);
+      border:1px solid rgba(201,168,76,.4);
+      box-shadow:0 0 30px rgba(201,168,76,.1),0 8px 40px rgba(0,0,0,.7);
+      display:flex;flex-direction:column;padding:1rem .9rem .9rem;
+    }
+    .prisma-card-front-icon{font-size:1.8rem;text-align:center;margin-bottom:.5rem}
+    .prisma-card-front-title{
+      font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.15em;
+      color:var(--gold);text-align:center;margin-bottom:.6rem;line-height:1.5;
+    }
+    .prisma-card-front-divider{
+      width:28px;height:1px;background:rgba(201,168,76,.3);margin:0 auto .7rem;
+    }
+    .prisma-card-front-text{
+      font-style:italic;font-size:.82rem;color:#c4b090;
+      line-height:1.7;text-align:center;flex:1;overflow:hidden;
+    }
+    .prisma-card-front-extra{
+      margin-top:.6rem;padding-top:.5rem;border-top:1px solid rgba(201,168,76,.1);
+      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;
+      color:rgba(201,168,76,.45);text-align:center;
+    }
+
+    /* ── PRISMA REVEAL CARD ── */
+    .prisma-reveal-card{
+      max-width:480px;margin:0 auto;
+      background:linear-gradient(160deg,#0d1535,#060d20);
+      border:1px solid rgba(201,168,76,.4);border-radius:20px;
+      padding:2rem 2rem 1.5rem;
+      box-shadow:0 0 40px rgba(201,168,76,.12),0 20px 60px rgba(0,0,0,.5);
+      cursor:pointer;position:relative;
+      animation:revealIn .4s cubic-bezier(.4,0,.2,1) both;
+    }
+    @keyframes revealIn{
+      from{opacity:0;transform:scale(.9) translateY(10px)}
+      to{opacity:1;transform:scale(1) translateY(0)}
+    }
+    .prisma-reveal-close{position:absolute;top:1rem;right:1rem;font-size:.9rem;color:rgba(201,168,76,.4);transition:color .3s}
+    .prisma-reveal-card:hover .prisma-reveal-close{color:var(--gold)}
+    .prisma-reveal-icon{font-size:2.2rem;text-align:center;margin-bottom:.6rem}
+    .prisma-reveal-title{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.2em;color:var(--gold);text-align:center;margin-bottom:.8rem}
+    .prisma-reveal-divider{width:40px;height:1px;background:rgba(201,168,76,.3);margin:0 auto .9rem}
+    .prisma-reveal-text{font-style:italic;font-size:1rem;color:#c4b090;line-height:1.8;text-align:center;margin-bottom:.8rem}
+    .prisma-reveal-extra{text-align:center;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.15em;color:rgba(201,168,76,.5);margin-top:.5rem}
+    .prisma-reveal-hint{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;color:rgba(201,168,76,.25);text-align:center;margin-top:1rem}
+
+</style>
+</head>
+<body>
+  <div id="starfield"><canvas id="stars"></canvas></div>
+
+  <nav>
+    <button class="sidebar-trigger" id="sidebarTrigger" aria-label="Menu">
+      <span class="sidebar-trigger-icon">☰</span>
+      <span class="sidebar-trigger-label">El Más Allá</span>
+    </button>
+    <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
+    <div class="lang-selector">
+      <button class="lang-btn active" data-lang="es" onclick="LangEngine&&LangEngine.set('es')">ES</button>
+      <button class="lang-btn" data-lang="en" onclick="LangEngine&&LangEngine.set('en')">EN</button>
+      <button class="lang-btn" data-lang="it" onclick="LangEngine&&LangEngine.set('it')">IT</button>
+      <button class="lang-btn" data-lang="ko" onclick="LangEngine&&LangEngine.set('ko')">한국</button>
+    </div>
+  </nav>
+
+  <!-- SIDEBAR -->
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <p class="sidebar-title">✦ El Más Allá</p>
+      <button class="sidebar-close" id="sidebarClose">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="tiradas.html" class="sidebar-link">🔮 Oráculo Prisma</a>
+      <a href="rituales.html" class="sidebar-link">🕯️ Rituales del Prisma</a>
+      <a href="pozo.html" class="sidebar-link">⭐ Pozo de los Deseos</a>
+      <a href="diario.html" class="sidebar-link">📖 Diario del Alma</a>
+      <a href="test.html" class="sidebar-link">🌓 Luz y Sombra</a>
+      <a href="historias.html" class="sidebar-link">📚 Libro de Sabiduría</a>
+      <a href="mapa.html" class="sidebar-link">🗺️ Mapa de Almas</a>
+      <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="sidebar-link">🎵 Frecuencias Sagradas</a>
+    </nav>
+    <div class="sidebar-footer">
+      <p class="sidebar-footer-text">Templo del Prisma</p>
+    </div>
+  </aside>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-badge" data-i18n="hero_badge">✦ TEMPLO DEL PRISMA ✦</div>
+    <p class="hero-greeting" data-i18n="hero_greeting">Hola, Alma Brillante…</p>
+    <h1 class="hero-name">BRUXA<br>TAROT</h1>
+    <p class="hero-sub">✦ ✦ ✦</p>
+    <p class="hero-tagline" data-i18n-html="hero_tagline">Un templo donde tu alma recuerda su luz,<br>su sombra y su verdadero poder.</p>
+    <div class="hero-cta">
+      <a href="#templo" class="btn btn-primary" data-i18n="hero_cta_templo">Entrar al Templo</a>
+      <a href="#carta"  class="btn btn-ghost"   data-i18n="hero_cta_carta">Carta del Día</a>
+    </div>
+    <div class="scroll-hint"><span data-i18n="hero_scroll">Baja</span><div class="line"></div></div>
+  </section>
+
+  <!-- QUIEN SOY -->
+  <section id="quien-soy">
+    <div class="section-inner">
+      <div class="quiensoy-grid">
+        <div class="quiensoy-image-wrap reveal">
+          <div style="position:absolute;inset:0;pointer-events:none;"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+          <div class="quiensoy-frame" style="padding:0;overflow:hidden;">
+            <div class="frame-glow"></div>
+            <img src="images/bruxa-tarot.png" alt="Bruxa Tarot"
+                 style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="quiensoy-placeholder" style="display:none"><div class="icon">🌙</div><p data-i18n-html="qs_photo">Tu fotografía<br>va aquí, Bruxa</p></div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p class="section-label" data-i18n="qs_label">La Bruja detrás del Templo</p>
+          <h2 class="section-title" data-i18n="qs_title">Soy Bruxa Tarot</h2>
+          <p class="highlight-quote" data-i18n-html="qs_quote">"La vida no es blanco y negro.<br>Es un prisma de infinitos colores esperando ser vividos."</p>
+          <p class="section-body" data-i18n="qs_body1">Soy una guía espiritual, lectora de Tarot y creadora del Oráculo Prisma del Alma.</p>
+          <p class="section-body" style="margin-top:1rem" data-i18n="qs_body2">Cada carta es un espejo. Cada lectura, un regreso a ti.</p>
+          <p class="tags-hint">✦ Coloca tu cursor sobre las palabras clave<br>y abre el portal hacia el más allá…</p>
+          <div class="tags">
+            <a href="recetas.html"  class="tag" onclick="flashTag(this)">🌈 Esencias Sagradas</a>
+            <a href="historias.html" class="tag" onclick="flashTag(this)">🌒 Dualidades</a>
+            <a href="rituales.html" class="tag" onclick="flashTag(this)">🛡️ Guardianes</a>
+            <a href="diario.html"   class="tag" onclick="flashTag(this)">💠 Llaves Prismáticas</a>
+            <a href="pozo.html"     class="tag" onclick="flashTag(this)">⭐ Pozo de los Deseos</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
+
+  <!-- NOMBRE MÍSTICO -->
+  <section id="nombre-mistico" style="position:relative;z-index:1;padding:4rem 2rem;">
+    <div class="section-inner" style="max-width:700px;margin:0 auto;text-align:center;">
+      <div class="reveal">
+        <p class="section-label" style="text-align:center;">✦ ORÁCULO PRISMA</p>
+        <h2 class="section-title" style="text-align:center;">Tu Nombre Místico</h2>
+        <p class="section-body" style="margin:0 auto 2.5rem;text-align:center;">
+          El Oráculo Prisma te ha asignado un nombre desde antes de que nacieras.<br>
+          Ingresa tu fecha de nacimiento y descúbrelo.
+        </p>
+        <div style="background:rgba(11,17,40,.6);border:1px solid rgba(201,168,76,.15);border-radius:20px;padding:2rem;max-width:500px;margin:0 auto;">
+          <div class="nombre-mistico-form">
+            <input type="date" id="nombreFecha" placeholder="Tu fecha de nacimiento">
+            <button class="nombre-mistico-btn" onclick="calcularNombre()">✦ Revelar mi nombre</button>
+          </div>
+          <div class="nombre-resultado" id="nombreResultado">
+            <div style="margin:1.2rem 0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.2),transparent)"></div>
+            <p style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.35em;color:rgba(201,168,76,.65);margin-bottom:.8rem;">✦ TU NOMBRE DEL PRISMA ES ✦</p>
+            <p class="nombre-resultado-nombre" id="nombreTexto"></p>
+            <div style="margin:.8rem 0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.15),transparent)"></div>
+            <p class="nombre-resultado-sub" id="nombreSub"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><span class="divider-symbol">✦</span><div class="divider-line"></div></div>
+
+  <!-- PANEL DE BRUXA -->
+  <section id="panelBruxa" style="position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 2rem 4rem">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <p class="section-label">✦ Del Templo</p>
+      <h2 class="section-title">Mensajes del Prisma</h2>
+      <p class="section-body">Toca una carta para revelar el mensaje de esta semana</p>
+    </div>
+    <div class="reveal" id="prismaFan" style="position:relative;height:320px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:1.5rem;perspective:800px"></div>
+        <div id="prismaReveal" style="display:none;margin-top:0"></div>
+    <p id="prismaHint" style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.3em;color:rgba(201,168,76,.35);text-align:center;transition:all .4s">✦ Selecciona una carta ✦</p>
+  </section>
+
+
+    <!-- CARTA DEL DÍA -->
+  <section id="carta">
+    <div class="section-inner">
+      <div class="carta-wrap">
+        <div class="reveal">
+          <p class="section-label" data-i18n="carta_label">Oráculo Prisma del Alma</p>
+          <h2 class="section-title" data-i18n="carta_title">Carta del Día</h2>
+          <p class="carta-instructions" data-i18n="carta_instruction">Respira profundo…</p>
+          <div class="carta-reading" id="cartaReading">
+            <div id="catBadgeWrap"></div>
+            <div id="posicionBadge"></div>
+            <p class="carta-reading-title" id="cartaReadingTitle" data-i18n="carta_reading_title">✦ MENSAJE DEL ORÁCULO ✦</p>
+            <p id="cartaMessage"></p>
+            <div class="carta-keywords" id="cartaKeywords"></div>
+          </div>
+
+          <!-- DIARIO REMINDER -->
+          <div class="diario-reminder" id="diarioReminder">
+            <p class="diario-reminder-text">
+              🦋 <strong>No olvides escribir tu carta en el Diario del Alma.</strong><br>
+              Guarda este mensaje, tu reflexión y cómo te habló hoy el Oráculo.
+            </p>
+            <a href="diario.html" class="diario-link">📖 Ir al Diario del Alma →</a>
+          </div>
+
+
+          <div id="nuevoBtn" style="display:none;margin-top:1.5rem">
+            <button onclick="resetCard()" class="btn btn-ghost" style="font-size:.65rem;padding:.7rem 1.8rem" data-i18n="carta_nuevo">✦ Nueva tirada</button>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <div class="card-scene" id="cardScene" onclick="flipCard()">
+            <div class="card-flip" id="cardFlip">
+              <div class="card-face card-back">
+                <img src="images/dorso.png" alt="Reverso Oráculo Prisma"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="card-back-fallback"><span style="font-size:3rem">🦋</span></div>
+                <div class="card-shimmer"></div>
+                <div class="hover-pulse"></div>
+                <div class="card-tap-hint" data-i18n="carta_tap">Toca la carta para voltearla</div>
+              </div>
+              <div class="card-face card-front" id="cardFront">
+                <img class="card-front-img" id="cardImg" src="" alt="">
+                <div class="card-front-footer">
+                  <p class="card-front-name" id="cardName">—</p>
+                  <p class="card-front-subtitle" id="cardSubtitle">—</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p style="text-align:center;margin-top:1.2rem;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.3em;color:rgba(201,168,76,.4)" data-i18n="carta_tap">Toca la carta para voltearla</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <!-- DIARIO REMINDER -->
+  <!-- OLD DIARIO -->
+  <div id="diarioReminderOld" style="display:none" style="position:relative;z-index:1;max-width:600px;margin:-1rem auto 2rem;text-align:center;padding:0 2rem">
+    <p style="font-style:italic;font-size:.9rem;color:rgba(201,168,76,.45)" data-i18n="carta_diario_hint">
+      ✦ ¿Resuena esta carta contigo? <a href="diario.html" class="diario-link" data-i18n="carta_diario_link">Guárdala en tu Diario del Alma</a>
+    </p>
+  </div>
+
+  <!-- LIBRO DE ALMAS -->
+  <section id="libroAlmas" style="position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 2rem 4rem">
+    <div class="reveal" style="text-align:center;margin-bottom:2.5rem">
+      <p class="section-label">✦ Comunidad</p>
+      <h2 class="section-title">Libro de Almas</h2>
+      <p class="section-body">Deja tu huella en el Templo del Prisma.<br>Tu mariposa aparecerá en el mapa de las almas.</p>
+    </div>
+
+    <!-- FORMULARIO MÍSTICO -->
+    <div class="reveal" style="max-width:600px;margin:0 auto 3rem">
+      <div style="display:flex;flex-direction:column;gap:1rem;align-items:center">
+        <div style="position:relative;width:100%">
+          <span style="position:absolute;left:1.2rem;top:50%;transform:translateY(-50%);font-size:1rem;opacity:.5">🦋</span>
+          <input id="libroNombre" maxlength="60" placeholder="Tu nombre místico..."
+            style="width:100%;padding:.9rem 1.2rem .9rem 3rem;border-radius:100px;
+            border:1px solid rgba(201,168,76,.25);background:rgba(11,17,40,.6);
+            color:#e8dfc8;font-family:'Cormorant Garamond',serif;font-size:1.05rem;
+            font-style:italic;outline:none;transition:all .3s;backdrop-filter:blur(4px);"
+            onfocus="this.style.borderColor='rgba(201,168,76,.6)';this.style.boxShadow='0 0 20px rgba(201,168,76,.1)'"
+            onblur="this.style.borderColor='rgba(201,168,76,.25)';this.style.boxShadow='none'">
+        </div>
+        <div style="position:relative;width:100%">
+          <span style="position:absolute;left:1.2rem;top:50%;transform:translateY(-50%);font-size:1rem;opacity:.5">🌍</span>
+          <input id="libroCiudad" maxlength="40" placeholder="Tu país... (ej: México)"
+            style="width:100%;padding:.9rem 1.2rem .9rem 3rem;border-radius:100px;
+            border:1px solid rgba(201,168,76,.25);background:rgba(11,17,40,.6);
+            color:#e8dfc8;font-family:'Cormorant Garamond',serif;font-size:1.05rem;
+            font-style:italic;outline:none;transition:all .3s;backdrop-filter:blur(4px);"
+            onfocus="this.style.borderColor='rgba(201,168,76,.6)';this.style.boxShadow='0 0 20px rgba(201,168,76,.1)'"
+            onblur="this.style.borderColor='rgba(201,168,76,.25)';this.style.boxShadow='none'">
+        </div>
+        <button onclick="agregarAlma()"
+          style="font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.3em;
+          padding:1rem 3rem;border-radius:100px;border:none;cursor:pointer;
+          background:linear-gradient(135deg,#c9a84c,#a07828);color:#04060f;
+          box-shadow:0 0 30px rgba(201,168,76,.25);transition:all .4s;width:100%"
+          onmouseover="this.style.boxShadow='0 0 50px rgba(201,168,76,.45)';this.style.transform='translateY(-2px)'"
+          onmouseout="this.style.boxShadow='0 0 30px rgba(201,168,76,.25)';this.style.transform='translateY(0)'">
+          🦋 Dejar mi huella en el Templo
+        </button>
+        <p id="libroStatus" style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;
+          color:rgba(201,168,76,.5);display:none;text-align:center"></p>
+      </div>
+    </div>
+
+    <!-- MAPA -->
+    <div class="reveal">
+      <p style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.35em;
+        color:rgba(201,168,76,.35);text-align:center;margin-bottom:1rem">✦ DÓNDE ESTÁN LAS ALMAS ✦</p>
+      <div id="mapaInline" style="height:400px;border-radius:20px;
+        border:1px solid rgba(201,168,76,.15);overflow:hidden;
+        box-shadow:0 0 60px rgba(0,0,0,.5)"></div>
+      <div style="display:flex;justify-content:center;gap:3rem;margin-top:1rem;flex-wrap:wrap">
+        <span style="font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.2em;color:rgba(201,168,76,.35)">
+          🌍 <span id="mapaStatPaises">-</span> países
+        </span>
+        <span style="font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.2em;color:rgba(201,168,76,.35)">
+          🦋 <span id="mapaStatAlmas">-</span> almas en el mapa
+        </span>
+      </div>
+    </div>
+  </section>
+
+    <!-- REDES -->
+  <section id="redes" style="position:relative;z-index:1;padding:3rem 2rem 4rem;text-align:center">
+    <div class="section-inner reveal" style="max-width:600px;margin:0 auto">
+      <p class="section-label">✦ Comunidad</p>
+      <h2 class="section-title">Sígueme en Redes</h2>
+      <p class="section-body" style="margin-bottom:2rem">Energías semanales, canalizaciones y más magia del Prisma</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a href="https://www.instagram.com/bruxatarot" target="_blank"
+          style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;
+          padding:.8rem 1.8rem;border-radius:100px;text-decoration:none;
+          border:1px solid rgba(201,168,76,.3);color:var(--gold);
+          transition:all .3s;background:rgba(201,168,76,.05)"
+          onmouseover="this.style.background='rgba(201,168,76,.1)'"
+          onmouseout="this.style.background='rgba(201,168,76,.05)'">
+          📸 Instagram
+        </a>
+        <a href="https://www.youtube.com/@BruxaTarot" target="_blank"
+          style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;
+          padding:.8rem 1.8rem;border-radius:100px;text-decoration:none;
+          border:1px solid rgba(201,168,76,.3);color:var(--gold);
+          transition:all .3s;background:rgba(201,168,76,.05)"
+          onmouseover="this.style.background='rgba(201,168,76,.1)'"
+          onmouseout="this.style.background='rgba(201,168,76,.05)'">
+          🎵 YouTube
+        </a>
+        <a href="https://www.tiktok.com/@bruxatarot" target="_blank"
+          style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;
+          padding:.8rem 1.8rem;border-radius:100px;text-decoration:none;
+          border:1px solid rgba(201,168,76,.3);color:var(--gold);
+          transition:all .3s;background:rgba(201,168,76,.05)"
+          onmouseover="this.style.background='rgba(201,168,76,.1)'"
+          onmouseout="this.style.background='rgba(201,168,76,.05)'">
+          🎬 TikTok
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTADORES FIREBASE -->
+  <div id="firebaseContadores" style="position:relative;z-index:1;text-align:center;padding:2.5rem 2rem 0;display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem">
+    <div style="display:inline-flex;align-items:center;gap:.7rem;padding:.8rem 2rem;border-radius:100px;border:1px solid rgba(201,168,76,.2);background:rgba(11,17,40,.6);backdrop-filter:blur(4px)">
+      <span style="font-size:1.1rem">🌟</span>
+      <span style="font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.2em;color:rgba(201,168,76,.7)">
+        <span id="fbVisitas" style="color:var(--gold-light);font-size:.85rem">...</span> almas brillantes han visitado el Templo
+      </span>
+    </div>
+  </div>
+
+  <!-- FLOTANTE ALMAS EN LÍNEA -->
+  <div id="floatOnline">
+    <div id="floatOnlineInner">
+      <span id="floatButterfly">🦋</span>
+      <div>
+        <div id="floatNum">...</div>
+        <div id="floatLabel">almas en el Templo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENJAMBRE DE MARIPOSAS -->
+  <div id="mariposasBar" style="position:relative;z-index:1;text-align:center;padding:3rem 2rem 0">
+    <span class="contador-almas-text">✦ <span class="contador-num" id="numAlmas">...</span> almas han cruzado este portal ✦</span>
+    <div class="mariposas-enjambre" id="enjambre"></div>
+  </div>
+
+  <footer>
+    <div class="divider" style="margin-bottom:2rem"><div class="divider-line"></div><span class="divider-symbol" style="color:rgba(201,168,76,.2)">✦</span><div class="divider-line"></div></div>
+    <p data-i18n="footer">© 2026 Bruxa Tarot • Templo del Prisma • Oráculo Prisma del Alma</p>
+  </footer>
+
+  <script>
+  // STARFIELD
+  (function(){
+    const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');
+    let stars=[],W,H;
+    function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+    function initStars(){stars=[];const n=Math.floor((W*H)/4000);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.2,alpha:Math.random()*.7+.1,ts:Math.random()*.02+.005,to:Math.random()*Math.PI*2,gold:Math.random()<.08});}
+    function draw(t){ctx.clearRect(0,0,W,H);stars.forEach(s=>{const a=s.alpha*(.6+.4*Math.sin(t*s.ts+s.to));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.gold?`rgba(201,168,76,${a*.8})`:`rgba(255,255,255,${a})`;ctx.fill();});requestAnimationFrame(draw);}
+    window.addEventListener('resize',()=>{resize();initStars();});resize();initStars();requestAnimationFrame(draw);
+  })();
+
+  // SCROLL REVEAL
+  document.querySelectorAll('.reveal').forEach(el=>new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')});},{threshold:.12}).observe(el));
+
+  // CARTAS
+  const cartas=[
+    {num:1,name:'Bruxa Tarot',subtitle:'Canalizadora del Prisma',cat:'esencias',catLabel:'🌈 Esencias Sagradas',img:'images/bruxa.png',keywords:['Inspiración','Renacimiento','Claridad','Transformación'],message:'Bruxa Tarot aparece cuando es momento de ver la vida con otros ojos. Tienes el poder de cambiar tu mirada, de elegir otra frecuencia. ¿Qué áreas de tu vida se han vuelto grises? Esta carta es un llamado suave pero firme a recuperar el asombro.',
+      sombra:'En sombra, la mente creativa se desconecta de lo concreto y vive demasiado en potenciales. El prisma de posibilidades puede volverse laberinto. Hoy pregúntate: ¿estás creando o evadiendo?'},
+    {num:2,name:'Nabi',subtitle:'Cazadora de Espíritus',cat:'esencias',catLabel:'🌈 Esencias Sagradas',img:'images/nabi.png',keywords:['Protección energética','Intuición aguda','Observación','Alerta espiritual'],message:'Cuando Nabi aparece, algo invisible necesita ser visto. Tu intuición será tu mejor aliada. Observa, discierte y actúa con sigilo, pero con firmeza.',
+      sombra:'En sombra, la hipervigilancia se convierte en ansiedad y sospecha. Ves peligro donde no lo hay. Hoy respira — no todo lo que percibes es una amenaza real.'},
+    {num:3,name:'Marta',subtitle:'Diosa de la Sanación',cat:'esencias',catLabel:'🌈 Esencias Sagradas',img:'images/marta.png',keywords:['Sanación','Paciencia','Amor que se cultiva','Ciclos'],message:'Sanar no implica evitar el dolor, sino atravesarlo con valentía. Marta te invita a confiar en que cada lágrima derramada riega tu camino hacia una versión más fuerte de ti.',
+      sombra:'En sombra, la paciencia se convierte en estancamiento. Te aferras a la esperanza aunque ya no haya señales. Hoy pregúntate: ¿estás esperando o simplemente evitando avanzar?'},
+    {num:4,name:'Jade',subtitle:'Diosa del Karma',cat:'esencias',catLabel:'🌈 Esencias Sagradas',img:'images/jade.png',keywords:['Equilibrio','Justicia energética','Cosecha emocional'],message:'Jade aparece cuando el universo está haciendo ajustes. Hay una situación que está alcanzando su punto de equilibrio. Esta carta te invita a perdonarte y soltar lo que ya no te corresponde cargar.',
+      sombra:'En sombra, la necesidad de equilibrio se vuelve rigidez y juicio excesivo. El peso de la justicia puede convertirse en condena — hacia otros o hacia ti misma. Suelta el veredicto.'},
+    {num:5,name:'Elena',subtitle:'Diosa del Camino',cat:'esencias',catLabel:'🌈 Esencias Sagradas',img:'images/elena.png',keywords:['Intuición','Guía interna','Claridad emocional'],message:'Elena aparece cuando estás perdida o a punto de rendirte. El camino ya está trazado dentro de ti. Confía en tu intuición. No estás sola.',
+      sombra:'En sombra, la brújula interna se silencia por duda excesiva. No confías en lo que ya sabes. Hoy para el ruido externo y escucha lo que llevas dentro.'},
+    {num:6,name:'Mia',subtitle:'Diosa del Amor Propio',cat:'esencias',catLabel:'🌈 Esencias Sagradas',img:'images/mia.png',keywords:['Autoafirmación','Dignidad','Liberación'],message:'Mia llega cuando es momento de recordar quién eres y lo que vales. El amor empieza por ti. No temas alejarte de lo que no te valora.',
+      sombra:'En sombra, la autoprotección se vuelve cierre prematuro. Tu dignidad puede volverse distancia. Hoy pregúntate si estás protegiéndote... o alejando lo que sí te hace bien.'},
+    {num:7,name:'Tony',subtitle:'Dios del Tiempo',cat:'esencias',catLabel:'🌈 Esencias Sagradas',img:'images/tony.png',keywords:['Urgencia','Acción','Decisión','Cambio inminente'],message:'Tony aparece cuando el tiempo es ahora. Ya no hay espacio para el "después". Lo que no eliges hoy, lo elige el tiempo por ti.',
+      sombra:'En sombra, la urgencia se convierte en ansiedad por el futuro. El miedo a que el tiempo se acabe te paraliza en vez de moverte. Hoy respira — no todo necesita resolverse ahora.'},
+    {num:8,name:'Dante',subtitle:'Dios del Fuego y la Resurrección',cat:'esencias',catLabel:'🌈 Esencias Sagradas',img:'images/dante.png',keywords:['Deseo profundo','Renacimiento','Pasión'],message:'Dante aparece cuando el deseo es tan fuerte que no puede ser ignorado. Es el fuego que quema lo que ya no sirve para renacer. Atrévete a sentir sin censura.',
+      sombra:'En sombra, la intensidad se convierte en adicción al drama emocional. Buscas el fuego aunque destruya. Hoy pregúntate si lo que sientes es pasión... o caos disfrazado.'},
+    {num:9,name:'La Voz Clara',subtitle:'Regreso Interior',cat:'esencias',catLabel:'🌈 Esencias Sagradas',img:'images/la-voz-clara.png',keywords:['Reconexión','Verdad interna','Intuición'],message:'La Voz Clara es el momento en que el alma dice: ya no más huir, volvamos a casa. Es hora de tomar el micrófono de tu vida.',
+      sombra:'En sombra, el ruido externo ahoga la voz interior. No logras escucharte. Hoy apaga todo lo que no eres tú y siéntate en silencio aunque incomode.'},
+    {num:10,name:'El Llamado del Alma',subtitle:'Despertar Espiritual',cat:'esencias',catLabel:'🌈 Esencias Sagradas',img:'images/llama.png',keywords:['Despertar','Búsqueda interior','Llamado espiritual'],message:'Cuando todo parece estar bien, pero sientes un vacío. Tu corazón desea otra vida. Esta carta aparece cuando ya diste el primer paso y necesitas confirmación de que tu alma te guía.',
+      sombra:'En sombra, el despertar genera crisis de identidad. Te resistes al cambio que tu alma pide. Hoy reconoce que lo que se mueve en ti no es peligro — es evolución.'},
+    {num:11,name:'El Regreso a Casa',subtitle:'Reconexión',cat:'esencias',catLabel:'🌈 Esencias Sagradas',img:'images/regreso.png',keywords:['Reencuentro con el alma','Calma profunda','Cierre de ciclo'],message:'Cuando logras cerrar un ciclo. Dentro de ti hay calma. Lo que buscas no está fuera, sino en la reconexión con tu alma.',
+      sombra:'En sombra, le temes a la calma. La estabilidad te parece aburrida o falsa. Hoy pregúntate: ¿por qué te cuesta tanto permitirte estar en paz?'},
+    {num:12,name:'Álvaro',subtitle:'Tejedor de Sombras',cat:'dualidades',catLabel:'🌒 Dualidades del Prisma',img:'images/alvaro.png',keywords:['Manipulación emocional','Ambigüedad','Control'],message:'Esta carta surge cuando alguien juega contigo sin decirlo. Tu intuición ya sabe la verdad. También aparece cuando tú misma estás cayendo en dinámicas de manipulación.',
+      sombra:'En sombra profunda: manipulación pasiva y dependencia emocional disfrazada. Usas la ambigüedad como escudo para no comprometerte. Hoy sé honesto/a — contigo primero.'},
+    {num:13,name:'Emmanuel',subtitle:'Eco de la Duda',cat:'dualidades',catLabel:'🌒 Dualidades del Prisma',img:'images/emmanuel.png',keywords:['Indecisión','Inseguridad emocional','Elecciones inconclusas'],message:'Cuando estás esperando que alguien elija… y no lo hace. No elegir también es elegir. Y el alma lo sabe.',
+      sombra:'En sombra: nostalgia paralizante y apego a lo conocido aunque duela. No elegir también es una elección. Hoy el universo te pide que te decidas.'},
+    {num:14,name:'Valeria',subtitle:'El Veneno Sutil',cat:'dualidades',catLabel:'🌒 Dualidades del Prisma',img:'images/valeria.png',keywords:['Manipulación','Seducción oscura','Peligro encubierto'],message:'Valeria llega como susurro. ¿Lo que sientes es deseo o adicción? ¿Estás aceptando migajas disfrazadas de pasión?',
+      sombra:'En sombra: toxicidad pasiva y autoafirmación a costa de otros. Distorsionas percepciones sin confrontación directa. Hoy pregúntate desde dónde estás actuando realmente.'},
+    {num:15,name:'Karina',subtitle:'Intromisión Silenciosa',cat:'dualidades',catLabel:'🌒 Dualidades del Prisma',img:'images/karina.png',keywords:['Control emocional','Celos','Inseguridad oculta'],message:'El verdadero poder no viene del control externo, sino de la seguridad interna. Esta carta te invita a soltar el espejismo del control.',
+      sombra:'En sombra: cruzas límites sin confrontación abierta, desde la inseguridad disfrazada de poder. Hoy reconoce que el verdadero control viene de adentro, no de manipular lo externo.'},
+    {num:16,name:'Tatiana',subtitle:'Prisionera del Ayer',cat:'dualidades',catLabel:'🌒 Dualidades del Prisma',img:'images/tatiana.png',keywords:['Estancamiento','Nostalgia','Miedo al cambio'],message:'Tatiana aparece cuando estás aferrada a algo solo porque es familiar. ¿Estás en ciclos repetidos por costumbre, no por amor?',
+      sombra:'En sombra: vives emocionalmente anclada al pasado y repites ciclos por miedo al cambio. Hoy suelta una cosa — solo una — que ya no te sirve pero que sigues cargando.'},
+    {num:17,name:'Lucía y Samuel',subtitle:'Susurro Eterno',cat:'dualidades',catLabel:'🌒 Dualidades del Prisma',img:'images/lucia-samuel.png',keywords:['Amor imposible','Conexión profunda','Silencio que arde'],message:'Cuando sientes un amor tan profundo que trasciende lo tangible. A veces el alma está esperando otra vida, otro plano, otro momento.',
+      sombra:'En sombra: idealizas el pasado y te cierras al presente. Un amor no cerrado sigue ocupando espacio que podría ser tuyo. Hoy date permiso de soltar sin olvidar.'},
+    {num:18,name:'Alberto',subtitle:'La Voz que Enfrenta la Injusticia',cat:'guardianes',catLabel:'🛡️ Guardianes del Prisma',img:'images/alberto.png',keywords:['Justicia','Lealtad','Valentía'],message:'Alberto aparece cuando alguien necesita ser defendido, aunque no se atreva a pedirlo. Sé trinchera cuando alguien más está cayendo.',
+      sombra:'En sombra: rigidez moral o confrontación impulsiva. Luchas batallas que no son tuyas. Hoy pregúntate si estás defendiendo la justicia... o tu propio orgullo.'},
+    {num:19,name:'Oracio',subtitle:'Protector de los Corazones Rotos',cat:'guardianes',catLabel:'🛡️ Guardianes del Prisma',img:'images/oracio.png',keywords:['Lealtad incondicional','Amor silencioso','Presencia constante'],message:'Es momento de honrar lo que siempre ha estado ahí: un amor no correspondido, una amistad que te sostuvo.',
+      sombra:'En sombra: invisibilidad emocional y autosacrificio. Te borras para que otros brillen. Hoy recuerda que tus necesidades también importan — no solo las de los demás.'},
+    {num:20,name:'Rosario',subtitle:'La Druida del Espejo',cat:'guardianes',catLabel:'🛡️ Guardianes del Prisma',img:'images/rosario.png',keywords:['Reflexión emocional','Claridad intuitiva','Verdad no forzada'],message:'Rosario no te da respuestas directas: te pone frente al espejo y te acompaña mientras las descubres.',
+      sombra:'En sombra: exceso de autoanálisis o dureza emocional. La verdad se convierte en juicio. Hoy sé tan compasiva con otros como lo eres con la verdad.'},
+    {num:21,name:'Las Tres Aliadas',subtitle:'Renata, Cristina y Sofía',cat:'guardianes',catLabel:'🛡️ Guardianes del Prisma',img:'images/lastres.png',keywords:['Apoyo incondicional','Sororidad','Fuerza compartida'],message:'¿Estás dejando que te acompañen, o tratando de cargar todo sola? Es momento de honrar a quienes te sostienen.',
+      sombra:'En sombra: dispersión emocional o contradicción interna. Las voces que te apoyan se contradicen y te confunden. Hoy elige una sola dirección y confía en ella.'},
+    {num:22,name:'Jazmín',subtitle:'Cupido Encubierto',cat:'guardianes',catLabel:'🛡️ Guardianes del Prisma',img:'images/jazmin.png',keywords:['Amor verdadero','Unión sutil','Intuición silenciosa'],message:'Jazmín trabaja en silencio y confía en el tiempo del universo. El verdadero cupido no lanza flechas, sino señales.',
+      sombra:'En sombra: conectas a todos menos a ti misma/o. Postergás tu propio deseo emocional para ser puente de otros. Hoy pregúntate qué necesitas tú.'},
+    {num:23,name:'Daniela',subtitle:'Cheerleader del Alma',cat:'guardianes',catLabel:'🛡️ Guardianes del Prisma',img:'images/daniela.png',keywords:['Motivación auténtica','Fe prestada','Energía contagiosa'],message:'Esta carta es el grito del alma que dice: vas mejor de lo que crees. No te escondas cuando es hora de brillar.',
+      sombra:'En sombra: niegas tu propio dolor para mantener la energía de todos. Te consumes ayudando y nadie lo nota. Hoy permite que alguien te cuide a ti.'},
+    {num:24,name:'Heimdall',subtitle:'Guardián de los Portales',cat:'llaves',catLabel:'💠 Llaves Prismáticas',img:'images/heimdall.png',keywords:['Curiosidad poderosa','Inicios mágicos','Llaves ocultas'],message:'Sigue tu curiosidad, explora lo que parecía insignificante. Algo está a punto de abrirse en tu vida.',
+      sombra:'En sombra: hipercontrol y rigidez defensiva. Proteges tan bien los umbrales que nada bueno puede entrar. Hoy abre una puerta aunque dé miedo.'},
+    {num:25,name:'Erebus',subtitle:'El Iluminado',cat:'llaves',catLabel:'💠 Llaves Prismáticas',img:'images/erebus.png',keywords:['Sabiduría interior','Claridad mental','Silencio sagrado'],message:'Erebus aparece cuando estás listo para ver más allá de la superficie. Su presencia basta para hacerte encontrar respuestas donde antes solo había ruido.',
+      sombra:'En sombra: aislamiento emocional y sobreintelectualización. Te encierras tanto en tu mundo que pierdes contacto con los demás. Hoy sal de tu cabeza y entra en tu cuerpo.'},
+    {num:26,name:'Aetherius',subtitle:'El Viajero del Inframundo',cat:'llaves',catLabel:'💠 Llaves Prismáticas',img:'images/aetherius.png',keywords:['Travesía interior','Misterio divino','Transformación silenciosa'],message:'Estás cruzando portales internos que antes no querías ver. No necesitas entenderlo todo: solo atreverte a seguir tu propio viaje.',
+      sombra:'En sombra: te pierdes tan profundo en lo desconocido que pierdes contacto con la realidad cotidiana. Hoy ancla algo concreto — come, camina, respira la tierra.'},
+    {num:27,name:'El Umbral del Inframundo',subtitle:'Portal Místico',cat:'portales',catLabel:'🌌 Portales Místicos',img:'images/umbral.png',keywords:['Descenso consciente','Renacimiento','Oscuridad fértil'],message:'No entras para desaparecer, sino para recordar quién eras antes de olvidar. Para regresar a ti… a veces hay que bajar.',
+      sombra:'En sombra: te niegas a bajar. Evitas el dolor transformacional y te quedas en la superficie. Hoy date permiso de sentir lo que has estado evitando.'},
+    {num:28,name:'El Concilio de la Magia',subtitle:'Portal Místico',cat:'portales',catLabel:'🌌 Portales Místicos',img:'images/concilio.png',keywords:['Apoyo espiritual','Guías invisibles','Sincronicidades'],message:'Ya hay un concilio energético reunido: tus guías, tus yo futuros, tus ancestros. Ya estás siendo sostenida por energías mayores.',
+      sombra:'En sombra: buscas apoyo externo cuando la respuesta ya está dentro. Dependes demasiado de la validación de otros. Hoy confía en tu propio concilio interior.'},
+    {num:29,name:'El Portal del Caos',subtitle:'Portal Místico',cat:'portales',catLabel:'🌌 Portales Místicos',img:'images/caos.png',keywords:['Transformación radical','Despertar','Renovación'],message:'El Portal del Caos no es tu enemigo. El universo sacude la mesa para que dejes de jugar a encajar. Te libera… aunque duela.',
+      sombra:'En sombra: el caos te paraliza en vez de liberarte. Le temes a lo que se rompe aunque ya no servía. Hoy recuerda — lo que cae no era tuyo para quedarse.'},
+    {num:30,name:'El Inframundo de las Pociones',subtitle:'Portal Místico',cat:'portales',catLabel:'🌌 Portales Místicos',img:'images/pociones.png',keywords:['Alquimia emocional','Sanación profunda','Proceso'],message:'Tu alma está en proceso alquímico. No interrumpas la mezcla: confía en lo que se está cocinando dentro de ti.',
+      sombra:'En sombra: interrumpes el proceso antes de que termine. La impaciencia te impide ver los frutos. Hoy confía en la mezcla aunque no entiendas el resultado aún.'},
+    {num:31,name:'El Portal del Conocimiento Infinito',subtitle:'Portal Místico',cat:'portales',catLabel:'🌌 Portales Místicos',img:'images/conocimiento.png',keywords:['Despertar mental','Claridad espiritual','Canalización'],message:'La sabiduría no se encuentra… se recuerda. Estás lista para recibir respuestas que antes no podías sostener.',
+      sombra:'En sombra: recibes tanta información que no sabes cuál escuchar. El exceso de conocimiento se vuelve parálisis. Hoy elige una sola verdad y actúa desde ahí.'}
+  ];
+
+  const catClasses={esencias:'cat-esencias',dualidades:'cat-dualidades',guardianes:'cat-guardianes',llaves:'cat-llaves',portales:'cat-portales'};
+  let flipped=false;
+
+  function pickCard(){const d=new Date();const start=new Date(d.getFullYear(),0,0);const dayOfYear=Math.floor((d-start)/(1000*60*60*24));return cartas[(dayOfYear-1)%cartas.length];}
+
+  function flipCard(){
+    if(flipped)return;flipped=true;
+    const c=pickCard();
+    // Determine if reversed — use day+month as seed for variety
+    const today=new Date();
+    const reverseSeed=(today.getDate()*today.getMonth()+today.getFullYear())%7;
+    const isReversed = reverseSeed < 3; // ~43% chance reversed
+
+    const img=document.getElementById('cardImg');
+    img.src=c.img;img.style.display='block';
+    if(isReversed) img.classList.add('reversed');
+    else img.classList.remove('reversed');
+
+    // Get translated content if available
+    const tr=LangEngine.getCard(c.num);
+    const sub=tr?tr.subtitle:c.subtitle;
+    const catLbl=LangEngine.getCatLabel(c.cat)||c.catLabel;
+
+    // Use sombra message if reversed, luz message if upright
+    const msg = isReversed
+      ? (c.sombra || c.message)
+      : (tr?tr.message:c.message);
+    const kws=tr?tr.keywords:c.keywords;
+
+    document.getElementById('cardName').textContent=c.name;
+    document.getElementById('cardSubtitle').textContent=sub;
+    document.getElementById('cardScene').classList.add('flipped');
+    setTimeout(()=>{
+      document.getElementById('catBadgeWrap').innerHTML=`<span class="cat-badge ${catClasses[c.cat]}">${catLbl}</span>`;
+
+      // Show upright/reversed badge
+      const posLabel = isReversed
+        ? `<span class="reversed-badge">🌑 Carta Invertida — Sombra</span>`
+        : `<span class="upright-badge">☀️ Carta Derecha — Luz</span>`;
+      document.getElementById('posicionBadge').innerHTML = posLabel;
+
+      document.getElementById('cartaReadingTitle').textContent=`✦ ${c.name.toUpperCase()} ✦`;
+      document.getElementById('cartaMessage').textContent=msg;
+      document.getElementById('cartaKeywords').innerHTML=kws.map(k=>`<span class="carta-kw">${k}</span>`).join('');
+      document.getElementById('cartaReading').classList.add('visible');
+      document.getElementById('nuevoBtn').style.display='block';
+      // Show diario reminder
+      document.getElementById('diarioReminder').classList.add('visible');
+    },1000);
+  }
+
+  function resetCard(){
+    flipped=false;
+    document.getElementById('cardScene').classList.remove('flipped');
+    document.getElementById('cartaReading').classList.remove('visible');
+    document.getElementById('nuevoBtn').style.display='none';
+    document.getElementById('catBadgeWrap').innerHTML='';
+    document.getElementById('cartaKeywords').innerHTML='';
+    const img=document.getElementById('cardImg');
+    img.src=''; img.classList.remove('reversed');
+    document.getElementById('posicionBadge').innerHTML='';
+    document.getElementById('diarioReminder').classList.remove('visible');
+  }
+
+  // ── NOMBRE MÍSTICO ──
+  // Día (1-31) → Palabra
+  const NM_DIAS = [
+    'Iluminado/a',   // 1
+    'Hechicero/a',   // 2
+    'Viajero/a',     // 3
+    'Guardián/a',    // 4
+    'Portador/a',    // 5
+    'Mago/a',        // 6
+    'Encubierto/a',  // 7
+    'Tejedor/a',     // 8
+    'Sanador/a',     // 9
+    'Vidente',       // 10
+    'Invocador/a',   // 11
+    'Buscador/a',    // 12
+    'Protector/a',   // 13
+    'Velador/a',     // 14
+    'Prisionero/a',  // 15
+    'Liberador/a',   // 16
+    'Custodio/a',    // 17
+    'Olvidado/a',    // 18
+    'Renacido/a',    // 19
+    'Cazador/a',     // 20
+    'Susurrador/a',  // 21
+    'Caminante',     // 22
+    'Venenoso/a',    // 23
+    'Druida',        // 24
+    'Musa',          // 25
+    'Encantador/a',  // 26
+    'Canalizador/a', // 27
+    'Ancestral',     // 28
+    'Primordial',    // 29
+    'Revelado/a',    // 30
+    'Dios/Diosa',    // 31
+  ];
+
+  // Mes (0-11) → Adjetivo
+  const NM_MESES = [
+    'Etéreo/a',       // Enero
+    'Gélido/a',       // Febrero
+    'Tempestuoso/a',  // Marzo
+    'Floreciente',    // Abril
+    'Eterno/a',       // Mayo
+    'Apasionado/a',         // Junio
+    'Mágico/a',       // Julio
+    'Sutil',          // Agosto
+    'Sabio/a',        // Septiembre
+    'Místico/a',      // Octubre
+    'Silencioso/a',   // Noviembre
+    'Ancestral',      // Diciembre
+  ];
+
+  // Últimos 2 dígitos del año (00-99) → Frase
+  // 52-99 repite el ciclo 00-47 (usando módulo 50 desde 51)
+  const NM_ANIOS = [
+    'del Prisma',           // 00
+    'del Tiempo',           // 01
+    'del Fuego',            // 02
+    'de las Sombras',       // 03
+    'del Inframundo',       // 04
+    'del Amor',             // 05
+    'del Karma',            // 06
+    'del Umbral',           // 07
+    'de la Justicia',       // 08
+    'del Corazón',          // 09
+    'del Alma',             // 10
+    'del Espejo',           // 11
+    'del Destino',          // 12
+    'de la Luz',            // 13
+    'de la Oscuridad',      // 14
+    'del Silencio',         // 15
+    'del Caos',             // 16
+    'del Orden',            // 17
+    'de las Estrellas',     // 18
+    'del Abismo',           // 19
+    'del Velo',             // 20
+    'de la Luna',           // 21
+    'del Sol',              // 22
+    'del Despertar',        // 23
+    'de la Muerte',         // 24
+    'de la Vida',           // 25
+    'del Renacimiento',     // 26
+    'del Olvido',           // 27
+    'del Recuerdo',         // 28
+    'de la Verdad',         // 29
+    'de la Mentira',        // 30
+    'del Poder',            // 31
+    'de la Debilidad',      // 32
+    'del Equilibrio',       // 33
+    'del Desequilibrio',    // 34
+    'del Misterio',         // 35
+    'de la Revelación',     // 36
+    'del Secreto',          // 37
+    'de la Traición',       // 38
+    'de la Lealtad',        // 39
+    'del Sacrificio',       // 40
+    'de la Redención',      // 41
+    'del Castigo',          // 42
+    'de la Recompensa',     // 43
+    'del Deseo',            // 44
+    'de la Tentación',      // 45
+    'de la Pureza',         // 46
+    'de la Corrupción',     // 47
+    'del Nacimiento',       // 48
+    'del Final',            // 49
+    'del Comienzo',         // 50
+    'del Destino',          // 51 → repite desde aquí
+  ];
+
+  function calcularNombre(){
+    const fecha = document.getElementById('nombreFecha').value;
+    if(!fecha){ return; }
+    const d = new Date(fecha + 'T12:00:00'); // evitar timezone issues
+    const dia  = d.getDate();       // 1-31
+    const mes  = d.getMonth();      // 0-11
+    const anio = d.getFullYear();
+
+    // Palabra del día
+    const palabra = NM_DIAS[dia - 1] || NM_DIAS[30];
+
+    // Adjetivo del mes
+    const adjetivo = NM_MESES[mes];
+
+    // Frase del año — últimos 2 dígitos
+    // 00-51 → directo | 52-99 → repite desde 00 (52-52=00, 53-52=01, etc.)
+    const ultimos2 = anio % 100;
+    const idxAnio  = ultimos2 <= 51 ? ultimos2 : ultimos2 - 52;
+    const frase    = NM_ANIOS[idxAnio];
+
+    const nombre = `${palabra} ${adjetivo} ${frase}`;
+
+    document.getElementById('nombreTexto').textContent = nombre;
+    document.getElementById('nombreSub').textContent =
+      `✦ ${dia}/${mes+1}/${anio} · Tu nombre del Prisma ✦`;
+    document.getElementById('nombreResultado').classList.add('visible');
+  }
+
+  // TAG FLASH
+  function flashTag(el){
+    el.classList.remove('flash');
+    void el.offsetWidth;
+    el.classList.add('flash');
+    setTimeout(()=>el.classList.remove('flash'), 700);
+  }
+  </script>
+<script>
+// ════════════════════════════════════════
+// TEMPLO DEL PRISMA — SCRIPT PRINCIPAL
+// TIMESTAMP: 2026-06-14 14:02
+// ════════════════════════════════════════
+
+// ── CONSTANTES ──
+const PANEL_BIN  = '6a2bd799f5f4af5e29e56f1a';
+const LIBRO_BIN  = '6a2bd7d3da38895dfeb3e94d';
+const ACCESS_KEY = '$2a$10$nen3ORRwjShyHRO9y/yLXOUNY9V9FtMpO7zoDsUuXv4Yo4Rce36xW';
+const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/';
+const HEADERS = { 'Content-Type': 'application/json', 'X-Access-Key': ACCESS_KEY };
+
+// ── PANEL CARTAS ABANICO ──
+const PRISMA_CARTAS = [
+  { img:'images/colectiva.png', label:'Carta\nColectiva', icon:'🎴',
+    titulo:'Carta Colectiva de la Semana' },
+  { img:'images/energia.png', label:'Energía\nSemanal', icon:'✨',
+    titulo:'Energía de la Semana' },
+  { img:'images/arcangel.png', label:'Arcángel\nGuardián', icon:'👼',
+    titulo:'Arcángel que nos Acompaña' },
+  { img:'images/Luna.png', label:'Luna\nActiva', icon:'🌙',
+    titulo:'Luna Activa & Ritual' },
+];
+const FAN_ANGLES  = [-28, -9, 9, 28];
+const FAN_OFFSETS = [-95, -32, 32, 95];
+let prismaSelected = -1;
+const PRISMA_DATA = { texts: ['','','',''], extras: ['','','',''] };
+
+function buildPrismaFan() {
+  const fan = document.getElementById('prismaFan');
+  if(!fan) { console.log('prismaFan not found'); return; }
+  fan.innerHTML = '';
+  PRISMA_CARTAS.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'prisma-card';
+    card.id = 'pc' + i;
+    card.style.cssText = `--tx:${FAN_OFFSETS[i]}px;--rot:${FAN_ANGLES[i]}deg;transform:translateX(${FAN_OFFSETS[i]}px) rotate(${FAN_ANGLES[i]}deg);z-index:${i+1};transition-delay:${i*0.04}s;`;
+    card.innerHTML = `
+      <div class="prisma-card-inner">
+        <div class="prisma-card-back">
+          <img src="${c.img}" alt="${c.titulo}"
+            onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(160deg,#1a1050,#0d1830)'">
+          <div class="prisma-card-back-overlay">
+            <span class="prisma-card-back-label">${c.label.replace('\n','<br>')}</span>
+          </div>
+        </div>
+        <div class="prisma-card-front">
+          <div class="prisma-card-front-icon">${c.icon}</div>
+          <div class="prisma-card-front-title">${c.titulo}</div>
+          <div class="prisma-card-front-divider"></div>
+          <div class="prisma-card-front-text" id="pctxt${i}">Cargando...</div>
+          <div class="prisma-card-front-extra" id="pcextra${i}" style="display:none"></div>
+        </div>
+      </div>`;
+    card.addEventListener('click', () => selectPrismaCard(i));
+    fan.appendChild(card);
+  });
+  console.log('Fan built with', PRISMA_CARTAS.length, 'cards');
+}
+
+function selectPrismaCard(idx) {
+  const hint = document.getElementById('prismaHint');
+  const fan  = document.getElementById('prismaFan');
+  const reveal = document.getElementById('prismaReveal');
+
+  if(prismaSelected === idx) {
+    // Deselect — back to fan
+    prismaSelected = -1;
+    if(fan) fan.style.display = 'flex';
+    if(reveal) reveal.style.display = 'none';
+    PRISMA_CARTAS.forEach((_, i) => {
+      const el = document.getElementById('pc'+i);
+      if(el){ el.classList.remove('flipped');
+        el.style.transform = `translateX(${FAN_OFFSETS[i]}px) rotate(${FAN_ANGLES[i]}deg)`;
+        el.style.zIndex = i+1; }
+    });
+    if(hint) hint.textContent = '✦ Selecciona una carta ✦';
+    return;
+  }
+
+  prismaSelected = idx;
+  const c = PRISMA_CARTAS[idx];
+
+  // Get text from stored data
+  const msg   = PRISMA_DATA.texts[idx] || 'Cargando...';
+  const extra = PRISMA_DATA.extras[idx] || '';
+
+  // Hide fan, show reveal card
+  if(fan) fan.style.display = 'none';
+  if(reveal) {
+    reveal.style.display = 'block';
+    reveal.innerHTML = `
+      <div class="prisma-reveal-card" onclick="selectPrismaCard(${idx})">
+        <div class="prisma-reveal-close">✕</div>
+        <div class="prisma-reveal-icon">${c.icon}</div>
+        <div class="prisma-reveal-title">${c.titulo}</div>
+        <div class="prisma-reveal-divider"></div>
+        <div class="prisma-reveal-text">${msg}</div>
+        ${extra ? `<div class="prisma-reveal-extra">${extra}</div>` : ''}
+        <div class="prisma-reveal-hint">Toca para cerrar</div>
+      </div>`;
+  }
+  if(hint) hint.textContent = `✦ ${c.titulo} ✦`;
+}
+
+function applyColorGlow(hex) {
+  if(!hex) return;
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  // Use box-shadow on cards (not filter) so hover filter works independently
+  document.querySelectorAll('.prisma-card-back').forEach(c=>{
+    c.style.boxShadow=`0 8px 30px rgba(0,0,0,.6),0 0 22px rgba(${r},${g},${b},0.3)`;
+    c.style.borderColor=`rgba(${r},${g},${b},0.45)`;
+  });
+  // Color glow on the fan container via outline/box-shadow trick
+  const fan=document.getElementById('prismaFan');
+  if(fan) {
+    fan.style.setProperty('--glow-color', `rgba(${r},${g},${b},0.3)`);
+  }
+  const hint=document.getElementById('prismaHint');
+  if(hint) hint.style.color=`rgba(${r},${g},${b},0.6)`;
+}
+
+function llenarTextosCarta(r) {
+  if(!r) return;
+
+  // Carta 0 — Colectiva
+  const cc = r.carta_colectiva;
+  if(cc) {
+    PRISMA_DATA.texts[0] = cc.mensaje || '';
+    const t = document.getElementById('pctxt0');
+    if(t) t.textContent = cc.mensaje || '';
+  }
+
+  // Carta 1 — Energía
+  const ms = r.mensaje_semanal;
+  if(ms) {
+    PRISMA_DATA.texts[1] = ms.texto || '';
+    const t = document.getElementById('pctxt1');
+    if(t) t.textContent = ms.texto || '';
+    const e = document.getElementById('pcextra1');
+    if(ms.color_nombre) {
+      PRISMA_DATA.extras[1] = `<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${ms.color||'#c9a84c'};vertical-align:middle;margin-right:4px"></span>${ms.color_nombre}`;
+      if(e) { e.style.display='block'; e.innerHTML = PRISMA_DATA.extras[1]; }
+    }
+    if(ms.color && typeof applyColorGlow==='function') applyColorGlow(ms.color);
+
+    // Carta 2 — Arcángel
+    PRISMA_DATA.texts[2] = ms.angeles || '';
+    const t2 = document.getElementById('pctxt2');
+    if(t2) t2.textContent = ms.angeles || '';
+  }
+
+  // Carta 3 — Luna
+  const luna = r.luna;
+  if(luna) {
+    PRISMA_DATA.texts[3] = luna.mensaje || '';
+    if(luna.nombre) PRISMA_DATA.extras[3] = `${luna.fase||'🌙'} ${luna.nombre}`;
+    const t = document.getElementById('pctxt3');
+    if(t) t.textContent = luna.mensaje || '';
+    const e = document.getElementById('pcextra3');
+    if(e && luna.nombre) { e.style.display='block'; e.textContent = PRISMA_DATA.extras[3]; }
+  }
+}
+
+async function cargarPanel() {
+  try {
+    const res = await fetch(JSONBIN_URL + PANEL_BIN + '/latest', {
+      headers: { 'X-Access-Key': ACCESS_KEY }
+    });
+    const data = await res.json();
+    const r = data.record;
+    if(!r) return;
+
+    if(typeof llenarTextosCarta === 'function') llenarTextosCarta(r);
+
+    if(!r.luna) {
+      const lunaRef = new Date('2000-01-06T18:14:00Z');
+      const ciclo = 29.53058867;
+      const diff = (new Date() - lunaRef) / (1000*60*60*24);
+      const edad = ((diff % ciclo) + ciclo) % ciclo;
+      const fases = [
+        {e:'🌑',n:'Luna Nueva',m:1.84},{e:'🌒',n:'Luna Creciente',m:7.38},
+        {e:'🌓',n:'Cuarto Creciente',m:11.07},{e:'🌔',n:'Gibosa Creciente',m:14.76},
+        {e:'🌕',n:'Luna Llena',m:16.61},{e:'🌖',n:'Gibosa Menguante',m:20.3},
+        {e:'🌗',n:'Cuarto Menguante',m:23.99},{e:'🌘',n:'Luna Menguante',m:29.53},
+      ];
+      const fase = fases.find(f => edad <= f.m) || fases[7];
+      if(typeof llenarTextosCarta === 'function')
+        llenarTextosCarta({...r, luna:{fase:fase.e,nombre:fase.n,mensaje:''}});
+    }
+  } catch(e) { console.log('Error panel:', e); }
+}
+
+async function cargarLibroYContador() {
+  try {
+    const res = await fetch(JSONBIN_URL + LIBRO_BIN + '/latest', {
+      headers: { 'X-Access-Key': ACCESS_KEY }
+    });
+    const data = await res.json();
+    const record = data.record;
+
+    const count = record.contador || 0;
+    document.getElementById('numAlmas').textContent = count.toLocaleString('es-MX');
+    poblarEnjambre(count);
+    // Init map - retry if Leaflet not loaded yet
+    const almasForMap = record.almas || [];
+    if(window.L) {
+      iniciarMapaInline(almasForMap);
+    } else {
+      // Leaflet loads async - wait for it
+      const waitLeaflet = setInterval(() => {
+        if(window.L) {
+          clearInterval(waitLeaflet);
+          iniciarMapaInline(almasForMap);
+        }
+      }, 100);
+      setTimeout(() => clearInterval(waitLeaflet), 5000);
+    }
+
+    // Incrementar contador silenciosamente
+    fetch(JSONBIN_URL + LIBRO_BIN, {
+      method: 'PUT',
+      headers: HEADERS,
+      body: JSON.stringify({ ...record, contador: count + 1 })
+    });
+
+  } catch(e) {
+    console.log('Error libro:', e);
+    poblarEnjambre(5);
+    document.getElementById('numAlmas').textContent = '∞';
+  }
+}
+
+// ── AGREGAR ALMA ──
+async function agregarAlma() {
+  const nombre  = document.getElementById('libroNombre').value.trim();
+  const ciudad  = document.getElementById('libroCiudad').value.trim();
+  if(!nombre) { alert('Ingresa tu nombre místico ✨'); return; }
+
+  const hoy = new Date().toLocaleDateString('es-MX', {day:'2-digit',month:'2-digit',year:'numeric'});
+
+  try {
+    const res = await fetch(JSONBIN_URL + LIBRO_BIN + '/latest', { headers: { 'X-Access-Key': ACCESS_KEY } });
+    const data = await res.json();
+    const record = data.record;
+    const almas = record.almas || [];
+    const coords = getCoordsForPais(ciudad);
+    const entrada = { nombre, pais: ciudad, fecha: hoy };
+    if(coords) { entrada.lat = coords[0]; entrada.lng = coords[1]; }
+    almas.push(entrada);
+
+    await fetch(JSONBIN_URL + LIBRO_BIN, {
+      method: 'PUT', headers: HEADERS,
+      body: JSON.stringify({ ...record, almas })
+    });
+
+    const newCount = record.contador || almas.length;
+    lanzarMariposa(newCount);
+    document.getElementById('numAlmas').textContent = newCount.toLocaleString('es-MX');
+    iniciarMapaInline(almas);
+    document.getElementById('libroNombre').value = '';
+    document.getElementById('libroCiudad').value = '';
+    const st=document.getElementById('libroStatus');
+    if(st){st.style.display='block';st.textContent='✦ Tu huella ha quedado grabada en el Templo ✦';
+      setTimeout(()=>st.style.display='none',4000);}
+
+  } catch(e) { alert('No se pudo guardar tu huella 😢 Intenta de nuevo'); }
+}
+
+// ── LOOKUP PAÍSES → COORDENADAS ──
+const PAIS_COORDS = {
+  'argentina':[-34.61,-58.38],'mexico':[-19.43,-99.13],'méxico':[-19.43,-99.13],
+  'colombia':[4.71,-74.07],'chile':[-33.45,-70.67],'peru':[-12.05,-77.04],
+  'perú':[-12.05,-77.04],'venezuela':[10.48,-66.88],'ecuador':[-0.22,-78.51],
+  'bolivia':[-16.5,-68.15],'paraguay':[-25.28,-57.64],'uruguay':[-34.9,-56.19],
+  'brasil':[-15.78,-47.93],'brazil':[-15.78,-47.93],'costa rica':[9.93,-84.08],
+  'guatemala':[14.64,-90.51],'honduras':[14.1,-87.22],'el salvador':[13.69,-89.19],
+  'nicaragua':[12.13,-86.29],'panama':[8.99,-79.52],'panamá':[8.99,-79.52],
+  'cuba':[23.13,-82.38],'república dominicana':[18.47,-69.9],'puerto rico':[18.46,-66.11],
+  'españa':[40.42,-3.7],'espana':[40.42,-3.7],'portugal':[38.72,-9.14],
+  'italia':[41.9,12.48],'francia':[48.86,2.35],'alemania':[52.52,13.4],
+  'reino unido':[51.51,-0.13],'holanda':[52.37,4.9],'bélgica':[50.85,4.35],
+  'belgica':[50.85,4.35],'suiza':[46.95,7.45],'austria':[48.21,16.37],
+  'estados unidos':[38.9,-77.04],'usa':[38.9,-77.04],'canada':[45.42,-75.7],
+  'canadá':[45.42,-75.7],'australia':[-33.87,151.21],'nueva zelanda':[-36.86,174.77],
+  'japón':[35.69,139.69],'japon':[35.69,139.69],'corea del sur':[37.57,126.98],
+  'china':[39.91,116.39],'india':[28.63,77.22],'sudáfrica':[-25.75,28.19],
+  'sudafrica':[-25.75,28.19],'marruecos':[33.99,-6.85],'egipto':[30.06,31.25],
 };
 
-// =====================================================
-// HELPER FUNCTIONS
-// =====================================================
-
-function getOracleCard(id, lang = 'en') {
-  const cards = ORACLE_CARDS[lang] || ORACLE_CARDS['en'];
-  return cards.find(c => c.id === id) || null;
-}
-
-function getAllOracleCards(lang = 'en') {
-  return ORACLE_CARDS[lang] || ORACLE_CARDS['en'];
-}
-
-function getCardMessage(card, context = 'general', isReversed = false) {
-  if (!card) return '';
-
-  if (context === 'amor' && card.themes?.amor) {
-    return isReversed ? card.themes.amor.reversed : card.themes.amor.upright;
+function getCoordsForPais(pais) {
+  if(!pais) return null;
+  const key = pais.toLowerCase().trim();
+  if(PAIS_COORDS[key]) return PAIS_COORDS[key];
+  for(const [k,v] of Object.entries(PAIS_COORDS)) {
+    if(key.includes(k) || k.includes(key)) return v;
   }
-
-  if (context === 'trabajo' && card.themes?.trabajo) {
-    return isReversed ? card.themes.trabajo.reversed : card.themes.trabajo.upright;
-  }
-
-  const section = isReversed ? card.reversed : card.upright;
-  return section?.message || '';
+  return null;
 }
 
-console.log('%c[Bruxa Tarot] Oracle Cards EN loaded successfully (31 cards)', 'color:#7c3aed');
+// ── MAPA INLINE ──
+let mapaInlineInstance = null;
+
+function iniciarMapaInline(almas) {
+  const container = document.getElementById('mapaInline');
+  if(!container || !window.L) return;
+
+  if(mapaInlineInstance) { mapaInlineInstance.remove(); mapaInlineInstance = null; }
+
+  const map = L.map('mapaInline', {
+    center: [20, 0], zoom: 2,
+    zoomControl: true, scrollWheelZoom: false,
+    attributionControl: false
+  });
+  mapaInlineInstance = map;
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19
+  }).addTo(map);
+
+  const mIcon = L.divIcon({
+    html: '<span style="font-size:1.3rem;line-height:1;filter:drop-shadow(0 0 4px rgba(201,168,76,.8))">🦋</span>',
+    className: '',
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
+  });
+
+  const paises = new Set();
+  let placed = 0;
+
+  (almas || []).forEach(a => {
+    const coords = (a.lat && a.lng)
+      ? [a.lat, a.lng]
+      : getCoordsForPais(a.pais);
+    if(!coords) return;
+
+    const jLat = (Math.random() - 0.5) * 1.5;
+    const jLng = (Math.random() - 0.5) * 1.5;
+
+    L.marker([coords[0] + jLat, coords[1] + jLng], { icon: mIcon })
+      .bindPopup(
+        `<div style="font-family:'Cinzel',serif;font-size:.72rem;color:#c9a84c;text-align:center;min-width:120px">
+          🦋 <strong>${a.nombre || 'Alma'}</strong><br>
+          <span style="font-size:.6rem;color:#aaa">${a.pais || ''}</span><br>
+          <span style="font-size:.55rem;color:#777">${a.fecha || ''}</span>
+        </div>`
+      )
+      .addTo(map);
+
+    if(a.pais) paises.add(a.pais.toLowerCase().trim());
+    placed++;
+  });
+
+  const statPaises = document.getElementById('mapaStatPaises');
+  const statAlmas  = document.getElementById('mapaStatAlmas');
+  if(statPaises) statPaises.textContent = paises.size || '-';
+  if(statAlmas)  statAlmas.textContent  = placed;
+}
+
+// ── ENJAMBRE DE MARIPOSAS ──
+function poblarEnjambre(total) {
+  const contenedor = document.getElementById('enjambre');
+  if(!contenedor) return;
+  const n = Math.min(total || 0, 120);
+  contenedor.innerHTML = '';
+  for(let i = 0; i < n; i++) {
+    const s = 10 + Math.random() * 14;
+    const delay = (Math.random() * 4).toFixed(2);
+    const dur1  = (2.5 + Math.random() * 3).toFixed(2);
+    const dur2  = (2 + Math.random() * 2).toFixed(2);
+    const op    = (0.45 + Math.random() * 0.45).toFixed(2);
+    const el = document.createElement('span');
+    el.className = 'm-svg';
+    el.style.cssText = `width:${s}px;height:${s}px;font-size:${s}px;line-height:1;opacity:${op};animation-duration:${dur1}s,${dur2}s;animation-delay:${delay}s,${delay}s`;
+    el.textContent = '🦋';
+    contenedor.appendChild(el);
+  }
+}
+
+function lanzarMariposa(idx) {
+  poblarEnjambre(idx + 1);
+}
+
+// ── SIDEBAR ──
+function openSidebar(){
+  const s=document.getElementById('sidebar');
+  const o=document.getElementById('sidebarOverlay');
+  if(s) s.classList.add('open');
+  if(o) o.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeSidebar(){
+  const s=document.getElementById('sidebar');
+  const o=document.getElementById('sidebarOverlay');
+  if(s) s.classList.remove('open');
+  if(o) o.classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ── FIREBASE PRESENCIA Y VISITAS ──
+const FB_URL = 'https://diario-del-alma-default-rtdb.firebaseio.com';
+// ID estable por tab: si refrescas, reutiliza el mismo ID → sobreescribe la misma entrada
+const FB_SID = (() => {
+  const KEY = 'bruxa_sid';
+  let sid = sessionStorage.getItem(KEY);
+  if(!sid) { sid = 'sid_' + Math.random().toString(36).slice(2) + Date.now(); sessionStorage.setItem(KEY, sid); }
+  return sid;
+})();
+let fbHeartbeatTimer = null;
+
+async function fbGet(path) {
+  try {
+    const r = await fetch(FB_URL + path + '.json');
+    return r.ok ? await r.json() : null;
+  } catch(e) { return null; }
+}
+async function fbPut(path, data) {
+  try {
+    await fetch(FB_URL + path + '.json', {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+  } catch(e) {}
+}
+async function fbDelete(path) {
+  try {
+    await fetch(FB_URL + path + '.json', { method: 'DELETE' });
+  } catch(e) {}
+}
+
+async function fbRegistrarVisita() {
+  // Solo contar una vez cada 24h por dispositivo
+  const KEY = 'bruxa_ultima_visita';
+  const ultima = parseInt(localStorage.getItem(KEY) || '0');
+  const ahora = Date.now();
+  const ya_visito_hoy = (ahora - ultima) < 24 * 60 * 60 * 1000;
+
+  const actual = await fbGet('/templo/visitas') || 0;
+
+  if(!ya_visito_hoy) {
+    const nuevas = actual + 1;
+    await fbPut('/templo/visitas', nuevas);
+    localStorage.setItem(KEY, ahora.toString());
+    document.getElementById('fbVisitas').textContent = nuevas.toLocaleString('es-MX');
+  } else {
+    // Solo mostrar el número actual sin incrementar
+    document.getElementById('fbVisitas').textContent = actual.toLocaleString('es-MX');
+  }
+}
+
+async function fbRegistrarPresencia() {
+  const ahora = Date.now();
+  await fbPut('/templo/presencia/' + FB_SID, { t: ahora });
+
+  // Heartbeat cada 30s para mantener presencia activa
+  fbHeartbeatTimer = setInterval(async () => {
+    await fbPut('/templo/presencia/' + FB_SID, { t: Date.now() });
+    fbActualizarOnline();
+  }, 30000);
+
+  fbActualizarOnline();
+}
+
+async function fbActualizarOnline() {
+  const presencia = await fbGet('/templo/presencia');
+  const limite = Date.now() - 90000;
+  const activos = presencia
+    ? Object.values(presencia).filter(v => v && v.t > limite).length
+    : 1;
+
+  const fl = document.getElementById('floatOnline');
+  const fn = document.getElementById('floatNum');
+
+  const count = Math.max(1, activos);
+  if(fn) fn.textContent = count.toLocaleString('es-MX');
+  if(fl && floatShown) fl.classList.add('visible');
+
+  // Limpiar sesiones caducadas
+  if(presencia) Object.entries(presencia).forEach(([sid, v]) => {
+    if(v && v.t < Date.now() - 300000) fbDelete('/templo/presencia/' + sid);
+  });
+}
+
+// Mostrar flotante tras primer scroll
+let floatShown = false;
+window.addEventListener('scroll', function() {
+  if(!floatShown && window.scrollY > 120) {
+    floatShown = true;
+    const fl = document.getElementById('floatOnline');
+    if(fl) fl.classList.add('visible');
+    fbActualizarOnline();
+  }
+}, { passive: true });
+
+function fbSalida() {
+  fbDelete('/templo/presencia/' + FB_SID);
+  if(fbHeartbeatTimer) clearInterval(fbHeartbeatTimer);
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', function() {
+  // Sidebar
+  const trigger  = document.getElementById('sidebarTrigger');
+  const closeBtn = document.getElementById('sidebarClose');
+  const overlay  = document.getElementById('sidebarOverlay');
+  if(trigger)  trigger.addEventListener('click', openSidebar);
+  if(closeBtn) closeBtn.addEventListener('click', closeSidebar);
+  if(overlay)  overlay.addEventListener('click', closeSidebar);
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeSidebar(); });
+
+  // 1. Build fan first so DOM elements exist
+  buildPrismaFan();
+  // 2. Load data
+  cargarLibroYContador();
+  cargarPanel();
+  // 3. Firebase contadores
+  fbRegistrarVisita();
+  fbRegistrarPresencia();
+});
+
+window.addEventListener('beforeunload', fbSalida);
+window.addEventListener('pagehide', fbSalida);
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+</body>
+</html>
