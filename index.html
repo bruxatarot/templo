@@ -1613,7 +1613,13 @@ function closeSidebar(){
 
 // ── FIREBASE PRESENCIA Y VISITAS ──
 const FB_URL = 'https://diario-del-alma-default-rtdb.firebaseio.com';
-const FB_SID = 'sid_' + Math.random().toString(36).slice(2) + Date.now();
+// ID estable por tab: si refrescas, reutiliza el mismo ID → sobreescribe la misma entrada
+const FB_SID = (() => {
+  const KEY = 'bruxa_sid';
+  let sid = sessionStorage.getItem(KEY);
+  if(!sid) { sid = 'sid_' + Math.random().toString(36).slice(2) + Date.now(); sessionStorage.setItem(KEY, sid); }
+  return sid;
+})();
 let fbHeartbeatTimer = null;
 
 async function fbGet(path) {
