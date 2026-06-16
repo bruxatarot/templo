@@ -1686,14 +1686,9 @@ async function fbActualizarOnline() {
   const fl = document.getElementById('floatOnline');
   const fn = document.getElementById('floatNum');
 
-  if(activos >= 2) {
-    // Mostrar solo si hay 2 o más almas simultáneas
-    if(fn) fn.textContent = activos.toLocaleString('es-MX');
-    if(fl && floatShown) fl.classList.add('visible');
-  } else {
-    // Ocultar cuando solo está 1 persona
-    if(fl) fl.classList.remove('visible');
-  }
+  const count = Math.max(1, activos);
+  if(fn) fn.textContent = count.toLocaleString('es-MX');
+  if(fl && floatShown) fl.classList.add('visible');
 
   // Limpiar sesiones caducadas
   if(presencia) Object.entries(presencia).forEach(([sid, v]) => {
@@ -1701,13 +1696,14 @@ async function fbActualizarOnline() {
   });
 }
 
-// Habilitar aparición del flotante tras primer scroll
-// (la visibilidad real la controla fbActualizarOnline según cuántas almas haya)
+// Mostrar flotante tras primer scroll
 let floatShown = false;
 window.addEventListener('scroll', function() {
   if(!floatShown && window.scrollY > 120) {
     floatShown = true;
-    fbActualizarOnline(); // re-evaluar visibilidad al hacer scroll
+    const fl = document.getElementById('floatOnline');
+    if(fl) fl.classList.add('visible');
+    fbActualizarOnline();
   }
 }, { passive: true });
 
