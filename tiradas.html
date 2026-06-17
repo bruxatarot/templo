@@ -7,6 +7,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <script src="lang.js"></script>
   <script src="js/data/oracle-cards.js"></script>
+  <script src="js/data/oracle-pt.js"></script>
+  <script src="js/data/oracle-ko.js"></script>
+  <script src="js/data/oracle-tr.js"></script>
+  <script src="js/data/oracle-ja.js"></script>
   <style>
     :root{--gold:#c9a84c;--gold-light:#e8c97a;--gold-pale:#f5e6b8;--deep:#04060f;--midnight:#0b1128;}
     *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
@@ -301,8 +305,13 @@
     <a href="index.html" class="nav-back">← Volver al Templo</a>
     <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
     <div class="lang-selector">
-      <button class="lang-btn active" onclick="window.location.href='tiradas.html'">ES</button>
-      <button class="lang-btn" onclick="window.location.href='tiradas-en.html'">EN</button>
+      <button class="lang-btn active" data-lang="es" onclick="LangEngine&&LangEngine.set('es')">ES</button>
+      <button class="lang-btn" data-lang="en" onclick="LangEngine&&LangEngine.set('en')">EN</button>
+      <button class="lang-btn" data-lang="pt" onclick="LangEngine&&LangEngine.set('pt')">PT</button>
+      <button class="lang-btn" data-lang="it" onclick="LangEngine&&LangEngine.set('it')">IT</button>
+      <button class="lang-btn" data-lang="ko" onclick="LangEngine&&LangEngine.set('ko')">한국</button>
+      <button class="lang-btn" data-lang="tr" onclick="LangEngine&&LangEngine.set('tr')">TR</button>
+      <button class="lang-btn" data-lang="ja" onclick="LangEngine&&LangEngine.set('ja')">日本</button>
     </div>
   </nav>
 
