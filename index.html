@@ -636,21 +636,21 @@
   <div id="sidebarOverlay" class="sidebar-overlay"></div>
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-header">
-      <p class="sidebar-title">✦ El Más Allá</p>
+      <p class="sidebar-title" data-i18n="sidebar_title">✦ El Más Allá</p>
       <button class="sidebar-close" id="sidebarClose">✕</button>
     </div>
     <nav class="sidebar-nav">
-      <a href="tiradas.html" class="sidebar-link">🔮 Oráculo Prisma</a>
-      <a href="rituales.html" class="sidebar-link">🕯️ Rituales del Prisma</a>
-      <a href="pozo.html" class="sidebar-link">⭐ Pozo de los Deseos</a>
-      <a href="diario.html" class="sidebar-link">📖 Diario del Alma</a>
-      <a href="test.html" class="sidebar-link">🌓 Test Luz y Sombra</a>
-      <a href="historias.html" class="sidebar-link">📚 Historias Mágicas</a>
-      <a href="mapa.html" class="sidebar-link">💌 Muro de Mensajes</a>
-      <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="sidebar-link">🎵 Frecuencias Sagradas</a>
+      <a href="tiradas.html" class="sidebar-link" data-i18n="sidebar_oraculo">🔮 Oráculo Prisma</a>
+      <a href="rituales.html" class="sidebar-link" data-i18n="sidebar_rituales">🕯️ Rituales del Prisma</a>
+      <a href="pozo.html" class="sidebar-link" data-i18n="sidebar_pozo">⭐ Pozo de los Deseos</a>
+      <a href="diario.html" class="sidebar-link" data-i18n="sidebar_diario">📖 Diario del Alma</a>
+      <a href="test.html" class="sidebar-link" data-i18n="sidebar_test">🌓 Test Luz y Sombra</a>
+      <a href="historias.html" class="sidebar-link" data-i18n="sidebar_historias">📚 Historias Mágicas</a>
+      <a href="mapa.html" class="sidebar-link" data-i18n="sidebar_muro">💌 Muro de Mensajes</a>
+      <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="sidebar-link" data-i18n="sidebar_frecuencias">🎵 Frecuencias Sagradas</a>
     </nav>
     <div class="sidebar-footer">
-      <p class="sidebar-footer-text">Templo del Prisma</p>
+      <p class="sidebar-footer-text" data-i18n="sidebar_footer">Templo del Prisma</p>
     </div>
   </aside>
 
@@ -707,20 +707,20 @@
   <section id="nombre-mistico" style="position:relative;z-index:1;padding:4rem 2rem;">
     <div class="section-inner" style="max-width:700px;margin:0 auto;text-align:center;">
       <div class="reveal">
-        <p class="section-label" style="text-align:center;">✦ ORÁCULO PRISMA</p>
-        <h2 class="section-title" style="text-align:center;">Tu Nombre Místico</h2>
-        <p class="section-body" style="margin:0 auto 2.5rem;text-align:center;">
+        <p class="section-label" style="text-align:center;" data-i18n="nombre_label">✦ ORÁCULO PRISMA</p>
+        <h2 class="section-title" style="text-align:center;" data-i18n="nombre_title">Tu Nombre Místico</h2>
+        <p class="section-body" style="margin:0 auto 2.5rem;text-align:center;" data-i18n-html="nombre_body">
           El Oráculo Prisma te ha asignado un nombre desde antes de que nacieras.<br>
           Ingresa tu fecha de nacimiento y descúbrelo.
         </p>
         <div style="background:rgba(11,17,40,.6);border:1px solid rgba(201,168,76,.15);border-radius:20px;padding:2rem;max-width:500px;margin:0 auto;">
           <div class="nombre-mistico-form">
             <input type="date" id="nombreFecha" placeholder="Tu fecha de nacimiento">
-            <button class="nombre-mistico-btn" onclick="calcularNombre()">✦ Revelar mi nombre</button>
+            <button class="nombre-mistico-btn" onclick="calcularNombre()" data-i18n="nombre_btn">✦ Revelar mi nombre</button>
           </div>
           <div class="nombre-resultado" id="nombreResultado">
             <div style="margin:1.2rem 0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.2),transparent)"></div>
-            <p style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.35em;color:rgba(201,168,76,.65);margin-bottom:.8rem;">✦ TU NOMBRE DEL PRISMA ES ✦</p>
+            <p style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.35em;color:rgba(201,168,76,.65);margin-bottom:.8rem;" data-i18n="nombre_resultado_label">✦ TU NOMBRE DEL PRISMA ES ✦</p>
             <p class="nombre-resultado-nombre" id="nombreTexto"></p>
             <div style="margin:.8rem 0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.15),transparent)"></div>
             <p class="nombre-resultado-sub" id="nombreSub"></p>
@@ -815,9 +815,9 @@
   <!-- LIBRO DE ALMAS -->
   <section id="libroAlmas" style="position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 2rem 4rem">
     <div class="reveal" style="text-align:center;margin-bottom:2.5rem">
-      <p class="section-label">✦ Comunidad</p>
-      <h2 class="section-title">Libro de Almas</h2>
-      <p class="section-body">Deja tu huella en el Templo del Prisma.<br>Tu mariposa aparecerá en el mapa de las almas.</p>
+      <p class="section-label" data-i18n="libro_label">✦ Comunidad</p>
+      <h2 class="section-title" data-i18n="libro_title">Libro de Almas</h2>
+      <p class="section-body" data-i18n-html="libro_body">Deja tu huella en el Templo del Prisma.<br>Tu mariposa aparecerá en el mapa de las almas.</p>
     </div>
 
     <!-- FORMULARIO MÍSTICO -->
@@ -825,7 +825,7 @@
       <div style="display:flex;flex-direction:column;gap:1rem;align-items:center">
         <div style="position:relative;width:100%">
           <span style="position:absolute;left:1.2rem;top:50%;transform:translateY(-50%);font-size:1rem;opacity:.5">🦋</span>
-          <input id="libroNombre" maxlength="60" placeholder="Tu nombre místico..."
+          <input id="libroNombre" maxlength="60" placeholder="Tu nombre místico..." data-i18n-placeholder="libro_placeholder_nombre"
             style="width:100%;padding:.9rem 1.2rem .9rem 3rem;border-radius:100px;
             border:1px solid rgba(201,168,76,.25);background:rgba(11,17,40,.6);
             color:#e8dfc8;font-family:'Cormorant Garamond',serif;font-size:1.05rem;
@@ -835,7 +835,7 @@
         </div>
         <div style="position:relative;width:100%">
           <span style="position:absolute;left:1.2rem;top:50%;transform:translateY(-50%);font-size:1rem;opacity:.5">🌍</span>
-          <input id="libroCiudad" maxlength="40" placeholder="Tu país... (ej: México)"
+          <input id="libroCiudad" maxlength="40" placeholder="Tu país... (ej: México)" data-i18n-placeholder="libro_placeholder_pais"
             style="width:100%;padding:.9rem 1.2rem .9rem 3rem;border-radius:100px;
             border:1px solid rgba(201,168,76,.25);background:rgba(11,17,40,.6);
             color:#e8dfc8;font-family:'Cormorant Garamond',serif;font-size:1.05rem;
@@ -850,7 +850,7 @@
           box-shadow:0 0 30px rgba(201,168,76,.25);transition:all .4s;width:100%"
           onmouseover="this.style.boxShadow='0 0 50px rgba(201,168,76,.45)';this.style.transform='translateY(-2px)'"
           onmouseout="this.style.boxShadow='0 0 30px rgba(201,168,76,.25)';this.style.transform='translateY(0)'">
-          🦋 Dejar mi huella en el Templo
+          <span data-i18n="libro_btn">🦋 Dejar mi huella en el Templo</span>
         </button>
         <p id="libroStatus" style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;
           color:rgba(201,168,76,.5);display:none;text-align:center"></p>
@@ -860,7 +860,7 @@
     <!-- MAPA -->
     <div class="reveal">
       <p style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.35em;
-        color:rgba(201,168,76,.35);text-align:center;margin-bottom:1rem">✦ DÓNDE ESTÁN LAS ALMAS ✦</p>
+        color:rgba(201,168,76,.35);text-align:center;margin-bottom:1rem" data-i18n="libro_mapa_label">✦ DÓNDE ESTÁN LAS ALMAS ✦</p>
       <div id="mapaInline" style="height:400px;border-radius:20px;
         border:1px solid rgba(201,168,76,.15);overflow:hidden;
         box-shadow:0 0 60px rgba(0,0,0,.5)"></div>
@@ -878,9 +878,9 @@
     <!-- REDES -->
   <section id="redes" style="position:relative;z-index:1;padding:3rem 2rem 4rem;text-align:center">
     <div class="section-inner reveal" style="max-width:600px;margin:0 auto">
-      <p class="section-label">✦ Comunidad</p>
-      <h2 class="section-title">Sígueme en Redes</h2>
-      <p class="section-body" style="margin-bottom:2rem">Energías semanales, canalizaciones y más magia del Prisma</p>
+      <p class="section-label" data-i18n="redes_section_label">✦ Comunidad</p>
+      <h2 class="section-title" data-i18n="redes_section_title">Sígueme en Redes</h2>
+      <p class="section-body" style="margin-bottom:2rem" data-i18n="redes_section_body">Energías semanales, canalizaciones y más magia del Prisma</p>
       <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
         <a href="https://www.instagram.com/bruxatarot" target="_blank"
           style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;
