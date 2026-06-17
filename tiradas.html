@@ -303,7 +303,7 @@
   <div id="starfield"><canvas id="stars"></canvas></div>
 
   <nav>
-    <a href="index.html" class="nav-back">← Volver al Templo</a>
+    <a href="index.html" class="nav-back" data-i18n="nav_back">← Volver al Templo</a>
     <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
     <div class="lang-selector">
       <button class="lang-btn active" data-lang="es" onclick="LangEngine&&LangEngine.set('es')">ES</button>
@@ -318,15 +318,10 @@
 
   <!-- HERO -->
   <section id="hero">
-    <span class="hero-badge">✦ ORÁCULO PRISMA DEL ALMA ✦</span>
-    <h1 class="hero-title">Portal del<br>Oráculo Prisma</h1>
-    <p class="hero-welcome">
-      Bienvenida, Alma Brillante.<br>
-      Has llegado al portal donde tus miedos, tus dudas<br>
-      y tus preguntas más profundas encontrarán respuesta.<br><br>
-      <em>Respira. Concéntrate. El Oráculo ya te está escuchando.</em>
-    </p>
-    <p class="hero-instruccion">☽ Elige un tema y deja que las cartas hablen ☾</p>
+    <span class="hero-badge" data-i18n="tir_hero_badge">✦ ORÁCULO PRISMA DEL ALMA ✦</span>
+    <h1 class="hero-title" data-i18n-html="tir_hero_title"></h1>
+    <p class="hero-welcome" data-i18n-html="tir_hero_welcome"></p>
+    <p class="hero-instruccion" data-i18n="tir_hero_instruccion">☽ Elige un tema y deja que las cartas hablen ☾</p>
   </section>
 
   <!-- TEMAS -->
@@ -337,40 +332,40 @@
         <!-- AMOR -->
         <div class="tema-card" onclick="iniciarTirada('amor')">
           <span class="tema-emoji">❤️</span>
-          <p class="tema-nombre">AMOR</p>
-          <p class="tema-desc">Deja que el Oráculo ilumine lo que tu corazón siente, lo que lo bloquea y el camino que te pide seguir.</p>
+          <p class="tema-nombre" data-i18n="tir_amor_nombre">AMOR</p>
+          <p class="tema-desc" data-i18n="tir_amor_desc">Deja que el Oráculo ilumine lo que tu corazón siente, lo que lo bloquea y el camino que te pide seguir.</p>
           <div class="tema-posiciones">
-            <span class="tema-pos">1 · Lo que tu corazón siente</span>
-            <span class="tema-pos">2 · Lo que está bloqueando</span>
-            <span class="tema-pos">3 · Lo que el Oráculo aconseja</span>
+            <span class="tema-pos" data-i18n="tir_amor_pos1">1 · Lo que tu corazón siente</span>
+            <span class="tema-pos" data-i18n="tir_amor_pos2">2 · Lo que está bloqueando</span>
+            <span class="tema-pos" data-i18n="tir_amor_pos3">3 · Lo que el Oráculo aconseja</span>
           </div>
-          <button class="tema-btn">✦ Iniciar tirada</button>
+          <button class="tema-btn" data-i18n="tir_iniciar_btn">✦ Iniciar tirada</button>
         </div>
 
         <!-- TRABAJO -->
         <div class="tema-card" onclick="iniciarTirada('trabajo')">
           <span class="tema-emoji">✨</span>
-          <p class="tema-nombre">TRABAJO</p>
-          <p class="tema-desc">El Oráculo te muestra dónde estás, qué necesitas soltar y hacia dónde te lleva tu camino profesional.</p>
+          <p class="tema-nombre" data-i18n="tir_trabajo_nombre">TRABAJO</p>
+          <p class="tema-desc" data-i18n="tir_trabajo_desc">El Oráculo te muestra dónde estás, qué necesitas soltar y hacia dónde te lleva tu camino profesional.</p>
           <div class="tema-posiciones">
-            <span class="tema-pos">1 · Dónde estás ahora</span>
-            <span class="tema-pos">2 · Qué necesitas soltar</span>
-            <span class="tema-pos">3 · Hacia dónde vas</span>
+            <span class="tema-pos" data-i18n="tir_trabajo_pos1">1 · Dónde estás ahora</span>
+            <span class="tema-pos" data-i18n="tir_trabajo_pos2">2 · Qué necesitas soltar</span>
+            <span class="tema-pos" data-i18n="tir_trabajo_pos3">3 · Hacia dónde vas</span>
           </div>
-          <button class="tema-btn">✦ Iniciar tirada</button>
+          <button class="tema-btn" data-i18n="tir_iniciar_btn">✦ Iniciar tirada</button>
         </div>
 
         <!-- PERSONAL -->
         <div class="tema-card" onclick="iniciarTirada('personal')">
           <span class="tema-emoji">🌙</span>
-          <p class="tema-nombre">PERSONAL</p>
-          <p class="tema-desc">Un espejo del alma. El Oráculo revela tu luz del momento, tu sombra y el mensaje que tu alma necesita hoy.</p>
+          <p class="tema-nombre" data-i18n="tir_personal_nombre">PERSONAL</p>
+          <p class="tema-desc" data-i18n="tir_personal_desc">Un espejo del alma. El Oráculo revela tu luz del momento, tu sombra y el mensaje que tu alma necesita hoy.</p>
           <div class="tema-posiciones">
-            <span class="tema-pos">1 · Tu luz del momento</span>
-            <span class="tema-pos">2 · Tu sombra del momento</span>
-            <span class="tema-pos">3 · El mensaje del alma</span>
+            <span class="tema-pos" data-i18n="tir_personal_pos1">1 · Tu luz del momento</span>
+            <span class="tema-pos" data-i18n="tir_personal_pos2">2 · Tu sombra del momento</span>
+            <span class="tema-pos" data-i18n="tir_personal_pos3">3 · El mensaje del alma</span>
           </div>
-          <button class="tema-btn">✦ Iniciar tirada</button>
+          <button class="tema-btn" data-i18n="tir_iniciar_btn">✦ Iniciar tirada</button>
         </div>
 
       </div>
@@ -394,16 +389,16 @@
 
       <!-- PILE SELECTION -->
       <div id="pileSection">
-        <span class="pile-label">☽ ELIGE UN MONTÓN ☾</span>
+        <span class="pile-label" data-i18n="tir_pile_label">☽ ELIGE UN MONTÓN ☾</span>
         <div class="piles-wrap" id="pilesWrap"></div>
       </div>
 
       <!-- 7 CARD SELECTION -->
       <div id="seleccionSection">
-        <span class="seleccion-label">✦ ELIGE TUS 3 CARTAS ✦</span>
-        <span class="seleccion-sublabel">Concéntrate en tu pregunta y deja que tus manos guíen</span>
+        <span class="seleccion-label" data-i18n="tir_sel_label">✦ ELIGE TUS 3 CARTAS ✦</span>
+        <span class="seleccion-sublabel" data-i18n="tir_sel_sublabel">Concéntrate en tu pregunta y deja que tus manos guíen</span>
         <div class="seleccion-cards" id="seleccionCards"></div>
-        <span class="seleccion-counter" id="seleccionCounter">0 de 3 elegidas</span>
+        <span class="seleccion-counter" id="seleccionCounter" data-i18n="tir_counter">0 de 3 elegidas</span>
       </div>
 
       <!-- CARTAS REVELADAS -->
@@ -411,13 +406,15 @@
       <div class="tirada-mensajes" id="tiradaMensajes"></div>
 
       <div class="tirada-acciones">
-        <a href="diario.html" class="btn btn-violet">📖 Guardar en el Diario</a>
-        <button onclick="otraTirada()" class="btn btn-ghost">✦ Elegir otro tema</button>
+        <a href="diario.html" class="btn btn-violet" data-i18n="tir_guardar">📖 Guardar en el Diario</a>
+        <button onclick="otraTirada()" class="btn btn-ghost" data-i18n="tir_otra">✦ Elegir otro tema</button>
       </div>
     </div>
   </section>
 
 <script>
+const _L = typeof LangEngine !== 'undefined' ? LangEngine : {t:k=>k};
+
 // STARFIELD
 (function(){
   const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');
@@ -569,12 +566,12 @@ function iniciarTirada(tema) {
   const t = TEMAS[tema];
 
   // Setup header
-  document.getElementById('tiradaBadge').textContent = `${t.emoji} ${t.nombre}`;
+  document.getElementById('tiradaBadge').textContent = `${t.emoji} ${_L.t('tir_' + tema + '_nombre')}`;
   document.getElementById('tiradaBadge').style.background = t.color;
   document.getElementById('tiradaBadge').style.border = `1px solid ${t.border}`;
   document.getElementById('tiradaBadge').style.color = '#f5e6b8';
-  document.getElementById('tiradaTitulo').textContent = t.titulo;
-  document.getElementById('tiradaInstruccion').textContent = 'Observa el barajado... y deja que tu intuición guíe tu elección.';
+  document.getElementById('tiradaTitulo').textContent = _L.t('tir_' + tema + '_titulo');
+  document.getElementById('tiradaInstruccion').textContent = _L.t('tir_instruccion_barajando');
 
   // Hide hero/temas, show tirada-section
   document.getElementById('hero').style.display = 'none';
@@ -607,12 +604,7 @@ function animarBarajado(callback) {
     deck.appendChild(card);
   }
 
-  const messages = [
-    '✦ BARAJANDO EL ORÁCULO ✦',
-    '✦ LAS CARTAS SE MEZCLAN ✦',
-    '✦ EL ORÁCULO SE PREPARA ✦',
-    '✦ CONCENTRA TU ENERGÍA ✦'
-  ];
+  const messages = [_L.t('tir_shuffle_msg1'), _L.t('tir_shuffle_msg2'), _L.t('tir_shuffle_msg3'), _L.t('tir_shuffle_msg4')];
   let msgIdx = 0;
   let step = 0;
 
@@ -652,7 +644,7 @@ function animarBarajado(callback) {
 
 // ── MOSTRAR 3 MONTONES ──
 function mostrarMontones() {
-  document.getElementById('tiradaInstruccion').textContent = 'El Oráculo está listo. Elige el montón que sientas tuyo.';
+  document.getElementById('tiradaInstruccion').textContent = _L.t('tir_instruccion_monton');
   document.getElementById('pileSection').style.display = 'block';
 
   const pilesWrap = document.getElementById('pilesWrap');
@@ -682,7 +674,7 @@ function mostrarMontones() {
     pile.appendChild(stack);
     const hint = document.createElement('p');
     hint.className = 'pile-hint';
-    hint.textContent = `Montón ${pileLabels[pi]}`;
+    hint.textContent = _L.t('tir_pile_hint') + ' ' + pileLabels[pi];
     pile.appendChild(hint);
     pile.onclick = () => elegirMonton(pileCards);
     pilesWrap.appendChild(pile);
@@ -692,7 +684,7 @@ function mostrarMontones() {
 // ── ELEGIR MONTÓN → 7 CARTAS ──
 function elegirMonton(pileCards) {
   document.getElementById('pileSection').style.display = 'none';
-  document.getElementById('tiradaInstruccion').textContent = 'Elige 3 cartas. Tu intuición ya sabe cuáles son.';
+  document.getElementById('tiradaInstruccion').textContent = _L.t('tir_instruccion_elegir');
 
   // Take 7 from pile (or all if less)
   pool7 = shuffle(pileCards).slice(0,7).map(c => ({
@@ -704,7 +696,7 @@ function elegirMonton(pileCards) {
   const seleccionCards = document.getElementById('seleccionCards');
   seleccionSection.style.display = 'block';
   seleccionCards.innerHTML = '';
-  document.getElementById('seleccionCounter').textContent = '0 de 3 elegidas';
+  document.getElementById('seleccionCounter').textContent = _L.t('tir_counter').replace('{n}', '0');
 
   pool7.forEach((c, i) => {
     const card = document.createElement('div');
@@ -750,8 +742,7 @@ function seleccionarCarta(i) {
   }
 
   const count = cartasSeleccionadas.length;
-  document.getElementById('seleccionCounter').textContent =
-    `${count} de 3 elegida${count !== 1 ? 's' : ''}`;
+  document.getElementById('seleccionCounter').textContent = _L.t('tir_counter').replace('{n}', count);
 }
 
 // ── CONSTRUIR TIRADA CON LAS 3 ELEGIDAS ──
@@ -760,7 +751,7 @@ function construirTirada() {
   tiradaCartas = cartasSeleccionadas.map(i => pool7[i]);
 
   document.getElementById('seleccionSection').style.display = 'none';
-  document.getElementById('tiradaInstruccion').textContent = 'Tus cartas han sido elegidas. Voltéalas cuando estés lista.';
+  document.getElementById('tiradaInstruccion').textContent = _L.t('tir_instruccion_voltear');
 
   const cartasEl = document.getElementById('tiradaCartas');
   const mensajesEl = document.getElementById('tiradaMensajes');
@@ -774,7 +765,7 @@ function construirTirada() {
     slot.className = 'tirada-slot';
     slot.innerHTML = `
       <span class="tirada-slot-num">${['I','II','III'][i]}</span>
-      <span class="tirada-slot-label">${t.posiciones[i]}</span>
+      <span class="tirada-slot-label">${_L.t('tir_' + temaActual + '_pos' + (i+1))}</span>
       <div class="tirada-card-scene" id="tscene${i}" onclick="revelarCarta(${i})">
         <div class="tirada-card-flip" id="tflip${i}">
           <div class="tirada-card-face tirada-card-back">
@@ -791,14 +782,14 @@ function construirTirada() {
           </div>
         </div>
       </div>
-      <p class="tirada-tap-hint">Toca para revelar</p>`;
+      <p class="tirada-tap-hint">${_L.t('tir_tap_hint')}</p>`;
     cartasEl.appendChild(slot);
 
     const msg = document.createElement('div');
     msg.className = 'tirada-mensaje';
     msg.id = `tmsg${i}`;
     msg.innerHTML = `
-      <p class="tirada-msg-pos">${['I','II','III'][i]} · ${t.posiciones[i].toUpperCase()}</p>
+      <p class="tirada-msg-pos">${['I','II','III'][i]} · ${_L.t('tir_' + temaActual + '_pos' + (i+1)).toUpperCase()}</p>
       <p class="tirada-msg-nombre" id="tmsgname${i}"></p>
       <p class="tirada-msg-posicion" id="tmsgnposicion${i}"></p>
       <p class="tirada-msg-texto" id="tmsgtexto${i}"></p>`;
@@ -899,6 +890,13 @@ function revelarCarta(i) {
     msgEl.scrollIntoView({ behavior:'smooth', block:'nearest' });
   }, 800);
 }
+
+// ── LANG CHANGE ──
+document.addEventListener('langchange', () => {
+  if (temaActual && document.getElementById('tirada-section') && document.getElementById('tirada-section').style.display !== 'none') {
+    document.getElementById('tiradaTitulo').textContent = _L.t('tir_' + temaActual + '_titulo');
+  }
+});
 
 // ── OTRA TIRADA ──
 function otraTirada() {
