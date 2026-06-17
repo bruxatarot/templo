@@ -6,6 +6,12 @@
   <title>Luz y Sombra • Tu Personaje del Prisma • Bruxa Tarot</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <script src="lang.js"></script>
+  <script src="js/data/test-en.js"></script>
+  <script src="js/data/test-pt.js"></script>
+  <script src="js/data/test-it.js"></script>
+  <script src="js/data/test-ko.js"></script>
+  <script src="js/data/test-tr.js"></script>
+  <script src="js/data/test-ja.js"></script>
   <style>
     :root{--gold:#c9a84c;--gold-light:#e8c97a;--gold-pale:#f5e6b8;--deep:#04060f;--midnight:#0b1128;
       --fire:#e85d04;--water:#0077b6;--earth:#588157;--air:#7b2d8b;}
@@ -146,28 +152,43 @@
     @keyframes slideOut{to{opacity:0;transform:translateX(-30px)}}
 
     @media(max-width:768px){nav{padding:1rem 1.5rem}section{padding:4rem 1.5rem}}
+
+    .lang-btn{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;padding:.3rem .6rem;
+      border-radius:6px;border:1px solid rgba(201,168,76,.25);background:transparent;
+      color:rgba(201,168,76,.5);cursor:pointer;transition:all .3s}
+    .lang-btn:hover,.lang-btn.active{border-color:rgba(201,168,76,.6);color:var(--gold);
+      background:rgba(201,168,76,.08)}
   </style>
 </head>
 <body>
   <div id="starfield"><canvas id="stars"></canvas></div>
 
   <nav>
-    <a href="index.html" class="nav-back">← Volver al Templo</a>
+    <a href="index.html" class="nav-back" data-i18n="nav_back">← Volver al Templo</a>
     <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
+    <div class="lang-switcher" style="display:flex;gap:.4rem;flex-wrap:wrap">
+      <button onclick="LangEngine.set('es')" class="lang-btn" data-lang="es">ES</button>
+      <button onclick="LangEngine.set('en')" class="lang-btn" data-lang="en">EN</button>
+      <button onclick="LangEngine.set('pt')" class="lang-btn" data-lang="pt">PT</button>
+      <button onclick="LangEngine.set('it')" class="lang-btn" data-lang="it">IT</button>
+      <button onclick="LangEngine.set('ko')" class="lang-btn" data-lang="ko">한국</button>
+      <button onclick="LangEngine.set('tr')" class="lang-btn" data-lang="tr">TR</button>
+      <button onclick="LangEngine.set('ja')" class="lang-btn" data-lang="ja">日本</button>
+    </div>
   </nav>
 
   <!-- HERO -->
   <section id="hero">
-    <span class="hero-badge">✦ ORÁCULO PRISMA DEL ALMA ✦</span>
-    <h1 class="hero-title">Luz y Sombra</h1>
-    <p class="hero-sub">Descubre qué personaje del Mundo Prisma vive en ti — quién eres en tu mejor versión y quién aparece cuando te pierdes.</p>
+    <span class="hero-badge" data-i18n="test_hero_badge">✦ ORÁCULO PRISMA DEL ALMA ✦</span>
+    <h1 class="hero-title" data-i18n="test_hero_title">Luz y Sombra</h1>
+    <p class="hero-sub" data-i18n="test_hero_sub">Descubre qué personaje del Mundo Prisma vive en ti — quién eres en tu mejor versión y quién aparece cuando te pierdes.</p>
     <div class="elementos-preview">
-      <span class="elem-pill">🔥 Fuego · Bastos</span>
-      <span class="elem-pill">🌊 Agua · Copas</span>
-      <span class="elem-pill">🌍 Tierra · Pentáculos</span>
-      <span class="elem-pill">🌬️ Aire · Espadas</span>
+      <span class="elem-pill" data-i18n="test_elem_fire">🔥 Fuego · Bastos</span>
+      <span class="elem-pill" data-i18n="test_elem_water">🌊 Agua · Copas</span>
+      <span class="elem-pill" data-i18n="test_elem_earth">🌍 Tierra · Pentáculos</span>
+      <span class="elem-pill" data-i18n="test_elem_air">🌬️ Aire · Espadas</span>
     </div>
-    <button class="start-btn" onclick="iniciarTest()">✦ Comenzar el Test</button>
+    <button class="start-btn" onclick="iniciarTest()" data-i18n="test_start_btn">✦ Comenzar el Test</button>
   </section>
 
   <!-- TEST -->
@@ -187,13 +208,13 @@
   <!-- RESULT -->
   <section id="result-section">
     <div class="result-inner">
-      <span class="hero-badge">✦ TU RESULTADO DEL PRISMA ✦</span>
+      <span class="hero-badge" data-i18n="test_result_badge">✦ TU RESULTADO DEL PRISMA ✦</span>
       <div class="result-element" id="resultElement">🔥</div>
       <p class="result-element-name" id="resultElementName">FUEGO · BASTOS · ARIES · LEO · SAGITARIO</p>
 
       <div class="result-cards">
         <div class="result-card luz">
-          <p class="result-card-type">☀️ TU LUZ</p>
+          <p class="result-card-type" data-i18n="test_luz_type">☀️ TU LUZ</p>
           <span class="result-card-emoji" id="luzEmoji">🔥</span>
           <h2 class="result-card-name" id="luzNombre">Dante</h2>
           <p class="result-card-subtitle" id="luzSubtitle">Dios del Fuego y la Resurrección</p>
@@ -201,7 +222,7 @@
           <p class="result-card-frase" id="luzFrase">"Frase"</p>
         </div>
         <div class="result-card sombra">
-          <p class="result-card-type">🌒 TU SOMBRA</p>
+          <p class="result-card-type" data-i18n="test_sombra_type">🌒 TU SOMBRA</p>
           <span class="result-card-emoji" id="sombraEmoji">⏳</span>
           <h2 class="result-card-name" id="sombraNombre">Tony</h2>
           <p class="result-card-subtitle" id="sombraSubtitle">Dios del Tiempo</p>
@@ -213,9 +234,9 @@
       <div class="divider"><div class="divider-line"></div><span class="divider-sym">✦</span><div class="divider-line"></div></div>
 
       <div class="result-actions">
-        <a href="historias.html" class="btn btn-primary">📚 Conoce su historia</a>
-        <a href="diario.html" class="btn btn-violet">📖 Guardar en mi Diario</a>
-        <button onclick="reiniciarTest()" class="btn btn-ghost">✦ Hacer el test de nuevo</button>
+        <a href="historias.html" class="btn btn-primary" data-i18n="test_btn_historia">📚 Conoce su historia</a>
+        <a href="diario.html" class="btn btn-violet" data-i18n="test_btn_diario">📖 Guardar en mi Diario</a>
+        <button onclick="reiniciarTest()" class="btn btn-ghost" data-i18n="test_btn_reiniciar">✦ Hacer el test de nuevo</button>
       </div>
     </div>
   </section>
@@ -969,14 +990,23 @@ const PREGUNTAS = {
 };
 
 // ── ENGINE ──
+const _L = typeof LangEngine !== 'undefined' ? LangEngine : {t:k=>k,current:'es'};
+
 let estado = { preguntaActual:'p1', elemento:null, historial:[], qNum:0 };
 
-const TIPO_LABEL = {
-  comportamiento:'✦ Comportamiento',
-  simbolica:'✦ Simbólica',
-  poetica:'✦ Poética',
-  revelacion:'✦ Revelación Final'
-};
+function getTestData() {
+  const lang = _L.current || 'es';
+  if (lang !== 'es' && window.TEST_DATA && TEST_DATA[lang]) return TEST_DATA[lang];
+  return { personajes: PERSONAJES, elementos: ELEMENTOS, preguntas: PREGUNTAS };
+}
+
+function getTipoLabel(tipo) {
+  const map = {
+    comportamiento:'test_tipo_comportamiento', simbolica:'test_tipo_simbolica',
+    poetica:'test_tipo_poetica', revelacion:'test_tipo_revelacion'
+  };
+  return _L.t(map[tipo] || tipo);
+}
 
 function iniciarTest() {
   document.getElementById('hero').style.display = 'none';
@@ -985,23 +1015,24 @@ function iniciarTest() {
 }
 
 function renderPregunta(id) {
-  const p = PREGUNTAS[id];
+  const data = getTestData();
+  const p = data.preguntas[id];
   if (!p) return;
   estado.preguntaActual = id;
 
   // Update progress
   const pct = Math.round(((p.num - 1) / 7) * 100);
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = `PREGUNTA ${p.num} DE 7`;
+  document.getElementById('progressLabel').textContent = _L.t('test_progress').replace('{n}', p.num);
   document.getElementById('progressPct').textContent = pct + '%';
 
-  const badge = TIPO_LABEL[p.tipo] || '';
+  const badge = getTipoLabel(p.tipo);
   const elemClass = p.elemClass || '';
 
   const html = `
     <div class="question-card ${elemClass}">
       <span class="q-element-badge q-type-${p.tipo}">${badge}</span>
-      <p class="q-number">Pregunta ${p.num} de 7</p>
+      <p class="q-number">${_L.t('test_q_number').replace('{n}', p.num)}</p>
       <h2 class="q-text">${p.texto}</h2>
       <div class="options-grid">
         ${p.opciones.map((op, i) => `
@@ -1019,7 +1050,7 @@ function renderPregunta(id) {
 }
 
 function elegir(idx) {
-  const p = PREGUNTAS[estado.preguntaActual];
+  const p = getTestData().preguntas[estado.preguntaActual];
   const op = p.opciones[idx];
 
   // Mark selected
@@ -1051,9 +1082,10 @@ function mostrarResultado(result) {
   document.getElementById('test-section').style.display = 'none';
   document.getElementById('result-section').style.display = 'block';
 
-  const luz = PERSONAJES[result.luz];
-  const sombra = PERSONAJES[result.sombra];
-  const elem = ELEMENTOS[estado.elemento] || ELEMENTOS.fuego;
+  const data = getTestData();
+  const luz = data.personajes[result.luz];
+  const sombra = data.personajes[result.sombra];
+  const elem = data.elementos[estado.elemento] || data.elementos.fuego;
 
   document.getElementById('resultElement').textContent = elem.emoji;
   document.getElementById('resultElementName').textContent = elem.nombre;
@@ -1078,6 +1110,19 @@ function reiniciarTest() {
   document.getElementById('result-section').style.display = 'none';
   document.getElementById('hero').style.display = 'flex';
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.addEventListener('langchange', () => {
+  if (typeof LangEngine !== 'undefined') LangEngine.apply();
+  const testSec = document.getElementById('test-section');
+  if (testSec && testSec.style.display !== 'none') {
+    renderPregunta(estado.preguntaActual);
+  }
+});
+
+if (typeof LangEngine !== 'undefined') {
+  LangEngine.detect();
+  LangEngine.apply();
 }
 </script>
 </body>
