@@ -22,6 +22,8 @@ const LANGS = {
     carta_label:'Oráculo Prisma del Alma', carta_title:'Carta del Día',
     carta_instruction:'Respira profundo, Alma Brillante. Piensa en lo que necesitas hoy. Cuando sientas el llamado, voltea la carta y recibe el mensaje que lleva tu nombre.',
     carta_tap:'Toca la carta para voltearla', carta_reading_title:'✦ MENSAJE DEL ORÁCULO ✦', carta_nuevo:'✦ Nueva tirada',
+    card_upright:'Derecha — Luz', card_reversed:'Invertida — Sombra',
+    card_upright_index:'Carta Derecha — Luz', card_reversed_index:'Carta Invertida — Sombra',
     redes_label:'Conecta con la Bruja', redes_title:'Encuéntrame en el cosmos',
     redes_body:'Cada red es un portal distinto al Templo. Ven, el alma siempre encuentra su camino.',
     footer:'© 2026 Bruxa Tarot • Templo del Prisma • Oráculo Prisma del Alma',
@@ -64,6 +66,8 @@ const LANGS = {
     carta_label:'Prisma Soul Oracle', carta_title:'Card of the Day',
     carta_instruction:'Breathe deeply, Bright Soul. Think about what you need today. When you feel the call, flip the card and receive the message that carries your name.',
     carta_tap:'Tap the card to flip it', carta_reading_title:'✦ MESSAGE FROM THE ORACLE ✦', carta_nuevo:'✦ New reading',
+    card_upright:'Upright — Light', card_reversed:'Reversed — Shadow',
+    card_upright_index:'Card Upright — Light', card_reversed_index:'Card Reversed — Shadow',
     redes_label:'Connect with the Witch', redes_title:'Find me in the cosmos',
     redes_body:'Each network is a different portal to the Temple. Come, the soul always finds its way.',
     footer:'© 2026 Bruxa Tarot • Temple of the Prism • Prisma Soul Oracle',
@@ -106,6 +110,8 @@ const LANGS = {
     carta_label:"Oracolo Prisma dell'Anima", carta_title:'Carta del Giorno',
     carta_instruction:'Respira profondamente, Anima Brillante. Pensa a ciò di cui hai bisogno oggi. Quando senti il richiamo, gira la carta e ricevi il messaggio che porta il tuo nome.',
     carta_tap:'Tocca la carta per girarla', carta_reading_title:"✦ MESSAGGIO DELL'ORACOLO ✦", carta_nuevo:'✦ Nuova lettura',
+    card_upright:'Dritta — Luce', card_reversed:'Invertita — Ombra',
+    card_upright_index:'Carta Dritta — Luce', card_reversed_index:'Carta Invertita — Ombra',
     redes_label:'Connettiti con la Strega', redes_title:'Trovami nel cosmo',
     redes_body:"Ogni rete è un portale diverso al Tempio. Vieni, l'anima trova sempre la sua strada.",
     footer:"© 2026 Bruxa Tarot • Tempio del Prisma • Oracolo Prisma dell'Anima",
@@ -148,6 +154,8 @@ const LANGS = {
     carta_label:'프리즘 영혼 오라클', carta_title:'오늘의 카드',
     carta_instruction:'깊게 숨을 쉬세요, 빛나는 영혼이여. 오늘 필요한 것을 생각해보세요. 부름을 느낄 때 카드를 뒤집고 당신의 이름이 담긴 메시지를 받으세요.',
     carta_tap:'카드를 터치하여 뒤집기', carta_reading_title:'✦ 오라클의 메시지 ✦', carta_nuevo:'✦ 새로운 리딩',
+    card_upright:'정방향 — 빛', card_reversed:'역방향 — 그림자',
+    card_upright_index:'카드 정방향 — 빛', card_reversed_index:'카드 역방향 — 그림자',
     redes_label:'마녀와 연결하기', redes_title:'우주에서 나를 찾아보세요',
     redes_body:'각 네트워크는 신전으로 향하는 다른 포털입니다. 오세요, 영혼은 항상 길을 찾습니다.',
     footer:'© 2026 Bruxa Tarot • 프리즘의 신전 • 프리즘 영혼 오라클',
@@ -167,7 +175,143 @@ const LANGS = {
     rit_shuffle:'✦ 덱 셔플', rit_ver_todas:'모든 카드 보기', rit_filter_all:'전체',
     rit_keywords_lbl:'키워드', rit_ritual_lbl:'추천 의식',
     rit_elegir_otra:'✦ 다른 카드 선택', rit_carta_dia:'오늘의 카드',
-  }
+    card_upright:'정방향 — 빛', card_reversed:'역방향 — 그림자',
+    card_upright_index:'카드 정방향 — 빛', card_reversed_index:'카드 역방향 — 그림자',
+  },
+  pt: {
+    nav_bruja:'A Bruxa', nav_templo:'O Templo', nav_carta:'Carta do Dia',
+    nav_redes:'Conecte-se', nav_rituales:'Rituais', nav_back:'← Voltar ao Templo',
+    hero_badge:'✦ TEMPLO DO PRISMA ✦', hero_greeting:'Olá, Alma Brilhante…',
+    hero_tagline:'Um templo onde a sua alma lembra a sua luz,\na sua sombra e o seu verdadeiro poder.',
+    hero_cta_templo:'Entrar no Templo', hero_cta_carta:'Carta do Dia', hero_scroll:'Descer',
+    qs_label:'A Bruxa por trás do Templo', qs_title:'Sou Bruxa Tarot',
+    qs_quote:'"A vida não é preto e branco.\nÉ um prisma de cores infinitas esperando para ser vivida."',
+    qs_body1:'Sou uma guia espiritual, leitora de Tarot e criadora do Oráculo Prisma da Alma — 31 cartas nascidas das minhas próprias histórias, personagens e canalização.',
+    qs_body2:'Cada carta é um espelho. Cada leitura, um retorno a você.',
+    qs_photo:'Sua fotografia\nvai aqui, Bruxa',
+    templo_label:'O Templo', templo_title:'O que você vai encontrar aqui?',
+    templo_body:'O Templo do Prisma é onde convivem as Essências Sagradas, as Dualidades, os Guardiões, as Chaves Prismáticas e os Portais Místicos da sua alma.',
+    portal_oraculo_name:'Oráculo Prisma', portal_oraculo_desc:'31 cartas nascidas das minhas histórias. Personagens reais que falam diretamente com a sua alma.',
+    portal_musica_name:'Música Sagrada', portal_musica_desc:'Frequências e canalizações para elevar a sua vibração e curar por dentro.',
+    portal_historias_name:'Minhas Histórias', portal_historias_desc:'Os personagens do Oráculo têm vida própria. Conheça-os, sinta-os, reconheça-se neles.',
+    portal_rituales_name:'Rituais da Alma', portal_rituales_desc:'Magia prática para cada lua, cada carta, cada transformação que a sua alma está pedindo.',
+    portal_pozo_name:'Poço dos Desejos', portal_pozo_desc:'Lance o seu desejo ao cosmos e transforme-o em uma estrela do firmamento compartilhado.',
+    portal_diario_name:'Diário da Alma', portal_diario_desc:'O seu espaço sagrado para guardar cartas, rituais e reflexões.',
+    carta_label:'Oráculo Prisma da Alma', carta_title:'Carta do Dia',
+    carta_instruction:'Respire fundo, Alma Brilhante. Pense no que você precisa hoje. Quando sentir o chamado, vire a carta e receba a mensagem que leva o seu nome.',
+    carta_tap:'Toque a carta para virá-la', carta_reading_title:'✦ MENSAGEM DO ORÁCULO ✦', carta_nuevo:'✦ Nova tiragem',
+    redes_label:'Conecte-se com a Bruxa', redes_title:'Encontre-me no cosmos',
+    redes_body:'Cada rede é um portal diferente para o Templo. Venha, a alma sempre encontra o seu caminho.',
+    footer:'© 2026 Bruxa Tarot • Templo do Prisma • Oráculo Prisma da Alma',
+    pozo_badge:'✦ TEMPLO DO PRISMA ✦',
+    pozo_title:'O Poço\ndos Desejos',
+    pozo_sub:'Lance o seu desejo ao cosmos, Alma Brilhante. Cada palavra que você oferece aqui se transforma em uma estrela que habita este céu compartilhado — visível para todas as almas que chegarem depois.',
+    pozo_placeholder:'Escreva o seu desejo ao universo…',
+    pozo_btn:'✦ Lançar ao cosmos', pozo_btn_sending:'✦ Enviando…',
+    pozo_firmamento:'O FIRMAMENTO DO TEMPLO', pozo_cielo_title:'Desejos das Almas',
+    pozo_cargando:'Carregando o céu…', pozo_vacio:'Ainda sem desejos — seja a primeira estrela!',
+    pozo_counter_s:'desejo ilumina este céu', pozo_counter_p:'desejos iluminam este céu',
+    pozo_empty_p:'O céu te espera.\nSeja a primeira estrela.',
+    pozo_toast:'✦ O seu desejo viaja ao cosmos',
+    rit_badge:'✦ ORÁCULO PRISMA DA ALMA ✦', rit_title:'Rituais\ndo Prisma',
+    rit_sub:'Olá, Alma Brilhante. O ritual que você precisa hoje já está te esperando. Respire fundo, observe o baralho e escolha a carta que te chama.',
+    rit_hint:'☽ As 31 cartas te aguardam viradas para baixo ☾',
+    rit_shuffle:'✦ Embaralhar o Baralho', rit_ver_todas:'Ver todas as cartas', rit_filter_all:'Todas',
+    rit_keywords_lbl:'Palavras-chave', rit_ritual_lbl:'Ritual sugerido',
+    rit_elegir_otra:'✦ Escolher outra carta', rit_carta_dia:'Carta do Dia',
+    card_upright:'Direita — Luz', card_reversed:'Invertida — Sombra',
+    card_upright_index:'Carta Direita — Luz', card_reversed_index:'Carta Invertida — Sombra',
+  },
+  tr: {
+    nav_bruja:'Cadı', nav_templo:'Tapınak', nav_carta:'Günün Kartı',
+    nav_redes:'Bağlan', nav_rituales:'Ritüeller', nav_back:'← Tapınağa Geri Dön',
+    hero_badge:'✦ PRİZMA TAPINAĞI ✦', hero_greeting:'Merhaba, Parlak Ruh…',
+    hero_tagline:'Ruhunun ışığını, gölgesini\nve gerçek gücünü hatırladığı bir tapınak.',
+    hero_cta_templo:'Tapınağa Gir', hero_cta_carta:'Günün Kartı', hero_scroll:'Aşağı',
+    qs_label:'Tapınağın Arkasındaki Cadı', qs_title:'Ben Bruxa Tarot\'um',
+    qs_quote:'"Hayat siyah beyaz değildir.\nYaşanmayı bekleyen sonsuz renklerin bir prizmasıdır."',
+    qs_body1:'Ben bir ruhsal rehber, Tarot okuyucusu ve Prisma Ruh Orakülü\'nün yaratıcısıyım — kendi hikayelerimden, karakterlerimden ve kanalizasyondan doğan 31 kart.',
+    qs_body2:'Her kart bir ayna. Her okuma, kendine dönüş.',
+    qs_photo:'Fotoğrafın\nburaya gelecek, Bruxa',
+    templo_label:'Tapınak', templo_title:'Burada ne bulacaksın?',
+    templo_body:'Prisma Tapınağı; Kutsal Özler, İkililikler, Bekçiler, Prismatik Anahtarlar ve ruhunun Mistik Portallarının bir arada yaşadığı yerdir.',
+    portal_oraculo_name:'Prisma Orakülü', portal_oraculo_desc:'Hikayelerimden doğan 31 kart. Ruhtan doğrudan seninle konuşan gerçek karakterler.',
+    portal_musica_name:'Kutsal Müzik', portal_musica_desc:'Titreşimini yükseltmek ve içeriden iyileşmek için frekanslar ve kanalizasyonlar.',
+    portal_historias_name:'Hikayelerim', portal_historias_desc:'Orakül karakterlerinin kendine özgü bir yaşamı var. Onları tanı, hisset, onlarda kendini gör.',
+    portal_rituales_name:'Ruh Ritüelleri', portal_rituales_desc:'Her ay, her kart, ruhunun çağırdığı her dönüşüm için pratik büyü.',
+    portal_pozo_name:'Dilek Kuyusu', portal_pozo_desc:'Dileğini kozmosa fırlat ve paylaşılan gökyüzünün yıldızına dönüştür.',
+    portal_diario_name:'Ruh Günlüğü', portal_diario_desc:'Kartları, ritüelleri ve yansımaları kaydetmek için kutsal alanın.',
+    carta_label:'Prisma Ruh Orakülü', carta_title:'Günün Kartı',
+    carta_instruction:'Derin bir nefes al, Parlak Ruh. Bugün neye ihtiyacın olduğunu düşün. Çağrıyı hissettiğinde kartı çevir ve adını taşıyan mesajı al.',
+    carta_tap:'Kartı çevirmek için dokun', carta_reading_title:'✦ ORAKÜLDEN MESAJ ✦', carta_nuevo:'✦ Yeni çekim',
+    card_upright:'Düz — Işık', card_reversed:'Ters — Gölge',
+    card_upright_index:'Kart Düz — Işık', card_reversed_index:'Kart Ters — Gölge',
+    redes_label:'Cadıyla Bağlan', redes_title:'Beni kozmosta bul',
+    redes_body:'Her ağ Tapınağa farklı bir portaldır. Gel, ruh her zaman yolunu bulur.',
+    footer:'© 2026 Bruxa Tarot • Prisma Tapınağı • Prisma Ruh Orakülü',
+    pozo_badge:'✦ PRİZMA TAPINAĞI ✦',
+    pozo_title:'Dilek\nKuyusu',
+    pozo_sub:'Dileğini kozmosa fırlat, Parlak Ruh. Burada sunduğun her söz, paylaşılan bu gökyüzünde yaşayan bir yıldıza dönüşür — sonra gelen her ruha görünür.',
+    pozo_placeholder:'Evrene dileğini yaz…',
+    pozo_btn:'✦ Kozmosa fırlat', pozo_btn_sending:'✦ Gönderiliyor…',
+    pozo_firmamento:'TAPINAĞIN FİRMAMENTİ', pozo_cielo_title:'Ruhların Dilekleri',
+    pozo_cargando:'Gökyüzü yükleniyor…', pozo_vacio:'Henüz dilek yok — ilk yıldız ol!',
+    pozo_counter_s:'dilek bu gökyüzünü aydınlatıyor', pozo_counter_p:'dilek bu gökyüzünü aydınlatıyor',
+    pozo_empty_p:'Gökyüzü seni bekliyor.\nİlk yıldız ol.',
+    pozo_toast:'✦ Dileğin kozmosa yolculuk ediyor',
+    rit_badge:'✦ PRİZMA RUH ORAKÜLÜ ✦', rit_title:'Prisma\nRitüelleri',
+    rit_sub:'Merhaba, Parlak Ruh. Bugün ihtiyacın olan ritüel seni zaten bekliyor. Derin bir nefes al, destek gözlemle ve seni çağıran kartı seç.',
+    rit_hint:'☽ 31 kartın tamamı yüzüstü seni bekliyor ☾',
+    rit_shuffle:'✦ Deseti Karıştır', rit_ver_todas:'Tüm kartları gör', rit_filter_all:'Tümü',
+    rit_keywords_lbl:'Anahtar kelimeler', rit_ritual_lbl:'Önerilen ritüel',
+    rit_elegir_otra:'✦ Başka kart seç', rit_carta_dia:'Günün Kartı',
+  },
+  ja: {
+    nav_bruja:'魔女', nav_templo:'神殿', nav_carta:'今日のカード',
+    nav_redes:'つながる', nav_rituales:'儀式', nav_back:'← 神殿に戻る',
+    hero_badge:'✦ プリズムの神殿 ✦', hero_greeting:'こんにちは、輝く魂よ…',
+    hero_tagline:'あなたの魂がその光、影、\nそして真の力を思い出す神殿。',
+    hero_cta_templo:'神殿へ入る', hero_cta_carta:'今日のカード', hero_scroll:'下へ',
+    qs_label:'神殿の背後にいる魔女', qs_title:'私はBruxa Tarotです',
+    qs_quote:'"人生は白黒ではありません。\n生きられるのを待つ無限の色のプリズムです。"',
+    qs_body1:'私は霊的ガイド、タロットリーダー、そしてプリズマ魂のオラクルの創作者です — 私自身の物語、キャラクター、チャネリングから生まれた31枚のカード。',
+    qs_body2:'すべてのカードは鏡。すべての読みは、自分自身への帰還。',
+    qs_photo:'あなたの写真が\nここに入ります',
+    templo_label:'神殿', templo_title:'ここで何が見つかりますか？',
+    templo_body:'プリズムの神殿は、神聖な本質、二重性、守護者、プリズムの鍵、あなたの魂の神秘のポータルが共存する場所です。',
+    portal_oraculo_name:'プリズムオラクル', portal_oraculo_desc:'私の物語から生まれた31枚のカード。魂から直接あなたに語りかける実在のキャラクター。',
+    portal_musica_name:'神聖な音楽', portal_musica_desc:'あなたの振動を高め、内側から癒すための周波数とチャネリング。',
+    portal_historias_name:'私の物語', portal_historias_desc:'オラクルのキャラクターは固有の命を持っています。彼らに会い、感じ、自分を見つけてください。',
+    portal_rituales_name:'魂の儀式', portal_rituales_desc:'すべての月、すべてのカード、あなたの魂が求めるすべての変容のための実践的な魔法。',
+    portal_pozo_name:'願いの井戸', portal_pozo_desc:'願いをコスモスに投げ、共有された空の星にしましょう。',
+    portal_diario_name:'魂の日記', portal_diario_desc:'カード、儀式、省察を保存するあなただけの神聖な空間。',
+    carta_label:'プリズマ魂のオラクル', carta_title:'今日のカード',
+    carta_instruction:'深く呼吸してください、輝く魂よ。今日必要なことを考えてください。呼びかけを感じたらカードをめくり、あなたの名前を持つメッセージを受け取ってください。',
+    carta_tap:'カードをタップしてめくる', carta_reading_title:'✦ オラクルからのメッセージ ✦', carta_nuevo:'✦ 新しいリーディング',
+    card_upright:'正位置 — 光', card_reversed:'逆位置 — 影',
+    card_upright_index:'カード正位置 — 光', card_reversed_index:'カード逆位置 — 影',
+    redes_label:'魔女とつながる', redes_title:'コスモスで私を見つけて',
+    redes_body:'各ネットワークは神殿への別のポータルです。どうぞ、魂はいつも道を見つけます。',
+    footer:'© 2026 Bruxa Tarot • プリズムの神殿 • プリズマ魂のオラクル',
+    pozo_badge:'✦ プリズムの神殿 ✦',
+    pozo_title:'願いの\n井戸',
+    pozo_sub:'願いをコスモスに投げてください、輝く魂よ。ここで捧げるすべての言葉は、この共有された空に住む星になります — 後から来るすべての魂に見えます。',
+    pozo_placeholder:'宇宙に願いを書いてください…',
+    pozo_btn:'✦ コスモスへ投げる', pozo_btn_sending:'✦ 送信中…',
+    pozo_firmamento:'神殿のフィルマメント', pozo_cielo_title:'魂たちの願い',
+    pozo_cargando:'空を読み込み中…', pozo_vacio:'まだ願いがありません — 最初の星になって！',
+    pozo_counter_s:'個の願いがこの空を照らしています', pozo_counter_p:'個の願いがこの空を照らしています',
+    pozo_empty_p:'空があなたを待っています。\n最初の星になってください。',
+    pozo_toast:'✦ あなたの願いがコスモスへ旅立ちます',
+    rit_badge:'✦ プリズマ魂のオラクル ✦', rit_title:'プリズムの\n儀式',
+    rit_sub:'こんにちは、輝く魂よ。今日あなたに必要な儀式はもうあなたを待っています。深く呼吸し、デッキを観察し、呼びかけるカードを選んでください。',
+    rit_hint:'☽ 31枚のカードがすべて伏せてあなたを待っています ☾',
+    rit_shuffle:'✦ デッキをシャッフル', rit_ver_todas:'すべてのカードを見る', rit_filter_all:'すべて',
+    rit_keywords_lbl:'キーワード', rit_ritual_lbl:'おすすめの儀式',
+    rit_elegir_otra:'✦ 別のカードを選ぶ', rit_carta_dia:'今日のカード',
+    card_upright:'正位置 — 光', card_reversed:'逆位置 — 影',
+    card_upright_index:'カード正位置 — 光', card_reversed_index:'カード逆位置 — 影',
+  },
 };
 
 // CARD TRANSLATIONS (EN, IT, KO)
@@ -246,6 +390,16 @@ const CARD_TRANSLATIONS = {
       {subtitle:'Portale Mistico',keywords:['Risveglio mentale','Canalizzazione'],message:'La saggezza non si trova... si ricorda.',ritual:'Prendi un quaderno. Formula una domanda essenziale. Metti il quaderno sotto il cuscino con l\'intenzione di ricevere un indizio.'},
     ]
   },
+  tr: {
+    catLabels:{ esencias:'🌈 Kutsal Özler', dualidades:'🌒 Prisma İkilikleri', guardianes:'🛡️ Bekçiler', llaves:'💠 Prismatik Anahtarlar', portales:'🌌 Mistik Portallar' },
+    filterLabels:['Tümü','🌈 Kutsal Özler','🌒 İkilikler','🛡️ Bekçiler','💠 Anahtarlar','🌌 Portallar'],
+    cards:[]
+  },
+  ja: {
+    catLabels:{ esencias:'🌈 神聖な本質', dualidades:'🌒 プリズムの二重性', guardianes:'🛡️ 守護者', llaves:'💠 プリズムの鍵', portales:'🌌 神秘のポータル' },
+    filterLabels:['すべて','🌈 神聖な本質','🌒 二重性','🛡️ 守護者','💠 鍵','🌌 ポータル'],
+    cards:[]
+  },
   ko: {
     catLabels:{ esencias:'🌈 신성한 본질', dualidades:'🌒 프리즘 이중성', guardianes:'🛡️ 수호자', llaves:'💠 프리즘 열쇠', portales:'🌌 신비로운 포털' },
     filterLabels:['전체','🌈 신성한 본질','🌒 이중성','🛡️ 수호자','💠 열쇠','🌌 포털'],
@@ -295,6 +449,9 @@ const LangEngine = {
     if (b.startsWith('ko')) return 'ko';
     if (b.startsWith('it')) return 'it';
     if (b.startsWith('en')) return 'en';
+    if (b.startsWith('pt')) return 'pt';
+    if (b.startsWith('tr')) return 'tr';
+    if (b.startsWith('ja')) return 'ja';
     return 'es';
   },
   set(lang) {
@@ -334,8 +491,20 @@ const LangEngine = {
   },
   getCard(num) {
     const lang = this.current;
-    if (lang === 'es' || !CARD_TRANSLATIONS[lang]) return null;
-    return CARD_TRANSLATIONS[lang].cards[num - 1] || null;
+    if (lang === 'es') return null;
+    if (typeof ORACLE_CARDS !== 'undefined' && ORACLE_CARDS[lang]) {
+      const oc = ORACLE_CARDS[lang][num - 1];
+      if (!oc) return null;
+      return { subtitle: oc.subtitle, keywords: oc.keywords, message: oc.upright.message, ritual: oc.upright.ritual };
+    }
+    const ct = CARD_TRANSLATIONS[lang];
+    if (ct && ct.cards && ct.cards.length > 0) return ct.cards[num - 1] || null;
+    if (typeof ORACLE_CARDS !== 'undefined' && ORACLE_CARDS[lang]) {
+      const oc = ORACLE_CARDS[lang][num - 1];
+      if (!oc) return null;
+      return { subtitle: oc.subtitle, keywords: oc.keywords, message: oc.upright.message, ritual: oc.upright.ritual };
+    }
+    return null;
   },
   getCatLabel(cat) {
     const lang = this.current;
