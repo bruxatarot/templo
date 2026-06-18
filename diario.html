@@ -31,6 +31,8 @@
     const db    = getFirestore(app);
     const gProvider = new GoogleAuthProvider();
 
+    const _t = k => window.LangEngine?.t(k) || k;
+
     // ── BRUXA ADMIN EMAIL ──
     const ADMIN_EMAIL = 'a.alvarez0@gmail.com';
 
@@ -67,10 +69,10 @@
         }
       } catch(e) {
         showError(
-          e.code === 'auth/wrong-password'    ? 'Contraseña incorrecta.' :
-          e.code === 'auth/user-not-found'    ? 'No existe esa cuenta.' :
-          e.code === 'auth/email-already-in-use' ? 'Ese email ya está registrado.' :
-          e.code === 'auth/weak-password'     ? 'La contraseña debe tener al menos 6 caracteres.' :
+          e.code === 'auth/wrong-password'    ? _t('diario_err_pass') :
+          e.code === 'auth/user-not-found'    ? _t('diario_err_no_account') :
+          e.code === 'auth/email-already-in-use' ? _t('diario_err_email_used') :
+          e.code === 'auth/weak-password'     ? _t('diario_err_weak_pass') :
           e.message
         );
       }
@@ -94,11 +96,11 @@
       const publica   = document.getElementById('entrPublica').checked;
 
       if (!reflexion && !carta) {
-        showToast('Escribe al menos una reflexión para guardar ✨'); return;
+        showToast(_t('diario_toast_req')); return;
       }
 
       const btn = document.getElementById('guardarBtn');
-      btn.disabled = true; btn.textContent = 'Guardando…';
+      btn.disabled = true; btn.textContent = _t('diario_saving');
 
       try {
         const editId = document.getElementById('entradaForm').dataset.editId;
@@ -108,19 +110,19 @@
             updatedAt: serverTimestamp()
           });
           document.getElementById('entradaForm').dataset.editId = '';
-          btn.textContent = '✦ Guardar en el Diario';
+          btn.textContent = _t('diario_guardar_btn');
         } else {
           await addDoc(collection(db, 'entradas'), {
             uid: user.uid,
-            displayName: user.displayName || 'Alma Anónima',
+            displayName: user.displayName || _t('diario_anon_name'),
             carta, reflexion, ritual, humor, luna, publica,
             createdAt: serverTimestamp()
           });
-          btn.textContent = '✦ Guardar en el Diario';
+          btn.textContent = _t('diario_guardar_btn');
         }
         limpiarForm();
         await loadEntradas(user);
-        showToast('Entrada guardada en tu Diario del Alma 🦋');
+        showToast(_t('diario_saved_toast'));
         document.getElementById('mis-entradas').scrollIntoView({ behavior:'smooth' });
       } catch(e) {
         showToast('Error al guardar: ' + e.message);
@@ -131,7 +133,7 @@
     // ── LOAD ENTRADAS ──
     window.loadEntradas = async (user) => {
       const lista = document.getElementById('listaEntradas');
-      lista.innerHTML = '<p class="loading-msg">Cargando tu diario…</p>';
+      lista.innerHTML = `<p class="loading-msg">${_t('diario_loading')}</p>`;
 
       try {
         const q = query(
@@ -142,9 +144,10 @@
         const snap = await getDocs(q);
 
         if (snap.empty) {
+          const emptyLines = _t('diario_empty').split('\n');
           lista.innerHTML = `<div class="empty-state">
             <span>🌙</span>
-            <p>Tu diario está en blanco.<br>La primera página te espera.</p>
+            <p>${emptyLines[0]}<br>${emptyLines[1] || ''}</p>
           </div>`;
           return;
         }
@@ -164,7 +167,7 @@
       if (!user || user.email !== ADMIN_EMAIL) return;
 
       const lista = document.getElementById('listaPublicas');
-      lista.innerHTML = '<p class="loading-msg">Cargando…</p>';
+      lista.innerHTML = `<p class="loading-msg">${_t('diario_loading_pub')}</p>`;
 
       try {
         const q = query(
@@ -175,7 +178,7 @@
         const snap = await getDocs(q);
 
         if (snap.empty) {
-          lista.innerHTML = '<p class="loading-msg">No hay entradas públicas aún.</p>';
+          lista.innerHTML = `<p class="loading-msg">${_t('diario_publicas_empty')}</p>`;
           return;
         }
         lista.innerHTML = '';
@@ -199,28 +202,29 @@
       document.getElementById('entrLuna').value      = d.luna || '🌕';
       document.getElementById('entrPublica').checked = d.publica || false;
       document.getElementById('entradaForm').dataset.editId = id;
-      document.getElementById('guardarBtn').textContent = '✦ Actualizar entrada';
+      document.getElementById('guardarBtn').textContent = _t('diario_update_btn');
       document.getElementById('nueva-entrada').scrollIntoView({ behavior:'smooth' });
     };
 
     // ── DELETE ENTRADA ──
     window.borrarEntrada = async (id) => {
-      if (!confirm('¿Segura que quieres eliminar esta entrada?')) return;
+      if (!confirm(_t('diario_confirm_delete'))) return;
       await deleteDoc(doc(db, 'entradas', id));
       await loadEntradas(window._fbUser);
-      showToast('Entrada eliminada.');
+      showToast(_t('diario_deleted_toast'));
     };
 
     // ── BUILD ENTRADA CARD ──
     function buildEntradaCard(id, d, user, isAdmin = false) {
       const div = document.createElement('div');
       div.className = 'entrada-card' + (d.publica ? ' publica' : '');
-      const fecha = d.createdAt?.toDate?.()?.toLocaleDateString('es-ES', {
+      const locale = window.LangEngine?.current || 'es';
+      const fecha = d.createdAt?.toDate?.()?.toLocaleDateString(locale, {
         day:'numeric', month:'long', year:'numeric'
       }) || '—';
 
       const isOwner = user.uid === d.uid;
-      const adminBadge = isAdmin ? `<span class="admin-name">✦ ${d.displayName || 'Alma Anónima'}</span>` : '';
+      const adminBadge = isAdmin ? `<span class="admin-name">✦ ${d.displayName || _t('diario_anon_name')}</span>` : '';
 
       div.innerHTML = `
         <div class="entrada-header">
@@ -229,11 +233,11 @@
             <span class="entrada-fecha">${fecha}</span>
             <span class="entrada-humor">${d.humor || '✨'}</span>
             <span class="entrada-luna">${d.luna || ''}</span>
-            ${d.publica ? '<span class="badge-publica">✦ Pública</span>' : '<span class="badge-privada">🔒 Privada</span>'}
+            ${d.publica ? `<span class="badge-publica">${_t('diario_badge_publica')}</span>` : `<span class="badge-privada">${_t('diario_badge_privada')}</span>`}
           </div>
           ${isOwner ? `<div class="entrada-actions">
-            <button onclick="editarEntrada('${id}')" class="btn-accion">Editar</button>
-            <button onclick="borrarEntrada('${id}')" class="btn-accion danger">Eliminar</button>
+            <button onclick="editarEntrada('${id}')" class="btn-accion">${_t('diario_edit_btn')}</button>
+            <button onclick="borrarEntrada('${id}')" class="btn-accion danger">${_t('diario_delete_btn')}</button>
           </div>` : ''}
         </div>
         ${d.carta ? `<div class="entrada-carta">🔮 <span>${d.carta}</span></div>` : ''}
@@ -248,10 +252,10 @@
       const form = document.getElementById('authForm');
       const isReg = form.dataset.mode === 'register';
       form.dataset.mode = isReg ? 'login' : 'register';
-      document.getElementById('authTitle').textContent   = isReg ? 'Bienvenida de vuelta' : 'Crear tu cuenta mágica';
-      document.getElementById('authToggleBtn').textContent = isReg ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión';
+      document.getElementById('authTitle').textContent   = isReg ? _t('diario_login_title') : _t('diario_register_title');
+      document.getElementById('authToggleBtn').textContent = isReg ? _t('diario_to_register') : _t('diario_to_login');
       document.getElementById('authNameWrap').style.display = isReg ? 'none' : 'block';
-      document.getElementById('authSubmitBtn').textContent  = isReg ? 'Entrar al Diario' : 'Crear cuenta';
+      document.getElementById('authSubmitBtn').textContent  = isReg ? _t('diario_enter_btn') : _t('diario_create_btn');
       document.getElementById('authError').textContent = '';
     };
 
@@ -271,7 +275,7 @@
       document.getElementById('entrLuna').value  = '🌕';
       document.getElementById('entrPublica').checked = false;
       document.getElementById('entradaForm').dataset.editId = '';
-      document.getElementById('guardarBtn').textContent = '✦ Guardar en el Diario';
+      document.getElementById('guardarBtn').textContent = _t('diario_guardar_btn');
     }
 
     window.limpiarForm = limpiarForm;
@@ -492,12 +496,15 @@
     <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
     <div class="nav-right">
       <span class="nav-user" id="navUser"></span>
-      <button class="btn-logout" id="btnLogout" style="display:none" onclick="logout()">Salir</button>
+      <button class="btn-logout" id="btnLogout" style="display:none" onclick="logout()" data-i18n="diario_logout">Salir</button>
       <div class="lang-selector">
         <button class="lang-btn active" data-lang="es" onclick="LangEngine.set('es')">ES</button>
         <button class="lang-btn" data-lang="en"  onclick="LangEngine.set('en')">EN</button>
         <button class="lang-btn" data-lang="it"  onclick="LangEngine.set('it')">IT</button>
         <button class="lang-btn" data-lang="ko"  onclick="LangEngine.set('ko')">한국</button>
+        <button class="lang-btn" data-lang="pt"  onclick="LangEngine.set('pt')">PT</button>
+        <button class="lang-btn" data-lang="tr"  onclick="LangEngine.set('tr')">TR</button>
+        <button class="lang-btn" data-lang="ja"  onclick="LangEngine.set('ja')">日本</button>
       </div>
     </div>
   </nav>
@@ -505,108 +512,108 @@
   <!-- ── AUTH SCREEN ── -->
   <div id="auth-screen">
     <div class="auth-box">
-      <span class="auth-badge">✦ DIARIO DEL ALMA ✦</span>
-      <h1 class="auth-title" id="authTitle">Tu espacio sagrado</h1>
-      <p class="auth-sub">Un lugar solo tuyo donde guardar los mensajes del Oráculo, tus rituales y reflexiones del alma.</p>
+      <span class="auth-badge" data-i18n="diario_badge">✦ DIARIO DEL ALMA ✦</span>
+      <h1 class="auth-title" id="authTitle" data-i18n="diario_auth_title">Tu espacio sagrado</h1>
+      <p class="auth-sub" data-i18n="diario_auth_sub">Un lugar solo tuyo donde guardar los mensajes del Oráculo, tus rituales y reflexiones del alma.</p>
 
       <button class="auth-google" onclick="loginGoogle()">
         <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Continuar con Google
+        <span data-i18n="diario_google_btn">Continuar con Google</span>
       </button>
 
-      <div class="auth-sep"><span>o con email</span></div>
+      <div class="auth-sep"><span data-i18n="diario_sep">o con email</span></div>
 
       <form id="authForm" data-mode="register" onsubmit="event.preventDefault(); loginEmail()">
         <div id="authNameWrap" class="auth-field">
-          <label>Nombre mágico</label>
-          <input id="authName" type="text" placeholder="¿Cómo quieres que te llamemos?">
+          <label data-i18n="diario_name_label">Nombre mágico</label>
+          <input id="authName" type="text" placeholder="¿Cómo quieres que te llamemos?" data-i18n-placeholder="diario_name_ph">
         </div>
         <div class="auth-field">
-          <label>Email</label>
+          <label data-i18n="diario_email_label">Email</label>
           <input id="authEmail" type="email" placeholder="tu@email.com" required>
         </div>
         <div class="auth-field">
-          <label>Contraseña</label>
-          <input id="authPass" type="password" placeholder="Mínimo 6 caracteres" required>
+          <label data-i18n="diario_pass_label">Contraseña</label>
+          <input id="authPass" type="password" placeholder="Mínimo 6 caracteres" data-i18n-placeholder="diario_pass_ph" required>
         </div>
-        <button type="submit" class="auth-submit" id="authSubmitBtn">Crear cuenta</button>
+        <button type="submit" class="auth-submit" id="authSubmitBtn" data-i18n="diario_submit_btn">Crear cuenta</button>
       </form>
 
       <p class="auth-error" id="authError"></p>
-      <p class="auth-toggle" id="authToggleBtn" onclick="toggleMode()">¿Ya tienes cuenta? Inicia sesión</p>
+      <p class="auth-toggle" id="authToggleBtn" onclick="toggleMode()" data-i18n="diario_toggle_btn">¿Ya tienes cuenta? Inicia sesión</p>
     </div>
   </div>
 
   <!-- ── APP SCREEN ── -->
   <div id="app-screen">
     <div class="app-hero">
-      <span class="app-badge">✦ DIARIO DEL ALMA ✦</span>
-      <h1 class="app-title">Tu Diario<br>del Alma</h1>
-      <p class="app-welcome">Bienvenida, <strong id="appUserName">Alma Brillante</strong> 🦋</p>
+      <span class="app-badge" data-i18n="diario_app_badge">✦ DIARIO DEL ALMA ✦</span>
+      <h1 class="app-title" data-i18n-html="diario_app_title">Tu Diario<br>del Alma</h1>
+      <p class="app-welcome"><span data-i18n="diario_welcome">Bienvenida,</span> <strong id="appUserName">Alma Brillante</strong> 🦋</p>
     </div>
 
     <div class="app-inner">
 
       <!-- NOMBRE MÍSTICO PERFIL -->
       <div id="perfilNombreMistico" class="perfil-nombre-mistico" style="display:none">
-        <p class="perfil-nm-label">✦ TU NOMBRE MÍSTICO DEL PRISMA ✦</p>
+        <p class="perfil-nm-label" data-i18n="diario_nm_label">✦ TU NOMBRE MÍSTICO DEL PRISMA ✦</p>
         <div id="nmResultado" style="display:none">
           <p class="perfil-nm-nombre" id="nmNombre"></p>
           <p class="perfil-nm-sub" id="nmSub"></p>
         </div>
         <div id="nmForm">
-          <p style="font-style:italic;font-size:.9rem;color:#a09070;margin-bottom:.8rem;">
+          <p style="font-style:italic;font-size:.9rem;color:#a09070;margin-bottom:.8rem;" data-i18n="diario_nm_intro">
             El Oráculo Prisma te ha asignado un nombre desde antes de que nacieras.<br>Ingresa tu fecha de nacimiento para descubrirlo.
           </p>
           <div class="perfil-nm-form">
             <input type="date" id="nmFecha">
-            <button class="perfil-nm-btn" onclick="calcularYGuardarNombre()">✦ Descubrir mi nombre</button>
+            <button class="perfil-nm-btn" onclick="calcularYGuardarNombre()" data-i18n="diario_nm_btn">✦ Descubrir mi nombre</button>
           </div>
         </div>
       </div>
 
       <!-- NUEVA ENTRADA -->
       <div id="nueva-entrada">
-        <p class="section-title">✦ NUEVA ENTRADA</p>
+        <p class="section-title" data-i18n="diario_nueva_title">✦ NUEVA ENTRADA</p>
         <div class="entrada-form-card">
           <form id="entradaForm" data-edit-id="" onsubmit="event.preventDefault()">
             <div class="form-grid">
               <div class="form-field">
-                <label>Carta del día</label>
-                <input id="entrCarta" type="text" placeholder="¿Qué carta te salió hoy?">
+                <label data-i18n="diario_carta_label">Carta del día</label>
+                <input id="entrCarta" type="text" placeholder="¿Qué carta te salió hoy?" data-i18n-placeholder="diario_carta_ph">
               </div>
               <div class="form-field">
-                <label>Estado del alma</label>
+                <label data-i18n="diario_humor_label">Estado del alma</label>
                 <select id="entrHumor">
-                  <option value="✨">✨ Inspirada</option>
-                  <option value="🌙">🌙 Reflexiva</option>
-                  <option value="🔥">🔥 Apasionada</option>
-                  <option value="🌊">🌊 Emocional</option>
-                  <option value="🌿">🌿 En paz</option>
-                  <option value="⚡">⚡ Inquieta</option>
-                  <option value="🖤">🖤 En sombra</option>
-                  <option value="🦋">🦋 Transformando</option>
+                  <option value="✨" data-i18n="diario_h_inspirada">✨ Inspirada</option>
+                  <option value="🌙" data-i18n="diario_h_reflexiva">🌙 Reflexiva</option>
+                  <option value="🔥" data-i18n="diario_h_apasionada">🔥 Apasionada</option>
+                  <option value="🌊" data-i18n="diario_h_emocional">🌊 Emocional</option>
+                  <option value="🌿" data-i18n="diario_h_paz">🌿 En paz</option>
+                  <option value="⚡" data-i18n="diario_h_inquieta">⚡ Inquieta</option>
+                  <option value="🖤" data-i18n="diario_h_sombra">🖤 En sombra</option>
+                  <option value="🦋" data-i18n="diario_h_transform">🦋 Transformando</option>
                 </select>
               </div>
               <div class="form-field form-field-full">
-                <label>Mi reflexión del día</label>
-                <textarea id="entrReflexion" placeholder="¿Qué mensaje te trajo el Oráculo? ¿Cómo te habló al alma?"></textarea>
+                <label data-i18n="diario_reflexion_label">Mi reflexión del día</label>
+                <textarea id="entrReflexion" placeholder="¿Qué mensaje te trajo el Oráculo? ¿Cómo te habló al alma?" data-i18n-placeholder="diario_reflexion_ph"></textarea>
               </div>
               <div class="form-field form-field-full">
-                <label>Ritual realizado (opcional)</label>
-                <textarea id="entrRitual" placeholder="¿Hiciste algún ritual hoy? ¿Cómo fue la experiencia?" style="min-height:70px"></textarea>
+                <label data-i18n="diario_ritual_label">Ritual realizado (opcional)</label>
+                <textarea id="entrRitual" placeholder="¿Hiciste algún ritual hoy? ¿Cómo fue la experiencia?" data-i18n-placeholder="diario_ritual_ph" style="min-height:70px"></textarea>
               </div>
               <div class="form-field">
-                <label>Fase lunar</label>
+                <label data-i18n="diario_luna_label">Fase lunar</label>
                 <select id="entrLuna">
-                  <option value="🌑">🌑 Luna nueva</option>
-                  <option value="🌒">🌒 Creciente</option>
-                  <option value="🌓">🌓 Cuarto creciente</option>
-                  <option value="🌔">🌔 Gibosa creciente</option>
-                  <option value="🌕">🌕 Luna llena</option>
-                  <option value="🌖">🌖 Gibosa menguante</option>
-                  <option value="🌗">🌗 Cuarto menguante</option>
-                  <option value="🌘">🌘 Menguante</option>
+                  <option value="🌑" data-i18n="diario_l_nueva">🌑 Luna nueva</option>
+                  <option value="🌒" data-i18n="diario_l_creciente">🌒 Creciente</option>
+                  <option value="🌓" data-i18n="diario_l_cuarto_c">🌓 Cuarto creciente</option>
+                  <option value="🌔" data-i18n="diario_l_gibosa_c">🌔 Gibosa creciente</option>
+                  <option value="🌕" data-i18n="diario_l_llena">🌕 Luna llena</option>
+                  <option value="🌖" data-i18n="diario_l_gibosa_m">🌖 Gibosa menguante</option>
+                  <option value="🌗" data-i18n="diario_l_cuarto_m">🌗 Cuarto menguante</option>
+                  <option value="🌘" data-i18n="diario_l_menguante">🌘 Menguante</option>
                 </select>
               </div>
             </div>
@@ -615,13 +622,13 @@
               <div>
                 <label class="form-publica">
                   <input type="checkbox" id="entrPublica">
-                  Compartir en el Templo (pública)
+                  <span data-i18n="diario_publica_label">Compartir en el Templo (pública)</span>
                 </label>
-                <p class="form-publica-hint">Las entradas públicas son visibles para Bruxa Tarot y la comunidad</p>
+                <p class="form-publica-hint" data-i18n="diario_publica_hint">Las entradas públicas son visibles para Bruxa Tarot y la comunidad</p>
               </div>
               <div style="display:flex;gap:.8rem;align-items:center">
-                <button type="button" class="btn-cancelar" onclick="limpiarForm()">Limpiar</button>
-                <button type="button" class="btn-save" id="guardarBtn" onclick="guardarEntrada()">✦ Guardar en el Diario</button>
+                <button type="button" class="btn-cancelar" onclick="limpiarForm()" data-i18n="diario_limpiar_btn">Limpiar</button>
+                <button type="button" class="btn-save" id="guardarBtn" onclick="guardarEntrada()" data-i18n="diario_guardar_btn">✦ Guardar en el Diario</button>
               </div>
             </div>
           </form>
@@ -630,7 +637,7 @@
 
       <!-- MIS ENTRADAS -->
       <div id="mis-entradas">
-        <p class="section-title">✦ MIS PÁGINAS DEL ALMA</p>
+        <p class="section-title" data-i18n="diario_mis_title">✦ MIS PÁGINAS DEL ALMA</p>
         <div class="entradas-lista" id="listaEntradas">
           <p class="loading-msg">Cargando tu diario…</p>
         </div>
@@ -639,8 +646,8 @@
       <!-- ADMIN: ENTRADAS PÚBLICAS -->
       <div id="adminPanel" class="admin-panel" style="display:none">
         <div class="divider"><div class="divider-line"></div><span class="divider-sym">✦</span><div class="divider-line"></div></div>
-        <p class="section-title">✦ ENTRADAS PÚBLICAS DEL TEMPLO</p>
-        <button class="admin-toggle" onclick="loadPublicas()">Cargar entradas públicas</button>
+        <p class="section-title" data-i18n="diario_admin_title">✦ ENTRADAS PÚBLICAS DEL TEMPLO</p>
+        <button class="admin-toggle" onclick="loadPublicas()" data-i18n="diario_admin_load">Cargar entradas públicas</button>
         <div class="entradas-lista" id="listaPublicas"></div>
       </div>
 
@@ -753,7 +760,7 @@
 
   async function calcularYGuardarNombre() {
     const fecha = document.getElementById('nmFecha').value;
-    if (!fecha) { window.showToast('Ingresa tu fecha de nacimiento ✨'); return; }
+    if (!fecha) { window.showToast(window.LangEngine?.t('diario_nm_date_req') || 'Ingresa tu fecha de nacimiento ✨'); return; }
     const user = window._fbUser;
     if (!user) return;
 
@@ -769,13 +776,21 @@
         displayName: user.displayName || user.email?.split('@')[0] || 'Alma'
       }, { merge: true });
       mostrarNombreMistico(data);
-      window.showToast('✦ Tu nombre místico ha sido guardado en el Prisma');
+      window.showToast(window.LangEngine?.t('diario_nm_saved_toast') || '✦ Tu nombre místico ha sido guardado en el Prisma');
     } catch(e) {
       // Show anyway even if save fails
       mostrarNombreMistico(data);
-      window.showToast('Nombre revelado ✨ (no se pudo guardar: ' + e.message + ')');
+      window.showToast((window.LangEngine?.t('diario_nm_revealed') || 'Nombre revelado ✨') + ' (' + e.message + ')');
     }
   }
+</script>
+<script>
+// ── LANG INIT ──
+window.addEventListener('langchange', () => {
+  if (typeof LangEngine !== 'undefined') LangEngine.apply();
+  if (window._fbUser) loadEntradas(window._fbUser);
+});
+if (typeof LangEngine !== 'undefined') { LangEngine.detect(); LangEngine.apply(); }
 </script>
 <script>
 // Dynamic back button based on origin
