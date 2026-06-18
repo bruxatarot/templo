@@ -276,6 +276,9 @@
       <button class="lang-btn" data-lang="en"  onclick="LangEngine.set('en')">EN</button>
       <button class="lang-btn" data-lang="it"  onclick="LangEngine.set('it')">IT</button>
       <button class="lang-btn" data-lang="ko"  onclick="LangEngine.set('ko')">한국</button>
+      <button class="lang-btn" data-lang="pt"  onclick="LangEngine.set('pt')">PT</button>
+      <button class="lang-btn" data-lang="tr"  onclick="LangEngine.set('tr')">TR</button>
+      <button class="lang-btn" data-lang="ja"  onclick="LangEngine.set('ja')">日本</button>
     </div>
   </nav>
 
@@ -500,6 +503,13 @@ function escapeHTML(str) {
 
 // ── INIT ──
 renderCielo();
+
+// ── LANG ──
+window.addEventListener('langchange', () => {
+  document.getElementById('toast').textContent = LangEngine.t('pozo_toast');
+  renderCielo();
+});
+if (typeof LangEngine !== 'undefined') { LangEngine.detect(); LangEngine.apply(); }
 </script>
 <script>
 // Dynamic back button based on origin
