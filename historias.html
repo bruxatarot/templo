@@ -352,7 +352,7 @@
       <div class="libro">
         <div class="libro-cover">
           <div class="libro-spine"></div>
-          <img src="historias/assets/susurros-de-mi-alma.jpg" alt="Susurros de mi alma"
+          <img src="images/susurros-de-mi-alma.jpg" alt="Susurros de mi alma"
             class="libro-cover-img" onerror="this.style.display='none'">
           <div class="libro-cover-img-fallback">🎧</div>
           <div class="libro-cover-overlay"></div>
@@ -367,54 +367,57 @@
     </div>
 
     <!-- 3. Última Jugada -->
-    <div class="libro-wrap">
+    <div class="libro-wrap" onclick="abrirLibro('ultima-jugada')">
       <div class="libro">
-        <div class="libro-cover" style="opacity:.6;cursor:default">
+        <div class="libro-cover">
           <div class="libro-spine"></div>
           <img src="historias/assets/banner-ultima.jpg" alt="Última Jugada"
             class="libro-cover-img" onerror="this.style.display='none'">
           <div class="libro-cover-img-fallback">⚽</div>
           <div class="libro-cover-overlay"></div>
-          <span class="libro-cover-badge proxima">Próximamente</span>
+          <span class="libro-cover-badge">✦ Disponible</span>
           <div class="libro-cover-content">
             <p class="libro-cover-title">Última Jugada</p>
             <p class="libro-cover-sub">6 capítulos</p>
+            <p class="libro-cover-hint">Toca para abrir</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 4. No Soy Una Fan Más -->
-    <div class="libro-wrap">
+    <div class="libro-wrap" onclick="abrirLibro('no-soy-fan')">
       <div class="libro">
-        <div class="libro-cover" style="opacity:.6;cursor:default">
+        <div class="libro-cover">
           <div class="libro-spine"></div>
           <img src="historias/assets/banner-no-soy.jpg" alt="No Soy Una Fan Más"
             class="libro-cover-img" onerror="this.style.display='none'">
           <div class="libro-cover-img-fallback">🌟</div>
           <div class="libro-cover-overlay"></div>
-          <span class="libro-cover-badge proxima">Próximamente</span>
+          <span class="libro-cover-badge">✦ Disponible</span>
           <div class="libro-cover-content">
             <p class="libro-cover-title">No Soy Una Fan Más</p>
-            <p class="libro-cover-sub">6 capítulos</p>
+            <p class="libro-cover-sub">21 capítulos</p>
+            <p class="libro-cover-hint">Toca para abrir</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 5. Eco En Tu Piel -->
-    <div class="libro-wrap">
+    <div class="libro-wrap" onclick="abrirLibro('ecos')">
       <div class="libro">
-        <div class="libro-cover" style="opacity:.6;cursor:default">
+        <div class="libro-cover">
           <div class="libro-spine"></div>
           <img src="historias/eco-en-tu-piel/assets/cover-eco.jpeg" alt="Eco En Tu Piel"
             class="libro-cover-img" onerror="this.style.display='none'">
           <div class="libro-cover-img-fallback">🌙</div>
           <div class="libro-cover-overlay"></div>
-          <span class="libro-cover-badge proxima">Próximamente</span>
+          <span class="libro-cover-badge">✦ Disponible</span>
           <div class="libro-cover-content">
-            <p class="libro-cover-title">Eco En Tu Piel</p>
-            <p class="libro-cover-sub">6 capítulos</p>
+            <p class="libro-cover-title">Ecos en Tu Piel</p>
+            <p class="libro-cover-sub">5 capítulos</p>
+            <p class="libro-cover-hint">Toca para abrir</p>
           </div>
         </div>
       </div>
@@ -493,6 +496,612 @@
 
 
 // ── LECTOR DE CAPÍTULOS ──
+// NOTA: Textos embebidos. Para escalar → /historias/data/*.json
+
+// ── ÚLTIMA JUGADA ──
+CAP_CONTENIDO['ultima-jugada-1'] = {
+  titulo: 'Última Jugada',
+  sub: 'Capítulo 1 — Conexiones en el Campo',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/assets/banner-ultima.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['ultima-jugada-1'].texto = '<p>El sol abrasador iluminaba el campo de fútbol y las gradas colmadas de estudiantes vibraban con la energía del torneo. Jade se encontraba allí junto a su inseparable amiga Rosario, disfrutando del espectáculo y apoyando a su amigo Alberto.</p><p>—Vamos, Jade, sé que vienes por el partido... pero también por el taco de ojo, ¿verdad? —le soltó Rosario entre risas.</p><p>—¿And qué tiene de malo? —respondió Jade, riendo con picardía—. No es mi culpa que el equipo contrario tenga jugadores tan... interesantes.</p><p>Fue precisamente en ese instante cuando los ojos de Jade se fijaron en un joven que destacaba notablemente entre los demás. Era un chico moreno, atlético, con una presencia en el campo que resultaba imposible de ignorar. Sus movimientos eran rápidos, certeros y desbordaban energía.</p><p>Cuando se escuchó el silbato final tras un gol que desató las ovaciones, Jade comenzó a animarlo en voz alta:</p><p>—¡Vamos, vamos! ¡Bien jugado!</p><p>Con el transcurso de los partidos, Jade comenzó a asistir al campo con muchísima más emoción. Rosario, al notar el evidente entusiasmo de su amiga, decidió revelarle un dato de gran interés:</p><p>—Álvaro es amigo de mi hermano Alberto.</p><p>Eso fue todo lo que Jade necesitó escuchar. Con una sonrisa juguetona grabada en el rostro, determinó que no podía dejar pasar una oportunidad tan perfecta.</p><p>—Alberto, tienes que presentarme a tu amigo —le pidió con total decisión.</p><p>Así, al término de otro intenso encuentro, Jade tuvo la oportunidad de acercarse. Alberto se encontraba conversando con Álvaro cuando ella intervino con total seguridad.</p><p>—¡Qué gran partido el de hoy, hiciste un buen trabajo! —le dijo sonriendo con confianza.</p><p>Álvaro, con la respiración todavía agitada por el esfuerzo físico, se pasó la mano por el cabello húmedo de sudor antes de responderle con una leve y tímida sonrisa:</p><p>—Gracias, no pudimos dar más.</p><p>Alberto, percibiendo la sutil tensión que flotaba en el aire, intervino para presentarlos formalmente:</p><p>—Ella es Jade, estudia con mi hermana Rosario, son grandes amigas.</p><p>—Un placer, Jade —respondió él.</p><p>Con esas breves palabras concluyó su primer encuentro. Pero mientras Jade caminaba de regreso a su hogar, no pudo evitar sonreír de oreja a oreja. Su historia apenas estaba comenzando a escribirse.</p>';
+
+CAP_CONTENIDO['ultima-jugada-2'] = {
+  titulo: 'Última Jugada',
+  sub: 'Capítulo 2 — Iniciando una Amistad',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/assets/banner-ultima.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['ultima-jugada-2'].texto = '<p>Durante los días siguientes, Jade continuó asistiendo puntualmente a los partidos, encontrando siempre la excusa ideal para permanecer cerca de Álvaro. A veces se cruzaban de manera fugaz en los pasillos de la escuela, y en cada uno de esos pequeños encuentros sentía que el corazón le latía a un ritmo acelerado.</p><p>En una ocasión, Rosario la abordó con tono curioso:</p><p>—¿Ya has hablado más con Álvaro?</p><p>—Un poco, pero es tan tímido... aunque tiene algo que me intriga demasiado —confesó Jade, soltando un suspiro acompañado de una sonrisa.</p><p>Una tarde, tras una victoria particularmente emocionante, Jade decidió que ya era momento de dar un paso firme hacia adelante. Aprovechando la vibrante energía del triunfo, se aproximó para felicitarlo.</p><p>—¡Felicidades por la victoria! Jugaste increíble —le expresó animada y con una enorme dosis de sinceridad.</p><p>Álvaro, aún recuperando el aliento, se pasó la mano por el cabello y le sonrió, mostrando esta vez una confianza mucho mayor.</p><p>—Gracias, Jade. Tú y tus amigas siempre nos animan mucho —le contestó con genuino agradecimiento.</p><p>—Bueno, nos encanta verlos jugar —añadió ella—. ¿Te gustaría que saliéramos todos juntos algún día?</p><p>Álvaro la contempló en silencio por unos breves instantes, antes de responder con una sonrisa más amplia:</p><p>—Claro, eso suena bien.</p><p>A partir de ese momento, ambos empezaron a entablar conversaciones de manera más frecuente. Jade comenzó a descubrir que detrás del talentoso jugador de fútbol se escondía mucho más; en el fondo de su mirada habitaba una historia propia, un mundo repleto de pensamientos y sueños que él todavía no se había atrevido a compartir con nadie más.</p>';
+
+CAP_CONTENIDO['ultima-jugada-3'] = {
+  titulo: 'Última Jugada',
+  sub: 'Capítulo 3 — Descubriendo Conexiones',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/assets/banner-ultima.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['ultima-jugada-3'].texto = '<p>A medida que pasaba el tiempo, Jade y Álvaro compartían cada vez más espacios. Sin embargo, había un detalle persistente que Jade no podía ignorar: Álvaro parecía vivir en una prisa constante. Tan pronto como sonaba el timbre, se despedía de manera apresurada y desaparecía. Ella lo observaba marchar con una mezcla de curiosidad e intriga, cuestionándose qué asuntos lo obligaban a estar siempre tan apurado.</p><p>Una tarde, mientras Jade conversaba con su prima María y con Sebastián —un niño de sexto grado al que llamaba cariñosamente "primo"—, el tema del amor salió a relucir.</p><p>—Bueno, hay alguien que me gusta, pero aún no sé mucho sobre él… —comentó Jade en tono juguetón.</p><p>—¿En serio? ¿Y quién es? —inquirió Sebastián con evidente curiosidad.</p><p>Sin darle demasiada trascendencia al asunto, Jade pronunció el nombre de Álvaro con total naturalidad. Lo que jamás pudo haber previsto fue la inmediata e impactante reacción del pequeño.</p><p>—¡Álvaro es mi hermano mayor! —exclamó Sebastián con profunda sorpresa.</p><p>El mundo de Jade pareció detenerse por un segundo completo.</p><p>—¿En serio? No tenía idea… —atinó a decir con una risa nerviosa.</p><p>—Sí —asintió Sebastián—. Álvaro tiene que irse a casa rápido después de clases para cuidarnos a mí y a nuestros hermanos. Mis papás son súper estrictos con él. Desde que terminó con su exnovia, le ha costado más en la escuela porque ella le ayudaba mucho.</p><p>Jade escuchó con absoluta atención. Descubrió que Álvaro era un hermano mayor sumamente responsable, alguien que sacrificaba diariamente su tiempo libre para velar por el bienestar de su familia. Y además, descubrió la existencia de una exnovia.</p><p>Un sutil nudo comenzó a formarse en su estómago. ¿Habría cerrado ya ese capítulo de su vida? ¿Le seguiría afectando aquella ruptura?</p><p>«¿Será que aún siente algo por ella?», se cuestionó de forma interna. Una pequeña sombra de inseguridad intentó colarse en su pecho, pero se esforzó por desecharla. Al final, una dulce certeza la consoló: tal vez, solo tal vez, él también estaba empezando a sentir algo real por ella.</p>';
+
+CAP_CONTENIDO['ultima-jugada-4'] = {
+  titulo: 'Última Jugada',
+  sub: 'Capítulo 4 — La Intriga de Karina',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/assets/banner-ultima.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['ultima-jugada-4'].texto = '<p>A la par que el noviazgo entre Álvaro y Jade finalmente se consolidaba, una sombra peligrosa comenzaba a gestarse en los alrededores. Karina, la exnovia de Álvaro, observaba con una molestia cada vez mayor cómo él ya no la buscaba ni le suplicaba por una segunda oportunidad. Pero lo que verdaderamente laceraba su orgullo era ver que Jade ocupaba ahora el lugar que antes le pertenecía.</p><p>—Si logro estar cerca de él todo el tiempo, eventualmente recordará lo bien que estábamos juntos —les susurró con frialdad a su grupo de amigas.</p><p>Con esa firme consigna en mente, el grupo puso en marcha la llamada Operación Reconciliación. La estrategia consistía en infiltrarse sutilmente en la rutina de Álvaro y hacerle sentir que la presencia de Karina era indispensable en su vida.</p><p>Jade, quien inicialmente había estado disfrutando de la plenitud de su relación, comenzó a percibir una atmósfera extraña. Cada vez que intentaba propiciar un momento a solas con su novio, Karina aparecía sospechosamente cerca.</p><p>—No quiero sonar celosa… pero algo no está bien —le confió Jade a su mejor amiga con un tono cargado de preocupación.</p><p>—Tenemos que descubrir qué está pasando. Yo tengo una gran idea —le respondió Rosario con total firmeza.</p><p>Rosario comenzó a investigar por cuenta propia. Lo que sus ojos presenciaron no fue en absoluto de su agrado: Karina se las había ingeniado para sentarse justo al lado de Álvaro, le sonreía de forma constante y acaparaba por completo su atención.</p><p>—Lo vi con mis propios ojos —le informó Rosario a Jade seriamente—. Karina está siempre a su lado, y Álvaro no parece incómodo.</p><p>—Necesito saber la verdad —sentenció Jade, manteniendo la determinación a pesar del dolor de la incertidumbre.</p><p>—Es hora de pedirle a Alberto que nos ayude —sugirió Rosario con una mirada astuta.</p>';
+
+CAP_CONTENIDO['ultima-jugada-5'] = {
+  titulo: 'Última Jugada',
+  sub: 'Capítulo 5 — Revelaciones y Confrontaciones',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/assets/banner-ultima.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['ultima-jugada-5'].texto = '<p>Rosario no tardó en percatarse de que algo perturbaba profundamente a su hermano. Las manos de Alberto tamborileaban constantemente sobre las superficies, mantenía la mandíbula tensa y rehuía la mirada.</p><p>—Alberto, ¿no has notado nada raro con Álvaro? Jade lo ha sentido muy distante últimamente.</p><p>Alberto soltó un pesado suspiro. Había visto a la expareja junta en más ocasiones de las que estaba dispuesto a tolerar, pero carecía de una prueba irrefutable.</p><p>—La verdad… ellos están juntos todo el tiempo. Pero voy a prestar más atención —respondió con seriedad.</p><p>Sin embargo, jamás imaginó que descubriría la verdad de una forma tan cruda. Un día, al ingresar a un salón de clases que creía vacío, se topó de frente con Álvaro y Karina besándose apasionadamente.</p><p>—¡Álvaro! ¿Qué estás haciendo? —exclamó Alberto enfurecido.</p><p>—¡No te metas! —le espetó Álvaro, tratando de zafarse.</p><p>Al terminar las clases de esa jornada, Jade caminaba al lado de Álvaro como de costumbre, pero la atmósfera se sentía completamente diferente. Al alcanzar la esquina donde solían despedirse, Álvaro se detuvo en seco.</p><p>—Jade… tenemos que terminar —soltó con una voz apagada y densa.</p><p>—¿Es broma, verdad? —preguntó en un hilo de voz.</p><p>—¡No! Ya no quiero ser tu novio —sentenció con firmeza, evitando sostenerle la mirada.</p><p>La misma esquina que en tantas ocasiones había sido testigo de sus sonrisas y promesas se transformó de pronto en un callejón sin salida. Sin añadir un solo argumento, Álvaro dio media vuelta y simplemente se alejó, dejándola paralizada.</p><p>Rosario apareció poco después, quebrando el trance.</p><p>—Jade, ¿qué pasó? —inquirió con urgencia.</p><p>—Álvaro terminó conmigo… así… sin explicaciones —consiguió articular Jade con la voz completamente quebrada.</p><p>—No te preocupes… vamos a llegar al fondo de esto —le aseguró Rosario.</p><p>Jade tomó la firme determinación de no aguardar un segundo más: buscó a Álvaro y lo confrontó directamente.</p><p>—Álvaro, tenemos que hablar.</p><p>—Él no tiene nada que hablar contigo —soltó Karina, apareciendo con un tono de burla y triunfo absoluto.</p><p>—Me debe una explicación —dijo Jade con firmeza, mirando fijamente a Álvaro—. ¿Es cierto que me usaste? ¿Que todo fue un plan tuyo para que Karina regresara contigo?</p><p>El rostro de Álvaro se descoloró por completo. Se quedó completamente mudo. Sin esperar una respuesta que a esas alturas resultaba innecesaria, Jade dio media vuelta con dignidad y se alejó del lugar, consciente de que cada paso la distanciaba de la mentira en la que había creído.</p>';
+
+CAP_CONTENIDO['ultima-jugada-6'] = {
+  titulo: 'Última Jugada',
+  sub: 'Capítulo 6 — El Dolor de la Venganza',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/assets/banner-ultima.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['ultima-jugada-6'].texto = '<p>El tiempo siguió su curso regular, pero el recuerdo de la traición permanecía intacto en el pecho de Jade. No se trataba de nostalgia por Álvaro, sino del vivo ardor del engaño. Karina se paseaba por los terrenos escolares con una soberbia insufrible, regodeándose en su supuesta victoria.</p><p>Para su fortuna, Jade contaba con aliadas más leales y numerosas de las que sus enemigos alcanzaban a imaginar. Una tarde, durante un descanso, se reunió con sus amigas y les expuso el plan que venía madurando.</p><p>—Muchachas, estoy cansada de verle la cara de satisfacción a Karina, y no soporto el comportamiento de Álvaro. Se me ocurrió una idea… para hacerles pagar el dolor que me causaron.</p><p>Con el consenso de todas, dio inicio la creación de una identidad ficticia: Venus Afrodita. Comenzaron a redactar una serie de cartas con diversas caligrafías y estilos, dotando a cada ejemplar de un misticismo único, pero con el mismo objetivo: seducir a Álvaro mediante la palabra escrita. Una de ellas versaba:</p><p>"Hola, Álvaro: No sé por dónde empezar… Cuando te veo jugar, es como si todo el ruido alrededor desapareciera. Pareces brillar más que todos los demás. Me gusta pensar que algún día te darás cuenta de que alguien te admira desde lejos. No sé si es la forma en que sonríes, aunque lo hagas poco, o cómo te esfuerzas tanto en todo lo que haces. Eres diferente, y eso me tiene aquí, escribiendo algo que probablemente nunca pensaste recibir. Con cariño, Venus Afrodita."</p><p>Las cartas empezaron a aparecer de forma estratégica sobre el pupitre de Álvaro. Como era de esperarse, el joven mordió el anzuelo rápidamente. Empezó a indagar entre sus conocidos, analizando los trazos de las letras y buscando cualquier pista que lo condujera a la identidad de su misteriosa admiradora. La curiosidad crecía con cada jornada. Se coordinó un encuentro.</p><p>Sentado en los jardines de la escuela, Álvaro aguardaba con el corazón latiéndole a mil por hora. Cuando vio aproximarse a la persona real, un frío intenso le recorrió la espina dorsal.</p><p>—¿Qué haces aquí? —preguntó invadido por la incredulidad.</p><p>—Soy Venus Afrodita —le respondió Jade, sosteniéndole la mirada con una sonrisa gélida.</p><p>El impacto de la revelación fue fulminante. Cada palabra leída y cada suspiro contenido se transformaron en un puñal que se clavaba directamente en su propia conciencia. Sin emitir una sola palabra, Álvaro bajó la cabeza, se puso de pie y se alejó con pasos lentos, experimentando el mismo desamparo que le había infligido a Jade tiempo atrás.</p><p>A pesar de haber consumado su propósito, Jade no experimentó la dulzura que esperaba de la venganza. Un nudo amargo se instaló en su propio pecho. La revancha, descubrió, no poseía un sabor tan dulce.</p><p>Alberto se acercó a ella y, con una mirada colmada de comprensión, le dio una palmada solidaria en el hombro:</p><p>—Lo hiciste bien —le dijo con calma.</p><p>—Ya todo terminó —añadió Rosario con suavidad.</p><p>Jade asintió en silencio, consciente de que un cambio irreversible se había operado en su ser. Había logrado rescatar su dignidad, pero comprendía también que el revanchismo no poseía la facultad de sanar automáticamente el amor propio que le había sido arrebatado. Sin embargo, de algo estaba completamente segura: ya no era la misma joven indefensa de antes, y en esa transformación residía su verdadera y auténtica victoria.</p><p><em>La vida dista mucho de ser un juego donde impera el juego limpio, y Jade tuvo que asimilar esa lección a través del dolor. La venganza puede ostentar una fachada sumamente atractiva al inicio, pero en el fondo no es más que un trago amargo destinado a heredar cicatrices invisibles en el alma. La verdadera fortaleza de un individuo no se mide por su capacidad de dañar a quienes lo lastimaron, sino por su entereza para ponerse en pie, capitalizar el aprendizaje y continuar caminando con la frente en alto y con absoluta dignidad.</em></p>';
+
+// ── NO SOY UNA FAN MÁS ──
+CAP_CONTENIDO['no-soy-fan-1'] = {
+  titulo: 'No Soy Una Fan Más',
+  sub: 'Capítulos 1–3 — Un Encuentro Fugaz',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/assets/banner-no-soy.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['no-soy-fan-1'].texto = '<p>La noche rebosaba de promesas y ambiciones desmedidas. Era un evento exclusivo donde Elena y Cristina avanzaban entre la multitud con sonrisas perfectamente ensayadas.</p><p>—No te emociones tanto, Elena —le murmuró Cristina—. Recuerda que si nos descubren, esta vez sí que nos echan.</p><p>—¿Cuándo nos han echado? —respondió Elena con una sonrisa traviesa.</p><p>Elena sentía la adrenalina recorrerle las venas. No importaba que todavía fuera una desconocida en la industria; en su mente, ella ya caminaba como una estrella.</p><p>A pocos metros, Dante estaba atrapado en un círculo asfixiante de cámaras. Valeria se aferraba a su brazo con una sonrisa de absoluta propiedad.</p><p>—Dante, cariño… imagina lo que seríamos juntos —deslizó Valeria—. Podríamos convertirnos en la pareja más mediática del año.</p><p>—Es lo mejor para tu carrera —intervino Marco con tono persuasivo—. La gente necesita un romance real.</p><p>Dante detestaba el juego. Justo cuando la frustración amenazaba con reflejarse en su rostro, alzó la mirada. Y entonces, la vio.</p><p>Al otro lado del salón, Elena brillaba con luz propia. No cargaba con la actitud forzada de las celebridades ni exhibía la sonrisa plástica de quien busca impresionar. En el momento en que ella también levantó la vista, sus ojos verdes destellaron bajo las luces. Dante contuvo el aliento.</p><p>En un segundo, el mundo exterior se desvaneció. Desaparecieron los flashes, las voces de los reporteros, las exigencias de los contratos. Solo quedó una mirada suspendida en el tiempo.</p><p>Elena sintió que el cuerpo se le congelaba. La intensidad con la que aquel hombre la observaba la desarmó por completo. Guiada por un impulso invisible, intentó dar un paso hacia él. Sin embargo, la mano de Cristina se cerró sobre su muñeca.</p><p>—Debemos irnos. ¡Ya! —le siseó su amiga al oído.</p><p>Dante tardó unos instantes en reaccionar. Su mente seguía fija en el punto exacto donde la silueta de la desconocida se había esfumado.</p><p>—¿Quién… era ella? —murmuró para sí mismo.</p><p>A la mañana siguiente, la cafetería del canal bullía con conversaciones. Elena y Cristina enfrentaban su primera audición formal. Sus amigas Renata y Sofía las acompañaban en calidad de apoyo moral, pero el foco de la charla no era el libreto, sino la velada previa.</p><p>—¡Fue épico! —rememoró Cristina con entusiasmo—. ¡Nos hicieron correr como si fuéramos fugitivas de la justicia!</p><p>Elena sonrió de medio lado, pero sus ojos volvieron a perderse en un punto fijo.</p><p>—Nuestras miradas se cruzaron —confesó en voz baja—. Fue apenas un segundo, pero se sintió eterno. Como si el mundo entero se hubiera congelado a nuestro alrededor. Una conexión tan jodidamente fuerte.</p><p>La atmósfera de la cafetería dio un vuelco drástico. Las puertas principales se abrieron de par en par. Valeria entró liderando su séquito. A su lado caminaba Marco y, un paso por detrás, avanzaba Dante.</p><p>Elena no se percató de la entrada hasta que sintió el codazo de Renata.</p><p>—Mira quién acaba de llegar… pero voltea con disimulo.</p><p>Dante la observaba fijamente, repitiendo la misma intensidad magnética de la noche anterior. Elena sintió que el aire abandonaba sus pulmones. Si los ojos de Dante funcionaban como un imán, su sonrisa era un incendio forestal del que no querías escapar.</p><p>La magia del instante se rompió cuando Cristina agarró a Elena del brazo.</p><p>—¡El casting! ¡Nos van a colgar si llegamos tarde!</p><p>El cuerpo de Dante reaccionó antes que su razón, amagando con ponerse de pie para seguirlas. Sin embargo, Valeria le atenazó el brazo con firmeza, hundiéndole las uñas en la muñeca.</p><p>—Dante, cariño… ¿a dónde crees que vas?</p><p>—¡Elena! ¡Mucha suerte! —alcanzó a gritar Sofía.</p><p>Elena se detuvo una fracción de segundo en el marco de la puerta. La iluminación del pasillo le otorgó un aura especial. En ese preciso instante, el nombre de la joven llegó a los oídos del artista.</p><p>"Elena", repitió Dante para sus adentros, con una sonrisa lenta grabada en su mejilla izquierda.</p>';
+
+CAP_CONTENIDO['no-soy-fan-2'] = {
+  titulo: 'No Soy Una Fan Más',
+  sub: 'Capítulos 4–6 — Un Juego Peligroso',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/assets/banner-no-soy.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['no-soy-fan-2'].texto = '<p>Mientras Elena y Cristina enfrentaban la tensión de la audición, Dante había ideado un plan. Escribió una nota: "Espero a Elena a las 4:30 en el auditorio al final del pasillo" y la dejó frente a Sofía y Renata con una sonrisa cómplice que las heló en el lugar.</p><p>En el casting, Elena tropezó en el escenario. Dante reaccionó con reflejos felinos, sujetándola por la muñeca antes de que tocara el suelo. Elena experimentó una oleada de calor justo donde la piel de Dante entraba en contacto con la suya.</p><p>—¿Te encuentras bien? —le preguntó en un susurro que solo ella pudo escuchar, dejando ver el hoyuelo en su mejilla.</p><p>—¡Espléndido! ¡Química pura! —exclamó el director del casting con entusiasmo—. Eso es exactamente lo que busco.</p><p>Antes de que Elena saliera, Dante rozó levemente sus dedos y depositó otra nota en su mano: "Tengo algo importante que decirte. Auditorio principal, 4:30. No faltes."</p><p>A las 4:30, Elena se plantó frente a la puerta del auditorio. Se sentía completamente paralizada por el miedo. Cerró los ojos con fuerza, escuchando el eco de su propio corazón.</p><p>La puerta se abrió de par en par de manera imprevista. La mano firme de Dante se cerró con suavidad en torno a su muñeca y la jaló hacia el interior. Quedaron suspendidos en la penumbra, a una distancia tan mínima que Elena percibía el calor de su cuerpo.</p><p>Dante relajó las facciones y permitió que esa sonrisa lenta y magnética dibujara el ya conocido hoyuelo.</p><p>—Por un momento pensé que no vendrías —admitió él con voz grave, con una combinación de alivio y franca diversión.</p><p>Elena intentó dar un paso hacia atrás para recuperar su espacio vital, pero el agarre de Dante se mantuvo firme; era la sujeción decidida de quien no está dispuesto a dejar que la oportunidad de su vida se le escape entre los dedos.</p>';
+
+CAP_CONTENIDO['no-soy-fan-3'] = {
+  titulo: 'No Soy Una Fan Más',
+  sub: 'Capítulos 7–9 — Entre Miradas y Suspiros',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/assets/banner-no-soy.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['no-soy-fan-3'].texto = '<p>La mañana siguiente, Dante despertó con una notificación: había sido elegida Elena como su compañera en el comercial. Se sentó de golpe en la cama con el corazón acelerado y escribió: "¡Felicidades! Serás mi compañera en el comercial." Y la guardó en sus contactos como "Ojitos Lindos."</p><p>Elena, al despertar y leer el mensaje, saltó de la cama como un resorte. Corrió al chat grupal con sus amigas, que ya la bombardeaban. En medio del caos, tecleó desesperada al grupo equivocado: "Creo que me está gustando Dante."</p><p>Al recibirlo, Dante saltó de la cama completamente despierto. —¡LO SABÍA! ¡YO LO SENTÍA! —exclamó en voz alta en su habitación vacía. Sus dedos se movieron veloces: "Tú también me estás gustando."</p><p>En el set de grabación, en una escena del comercial de perfume, Dante se acercó tanto que Elena olvidó cómo respirar. En un descuido provocado por los nervios, un vaso se derramó sobre su camisa. Dante, sin rastro de molestia, comenzó a desabotonársela con total confianza. Elena sintió que su cerebro sufría un reinicio completo.</p><p>Con movimientos lentos y seguros, Dante rociaba el perfume en su cuello y luego rozó suavemente el cuello de Elena con el aplicador, quedando tan cerca que su aliento acariciaba la piel de ella.</p><p>—Lo sabía… este es tu olor. Mágico y dulce como tú —susurró con voz grave y baja.</p><p>—¡Corte! ¡ESTO ES ORO! —exclamó el director.</p><p>Ni Dante ni Elena fueron capaces de moverse de inmediato. "Casi la beso", se cuestionó Dante mientras se alejaba finalmente. Elena se dejó caer en el sofá: "Esto no fue solo actuación. Esto fue… demasiado real."</p><p>Su teléfono vibró con un mensaje de Hoyuelo: "¿Nos vemos después del rodaje? Tenemos que hablar." Esa noche, en los jardines del estudio, Dante rompió el silencio:</p><p>—Lo de hoy… dime que no fui el único que lo sintió.</p><p>—No fuiste el único —respondió Elena con voz temblorosa pero completamente decidida.</p><p>Dante extendió la mano y sus dedos rozaron suavemente los de ella. Cuando estaban a punto de besarse, el teléfono de Dante repicó insistentemente. Elena, actuando por puro impulso, tomó a Dante firmemente por el rostro y lo besó.</p><p>Dante se congeló por completo. Su mente se apagó. "¿Qué? ¿Qué es el aire? ¿Quién soy yo?", pensaba en un estado de crisis absoluta.</p><p>Después del beso, con la llegada de Marcos, Dante tuvo que alejarse. Mostrando su sonrisa de hoyuelo, le dijo con voz ronca: —Nos vemos pronto, Ojitos Lindos.</p><p>Elena se dejó caer de espaldas contra la pared. "¿Qué demonios acabo de hacer?"</p><p>Esa noche, en videollamada a medianoche, Dante le dijo entre risas: —Como me besaste, ahora te tienes que hacer responsable de mí. Bueno, que a partir de ahora eres mi novia.</p><p>Elena sintió que el corazón le explotaba dentro del pecho. Ambos se quedaron dormidos con la videollamada encendida, con sus corazones latiendo exactamente al mismo ritmo.</p>';
+
+CAP_CONTENIDO['no-soy-fan-4'] = {
+  titulo: 'No Soy Una Fan Más',
+  sub: 'Capítulos 10–13 — La Distancia',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/assets/banner-no-soy.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['no-soy-fan-4'].texto = '<p>A la mañana siguiente, Elena despertó con un mensaje de un número desconocido: "Aléjate de Dante, Elena. Las niñas buenas que juegan a ser actrices no terminan bien en este negocio." Natalia le había advertido: "Dante está atado de manos… y Valeria no se va a quedar tranquila."</p><p>Lo que comenzó como torbellino de encuentros fugaces y caricias robadas se transformó en una espera silenciosa cuando la gira mundial de Dante llegó. En el aeropuerto, Elena corría desesperada hacia la puerta de embarque. Su mirada se encontró con la de Dante — una última conexión desesperada, el roce urgente y eléctrico de la punta de sus dedos.</p><p>Jadeando, Elena le gritó con toda la fuerza de sus pulmones: —¡Me convertiré en alguien a tu talla!</p><p>Dante se giró y respondió con tono inquebrantable: —Siempre lo has sido.</p><p>La multitud los separó definitivamente. Elena sintió que las fuerzas la abandonaban y se desplomó, pero los brazos de Cristina, Sofía y Renata la atraparon.</p><p>Las noches se volvieron insoportablemente silenciosas. Dante, desde algún camerino lejano, finalmente le escribió: "Te extraño tanto." Elena borró el texto que quería enviarle y marcó directamente su número.</p><p>—Hola, mis ojitos lindos —dijo él al contestar.</p><p>—Hola, Hoyuelo —respondió ella con una sonrisa genuina.</p><p>Y entonces, Dante admitió: —Te amo.</p><p>Pero la llamada se cortó. La mano de Marcos le arrebató el teléfono. Elena se quedó estática con las últimas dos palabras resonando como un eco eterno: "Te amo." Sus ojos se llenaron de lágrimas que no pudo contener.</p><p>En el aeropuerto internacional, meses después, Dante y Elena se reencontraban con los ojos cargados de preguntas no formuladas. Pero Marcos apareció detrás del hombro de Dante con una expresión de advertencia implacable. Elena entendió todo. Marcos había estado moviendo los hilos.</p><p>La fila de seguridad avanzó. Dante, desesperado, gritó: —¡ELENA!</p><p>Elena cerró los ojos con fuerza, reuniendo el último rastro de control. Giró la cabeza y lo contempló por última vez, con el rostro desencajado. "Nos volvimos a perder en el camino… pero esta vez te juro que regresaré por ti."</p><p>Dante se quedó completamente inmóvil, viendo cómo su silueta desaparecía por el túnel de embarque.</p>';
+
+CAP_CONTENIDO['no-soy-fan-5'] = {
+  titulo: 'No Soy Una Fan Más',
+  sub: 'Capítulos 14–17 — La Verdad Sale a la Luz',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/assets/banner-no-soy.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['no-soy-fan-5'].texto = '<p>Natalia confrontó a Dante: —¿Por qué has estado ignorando a Elena de esa manera tan cruel?</p><p>Dante experimentó un frío glacial recorriéndole la espalda. —¿De qué demonios estás hablando, Natalia?</p><p>—Yo misma vi cómo Elena te escribía mensajes desesperados y te llamaba día y noche sin obtener respuesta.</p><p>Dante nunca recibió ni una sola notificación. Natalia sentenció: —Aquí hay algo oscuro… y apesta al veneno de Valeria.</p><p>Las amigas de Elena revisaron el teléfono de Dante y descubrieron la trampa: el número de Elena había sido bloqueado y reemplazado por uno falso. Los artículos de prensa que mostraban a Elena con Demitri eran páginas completamente falsas, creadas y pagadas por Marcos y Valeria.</p><p>Dante se puso de pie de golpe, con una rabia que hacía temblar la sala. —Vamos a hacer que paguen por cada una de las cosas que nos hicieron —sentenció con voz gélida y peligrosa.</p><p>Sofía y Natalia grabaron en secreto la confesión de Valeria y Marcos planeando la separación, manipulando los mensajes de Dante, enviando a Demitri a París para confundir a Elena. Todo quedó registrado.</p><p>Mientras tanto, en París, Elena había colapsado de fiebre, deshidratación y tristeza. La ambulancia llegó al amanecer. Claire, su compañera de cuarto, marcó a Cristina con los dedos temblorosos: —Es Elena… tiene fiebre alta. Está delirando.</p><p>Dante, al enterarse, tomó el primer vuelo disponible a París. En el aeropuerto de París, los fans y paparazzi lo reconocieron de inmediato.</p><p>—¡Es Dante! ¡Dante está en París!</p><p>Él ignoró todo y corrió al hospital. Al llegar, se encontró con Elena despierta, con la piel pálida pero los ojos vivos. Se miraron fijamente. Dante sostenía su mano.</p><p>—Sí, estoy aquí… Soy yo —le dijo con voz suave.</p><p>Elena lo miró confundida y, sin pensarlo, lo besó. Dante se congeló. Su mente se apagó por completo. Cuando Elena intentó separarse, él la sujetó con firmeza, sin dejarla alejarse ni un milímetro.</p><p>—No me hagas esto, Elena… —pidió con voz ronca.</p><p>—Perdimos demasiado tiempo, Dante… —susurró ella.</p>';
+
+CAP_CONTENIDO['no-soy-fan-6'] = {
+  titulo: 'No Soy Una Fan Más',
+  sub: 'Capítulos 18–21 — El Grito de la Verdad',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/assets/banner-no-soy.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['no-soy-fan-6'].texto = '<p>La verdad salió a la luz en una rueda de prensa que sacudió la industria entera. Natalia habló frente a los micrófonos con voz de acero:</p><p>—Marcos y Valeria han manipulado la industria por años. Han usado a sus artistas como marionetas. Han separado relaciones, robado dinero, destruido carreras… y tengo las pruebas para demostrarlo.</p><p>Dante habló desde la pantalla con la mandíbula tensa:</p><p>—Me hicieron creer que Elena me había olvidado, que había pasado página. Fabricaron titulares falsos. Me separaron de la persona que amaba y me hicieron dudar de todo.</p><p>Natalia reveló que Marcos también había intentado destruirla a ella cuando rechazó sus propuestas indecentes. Sofía y Renata se pusieron de pie a su lado en un pacto de hermandad inquebrantable: —No queremos ni una víctima más.</p><p>Las redes sociales explotaron. Valeria y Marcos enfrentaban el colapso de todo lo que habían construido sobre mentiras.</p><p>En el hospital, Elena observaba la rueda de prensa junto a Dante. Cuando terminó, él se puso de pie, colocó la chaqueta de un tirón y caminó hacia la puerta.</p><p>—Espérame, ojitos lindos —le dijo con sus hoyuelos y esa última sonrisa de complicidad—. Te prometo que esta es la última vez que nos despedimos.</p><p>Dante salió de la habitación. El chico atormentado por las dudas se desvaneció por completo. Ahora solo quedaba el hombre dispuesto a reclamar su propio destino.</p><p><em>La distancia ya no tenía ningún poder sobre ellos. El sufrimiento se había convertido en el arma más letal de todas. Marcos y Valeria seguían creyendo que controlaban el juego… pero el contraataque final de Dante acababa de comenzar. Porque cuando el amor es real, ninguna barrera puede detenerlo para siempre.</em></p>';
+
+// ── ECOS EN TU PIEL ──
+CAP_CONTENIDO['ecos-1'] = {
+  titulo: 'Ecos en Tu Piel',
+  sub: 'Capítulo 1 — Entre el Público y el Destino',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/eco-en-tu-piel/assets/cover-eco.jpeg',
+  spotify: ''
+};
+CAP_CONTENIDO['ecos-1'].texto = '<p>Hay historias que se escriben con tinta invisible. Historias que se viven en silencio, entre miradas que no se olvidan y palabras que nunca se dijeron. Esta es la historia de Mia, una chica que nunca pensó que un partido de béisbol cambiaría su vida, y de Emmanuel, el chico que lo tenía todo, excepto la certeza de a quién amar con el corazón completo.</p><p>A Mia y a sus amigas les encantaba el béisbol. No era solo un pasatiempo; era una especie de ritual. Fue en una de esas escapadas que conocieron a las Águilas Verdes. Pero lo que a Mia realmente la dejó sin aliento no fue el uniforme, ni el marcador, ni la victoria arrolladora. Fue él.</p><p>Un jueves cualquiera, mientras leía distraídamente en clase, escuchó que el equipo estaría de visita en su ciudad. No pudo evitar sonreír. Era su oportunidad de verlos de nuevo. De verlo a él.</p><p>—¿Te acuerdas que te dije que los de Santa Lucía venían? —le susurró a Violeta al salir del aula—. Estarán mañana en la tienda de deportes antes del juego. Tienes que venir conmigo.</p><p>—Sabes que el béisbol no es lo mío, ¿verdad? —resopló Violeta.</p><p>—Pero esto sí lo es —dijo Mia con una sonrisa cómplice—. El partido, las porristas, las fotos... vamos, será divertido.</p><p>—Ugh, está bien. Pero prometiste invitarme a una malteada después.</p><p>—Trato hecho.</p><p>Entre camisetas, gorras y estanterías repletas de artículos deportivos, Mia lo vio. Él estaba allí: Emmanuel. Y aunque nunca se habían cruzado, algo se activó en ambos.</p><p>Mia sintió cómo el corazón se le subía a la garganta. "¿Me está mirando...?", se preguntó. "No, seguro no es a mí... ¿Pero y si sí...?".</p><p>Él sonrió. Una sonrisa honesta, directa; de esas que no se olvidan. Y Mia se sonrojó. Emmanuel sintió una voz interna: "¿Quién es ella...? ¿Por qué no puedo dejar de mirarla?".</p><p>Ella bajó la vista y, sin pensarlo, se dio media vuelta hacia la salida. Pero antes de cruzar la puerta, giró y exclamó:</p><p>—¡Te veré mañana en el partido... buena suerte!</p><p>Él quedó de pie, viéndola irse, con esa sonrisa dibujada en los labios. Mia salió casi corriendo. "¿Qué acabo de hacer...? ¡Le hablé! ¡Le grité!". Mientras ella se alejaba, Emmanuel pensó: "¿Te veré mañana…? Te veré siempre".</p>';
+
+CAP_CONTENIDO['ecos-2'] = {
+  titulo: 'Ecos en Tu Piel',
+  sub: 'Capítulo 2 — Entre Gradas y Ecos… Tu Rostro Brillaba',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/eco-en-tu-piel/assets/cover-eco.jpeg',
+  spotify: ''
+};
+CAP_CONTENIDO['ecos-2'].texto = '<p>La noche antes del partido, dos almas distintas se encontraron en sueños diferentes, pero con un mismo latido en el pecho.</p><p>Mia miraba al techo de su habitación, incapaz de conciliar el sueño. "¿Habrá escuchado mi voz…? ¿Recordará mi rostro entre tanta gente? Quizás ni siquiera me reconozca mañana".</p><p>A unos kilómetros, Emmanuel se movía inquieto en su cama. "Nunca me pasó algo así. ¿Cómo una desconocida puede instalarse tan fuerte en mi cabeza en solo segundos?".</p><p>De pronto, la pantalla de su teléfono se iluminó. El nombre de Tatiana brillaba, exigiendo respuestas que Emmanuel ya no tenía.</p><p>—Siempre es lo mismo, Emmanuel. ¿Hasta cuándo seguiremos con esto?</p><p>—Creo que llegó el momento de aceptar que ya no hay un nosotros… —respondió él, cansado y definitivo.</p><p>Siguió una pausa densa que selló una despedida inevitable. Esa noche, una puerta se cerró.</p><p>La mañana del partido llegó con sol y brisa fresca. Mia, Mariana y Violeta caminaron juntas hacia el estadio.</p><p>—Solo vengo porque prometiste una malteada —dijo Violeta.</p><p>—A mí sí me interesa el béisbol… y tal vez uno que otro jugador —comentó Mariana, emocionada.</p><p>Abajo, Emmanuel se preparaba. Sus ojos buscaban algo más allá del juego.</p><p>—¿Qué pasa contigo, Emmanuel? —preguntó Adam—. ¿Otra vez drama con Tatiana?</p><p>—Ya se acabó eso. Definitivamente. Ahora tengo otra cosa en la cabeza…</p><p>—¿Algo o alguien? —indagó Oracio.</p><p>—Alguien… La vi ayer en la tienda. No puedo dejar de pensar en ella.</p><p>Oracio bajó la mirada, disimulando la punzada en su pecho.</p><p>Y entonces, entre cientos de rostros, él la vio. Allí estaba Mia, en la tercera fila, con una gorra verde que resaltaba sus ojos.</p><p>"Ahí estás… Te encontré", se dijo Emmanuel.</p><p>"¿Me está mirando a mí? ¿Realmente me vio?", deseó Mia, insegura.</p><p>—Mia, no sé de béisbol, pero sí sé cuándo alguien no deja de mirarte… —le susurró Violeta al oído.</p><p>Algo nuevo y poderoso flotaba entre ellos, invisible para el mundo, pero real como la respiración misma. Y mientras Mia sostenía su mirada, Oracio contemplaba la escena con dolor contenido: "Ya lo entiendo… Emmanuel siempre gana. Pero esta vez, no estoy seguro de poder perder".</p>';
+
+CAP_CONTENIDO['ecos-3'] = {
+  titulo: 'Ecos en Tu Piel',
+  sub: 'Capítulo 3 — Donde Tu Eco Me Alcanza, Pero Tú No Estás',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/eco-en-tu-piel/assets/cover-eco.jpeg',
+  spotify: ''
+};
+CAP_CONTENIDO['ecos-3'].texto = '<p>El partido había terminado, pero para algunos, el juego apenas comenzaba. Mia caminaba junto a Violeta y Mariana.</p><p>—¿En serio crees que te estaba mirando? —preguntó Violeta con tono burlón.</p><p>—No sé, tal vez imaginé todo… —respondió Mia soñadora—. Pero juraría que cuando miraba a las gradas…</p><p>—¡Tú lo mirabas más que él a ti! —interrumpió Mariana con picardía.</p><p>Y entonces sucedió. Emmanuel apareció al final del pasillo. Sus ojos encontraron a Mia y su cuerpo se detuvo involuntariamente.</p><p>—¡Eres tú…! —exclamó, casi sorprendido de sí mismo—. La chica de ayer, en la tienda.</p><p>—¿Yo? —tartamudeó Mia, ruborizándose.</p><p>—Te vi en las gradas hoy. Pensé que era mi imaginación. Gracias por desearme suerte. Funcionó… ganamos. Aunque, bueno, siento haberle ganado a tu escuela. Bueno… no tanto.</p><p>—Estuvo increíble el partido. Me alegra que ganaran —respondió Mia con una sonrisa tímida.</p><p>—Preséntate… ¡Ya! —le instó Mariana en un susurro urgente.</p><p>—Soy Mia. Ellas son Violeta y Mariana.</p><p>—Yo soy Emmanuel —respondió él, clavando sus ojos en ella.</p><p>En ese momento apareció Oracio. Cuando la reconoció, sintió cómo algo se desvanecía en su pecho. No era a él a quien ella miraba con ese brillo en los ojos.</p><p>—¿Interrumpo? —preguntó, ocultando la decepción.</p><p>—Mucho gusto… —saludó Oracio, sonriendo con una tristeza casi imperceptible.</p><p>Horas más tarde, Dayana anunció una fiesta en su casa. Emmanuel esperaba algo, sin saber exactamente qué, hasta que la puerta se abrió: allí estaban Mariana y Violeta. Pero Mia no estaba.</p><p>"Ella no vino…", se resignó Oracio.</p><p>"¿Dónde estás?", se preguntó Emmanuel con nostalgia.</p><p>Porque a veces, donde más deseas escuchar la voz de alguien, solo queda el vacío de su ausencia.</p>';
+
+CAP_CONTENIDO['ecos-4'] = {
+  titulo: 'Ecos en Tu Piel',
+  sub: 'Capítulo 4 — Tu Luz Encontró Mi Sombra',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/eco-en-tu-piel/assets/cover-eco.jpeg',
+  spotify: ''
+};
+CAP_CONTENIDO['ecos-4'].texto = '<p>Hay personas que entran en una habitación y la transforman con solo respirar. Mia era una de ellas. En cuanto cruzó la puerta de la fiesta, todo pareció detenerse. Para Emmanuel, fue como ver una estrella aparecer en la oscuridad. Para Oracio, fue ver cómo todo lo que había soñado en silencio comenzaba a difuminarse entre sus dedos.</p><p>—Justo a tiempo… —le dijo Adam—. Creo que alguien por aquí ya no respiraba esperando que llegaras.</p><p>Oracio golpeó ligeramente el hombro de Adam en advertencia silenciosa.</p><p>La mirada de Emmanuel se encontró con la de Mia. Pero Oracio fue más rápido.</p><p>—Me alegra que vinieras, Mia —le dijo Oracio, intentando ocultar la tristeza.</p><p>Ella sonrió con dulzura. Emmanuel la miraba, sintiendo cómo una fuerza invisible tiraba de él. "Si no hablo ahora, tal vez no tenga otra oportunidad".</p><p>"Está aquí… tan cerca", pensaba Mia. "¿Vendrá a hablarme… o todo esto será solo otro recuerdo?".</p><p>Como respondiendo a sus pensamientos, Emmanuel finalmente dio un paso adelante.</p><p>—¿Puedo tener tu número? —le preguntó en voz baja, directo pero tierno.</p><p>Mia sintió que el corazón le latía demasiado fuerte, pero esta vez no quiso huir.</p><p>—Claro —respondió, sonriendo suavemente.</p><p>Justo antes de que pudiera moverse, Emmanuel la detuvo rozándole el brazo.</p><p>—Entonces… ¿puedo llamarte? —susurró él.</p><p>—Claro que sí —concluyó Mia con una sonrisa brillante.</p><p>Mientras ella se alejaba, Emmanuel la siguió con la mirada. "Aún no sé quién eres para mí… solo sé que ya no quiero perderte".</p><p>Desde el otro lado del salón, Oracio lo observó todo. "Por supuesto… siempre es Emmanuel". Y así, mientras ellos daban su primer paso, había otro corazón en la misma habitación que se quebraba en silencio. Un corazón cuyo eco, jamás, alcanzaría su piel.</p>';
+
+CAP_CONTENIDO['ecos-5'] = {
+  titulo: 'Ecos en Tu Piel',
+  sub: 'Capítulo 5 — Mientras Todas Soñaban con Su Historia…',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/eco-en-tu-piel/assets/cover-eco.jpeg',
+  spotify: ''
+};
+CAP_CONTENIDO['ecos-5'].texto = '<p>A veces, cuando la noche termina, no desaparece del todo. Se queda en el pecho como una pregunta silenciosa que espera respuesta.</p><p>Emmanuel cruzó la puerta del aula con pasos lentos. Pero había algo diferente, una luz nueva: Mia. "¿Estará pensando en mí como yo en ella?", se cuestionaba.</p><p>Tatiana lo observaba en silencio, desconcertada. Él no se acercó a disculparse. Simplemente permaneció distante, diferente.</p><p>Al mismo tiempo, en el Colegio San Pablo, Mia entró al salón como si flotara. Todavía sentía la mirada de Emmanuel, el leve roce de su mano al despedirse. "¿Habrá revisado mi número ya? ¿Me escribirá o fue solo una conversación más para él? No... su mirada no era la misma que se le da a cualquiera".</p><p>Mariana la empujó suavemente con el codo.</p><p>—¿Esperas un mensaje… o que te llegue una señal divina? —le susurró con picardía.</p><p>—Estoy segura de que revisó el celular al menos cinco veces antes de entrar —añadió Violeta.</p><p>De repente, las porristas irrumpieron en el pasillo.</p><p>—Hay niñas que todavía no entienden cuál es su lugar… —soltó Dayana con voz arrogante—. Con una noche ya se creen importantes.</p><p>Mia sintió cómo esas palabras se clavaban en su pecho. Pero esta vez había algo diferente bajo el dolor; algo en su interior se estaba fortaleciendo. "Pueden soñar lo que quieran. Pero la historia que pasó anoche… esa fue mía".</p><p>Más tarde, Emmanuel confesó a sus amigos:</p><p>—No puedo dejar de pensar en ella. Fue tan real… como si de pronto todo tuviera sentido.</p><p>—¿Y qué pasó con Tatiana? —preguntó Adam.</p><p>—Terminamos. Esta vez es definitivo —respondió Emmanuel con una calma que sorprendió a su amigo.</p><p>Oracio se levantó lentamente y se alejó, incapaz de seguir ahí sin delatar sus verdaderas emociones.</p><p>De regreso a casa, Mia caminaba abrazando su mochila. "Quiero creer que todo significó algo. Ojalá no se olvide de mí…".</p><p>En ese mismo instante, en otra ciudad, Emmanuel se encontraba en su habitación mirando la pantalla de su celular, debatiéndose entre las dudas y el profundo deseo de buscarla.</p>
+CAP_CONTENIDO['ecos-6'] = {
+  titulo: 'Ecos en Tu Piel',
+  sub: 'Capítulo 6 — Mi Nombre en Silencio… Pesa Más que Sus Gritos',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/eco-en-tu-piel/assets/cover-eco.jpeg',
+  spotify: ''
+};
+CAP_CONTENIDO['ecos-6'].texto = '<p>Hay nombres que pesan más que otros. Para Emmanuel, había uno que se repetía en su mente cada noche como un eco interminable: Mia.</p><p>Los días pasaban lentos entre las exigentes prácticas de béisbol, las clases y las risas superficiales de siempre. Sin embargo, él no lograba sacarse aquella dulce voz de la cabeza. Cada pocos minutos, sus ojos escapaban hacia la pantalla del teléfono, esperando una señal.</p><p>"¿Será tarde ya…? ¿Creerá que no me importa?", se cuestionaba con una ansiedad creciente.</p><p>Sin pensarlo más, tomó el celular, buscó el número de Mia y marcó.</p><p>Al otro lado de la ciudad, Mia sintió un vuelco en el estómago. "¿Será él? ¿Podría ser...?", se preguntó con una mezcla de nervios e ilusión.</p><p>—¿Aló? —dijo con voz tímida.</p><p>—¡Hola, Mia! Soy yo… Emmanuel —respondió él, con calidez en el tono que delataba la sonrisa aliviada en sus labios.</p><p>—¡Hola, Emmanuel! Qué sorpresa… —repuso ella, con una voz que sonreía por sí sola.</p><p>Hablaron durante unos minutos que a ambos les parecieron segundos. Detrás de cada frase flotaba un mundo entero de significados ocultos.</p><p>—Tengo práctica ahora, pero necesitaba escucharte antes… tú sabes, para la buena suerte —le dijo él con suavidad y un toque juguetón.</p><p>Mia soltó una pequeña risa:</p><p>—¡Lo sabía! Me usas para ganar…</p><p>Sus risas se entrelazaron con dulzura, borrando la distancia. Mientras hablaba, Oracio pasó justo detrás. Bastó oír la risa de su amigo para que supiera con quién estaba hablando. Sintió una punzada familiar y dolorosa, pero la disimuló con su calma habitual.</p><p>—La semana próxima jugamos en tu ciudad… Espero verte —dijo Emmanuel.</p><p>—Claro que estaré… ¿Necesitas que vuelva a darte suerte? —respondió ella con dulzura.</p><p>—Siempre —concluyó Emmanuel antes de colgar.</p><p>Desde ese día, sus vidas comenzaron a entrelazarse a través de mensajes diarios y llamadas nocturnas; pequeñas ventanas que dejaban entrar luz y confidencias a partes iguales.</p><p>Decidieron verse en un pequeño café cerca del colegio de Mia. Cuando la puerta se abrió y Mia entró, Emmanuel sintió que el mundo se detenía.</p><p>—Hola… —saludó ella con timidez.</p><p>—Hola… te ves… linda —atinó a decir él con absoluta sinceridad.</p><p>Conversaron durante horas, perdiendo la noción del tiempo. Sin poder contenerse más, Emmanuel se inclinó hacia ella.</p><p>—¿Puedo besarte? —le preguntó en un susurro.</p><p>Mia frunció levemente los labios, pero una pequeña sonrisa juguetona delató que no estaba enfadada.</p><p>—No —respondió con firmeza, jugando a estar seria.</p><p>—¿No? —preguntó Emmanuel, intrigado.</p><p>—No somos novios. Al menos que yo sepa… —añadió ella con picardía.</p><p>Emmanuel sonrió de par en par, completamente encantado.</p><p>—Nadie lo sabrá… —insistió en voz baja.</p><p>—Lo sabré yo —sentenció Mia, mirándolo directamente a los ojos.</p><p>Un breve silencio cargado de complicidad y deseo contenido se apoderó de la mesa.</p><p>—¿Y en la mejilla?</p><p>Mia soltó una carcajada y negó con la cabeza.</p><p>—Ya me sé ese truco… vas a girar la cara en el último segundo.</p><p>Ambos estallaron en risas. Pero Emmanuel comprendió algo muy profundo: "Ella no está aquí por lo que represento en el campo… No le importan las victorias ni la fama. Ella ve algo distinto en mí… algo que incluso yo desconozco. Y eso… me asusta más que nada".</p>';
+
+CAP_CONTENIDO['ecos-7'] = {
+  titulo: 'Ecos en Tu Piel',
+  sub: 'Capítulo 7 — El Eco de Tus Labios… Me Atrapan',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/eco-en-tu-piel/assets/cover-eco.jpeg',
+  spotify: ''
+};
+CAP_CONTENIDO['ecos-7'].texto = '<p>Los días se volvieron cortos y los kilómetros que separaban sus ciudades parecían cada vez más largos. Para Emmanuel, viajar ya no tenía que ver con ganar; el único propósito era verla a ella.</p><p>Buscaban refugios alejados, puntos intermedios donde nadie supiera quiénes eran. Se veían en cafés solitarios y parques silenciosos. A veces salían en grupo con sus amigos, pero en otras ocasiones preferían estar solos, aprendiendo a respirar juntos en la quietud.</p><p>Fue en una de esas tardes tranquilas cuando Mia, sin decir una sola palabra, ejecutó una decisión que llevaba tiempo madurando en secreto. Le había dicho que no en repetidas ocasiones, pero no por inseguridad, sino porque quería que el primer beso significara algo real, algo que doliera de lo bonito.</p><p>Y ese día, por primera vez, dolió.</p><p>Emmanuel la miraba como siempre, con esa sonrisa que ocultaba mil preguntas, pero Mia lo observó de una manera distinta, con una determinación dulce y profunda. Sin previo aviso, se inclinó y lo besó. Fue un beso suave, lento, inevitable. En ese preciso instante, se atraparon el uno al otro y comenzó el verdadero vértigo.</p><p>Mientras tanto, en Santa Lucía, Oracio y Adam cubrían las constantes ausencias de Emmanuel, inventando excusas con sonrisas cómplices. Sin embargo, cuando los entrenamientos terminaban y todos se marchaban, Oracio solía quedarse rezagado en el campo vacío, pensando en ella.</p><p>A veces tomaba su teléfono y llamaba a Mia. En esas llamadas nunca mencionaba a Emmanuel; solo le preguntaba cómo estaba, si había dormido bien, si había tenido un día bonito.</p><p>"No soy su chico. Nunca lo fui", se repetía Oracio con tristeza resignada. "Solo soy esa sombra amable que la cuida desde lejos. Pero si algún día su corazón se rompe… quiero ser yo quien recoja cada uno de los pedazos".</p><p>Los rumores viajaban rápido entre ciudades. Tatiana comenzó a percibir los ecos pesados de la ausencia de Emmanuel. Su intuición le advirtió que, si no actuaba rápido, lo perdería para siempre.</p><p>En la escuela de Mia, Mariana trabajaba por las tardes en una pequeña librería. Una tarde, al levantar la vista, vio entrar a Anna — una de las chicas más activas del club de fans de las Águilas Verdes.</p><p>Anna se acercó y, con una cortesía falsa, soltó su advertencia:</p><p>—Tú eres amiga de Mia, ¿verdad? Deberías aconsejarle que tenga cuidado… Tatiana no es de las que dejan ir fácil lo que creen suyo. Esas historias de amores compartidos siempre terminan mal para alguien.</p><p>Mariana mantuvo la compostura, sosteniéndole la mirada sin mostrar el menor rastro de inquietud. Esa noche, cuando Mia llegó a casa con los ojos brillantes, Mariana prefirió guardar silencio por el momento. Pero sabía que tarde o temprano tendría que advertirle que, aunque algunas llamas son hermosas a la vista, no todas están hechas para dar calor.</p>';
+
+CAP_CONTENIDO['ecos-8'] = {
+  titulo: 'Ecos en Tu Piel',
+  sub: 'Capítulo 8 — La Advertencia que Nadie Quiso Oír',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/eco-en-tu-piel/assets/cover-eco.jpeg',
+  spotify: ''
+};
+CAP_CONTENIDO['ecos-8'].texto = '<p>Mia flotaba. Desde el día de aquel beso, su mundo se había vuelto increíblemente ligero. Aunque Emmanuel nunca le había propuesto formalmente ser novios, las palabras que le susurraba al oído — "Ahora eres mía" — resonaban en su interior como un pacto inquebrantable.</p><p>Había una magia innegable en sus citas fugaces. Pero mientras Mia se refugiaba en esa dulzura, Mariana cargaba a solas con una verdad incómoda que aún no encontraba el valor de soltar.</p><p>Desde la distancia, Oracio también veía el panorama con más claridad que Emmanuel. Observaba con preocupación cómo Tatiana reaparecía de manera constante. Sabía que el gran defecto de Emmanuel era que nunca había aprendido a decirle que no a su pasado.</p><p>Poco a poco, la distancia comenzó a colarse en la burbuja de Mia y Emmanuel. No con grandes peleas, sino a través de síntomas sutiles: silencios pesados, llamadas cada vez más breves y mensajes que tardaban horas en ser respondidos.</p><p>Todo estalló el día de un partido importante. Al terminar el juego, Mia se acercó al área donde los jugadores se relajaban, esperando pasar un momento a solas con Emmanuel. Lo vio a lo lejos, riendo con sus amigos mientras les mostraba algo en la pantalla de su celular. Mia se aproximó con una sonrisa, pero se congeló al escuchar la voz casual de Emmanuel:</p><p>—Esta es mi novia, Tatiana —les decía a sus compañeros, mostrando la fotografía.</p><p>El mundo de Mia se detuvo en seco. "¿Novia…? ¿Tatiana es su novia?", se repitió mentalmente, paralizada por el shock.</p><p>Mariana, que venía justo detrás y vio la escena, reaccionó de inmediato con indignación. Arrebatándole el teléfono a Emmanuel de un tirón, exclamó con firmeza:</p><p>—¡Mia es mucho más bonita!</p><p>Adam murmuró por lo bajo:</p><p>—Sí, pero Tatiana es mucho más manipuladora.</p><p>Un silencio tenso y cargado de dolor se apoderó del lugar. Oracio, incapaz de seguir tolerando el sufrimiento de Mia, intervino antes de que la situación empeorara. Con total delicadeza, tomó a Mia del brazo y la alejó del tumulto hasta un banco solitario apartado donde nadie pudiera molestarlos.</p><p>Allí, en medio de un silencio denso, se quedaron sentados el uno al lado del otro. Mia mantenía la mirada fija en la nada, con el rostro completamente apagado. Lágrimas silenciosas brotaron de los ojos de Oracio, llorando por el dolor de ella y también por el suyo propio. Una vez más, se cumplía su destino: él era quien cuidaba, quien reparaba y quien amaba en secreto, pero nunca el que ganaba la partida.</p>';
+
+CAP_CONTENIDO['ecos-9'] = {
+  titulo: 'Ecos en Tu Piel',
+  sub: 'Capítulo 9 — Aunque el Tiempo Opaque Mi Voz',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/eco-en-tu-piel/assets/cover-eco.jpeg',
+  spotify: ''
+};
+CAP_CONTENIDO['ecos-9'].texto = '<p>Mia se negó a llorar frente a los demás; contuvo las lágrimas con una entereza admirable, pero por dentro, algo se había quebrado de forma definitiva. Lo más cínico era que Emmanuel, a pesar de haber oficializado su regreso con Tatiana, seguía aferrado a la idea de no perder a Mia. Continuaba llamándola y enviándole mensajes, intentando convencerse de que podría reparar el daño con palabras vacías.</p><p>Mia, armada de dignidad, tomó la decisión de mantenerse cerca del equipo, pero únicamente bajo la etiqueta de "amiga". Continuó asistiendo a los juegos, pero su antigua calidez se transformó en una fría y educada cortesía, y sus sonrisas se volvieron meros gestos de formalidad.</p><p>Oracio jamás interrumpió sus llamadas telefónicas. Aunque muchas veces no encontraba las palabras correctas para consolarla, seguía protegiéndola desde su esquina silenciosa, cargando a solas con un amor demasiado grande para ser confesado.</p><p>Tatiana no tardó en percibir ese cambio drástico. Comenzó a escoltar a Emmanuel a todas partes, apareciendo en cada partido y entrenamiento, marcando territorio.</p><p>Así llegaron al día de la gran final, que se disputaría en la ciudad de Mia. Mia, Violeta y Mariana decidieron visitar la tienda oficial antes del gran juego. Mientras caminaban entre los pasillos, una voz aguda y conocida rasgó el aire del local:</p><p>—¡Emmanuel!</p><p>A Mia se le detuvo el corazón. Giró el rostro lentamente y la vio: era Tatiana. La chica de la fotografía. La novia oficial.</p><p>Mia se quedó completamente paralizada, sintiendo cómo el dolor de la traición se le clavaba de nuevo en el pecho. Desde el otro extremo de la tienda, Oracio presenció el encuentro; vio cómo la poca luz que le quedaba a Mia en los ojos se apagaba por completo.</p><p>Haciendo un esfuerzo sobrehumano, Mia respiró profundo, dibujó una sonrisa forzada que apenas lograba camuflar su agonía, dio media vuelta y salió de la tienda con paso firme, escoltada de inmediato por Violeta y Mariana.</p><p>Emmanuel la vio marcharse y sintió un desgarro devastador en el alma. Por un segundo quiso correr tras ella, gritar su nombre y detenerla, pero fue incapaz de moverse. Tatiana estaba allí, observando cada uno de sus movimientos. Ese día, todos salieron de la tienda rotos y en silencio.</p><p>Horas más tarde, Oracio llamó al celular de Mia.</p><p>—¡Hola, Mia! Me hubiese gustado saludarte temprano, pero cuando te vi ya ibas saliendo de la tienda.</p><p>—¡Hola, hermano! Tú nunca me interrumpes —respondió Mia, intentando sonar animada—. ¿Hasta cuándo se quedan en la ciudad?</p><p>—Nos quedaremos unos días más, estamos en la final.</p><p>—Los iré a ver, ya tenemos nuestras entradas listas. Ya sabes… para darles suerte —añadió Mia, soltando una pequeña risa evidentemente forzada que delataba la tristeza que guardaba en el fondo.</p>';
+
+CAP_CONTENIDO['ecos-10'] = {
+  titulo: 'Ecos en Tu Piel',
+  sub: 'Capítulo 10 — Tu Sombra, ¿Me Escuchas?',
+  autor: 'Por Bruxa Tarot',
+  img: 'historias/eco-en-tu-piel/assets/cover-eco.jpeg',
+  spotify: ''
+};
+CAP_CONTENIDO['ecos-10'].texto = '<p>Hay decisiones que se sienten correctas por un breve instante, hasta que el peso de la realidad las transforma en cadenas imposibles de romper.</p><p>Tras el tenso episodio en la tienda, Tatiana permaneció al lado de Emmanuel, pero la dinámica entre ambos se había quebrado. En sus labios quedaba siempre el sabor amargo de la sospecha. Y Emmanuel lo sabía perfectamente. Tatiana representaba la seguridad de lo conocido, la inercia del hábito, mientras que Mia era la luz, la única persona que había logrado comprenderlo de verdad. Con Mia, todo cobraba un sentido de plenitud real.</p><p>Una tarde, luego de otra de esas discusiones rutinarias con Tatiana, Emmanuel salió a caminar, asfixiado por la necesidad urgente de respirar aire puro. Guiado por el subconsciente, se topó con la fachada del café donde solía citarse con Mia.</p><p>Al empujar la puerta, se quedó petrificado. Allí, sentada en la misma mesa de siempre, estaba Mia. No estaba sola; se encontraba con Mariana, Violeta, Adam y Oracio.</p><p>Emmanuel sintió un impacto demoledor en el pecho. Su lugar había sido ocupado y su ausencia no parecía hacer falta. Mia levantó la vista y sus ojos se cruzaron con los de él. Por un microsegundo, su mirada se iluminó con el viejo brillo, pero de inmediato se apagó, reemplazada por una barrera invisible: la sombra de Tatiana.</p><p>Emmanuel se acercó a la mesa.</p><p>—Mia… ¿Podemos hablar? —le pidió con voz suplicante.</p><p>Ella vaciló un instante, pero finalmente asintió con una serenidad pasmosa. Se apartaron a un rincón más privado.</p><p>—Perdóname… —comenzó a decir con un hilo de voz—. Perdóname por todo. Elegí lo cómodo porque no tuve los pantalones para ponerle un punto final a Tatiana. Pero ya no puedo seguir fingiendo, Mia. La única persona que me conoce y me entiende de verdad eres tú.</p><p>Mia lo escuchó con atención, manteniéndose inmóvil. Cuando él guardó silencio esperando un milagro, ella respiró hondo y lo miró fijamente a los ojos:</p><p>—Emmanuel… yo no soy la segunda opción de nadie. Tú tomaste una elección clara: preferiste quedarte en tu zona de confort. Yo ya lo acepté, y ahora te toca a ti asumir las consecuencias. Yo… seguiré adelante con mi vida.</p><p>Sin darle tiempo a replicar, Mia giró sobre sus pasos con elegancia y regresó a la mesa con sus amigos. Emmanuel se quedó completamente solo, contemplando cómo su mundo se desmoronaba. Comprendió, con la certeza más amarga de su existencia, que la había perdido para siempre.</p><p>Aquella tarde, mientras el sol se ocultaba, Emmanuel descubrió el verdadero significado de la pérdida. Sus propias decisiones habían acallado su voz. Lo único que le quedaba era el doloroso y eterno eco de haberla dejado ir.</p><p><em>A veces, el destino se encarga de enseñarnos que el amor verdadero no siempre se traduce en un final feliz. Nos demuestra que los silencios pueden gritar con mucha más potencia que los reclamos y que existen ciertos ecos que se quedan cincelados en nuestra piel a pesar del implacable correr de los años. La travesía de Mia y Emmanuel es el reflejo de esas historias inconclusas que muchos guardan en el fondo del corazón; un recordatorio de que elegirnos a nosotros mismos y proteger nuestra dignidad no significa renunciar al amor, sino aprender a respetarnos.</em></p>';
+
+';
+
+// ── SUSURROS DE MI ALMA ──
+CAP_CONTENIDO['susurros-1'] = {
+  titulo: 'Susurros de mi Alma',
+  sub: 'Capítulo 1 — Entre el Silencio y el Reencuentro',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/susurros-de-mi-alma.jpg',
+  spotify: 'https://open.spotify.com/episode/6J1ARu7WYNsHlhJR4GZRaI'
+};
+CAP_CONTENIDO['susurros-1'].texto = '<p>A veces el amor llega en silencio… Sin hacer ruido. Sin anunciar su llegada. Sin pedir permiso. Eso fue lo que le pasó a Samuel. Se enamoró así… en silencio.</p><p>Lucía era parte del mismo grupo de amigos desde siempre. Siempre ahí, siempre sonriendo, siempre contando historias que hacían reír a todos. Para Samuel, ella no era solo parte del grupo: era el centro.</p><p>Pero nunca supo cómo acercarse. Había una distancia invisible entre ellos, una barrera que él mismo construyó a punta de miedo y dudas.</p><p>Mientras los demás hablaban sin filtro, él la miraba. Mientras los otros se reían, él la observaba. Mientras ella hablaba de su vida, de sus sueños, de su último libro o del chico que le gustaba… él callaba. Y la escuchaba como quien escucha una canción que no quiere que termine nunca.</p><p>Lucía era luz. Brillante, espontánea, con esa energía que arrastraba a todos con ella. Samuel era sombra. Presente, constante, pero siempre al margen.</p><p>Pasaron los años. Compartieron risas en cafeterías, caminatas por el centro, fiestas con el grupo. A veces estaban uno al lado del otro… pero nunca juntos.</p><p>Él aprendió a amar desde lejos. A admirarla en silencio. A escribirle cartas que nunca entregó, a imaginar conversaciones que nunca sucederían.</p><p>Cuando ella vivió su primer amor, Samuel la vio sonreírle a otro. Cuando terminó, la vio llorar en silencio. Quiso consolarla, decirle que él sí sabría cómo cuidar de su corazón… pero se quedó quieto. El miedo a perderla incluso antes de tenerla era más fuerte que cualquier impulso.</p><p>El tiempo pasó. Los caminos se bifurcaron. El grupo se dispersó. Samuel se aferró al recuerdo de ella como quien guarda una fotografía rota en la cartera. No podía olvidarla. No quería.</p><p>Hasta que un día, sin esperarlo, el destino decidió jugar otra vez. Fue una noche de otoño, con las hojas cayendo y el aire cargado de nostalgia. Samuel caminaba sin rumbo por el parque. Y entonces… la vio.</p><p>Sentada sola en una banca. Con el mismo cabello desordenado que recordaba. Con la mirada perdida. Era ella. Lucía.</p><p>Su corazón comenzó a latir tan fuerte que le dolía. Podía alejarse. Podía darse la vuelta. Pero no esta vez.</p><p>Se acercó. Cada paso era un suspiro. Cada segundo, una eternidad. Se detuvo frente a ella. Su voz tembló.</p><p>—Lucía…</p><p>Ella alzó la mirada. Sus ojos lo buscaron… y lo encontraron. Y en ese instante, se rompió algo. O tal vez se reparó.</p><p>Se lanzó hacia él como si su cuerpo supiera algo que su mente no alcanzaba a comprender. Y Samuel la abrazó. La abrazó con todo lo que tenía, con los años que se le fueron sin tenerla, con el amor que había guardado en silencio.</p><p>Ella lloró. Y él no dijo nada. Solo la sostuvo. Porque a veces, el amor no necesita palabras. Solo un silencio que lo diga todo.</p>';
+
+CAP_CONTENIDO['susurros-2'] = {
+  titulo: 'Susurros de mi Alma',
+  sub: 'Capítulo 2 — El Amor que Renace',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/susurros-de-mi-alma.jpg',
+  spotify: 'https://open.spotify.com/episode/68zc8RQcDloi4aOjLFmHOw'
+};
+CAP_CONTENIDO['susurros-2'].texto = `<p style="font-style:italic;padding:1rem 1.4rem;border-left:2px solid rgba(201,168,76,.3);background:rgba(201,168,76,.04);border-radius:0 8px 8px 0;margin-bottom:1.5rem">
+    A veces, el amor tarda en encontrarnos, y cuando lo hace, solo podemos preguntarnos cuánto tiempo hemos perdido.
+  </p>
+
+  <p>
+    Después de años separados, el destino había vuelto a unir a Samuel y Lucía en un parque cualquiera, en una noche cualquiera. Fue un reencuentro silencioso, pero con más significado que todas las palabras que alguna vez callaron. Sin embargo, la duda quedaba en el aire: ¿sería eso suficiente?
+  </p>
+
+  <p>
+    A partir de aquella noche, se volvieron inseparables. Pasaban tardes enteras conversando, riendo por tonterías y compartiendo silencios que no resultaban incómodos, sino llenos de complicidad. No había prisas ni promesas apresuradas; solo el deseo mutuo de disfrutar el momento, recuperar el tiempo perdido y comprender qué significaban ahora el uno para el otro.
+  </p>
+
+  <p>
+    El grupo de amigos de siempre seguía igual, aunque la dinámica entre ellos había cambiado de forma evidente. Todos en el entorno notaban la diferencia: las miradas prolongadas, las sonrisas fugaces y esos roces accidentales que hablaban por sí solos.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—¿Crees que están juntos? —susurró alguien en una de las reuniones, entre risas contenidas.</p>
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Samuel siempre ha estado enamorado de ella, pero nunca tuvo el valor de decírselo —respondió otro con una sonrisa nostálgica.</p>
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Tal vez esta vez sí lo haga.</p>
+
+  <p>
+    Pero Samuel aún no encontraba el momento propicio. O tal vez, aunque lo había tenido frente a él muchas veces, el miedo siempre lograba detenerlo.
+  </p>
+
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.25),transparent);margin:1.5rem 0"></div><span class="cap-divider-sym">✦</span>
+
+  <p>
+    Las conversaciones entre ambos fluían sin esfuerzo en las mesas de las cafeterías. Él la escuchaba con absoluta atención, perdiéndose en la forma en que ella se expresaba y en cómo le brillaban los ojos al hablar de sus sueños.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«¿Por qué nunca hablamos así antes?», se preguntaba Lucía en su fuero interno, con una mezcla de sorpresa y dulzura. «¿Cómo es posible que, después de tantos años, apenas ahora lo sienta tan cercano?».</p>
+
+  <p>
+    Durante una pausa en la conversación, mientras Lucía removía distraídamente su café, Samuel la observaba con una profunda nostalgia.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«Si hubiera sabido que podíamos ser así, que me haría sentir tan feliz... ¿habría hecho algo diferente?».</p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«Estoy tan bien a su lado... es como si mi alma descansara en él», pensaba ella, sintiendo un leve anhelo reflejado en su respiración entrecortada.</p>
+
+  <p>
+    Eran dos almas, una frente a la otra, experimentando el mismo sentimiento pero atrapadas en el temor a lo desconocido. Samuel mantenía la mirada fija en ella, conteniendo el aliento mientras una batalla se desataba en su mente.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«Díselo... ahora es el momento. ¿Y si ella siente lo mismo? ¿Y si se ha estado preguntando lo mismo todo este tiempo?».</p>
+
+  <p>
+    Lucía, por su parte, jugaba con la cucharita de su taza, abrigando una esperanza tímida.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«Ojalá pudiera leer su mente... ojalá estuviera enamorado de mí».</p>
+
+  <p>
+    Samuel tomó aire, a punto de hablar, pero titubeó en el último segundo.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«Pero... ¿y si lo arruino? ¿Si solo me ve como un amigo? No quiero perderla».</p>
+
+  <p>
+    Ella lo observó en silencio, con una súplica muda en los ojos.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«¿Por qué siento que me quiere decir algo? ¿Por qué tengo tantas ganas de escucharle decir que me ama?».</p>
+
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.25),transparent);margin:1.5rem 0"></div><span class="cap-divider-sym">✦</span>
+
+  <p>
+    Ambos esperaban lo mismo y tenían la respuesta frente a sus ojos. Pero cuando el amor ha vivido tanto tiempo en la penumbra del silencio, cuesta encontrar la voz para nombrarlo. Finalmente, en el mismo lugar y con el mismo latido, Samuel decidió romper la barrera. El pánico lo invadió de inmediato; temía haber sido demasiado directo y arriesgarlo todo.
+  </p>
+
+  <p>
+    Sin embargo, Lucía sonrió con ternura y, con una emoción contenida, exclamó:
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—¡También me he enamorado de ti!</p>
+
+  <p>
+    Habían esperado una eternidad por ese momento, prisioneros de las dudas y del tiempo. Pero el cautiverio había terminado. Se refugiaron en un abrazo lleno de susurros de alivio.
+  </p>
+
+  <p>
+    El amor había renacido, pero una nueva sombra se cernía sobre ellos: ¿podría sobrevivir a lo que estaba por venir?
+  </p>`;
+
+CAP_CONTENIDO['susurros-3'] = {
+  titulo: 'Susurros de mi Alma',
+  sub: 'Capítulo 3 — El Susurro del Adiós',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/susurros-de-mi-alma.jpg',
+  spotify: 'https://open.spotify.com/episode/4QQisVyZxP6j9HfNkYCGlh'
+};
+CAP_CONTENIDO['susurros-3'].texto = `<p style="font-style:italic;padding:1rem 1.4rem;border-left:2px solid rgba(201,168,76,.3);background:rgba(201,168,76,.04);border-radius:0 8px 8px 0;margin-bottom:1.5rem">
+    El amor había florecido, pero el destino siempre encuentra la manera de cambiar el rumbo de las cosas.
+  </p>
+
+  <p>
+    Samuel y Lucía creían haber encontrado su refugio definitivo, un lazo que parecía indestructible. Sin embargo, hay verdades que aguardan en la sombra y promesas del pasado que no se pueden romper tan fácilmente.
+  </p>
+
+  <p>
+    Los días transcurrían y el afecto entre ambos crecía sin esfuerzo. Cada amanecer traía una promesa y cada noche se convertía en una conversación interminable.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Samuel, siento que puedo comerme el mundo contigo —le dijo Lucía un día con dulzura, sonriendo tras un sorbo de café.</p>
+
+  <p>
+    Él la observó, ocultando su propia sonrisa tras la taza, mientras por dentro su mente se volvía un caos.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«¿Por cuánto tiempo más?», se decía a sí mismo con resignación. «¿Cuánto tiempo me permitirá el destino quedarme con ella? Nada bueno dura para siempre... ¿cierto?».</p>
+
+  <p>
+    Para Lucía, Samuel era su lugar seguro; para él, ella era su mundo entero. Mientras él miraba distraídamente por la ventana, ella se mordía el labio, entregada a un pensamiento ilusionado.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«Podría pasar mi vida entera con él... Quizás algún día tengamos una casa juntos, despertares tranquilos, tardes de risas y noches de charlas eternas. No necesito nada más, solo a él».</p>
+
+  <p>
+    Ajeno a ese sueño, Samuel suspiró y bajó la mirada hacia su taza.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«No soy suficiente para ella... No merezco esta felicidad. En cualquier momento todo se derrumbará».</p>
+
+  <p>
+    Lucía extendió la mano sobre la mesa y tomó la de él con firmeza.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—No hay un lugar en este mundo en el que prefiera estar que aquí, contigo —aseguró con voz sincera.</p>
+
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.25),transparent);margin:1.5rem 0"></div><span class="cap-divider-sym">✦</span>
+
+  <p>
+    Al mirarla, Samuel se permitió creer, aunque fuera por un instante, que el destino no sería cruel esta vez. Pero la ilusión se desvaneció un día cualquiera con la vibración de un teléfono. Al ver la pantalla, sus ojos se nublaron. Al responder, una voz firme y calculadora lo devolvió a su realidad:
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Samuel... ya estoy de regreso. La boda sigue en pie.</p>
+
+  <p>
+    El silencio que siguió fue sepulcral. Samuel dejó caer el teléfono sobre la cama y enterró el rostro en las manos, desesperado.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«No... no puede ser. No ahora. No cuando al fin la tengo».</p>
+
+  <p>
+    El pasado había vuelto a reclamarlo y no parecía haber marcha atrás.
+  </p>
+
+  <p>
+    Sin embargo, Samuel se negó a aceptar ese final sin luchar. Días después, se encontraba sentado frente a su prometida. Inclinándose sobre la mesa, con el corazón en la garganta y una postura tensa, sentenció:
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—No podemos casarnos. No te amo.</p>
+
+  <p>
+    La mujer dejó lentamente su copa de vino. Su expresión permanecía serena, pero en sus ojos apareció una sombra oscura.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Oh, Samuel... ¿Todavía crees que tienes opción? —preguntó con una sonrisa helada.</p>
+
+  <p>
+    Él frunció el ceño, sintiendo un escalofrío. Ella se inclinó hacia él, destilando veneno en cada palabra:
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Tú y yo estamos atados. No hay un "no", no hay un "lo siento". La boda está en marcha. Todo está en marcha.</p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—No quiero esto. Yo nunca quise esto —replicó él con los puños apretados y la respiración acelerada.</p>
+
+  <p>
+    Ella soltó una risa breve y burlona, manteniendo una calma inquietante.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—¿Elegir? ¿Desde cuándo tienes opción? Si cancelas la boda... el mundo sabrá la verdad.</p>
+
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.25),transparent);margin:1.5rem 0"></div><span class="cap-divider-sym">✦</span>
+
+  <p>
+    El peso de un viejo recuerdo golpeó a Samuel como un puñal. Se vio a sí mismo en el eco de una fiesta lejana, con música fuerte y un vaso en la mano; recordó un mareo extraño, la certeza de que algo andaba mal, y luego el sonido de un motor, la lluvia golpeando el parabrisas y el estrépito ensordecedor del metal contra el metal. Luces cegadoras y un silencio absoluto.
+  </p>
+
+  <p>
+    De vuelta en el presente, la voz de su prometida lo sacó de su parálisis con un susurro venenoso:
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Y dime, Samuel... ¿qué crees que pensaría Lucía si se entera?</p>
+
+  <p>
+    La pregunta terminó por destruirlo, quebrando su último hilo de esperanza. Al final, la única opción que le quedaba para protegerla era destruir a la única persona que realmente amaba.
+  </p>`;
+
+CAP_CONTENIDO['susurros-4'] = {
+  titulo: 'Susurros de mi Alma',
+  sub: 'Capítulo 4 — El Eco de un Amor Eterno',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/susurros-de-mi-alma.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['susurros-4'].texto = `<p style="font-style:italic;padding:1rem 1.4rem;border-left:2px solid rgba(201,168,76,.3);background:rgba(201,168,76,.04);border-radius:0 8px 8px 0;margin-bottom:1.5rem">
+    Samuel y Lucía parecían tenerlo todo, pero el destino no había terminado con ellos.
+  </p>
+
+  <p>
+    Atado a una promesa involuntaria, él se vio obligado a elegir entre el amor de su vida y un futuro impuesto.
+  </p>
+
+  <p>
+    La noche parecía perfecta, iluminada por los fuegos artificiales de la feria local. Sin embargo, para Samuel, representaba el principio del fin. Lucía sonreía, deslumbrada por los destellos en el cielo, y hablaba sin parar. Él la observaba con el corazón oprimido por el dolor de lo inevitable.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—No puedo creer cuánto tiempo perdimos, Samuel... —comentó ella riendo suavemente—. Todos esos años en los que pudimos haber sido felices. Somos almas gemelas, ¿sabes? No hay nadie en este mundo a quien pueda amar como a ti.</p>
+
+  <p>
+    Cada palabra rompía un trozo más del alma de Samuel. Desvió la mirada, apretando los dientes para contener el llanto.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«Dímelo después, Lucía... después de que me haya ido. Después de que me odies. Después de que todo esto sea un recuerdo».</p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Nunca había sido tan feliz, Samuel. Nunca —añadió ella abrazándose a su brazo.</p>
+
+  <p>
+    Él cerró los ojos, intentando grabar esa imagen en su memoria antes de destrozarla.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«Dios... ¿cómo le digo que todo esto es mentira?».</p>
+
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.25),transparent);margin:1.5rem 0"></div><span class="cap-divider-sym">✦</span>
+
+  <p>
+    Lucía entrelazó sus dedos con los de él, ajena a la tempestad interna de su compañero.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—A veces creo que el destino nos estaba esperando... que tenía que ser en este momento.</p>
+
+  <p>
+    Incapaz de sostener la farsa por más tiempo, Samuel sintió que se ahogaba.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«Ahora... ahora o nunca. Tienes que decírselo».</p>
+
+  <p>
+    Pero en lugar de hablar, la buscó en un beso dulce y amargo; un beso de despedida disfrazado de entrega.
+  </p>
+
+  <p>
+    Lucía respondió con intensidad, pero percibió algo diferente: una urgencia y una tristeza latente que le causaron un súbito escalofrío. Cuando Samuel separó sus labios, sus manos seguían temblando, sujetándola con fuerza.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Lucía… —logró decir con la voz entrecortada.</p>
+
+  <p>
+    Ella lo miró con incertidumbre. Había miedo y culpa en su rostro.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Samuel... ¿qué pasa? —susurró.</p>
+
+  <p>
+    El eco de los fuegos artificiales pareció disolverse, dejando al mundo en un vilo. Con la última pizca de valor que le quedaba, él confesó:
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Lucía... estoy comprometido.</p>
+
+  <p>
+    El universo se detuvo para ella. Su sonrisa se apagó y el entorno se enfrió de golpe.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—No... no es cierto —alcanzó a decir con voz trémula.</p>
+
+  <p>
+    Samuel bajó la mirada, incapaz de repetirlo, pero su silencio fue la peor de las confirmaciones. Desesperada, ella lo tomó de la camisa.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Samuel... dime que es una broma. ¡Dime que no es cierto!</p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«No la mires. No la mires o nunca serás capaz de irte».</p>
+
+  <p>
+    Las lágrimas de Lucía comenzaban a caer sin control. Ella lo sacudió por los hombros, queriendo despertar de la pesadilla.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—¡Samuel, no puedes hacerme esto! ¡No después de todo lo que hemos vivido! ¡Tiene que haber otra manera!</p>
+
+  <p>
+    Él apartó sus manos con delicadeza, aunque ella intentó retenerlo una vez más. Su pecho subía y bajaba con agitación, y sus ojos reflejaban un dolor idéntico al de ella.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Nos amamos... pero no es suficiente —sentenció con voz rota.</p>
+
+  <p>
+    Lucía lo soltó, dando un paso hacia atrás como si las palabras la hubieran golpeado físicamente. La peor certeza no era perderlo, sino darse cuenta de que él ya había tomado la decisión de marcharse.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Perdóname —añadió él en un susurro antes de dar la vuelta.</p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—No… —suplicó ella.</p>
+
+  <p>
+    Sin embargo, Samuel comenzó a alejarse en cámara lenta, convirtiéndose en una silueta difusa entre las luces del parque y los reflejos de los fuegos artificiales. En medio de lo que debía ser una noche perfecta, Lucía contempló cómo su felicidad se deshacía por completo.
+  </p>`;
+
+CAP_CONTENIDO['susurros-final'] = {
+  titulo: 'Susurros de mi Alma',
+  sub: 'Capítulo Final — El Susurro que Permanece',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/susurros-de-mi-alma.jpg',
+  spotify: ''
+};
+CAP_CONTENIDO['susurros-final'].texto = `<p style="font-style:italic;padding:1rem 1.4rem;border-left:2px solid rgba(201,168,76,.3);background:rgba(201,168,76,.04);border-radius:0 8px 8px 0;margin-bottom:1.5rem">
+    Los años pasaron y las estaciones cambiaron, pero el amor nunca se marchó del todo. Las vidas de ambos siguieron caminos separados, aunque sus almas jamás dejaron de llamarse.
+  </p>
+
+  <p>
+    En un restaurante, Lucía se encontraba frente a una pareja que la observaba con evidente frustración. Ella mantenía la mirada baja, incapaz de defenderse de la acusación.
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—Es que tú nunca lo olvidaste... Nunca me diste una oportunidad real —le reclamó el hombre con amargura—. No importa lo que haga ni cuánto te ame, siempre estoy en segundo lugar. Siempre soy la sombra de Samuel.</p>
+
+  <p>
+    Tras una breve pausa, el hombre empujó su silla y se marchó, dejándola sola. Lucía tragó saliva y se sumió en sus propios pensamientos.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«No es justo... Yo intenté seguir adelante, intenté querer a otros. Pero cuando conoces la felicidad plena, cuando la sostienes entre tus manos y la pierdes... nada ni nadie puede llenar ese vacío».</p>
+
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.25),transparent);margin:1.5rem 0"></div><span class="cap-divider-sym">✦</span>
+
+  <p>
+    Días después, en la soledad de su departamento, Lucía movía unos libros de la estantería en un intento por mantener su mente ocupada. De repente, un pequeño papel amarillo resbaló de entre las páginas y flotó hasta el suelo. Se quedó inmóvil, observándolo con cautela, como si temiera despertar un recuerdo dormido. Al recogerlo, descubrió una vieja fotografía: dos figuras sonrientes bajo la sombra de un árbol. Eran Samuel y ella, viviendo en un tiempo que ya no existía.
+  </p>
+
+  <p>
+    Recorrió el borde de la imagen con la yema de los dedos y miró a través de la ventana hacia el cielo pálido e indiferente. Con un nudo en la garganta, se preguntó en un suspiro:
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—¿Samuel... estás pensando en mí?</p>
+
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.25),transparent);margin:1.5rem 0"></div><span class="cap-divider-sym">✦</span>
+
+  <p>
+    Simultáneamente, en otro lugar, Samuel enfrentaba su propia condena. En su casa, su esposa lo increpaba con evidente enfado:
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—¿Es que acaso nunca la vas a olvidar? ¡Han pasado años, Samuel! Siempre que me miras, no estás mirándome a mí... La ves a ella, ¿verdad? ¡Estoy harta de vivir con el fantasma de Lucía!</p>
+
+  <p>
+    El silencio de Samuel no hizo más que confirmar el reclamo. Finalmente, abrumado por el dolor y la furia contenida, estalló:
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—¡Si tanto te molesta, entonces vete! ¡Déjame en paz!</p>
+
+  <p>
+    La mujer lo miró con incredulidad, pero respondió con una sonrisa cruel:
+  </p>
+
+  <p style="font-style:italic;color:var(--gold-light,#e8c97a);padding-left:1.2rem">—¿Irme? Primero muerta que verte con Lucía otra vez.</p>
+
+  <p>
+    Samuel cerró los ojos, sintiendo que los muros de su prisión se estrechaban aún más. Caminó hacia la ventana y, contemplando la noche, repitió el mismo pensamiento:
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«Lucía... ¿estás pensando en mí?».</p>
+
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.25),transparent);margin:1.5rem 0"></div><span class="cap-divider-sym">✦</span>
+
+  <p>
+    En ese mismo instante, como si sus mentes se hubieran sincronizado a través de la distancia, ambos tomaron sus respectivos teléfonos. Con dedos temblorosos, redactaron el mismo mensaje.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«Hola... ¿cómo has estado?».</p>
+
+  <p>
+    Se detuvieron a mirar la pantalla, conteniendo el aliento. Lucía dejó caer el aparato sobre su regazo mientras las lágrimas rodaban por sus mejillas; Samuel, frente a los vasos vacíos de su oficina y con la mente nublada por el alcohol, hizo lo propio. Al unísono, borraron el texto y dejaron las pantallas en negro, permitiendo que el vacío volviera a ocuparlo todo.
+  </p>
+
+  <p>
+    Separados por la distancia pero unidos por la misma ausencia, compartieron un último ruego silencioso.
+  </p>
+
+  <p style="font-style:italic;color:rgba(201,168,76,.6);padding-left:.5rem">«Aunque en esta vida no se nos dio... espero reconocer el susurro de tu alma la próxima vez. Si tan solo...».</p>
+
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.25),transparent);margin:1.5rem 0"></div><span class="cap-divider-sym">✦</span>
+
+  <div style="font-style:italic;text-align:center;padding:1.5rem;border-top:1px solid rgba(201,168,76,.15);border-bottom:1px solid rgba(201,168,76,.15);margin:1.5rem 0">
+    <p>Nos pasamos la vida esperando el momento perfecto, pero el tiempo y el amor no esperan. Cuando finalmente lo comprendemos, las oportunidades se han marchado, dejándonos únicamente con preguntas sin respuesta y recuerdos que se niegan a envejecer.</p>
+    <p>Esta historia pertenece a todas las Lucías que no lograron reconocer a su alma gemela a tiempo, y a todos los Samueles que silenciaron su amor por temor. Para todas esas almas, queda la esperanza de que, la próxima vez que el destino decida hablarles, finalmente tengan el valor de escucharlo.</p>
+  </div>`;
+
+// ── OJOS VERDES (original) ──
 // NOTA: Textos embebidos por ahora.
 // Para escalar: mover a /historias/data/ojos-verdes.json y cargar con fetch()
 const CAP_CONTENIDO = {};
@@ -571,7 +1180,7 @@ const LIBROS = {
     titulo: 'En Busca de Tus Ojos Verdes',
     img: 'images/ojosverdes.png',
     fallback: '💚',
-    badge: '✦ Disponible · 5 capítulos',
+    badge: '✦ Disponible · 10 capítulos',
     desc: 'Embárcate en una dulce travesía de adolescencia, sueños y primeras emociones intensas. Una historia sobre ese primer amor que te desarma sin avisar, donde una mirada basta para cambiarlo todo. Narrada por Bruxa Tarot.',
     capitulos: [
       { num:'Capítulo 1', nombre:'Las Escaleras', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-1.html', escuchar:'https://open.spotify.com/episode/5iNrLn5CXhmn1XgE158KQ6' },
@@ -581,17 +1190,67 @@ const LIBROS = {
       { num:'Capítulo 5', nombre:'El final', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-5.html', escuchar:'https://open.spotify.com/episode/1OzVrhPoH6jYgGtg0l4gx9' },
     ]
   },
+  'no-soy-fan': {
+    titulo: 'No Soy Una Fan Más',
+    img: 'historias/assets/banner-no-soy.jpg',
+    fallback: '🌟',
+    badge: '✦ Disponible · 21 capítulos',
+    desc: 'Elena nunca imaginó que colarse a un evento exclusivo cambiaría su vida para siempre. Un encuentro fugaz con Dante, el artista más codiciado de la industria, desencadenó una historia de amor rodeada de mentiras, manipulación y una industria que quería controlarlos a ambos. Porque ella nunca fue solo una fan más.',
+    capitulos: [
+      { num:'Caps 1–3', nombre:'Un Encuentro Fugaz', leer:'', escuchar:'' },
+      { num:'Caps 4–6', nombre:'Un Juego Peligroso', leer:'', escuchar:'' },
+      { num:'Caps 7–9', nombre:'Entre Miradas y Suspiros', leer:'', escuchar:'' },
+      { num:'Caps 10–13', nombre:'La Distancia', leer:'', escuchar:'' },
+      { num:'Caps 14–17', nombre:'La Verdad Sale a la Luz', leer:'', escuchar:'' },
+      { num:'Caps 18–21', nombre:'El Grito de la Verdad', leer:'', escuchar:'' },
+    ]
+  },
+  'ultima-jugada': {
+    titulo: 'Última Jugada',
+    img: 'historias/assets/banner-ultima.jpg',
+    fallback: '⚽',
+    badge: '✦ Disponible · 6 capítulos',
+    desc: 'Jade nunca imaginó que un torneo de fútbol cambiaría su vida. Cuando conoció a Álvaro, todo parecía prometedor... hasta que la traición lo cambió todo. Una historia sobre el primer amor, la lealtad y la venganza que tiene un sabor más amargo de lo esperado.',
+    capitulos: [
+      { num:'Capítulo 1', nombre:'Conexiones en el Campo', leer:'', escuchar:'' },
+      { num:'Capítulo 2', nombre:'Iniciando una Amistad', leer:'', escuchar:'' },
+      { num:'Capítulo 3', nombre:'Descubriendo Conexiones', leer:'', escuchar:'' },
+      { num:'Capítulo 4', nombre:'La Intriga de Karina', leer:'', escuchar:'' },
+      { num:'Capítulo 5', nombre:'Revelaciones y Confrontaciones', leer:'', escuchar:'' },
+      { num:'Capítulo 6', nombre:'El Dolor de la Venganza', leer:'', escuchar:'' },
+    ]
+  },
+  'ecos': {
+    titulo: 'Ecos en Tu Piel',
+    img: 'historias/eco-en-tu-piel/assets/cover-eco.jpeg',
+    fallback: '🌙',
+    badge: '✦ Disponible · 5 capítulos',
+    desc: 'El amor adolescente, la distancia, los errores y las decisiones que marcan para siempre. La historia de Mia, una chica que nunca pensó que un partido de béisbol cambiaría su vida, y de Emmanuel, el chico que lo tenía todo, excepto la certeza de a quién amar con el corazón completo.',
+    capitulos: [
+      { num:'Capítulo 1', nombre:'Entre el Público y el Destino', leer:'', escuchar:'' },
+      { num:'Capítulo 2', nombre:'Entre Gradas y Ecos… Tu Rostro Brillaba', leer:'', escuchar:'' },
+      { num:'Capítulo 3', nombre:'Donde Tu Eco Me Alcanza, Pero Tú No Estás', leer:'', escuchar:'' },
+      { num:'Capítulo 4', nombre:'Tu Luz Encontró Mi Sombra', leer:'', escuchar:'' },
+      { num:'Capítulo 5', nombre:'Mientras Todas Soñaban con Su Historia…', leer:'', escuchar:'' },
+      { num:'Capítulo 6', nombre:'Mi Nombre en Silencio… Pesa Más que Sus Gritos', leer:'', escuchar:'' },
+      { num:'Capítulo 7', nombre:'El Eco de Tus Labios… Me Atrapan', leer:'', escuchar:'' },
+      { num:'Capítulo 8', nombre:'La Advertencia que Nadie Quiso Oír', leer:'', escuchar:'' },
+      { num:'Capítulo 9', nombre:'Aunque el Tiempo Opaque Mi Voz', leer:'', escuchar:'' },
+      { num:'Capítulo 10', nombre:'Tu Sombra, ¿Me Escuchas?', leer:'', escuchar:'' },
+    ]
+  },
   'susurros': {
     titulo: 'Susurros de mi Alma',
-    img: 'historias/assets/susurros-de-mi-alma.jpg',
+    img: 'images/susurros-de-mi-alma.jpg',
     fallback: '🎧',
-    badge: '✦ Disponible · 4 capítulos',
-    desc: 'Una historia narrada entre susurros, ausencias y decisiones que llegan tarde. Un amor que no pudo ser, contado con la voz de Chaly y acompañado por una banda sonora original que acaricia y rompe al mismo tiempo.',
+    badge: '✦ Disponible · 4 capítulos + Final',
+    desc: 'Samuel amó en silencio durante años. Cuando el destino los reunió, el amor floreció… pero el pasado cobró su precio. Una historia narrada entre susurros, ausencias y decisiones que llegan demasiado tarde.',
     capitulos: [
-      { num:'Capítulo 1', nombre:'', leer:'historias/susurros-de-mi-alma/capitulo-1.html', escuchar:'https://open.spotify.com/episode/6J1ARu7WYNsHlhJR4GZRaI' },
-      { num:'Capítulo 2', nombre:'El Día Esperado', leer:'historias/susurros-de-mi-alma/capitulo-2.html', escuchar:'https://open.spotify.com/episode/68zc8RQcDloi4aOjLFmHOw' },
-      { num:'Capítulo 3', nombre:'Confesiones', leer:'historias/susurros-de-mi-alma/capitulo-3.html', escuchar:'https://open.spotify.com/episode/4QQisVyZxP6j9HfNkYCGlh' },
-      { num:'Capítulo Final', nombre:'El Eco de un Amor Eterno', leer:'', escuchar:'' },
+      { num:'Capítulo 1', nombre:'Entre el Silencio y el Reencuentro', leer:'', escuchar:'https://open.spotify.com/episode/6J1ARu7WYNsHlhJR4GZRaI' },
+      { num:'Capítulo 2', nombre:'El Amor que Renace', leer:'', escuchar:'https://open.spotify.com/episode/68zc8RQcDloi4aOjLFmHOw' },
+      { num:'Capítulo 3', nombre:'El Susurro del Adiós', leer:'', escuchar:'https://open.spotify.com/episode/4QQisVyZxP6j9HfNkYCGlh' },
+      { num:'Capítulo 4', nombre:'El Eco de un Amor Eterno', leer:'', escuchar:'' },
+      { num:'Capítulo Final', nombre:'El Susurro que Permanece', leer:'', escuchar:'' },
     ]
   }
 };
@@ -609,7 +1268,13 @@ function abrirLibro(id) {
         <div style="display:flex;gap:.4rem;flex-shrink:0">
           ${(()=>{
             if(!c.leer) return '<span class="cap-btn soon">Próximamente</span>';
-            const inlineKeys = {'ojos-verdes':['ojos-verdes-1','ojos-verdes-2','ojos-verdes-3','ojos-verdes-4','ojos-verdes-5']};
+            const inlineKeys = {
+              'ojos-verdes':['ojos-verdes-1','ojos-verdes-2','ojos-verdes-3','ojos-verdes-4','ojos-verdes-5'],
+              'susurros':['susurros-1','susurros-2','susurros-3','susurros-4','susurros-final'],
+              'no-soy-fan':['no-soy-fan-1','no-soy-fan-2','no-soy-fan-3','no-soy-fan-4','no-soy-fan-5','no-soy-fan-6'],
+              'ultima-jugada':['ultima-jugada-1','ultima-jugada-2','ultima-jugada-3','ultima-jugada-4','ultima-jugada-5','ultima-jugada-6'],
+              'ecos':['ecos-1','ecos-2','ecos-3','ecos-4','ecos-5','ecos-6','ecos-7','ecos-8','ecos-9','ecos-10']
+            };
             const keyList = inlineKeys[id];
             const inlineKey = keyList ? keyList[i] : null;
             if(inlineKey && CAP_CONTENIDO[inlineKey] && CAP_CONTENIDO[inlineKey].texto.length > 50)
