@@ -266,6 +266,18 @@
       color:rgba(201,168,76,.5);background:transparent;border:none;cursor:pointer;
     }
     .cap-reader-back:hover{color:var(--gold)}
+    .cap-reader-arrow{
+      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.5);background:transparent;
+      border:1px solid rgba(201,168,76,.2);border-radius:100px;
+      padding:.35rem .9rem;cursor:pointer;transition:all .3s;
+    }
+    .cap-reader-arrow:hover{color:var(--gold);border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.06)}
+    .cap-reader-arrow:disabled{opacity:.25;cursor:default;pointer-events:none}
+    @media(max-width:600px){
+      .cap-reader-nav{flex-wrap:wrap;gap:.6rem}
+      .cap-reader-title{order:3;width:100%;text-align:center}
+    }
     .cap-reader-title{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;color:rgba(201,168,76,.35)}
     .cap-reader-body{max-width:680px;margin:0 auto}
     .cap-reader-chapter-title{
@@ -298,6 +310,45 @@
       background:rgba(201,168,76,.05);transition:all .3s;
     }
     .cap-reader-spotify:hover{background:rgba(201,168,76,.12)}
+
+    /* ── PORTADA MARIPOSA (Diario Brujita) ── */
+    .butterfly-cover{
+      position:relative;width:100%;aspect-ratio:200/260;
+      cursor:pointer;display:flex;align-items:center;justify-content:center;
+      transition:transform .4s cubic-bezier(.4,0,.2,1);
+    }
+    .libro-wrap:hover .butterfly-cover{transform:scale(1.04) translateY(-4px)}
+    .butterfly-svg{
+      width:100%;height:100%;
+      filter:drop-shadow(0 8px 20px rgba(0,0,0,.5));
+      transition:filter .4s;
+    }
+    .libro-wrap:hover .butterfly-svg{
+      filter:drop-shadow(0 12px 30px rgba(201,168,76,.25));
+    }
+    .bf-cover-badge{
+      position:absolute;top:8%;left:50%;transform:translateX(-50%);
+      font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.15em;
+      padding:.2rem .6rem;border-radius:100px;
+      background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);
+      color:var(--gold);white-space:nowrap;
+    }
+    .bf-cover-content{
+      position:absolute;bottom:6%;left:50%;transform:translateX(-50%);
+      text-align:center;width:80%;
+    }
+    .bf-cover-title{
+      font-family:'Cormorant Garamond',serif;font-size:.78rem;font-style:italic;
+      color:var(--gold-pale);line-height:1.3;margin-bottom:.2rem;
+    }
+    .bf-cover-sub{
+      font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.5);margin-bottom:.3rem;
+    }
+    .bf-cover-hint{
+      font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.35);
+    }
   </style>
 </head>
 <body>
@@ -424,20 +475,61 @@
     </div>
 
 
-    <!-- 6. Diario de una Brujita Distraída -->
-    <div class="libro-wrap">
-      <div class="libro">
-        <div class="libro-cover" style="opacity:.6;cursor:default">
-          <div class="libro-spine"></div>
-          <img src="images/Diario.png" alt="Diario de una Brujita Distraída"
-            class="libro-cover-img" onerror="this.style.display='none'">
-          <div class="libro-cover-img-fallback">🧹</div>
-          <div class="libro-cover-overlay"></div>
-          <span class="libro-cover-badge proxima">Próximamente</span>
-          <div class="libro-cover-content">
-            <p class="libro-cover-title">Diario de una Brujita Distraída</p>
-            <p class="libro-cover-sub">Capítulos por venir</p>
-          </div>
+    <!-- 6. Diario Mágico de la Brujita Distraída -->
+    <div class="libro-wrap" onclick="abrirLibro('brujita')">
+      <div class="butterfly-cover">
+        <svg viewBox="0 0 200 260" class="butterfly-svg">
+          <defs>
+            <clipPath id="wingClip">
+              <path d="M100,40
+                C70,10 20,5 8,35
+                C-2,60 15,95 50,105
+                C70,110 90,100 100,80
+                C110,100 130,110 150,105
+                C185,95 202,60 192,35
+                C180,5 130,10 100,40 Z
+                M100,90
+                C95,130 70,170 35,195
+                C10,213 -5,205 0,180
+                C8,145 40,115 100,90 Z
+                M100,90
+                C105,130 130,170 165,195
+                C190,213 205,205 200,180
+                C192,145 160,115 100,90 Z" />
+            </clipPath>
+          </defs>
+          <image href="images/Diario.png" x="-30" y="0" width="260" height="260"
+            clip-path="url(#wingClip)" preserveAspectRatio="xMidYMid slice"
+            onerror="this.style.display='none'; document.getElementById('bfFallback').style.display='block'"/>
+          <path id="bfFallback" style="display:none" d="M100,40
+            C70,10 20,5 8,35 C-2,60 15,95 50,105 C70,110 90,100 100,80
+            C110,100 130,110 150,105 C185,95 202,60 192,35 C180,5 130,10 100,40 Z
+            M100,90 C95,130 70,170 35,195 C10,213 -5,205 0,180 C8,145 40,115 100,90 Z
+            M100,90 C105,130 130,170 165,195 C190,213 205,205 200,180 C192,145 160,115 100,90 Z"
+            fill="#1a0a2e"/>
+          <path d="M100,40
+            C70,10 20,5 8,35
+            C-2,60 15,95 50,105
+            C70,110 90,100 100,80
+            C110,100 130,110 150,105
+            C185,95 202,60 192,35
+            C180,5 130,10 100,40 Z
+            M100,90
+            C95,130 70,170 35,195
+            C10,213 -5,205 0,180
+            C8,145 40,115 100,90 Z
+            M100,90
+            C105,130 130,170 165,195
+            C190,213 205,205 200,180
+            C192,145 160,115 100,90 Z"
+            fill="none" stroke="rgba(201,168,76,.4)" stroke-width="1.5"/>
+          <line x1="100" y1="35" x2="100" y2="95" stroke="rgba(201,168,76,.3)" stroke-width="1.5"/>
+        </svg>
+        <span class="bf-cover-badge">✦ Disponible</span>
+        <div class="bf-cover-content">
+          <p class="bf-cover-title">Diario Mágico de la Brujita Distraída</p>
+          <p class="bf-cover-sub">7 entradas</p>
+          <p class="bf-cover-hint">Toca para abrir</p>
         </div>
       </div>
     </div>
@@ -484,12 +576,14 @@
   <div class="cap-reader-nav">
     <button class="cap-reader-back" onclick="cerrarLector()">← Volver al libro</button>
     <span class="cap-reader-title" id="readerTitle"></span>
-    <span></span>
+    <div style="display:flex;gap:.5rem">
+      <button class="cap-reader-arrow" id="readerPrev" onclick="navegarCapitulo(-1)">← Anterior</button>
+      <button class="cap-reader-arrow" id="readerNext" onclick="navegarCapitulo(1)">Siguiente →</button>
+    </div>
   </div>
   <div class="cap-reader-body">
     <div id="readerContent"></div>
-    <div class="cap-reader-footer">
-      <a id="readerSpotify" href="#" target="_blank" class="cap-reader-spotify">🎧 Escuchar en Spotify</a>
+    <div class="cap-reader-footer" style="justify-content:center">
       <span style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;color:rgba(201,168,76,.25)">✦ Bruxa Tarot ✦</span>
     </div>
   </div>
@@ -1137,6 +1231,70 @@ CAP_CONTENIDO['susurros-final'].texto = `<p style="font-style:italic;padding:1re
     <p>Esta historia pertenece a todas las Lucías que no lograron reconocer a su alma gemela a tiempo, y a todos los Samueles que silenciaron su amor por temor. Para todas esas almas, queda la esperanza de que, la próxima vez que el destino decida hablarles, finalmente tengan el valor de escucharlo.</p>
   </div>`;
 
+// ── DIARIO MÁGICO DE LA BRUJITA DISTRAÍDA ──
+CAP_CONTENIDO['brujita-0'] = {
+  titulo: 'Diario Mágico de la Brujita Distraída',
+  sub: 'Episodio 0 — El diario mariposa despierta',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/Diario.png',
+  spotify: ''
+};
+CAP_CONTENIDO['brujita-0'].texto = '<p>Hola, soy Bruxa Tarot 🧹💜🦋 Esta es mi primera vez escribiéndote… espero que podamos ser buenas amigas. ¿Te gustaría ser mi compañera de vuelo? ✨</p><p>Se me ocurrió la grandiosa idea de comenzar este diario mágico. Soy bastante distraída y confío en que funcione mejor que el hechizo que intenté hacer el otro día (spoiler: terminó en caos y purpurina 🤣).</p><p>Aquí te contaré todas mis aventuras, mis progresos y también mis fallos. Porque la magia verdadera está en compartir el camino, no solo los conjuros perfectos.</p><p>Con ilusión, risas y un montón de alas coloridas, Bruxa Tarot.</p>';
+
+CAP_CONTENIDO['brujita-1'] = {
+  titulo: 'Diario Mágico de la Brujita Distraída',
+  sub: 'Entrada 1 — Sombrero torcido y hechizo de productividad',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/Diario.png',
+  spotify: ''
+};
+CAP_CONTENIDO['brujita-1'].texto = '<p>Buenos días, mi querida compañera de vuelo 🦋❤️🧹</p><p>Esta mañana me desperté con el sombrero torcido, Nabi convertido en bufanda pelirroja sobre mi hombro y una mariposa arcoíris todavía dormida en mi flequillo. Las sábanas, esas brujas malvadas, me tenían envuelta en su conjuro de algodón y pereza. Susurraban: "Quédate… solo cinco minutitos más…". ¡Casi me convence el hechizo!</p><p>Pero ya estoy terminando mi elixir levantamuertos ☕✨ y, poco a poco, vuelvo a ser más bruja que fantasma.</p><p>Como buena brujita distraída, ayer no terminé ni uno solo de los videos que tenía planeados 😮‍💨. ¿Existirá un hechizo de productividad creativa que no termine en explosiones de purpurina? Si lo encuentras, mándamelo en lechuza urgente, por favor 🦉.</p><p>Mañana te cuento si logré "masterear" (o al menos no quemar la cocina intentando) el hechizo de productividad… ¡Cruzo las alas y las antenitas!</p><p>Con amor, café y un montón de caos mágico, Bruxa Tarot ✨🪄💜</p>';
+
+CAP_CONTENIDO['brujita-2'] = {
+  titulo: 'Diario Mágico de la Brujita Distraída',
+  sub: 'Entrada 2 — Elixir y dietas imposibles',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/Diario.png',
+  spotify: ''
+};
+CAP_CONTENIDO['brujita-2'].texto = '<p>Buenos días, mi querida compañera de vuelo 🦋❤️🧹</p><p>Hoy me desperté caída de la cama y el cerebro todavía medio dormido, intentando invocar el hechizo de productividad… pero parece que el conjuro se me resiste. ☕✨</p><p>Mientras tomaba mi elixir levantamuertos, pensé en esas dietas que prometen milagros y te restringen hasta respirar aire. Me reí tanto que me dolía la panza: ¿cómo podría yo vivir sin panes, muffins y dulces? 🤣 La verdadera felicidad está en comer sabroso, en disfrutar cada mordisco como si fuera un conjuro de alegría.</p><p>Elixir de la vida: pan caliente y risas.</p><p>Ahora me toca practicar mi hechizo de belleza. A veces funciona, otras veces no tanto… mañana te cuento si salió bien o si terminé cubierta de purpurina. ✨</p><p>Con amor, café y un montón de caos mágico, Tu brujita distraída.</p>';
+
+CAP_CONTENIDO['brujita-3'] = {
+  titulo: 'Diario Mágico de la Brujita Distraída',
+  sub: 'Entrada 3 — Los demonios del kéfir y las ideas burbujeantes',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/Diario.png',
+  spotify: ''
+};
+CAP_CONTENIDO['brujita-3'].texto = '<p>Buenos días, mi querida compañera de vuelo 🦋❤️🧹</p><p>Hoy no hubo elixir levantamuertos capaz de despertar mi cerebro: se trajo las cobijas de la cama arrastrando y sigue en huelga de sueño. 😮‍💨 Mi hechizo de belleza aún no se perfecciona… pero como buena brujita distraída, seguiré intentando. ✨</p><p>Ya se me acabó el kéfir, así que me toca despertar a esos pequeños demonios. Se multiplican más rápido que mis ideas 🤣🤣. Mientras burbujeaban en su frasco, pensé: ¿será que las ideas también fermentan? Algunas necesitan reposar en silencio, otras explotan como espuma traviesa.</p><p>La magia, al final, está en dejar que todo crezca a su propio ritmo. 🌌</p><p>Con risas, burbujas y un poco de caos encantado, Tu brujita distraída.</p>';
+
+CAP_CONTENIDO['brujita-4'] = {
+  titulo: 'Diario Mágico de la Brujita Distraída',
+  sub: 'Entrada 4 — Hechizo de compras distraídas',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/Diario.png',
+  spotify: ''
+};
+CAP_CONTENIDO['brujita-4'].texto = '<p>Buenos días, mi querida compañera de vuelo 🦋❤️🧹</p><p>Hoy me siento orgullosa de mí misma… aunque no sé si debería 🤣. Fui a la tienda con la mente fija en una sola cosa, repitiéndome todo el camino: "necesito esto, necesito esto…".</p><p>Pero apenas crucé la puerta, el hechizo de las vitrinas me atrapó. Empecé a mirar otras cosas, olvidé por qué había ido y terminé con un montón de tesoros que no necesitaba, pero que se me antojaron o me gustaron 🛍️✨😂.</p><p>Al llegar a casa, mi alma flotaba entre risas y lamentos: "¡Noooo! Olvidé lo que realmente necesitaba". Así funciona la magia de las compras distraídas: el corazón manda, la lista se pierde y la brujita regresa con bolsas llenas de caprichos.</p><p>Con orgullo, caos y un poquito de purpurina, Tu brujita distraída.</p>';
+
+CAP_CONTENIDO['brujita-5'] = {
+  titulo: 'Diario Mágico de la Brujita Distraída',
+  sub: 'Entrada 5 — Cerebro fuera de servicio',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/Diario.png',
+  spotify: ''
+};
+CAP_CONTENIDO['brujita-5'].texto = '<p>Buenos días… o tardes, según sea el caso, mi querida compañera de vuelo 🧹❤️🦋</p><p>Hoy ya me terminé mi elixir levantamuertos, pero te confieso algo: mi cerebro decidió tomarse el día libre. Está fuera de servicio. Cerrado por insomnio. 😮‍💨</p><p>Tuve una mala noche. Me desperté y no logré volver a dormir por más de dos horas. Mi cerebro, ese travieso, empezó a gritar "¡hey hey!" como si fuera una fiesta, y por más que le decía "¡quiero dormir, cállate!", no se calló.</p><p>Así que hoy andaré por las calles como zombie, con cara de pocos amigos y alas arrastrando.</p><p>¿Y tú? ¿Cómo va tu día? Espero que hayas dormido mejor que yo, y que tu elixir sí haya surtido efecto.</p><p>Con ojeras, cariño y un poquito de magia desordenada, Tu brujita distraída</p>';
+
+CAP_CONTENIDO['brujita-6'] = {
+  titulo: 'Diario Mágico de la Brujita Distraída',
+  sub: 'Entrada 6 — Elixir mañanero y despistes',
+  autor: 'Por Bruxa Tarot',
+  img: 'images/Diario.png',
+  spotify: ''
+};
+CAP_CONTENIDO['brujita-6'].texto = '<p>Buenos días, mi querida compañera de vuelo 🦋❤️🧹</p><p>Esta mañana mi cerebro no despertaba ni con el primer elixir 🤣. Me sentía como masa madre dormida, esperando que la levadura hiciera su magia.</p><p>La verdad, no sé qué está más dormido hoy: si mi cerebro o mi masa madre, que llevo tres días tratando de despertar. El clima está frío y yo soñando con un pan recién salido del horno, calientito, con la mantequilla derritiéndose encima… 🥖🧈✨</p><p>Pero parece que mi masa madre está librando sus propios hechizos. Por ahora me toca conformarme con el elixir levantamuertos ☕.</p><p>Espero que pronto despierte y convierta mi cocina en un caos desbordado de vida y burbujas mágicas. 🌌</p>';
+
 // ── OJOS VERDES (original) ──
 // NOTA: Textos embebidos por ahora.
 // Para escalar: mover a /historias/data/ojos-verdes.json y cargar con fetch()
@@ -1186,11 +1344,27 @@ CAP_CONTENIDO['ojos-verdes-5'].texto = '<p><strong>Tony:</strong> "Nos vemos ma�
 
 
 
-function abrirLector(capId, spotify) {
+// Estado actual del lector (para navegación prev/next)
+let lectorActual = { libroId: null, capIndex: -1 };
+
+const INLINE_KEYS = {
+  'brujita':['brujita-0','brujita-1','brujita-2','brujita-3','brujita-4','brujita-5','brujita-6'],
+  'ojos-verdes':['ojos-verdes-1','ojos-verdes-2','ojos-verdes-3','ojos-verdes-4','ojos-verdes-5'],
+  'susurros':['susurros-1','susurros-2','susurros-3','susurros-4','susurros-final'],
+  'no-soy-fan':['no-soy-fan-1','no-soy-fan-2','no-soy-fan-3','no-soy-fan-4','no-soy-fan-5','no-soy-fan-6'],
+  'ultima-jugada':['ultima-jugada-1','ultima-jugada-2','ultima-jugada-3','ultima-jugada-4','ultima-jugada-5','ultima-jugada-6'],
+  'ecos':['ecos-1','ecos-2','ecos-3','ecos-4','ecos-5','ecos-6','ecos-7','ecos-8','ecos-9','ecos-10']
+};
+
+function abrirLector(capId, spotify, libroId, capIndex) {
   const cap = CAP_CONTENIDO[capId];
   if(!cap) return;
+
+  // Guardar estado para navegación prev/next
+  lectorActual.libroId = libroId;
+  lectorActual.capIndex = capIndex;
+
   document.getElementById('readerTitle').textContent = cap.sub;
-  document.getElementById('readerSpotify').href = spotify || cap.spotify;
   document.getElementById('readerContent').innerHTML =
     '<img src="' + cap.img + '" alt="' + cap.titulo + '" class="cap-reader-banner" onerror="this.style.display=\'none\'">' +
     '<h2 class="cap-reader-chapter-title">' + cap.titulo + '</h2>' +
@@ -1198,10 +1372,30 @@ function abrirLector(capId, spotify) {
     '<p class="cap-reader-author">' + cap.autor + '</p>' +
     '<div class="cap-reader-divider"></div>' +
     '<div class="cap-reader-text">' + cap.texto + '</div>';
+
+  actualizarBotonesNav();
+
   document.getElementById('modalOverlay').classList.remove('open');
   document.getElementById('capReader').classList.add('open');
   document.body.style.overflow = 'hidden';
   window.scrollTo(0,0);
+}
+
+function actualizarBotonesNav() {
+  const keyList = INLINE_KEYS[lectorActual.libroId] || [];
+  const prevBtn = document.getElementById('readerPrev');
+  const nextBtn = document.getElementById('readerNext');
+  if(prevBtn) prevBtn.disabled = lectorActual.capIndex <= 0;
+  if(nextBtn) nextBtn.disabled = lectorActual.capIndex >= keyList.length - 1;
+}
+
+function navegarCapitulo(dir) {
+  const keyList = INLINE_KEYS[lectorActual.libroId];
+  if(!keyList) return;
+  const newIndex = lectorActual.capIndex + dir;
+  if(newIndex < 0 || newIndex >= keyList.length) return;
+  const newCapId = keyList[newIndex];
+  abrirLector(newCapId, '', lectorActual.libroId, newIndex);
 }
 
 function cerrarLector() {
@@ -1219,10 +1413,26 @@ const LIBROS = {
     desc: 'Embárcate en una dulce travesía de adolescencia, sueños y primeras emociones intensas. Una historia sobre ese primer amor que te desarma sin avisar, donde una mirada basta para cambiarlo todo. Narrada por Bruxa Tarot.',
     capitulos: [
       { num:'Capítulo 1', nombre:'Las Escaleras', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-1.html', escuchar:'https://open.spotify.com/episode/5iNrLn5CXhmn1XgE158KQ6' },
-      { num:'Capítulo 2', nombre:'La mirada', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-2.html', escuchar:'https://open.spotify.com/episode/5KRLfbXXkSWhZwgMvrmaHB' },
-      { num:'Capítulo 3', nombre:'Mariposas', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-3.html', escuchar:'https://open.spotify.com/episode/0z2rWBxoEt6ScxOD9jk53i' },
-      { num:'Capítulo 4', nombre:'La promesa', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-4.html', escuchar:'https://open.spotify.com/episode/4DOgksBjqmiokZGsGslztn' },
-      { num:'Capítulo 5', nombre:'El final', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-5.html', escuchar:'https://open.spotify.com/episode/1OzVrhPoH6jYgGtg0l4gx9' },
+      { num:'Capítulo 2', nombre:'El Día Esperado', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-2.html', escuchar:'https://open.spotify.com/episode/5KRLfbXXkSWhZwgMvrmaHB' },
+      { num:'Capítulo 3', nombre:'Confesiones', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-3.html', escuchar:'https://open.spotify.com/episode/0z2rWBxoEt6ScxOD9jk53i' },
+      { num:'Capítulo 4', nombre:'La Ilusión del Primer Amor', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-4.html', escuchar:'https://open.spotify.com/episode/4DOgksBjqmiokZGsGslztn' },
+      { num:'Capítulo 5', nombre:'Decisiones y Cambios', leer:'historias/en-busca-de-tus-ojos-verdes/capitulo-5.html', escuchar:'https://open.spotify.com/episode/1OzVrhPoH6jYgGtg0l4gx9' },
+    ]
+  },
+  'brujita': {
+    titulo: 'Diario Mágico de la Brujita Distraída',
+    img: 'images/Diario.png',
+    fallback: '🧹',
+    badge: '✦ Disponible · 7 entradas',
+    desc: 'Un diario mágico, distraído y tierno, donde Bruxa Tarot comparte sus mañanas con elixires levantamuertos, hechizos que no siempre salen bien y un montón de caos encantado. Porque la magia verdadera está en compartir el camino, no solo los conjuros perfectos.',
+    capitulos: [
+      { num:'Episodio 0', nombre:'El diario mariposa despierta', leer:'#', escuchar:'' },
+      { num:'Entrada 1', nombre:'Sombrero torcido y hechizo de productividad', leer:'#', escuchar:'' },
+      { num:'Entrada 2', nombre:'Elixir y dietas imposibles', leer:'#', escuchar:'' },
+      { num:'Entrada 3', nombre:'Los demonios del kéfir', leer:'#', escuchar:'' },
+      { num:'Entrada 4', nombre:'Hechizo de compras distraídas', leer:'#', escuchar:'' },
+      { num:'Entrada 5', nombre:'Cerebro fuera de servicio', leer:'#', escuchar:'' },
+      { num:'Entrada 6', nombre:'Elixir mañanero y despistes', leer:'#', escuchar:'' },
     ]
   },
   'no-soy-fan': {
@@ -1303,23 +1513,12 @@ function abrirLibro(id) {
         <div style="display:flex;gap:.4rem;flex-shrink:0">
           ${(()=>{
             if(!c.leer) return '<span class="cap-btn soon">Próximamente</span>';
-            const inlineKeys = {
-              'ojos-verdes':['ojos-verdes-1','ojos-verdes-2','ojos-verdes-3','ojos-verdes-4','ojos-verdes-5'],
-              'susurros':['susurros-1','susurros-2','susurros-3','susurros-4','susurros-final'],
-              'no-soy-fan':['no-soy-fan-1','no-soy-fan-2','no-soy-fan-3','no-soy-fan-4','no-soy-fan-5','no-soy-fan-6'],
-              'ultima-jugada':['ultima-jugada-1','ultima-jugada-2','ultima-jugada-3','ultima-jugada-4','ultima-jugada-5','ultima-jugada-6'],
-              'ecos':['ecos-1','ecos-2','ecos-3','ecos-4','ecos-5','ecos-6','ecos-7','ecos-8','ecos-9','ecos-10']
-            };
-            const keyList = inlineKeys[id];
+            const keyList = INLINE_KEYS[id];
             const inlineKey = keyList ? keyList[i] : null;
             if(inlineKey && CAP_CONTENIDO[inlineKey] && CAP_CONTENIDO[inlineKey].texto.length > 50)
-              return '<button class="cap-btn leer" onclick="abrirLector(\'' + inlineKey + '\',\'' + c.escuchar + '\')">📖 Leer aquí</button>';
+              return '<button class="cap-btn leer" onclick="abrirLector(\'' + inlineKey + '\',\'\',\'' + id + '\',' + i + ')">📖 Leer aquí</button>';
             return '<a href="' + c.leer + '" class="cap-btn leer">📖 Leer</a>';
           })()}
-          ${c.escuchar
-            ? `<a href="${c.escuchar}" target="_blank" class="cap-btn">🎧 Escuchar</a>`
-            : ''
-          }
         </div>
       </div>`;
   }).join('');
