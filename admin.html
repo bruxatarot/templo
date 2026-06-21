@@ -123,7 +123,7 @@
     /* CARTA SELECTOR */
     .carta-grid{
       display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
-      gap:.5rem;max-height:260px;overflow-y:auto;margin-top:.5rem;
+      gap:.5rem;max-height:400px;overflow-y:auto;margin-top:.5rem;
       padding:.5rem;border:1px solid rgba(201,168,76,.1);border-radius:10px;
     }
     .carta-option{
@@ -444,7 +444,7 @@ function mostrarLunaAuto() {
 }
 
 // ══════════════════════════════════════════
-// 31 CARTAS
+// 31 CARTAS ORÁCULO
 // ══════════════════════════════════════════
 const CARTAS = [
   {num:1,name:'Bruxa Tarot',emoji:'🔮'},{num:2,name:'Nabi',emoji:'🦋'},
@@ -465,22 +465,142 @@ const CARTAS = [
   {num:31,name:'El Conocimiento',emoji:'📚'},
 ];
 
+// ══════════════════════════════════════════
+// 78 CARTAS TAROT
+// ══════════════════════════════════════════
+const TAROT = [
+  // Arcanos Mayores
+  {id:'t0',  name:'El Loco',              suit:'mayor'},
+  {id:'t1',  name:'El Mago',              suit:'mayor'},
+  {id:'t2',  name:'La Sacerdotisa',       suit:'mayor'},
+  {id:'t3',  name:'La Emperatriz',        suit:'mayor'},
+  {id:'t4',  name:'El Emperador',         suit:'mayor'},
+  {id:'t5',  name:'El Sumo Sacerdote',    suit:'mayor'},
+  {id:'t6',  name:'Los Enamorados',       suit:'mayor'},
+  {id:'t7',  name:'El Carro',             suit:'mayor'},
+  {id:'t8',  name:'La Fuerza',            suit:'mayor'},
+  {id:'t9',  name:'El Ermitaño',          suit:'mayor'},
+  {id:'t10', name:'La Rueda de la Fortuna',suit:'mayor'},
+  {id:'t11', name:'La Justicia',          suit:'mayor'},
+  {id:'t12', name:'El Colgado',           suit:'mayor'},
+  {id:'t13', name:'La Muerte',            suit:'mayor'},
+  {id:'t14', name:'La Templanza',         suit:'mayor'},
+  {id:'t15', name:'El Diablo',            suit:'mayor'},
+  {id:'t16', name:'La Torre',             suit:'mayor'},
+  {id:'t17', name:'La Estrella',          suit:'mayor'},
+  {id:'t18', name:'La Luna',              suit:'mayor'},
+  {id:'t19', name:'El Sol',               suit:'mayor'},
+  {id:'t20', name:'El Juicio',            suit:'mayor'},
+  {id:'t21', name:'El Mundo',             suit:'mayor'},
+  // Bastos
+  {id:'tb1', name:'As de Bastos',         suit:'bastos'},
+  {id:'tb2', name:'Dos de Bastos',        suit:'bastos'},
+  {id:'tb3', name:'Tres de Bastos',       suit:'bastos'},
+  {id:'tb4', name:'Cuatro de Bastos',     suit:'bastos'},
+  {id:'tb5', name:'Cinco de Bastos',      suit:'bastos'},
+  {id:'tb6', name:'Seis de Bastos',       suit:'bastos'},
+  {id:'tb7', name:'Siete de Bastos',      suit:'bastos'},
+  {id:'tb8', name:'Ocho de Bastos',       suit:'bastos'},
+  {id:'tb9', name:'Nueve de Bastos',      suit:'bastos'},
+  {id:'tb10',name:'Diez de Bastos',       suit:'bastos'},
+  {id:'tbp', name:'Paje de Bastos',       suit:'bastos'},
+  {id:'tbq', name:'Caballero de Bastos',  suit:'bastos'},
+  {id:'tbr', name:'Reina de Bastos',      suit:'bastos'},
+  {id:'tbk', name:'Rey de Bastos',        suit:'bastos'},
+  // Copas
+  {id:'tc1', name:'As de Copas',          suit:'copas'},
+  {id:'tc2', name:'Dos de Copas',         suit:'copas'},
+  {id:'tc3', name:'Tres de Copas',        suit:'copas'},
+  {id:'tc4', name:'Cuatro de Copas',      suit:'copas'},
+  {id:'tc5', name:'Cinco de Copas',       suit:'copas'},
+  {id:'tc6', name:'Seis de Copas',        suit:'copas'},
+  {id:'tc7', name:'Siete de Copas',       suit:'copas'},
+  {id:'tc8', name:'Ocho de Copas',        suit:'copas'},
+  {id:'tc9', name:'Nueve de Copas',       suit:'copas'},
+  {id:'tc10',name:'Diez de Copas',        suit:'copas'},
+  {id:'tcp', name:'Paje de Copas',        suit:'copas'},
+  {id:'tcq', name:'Caballero de Copas',   suit:'copas'},
+  {id:'tcr', name:'Reina de Copas',       suit:'copas'},
+  {id:'tck', name:'Rey de Copas',         suit:'copas'},
+  // Espadas
+  {id:'te1', name:'As de Espadas',        suit:'espadas'},
+  {id:'te2', name:'Dos de Espadas',       suit:'espadas'},
+  {id:'te3', name:'Tres de Espadas',      suit:'espadas'},
+  {id:'te4', name:'Cuatro de Espadas',    suit:'espadas'},
+  {id:'te5', name:'Cinco de Espadas',     suit:'espadas'},
+  {id:'te6', name:'Seis de Espadas',      suit:'espadas'},
+  {id:'te7', name:'Siete de Espadas',     suit:'espadas'},
+  {id:'te8', name:'Ocho de Espadas',      suit:'espadas'},
+  {id:'te9', name:'Nueve de Espadas',     suit:'espadas'},
+  {id:'te10',name:'Diez de Espadas',      suit:'espadas'},
+  {id:'tep', name:'Paje de Espadas',      suit:'espadas'},
+  {id:'teq', name:'Caballero de Espadas', suit:'espadas'},
+  {id:'ter', name:'Reina de Espadas',     suit:'espadas'},
+  {id:'tek', name:'Rey de Espadas',       suit:'espadas'},
+  // Pentáculos
+  {id:'tp1', name:'As de Pentáculos',     suit:'pentaculos'},
+  {id:'tp2', name:'Dos de Pentáculos',    suit:'pentaculos'},
+  {id:'tp3', name:'Tres de Pentáculos',   suit:'pentaculos'},
+  {id:'tp4', name:'Cuatro de Pentáculos', suit:'pentaculos'},
+  {id:'tp5', name:'Cinco de Pentáculos',  suit:'pentaculos'},
+  {id:'tp6', name:'Seis de Pentáculos',   suit:'pentaculos'},
+  {id:'tp7', name:'Siete de Pentáculos',  suit:'pentaculos'},
+  {id:'tp8', name:'Ocho de Pentáculos',   suit:'pentaculos'},
+  {id:'tp9', name:'Nueve de Pentáculos',  suit:'pentaculos'},
+  {id:'tp10',name:'Diez de Pentáculos',   suit:'pentaculos'},
+  {id:'tpp', name:'Paje de Pentáculos',   suit:'pentaculos'},
+  {id:'tpq', name:'Caballero de Pentáculos',suit:'pentaculos'},
+  {id:'tpr', name:'Reina de Pentáculos',  suit:'pentaculos'},
+  {id:'tpk', name:'Rey de Pentáculos',    suit:'pentaculos'},
+];
+
+const SUIT_LABELS = { mayor:'Arcanos Mayores', bastos:'Bastos', copas:'Copas', espadas:'Espadas', pentaculos:'Pentáculos' };
+
 let cartaSeleccionada = null;
 
 function renderCartaGrid() {
   const grid = document.getElementById('cartaGrid');
-  grid.innerHTML = CARTAS.map(c => `
-    <div class="carta-option" id="co${c.num}" onclick="seleccionarCarta(${c.num})">
-      <span class="carta-num">${c.emoji}</span>
-      ${c.name}
+
+  // Oracle section
+  const oracleHtml = `
+    <div class="carta-section-header" style="grid-column:1/-1;font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.25em;color:rgba(201,168,76,.4);padding:.4rem .2rem .2rem;border-bottom:1px solid rgba(201,168,76,.1);margin-bottom:.2rem">
+      ✦ ORÁCULO DEL PRISMA
     </div>
-  `).join('');
+    ${CARTAS.map(c => `
+      <div class="carta-option" id="co${c.num}" onclick="seleccionarCarta('oracle',${c.num})">
+        <span class="carta-num">${c.emoji}</span>
+        ${c.name}
+      </div>
+    `).join('')}`;
+
+  // Tarot sections grouped by suit
+  const suits = ['mayor','bastos','copas','espadas','pentaculos'];
+  const tarotHtml = suits.map(suit => {
+    const cards = TAROT.filter(c => c.suit === suit);
+    return `
+      <div class="carta-section-header" style="grid-column:1/-1;font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.25em;color:rgba(201,168,76,.4);padding:.6rem .2rem .2rem;border-bottom:1px solid rgba(201,168,76,.1);margin-bottom:.2rem;margin-top:.4rem">
+        ✦ TAROT · ${SUIT_LABELS[suit].toUpperCase()}
+      </div>
+      ${cards.map(c => `
+        <div class="carta-option" id="ct${c.id}" onclick="seleccionarCarta('tarot','${c.id}')">
+          ${c.name}
+        </div>
+      `).join('')}`;
+  }).join('');
+
+  grid.innerHTML = oracleHtml + tarotHtml;
 }
 
-function seleccionarCarta(num) {
-  cartaSeleccionada = CARTAS.find(c => c.num === num);
-  document.querySelectorAll('.carta-option').forEach(el => el.classList.remove('selected'));
-  document.getElementById(`co${num}`).classList.add('selected');
+function seleccionarCarta(type, key) {
+  if(type === 'oracle') {
+    cartaSeleccionada = { ...CARTAS.find(c => c.num === key), type:'oracle' };
+    document.querySelectorAll('.carta-option').forEach(el => el.classList.remove('selected'));
+    document.getElementById(`co${key}`).classList.add('selected');
+  } else {
+    cartaSeleccionada = { ...TAROT.find(c => c.id === key), type:'tarot', num: key, name: TAROT.find(c=>c.id===key).name, emoji:'' };
+    document.querySelectorAll('.carta-option').forEach(el => el.classList.remove('selected'));
+    document.getElementById(`ct${key}`).classList.add('selected');
+  }
   actualizarPreview();
 }
 
@@ -493,8 +613,11 @@ function actualizarPreview() {
   const msg = document.getElementById('cartaMensaje').value;
   const preview = document.getElementById('cartaPreview');
   if(cartaSeleccionada || msg) {
-    preview.textContent = cartaSeleccionada
-      ? `${cartaSeleccionada.emoji} ${cartaSeleccionada.name} — ${msg || '(sin mensaje aún)'}`
+    const prefix = cartaSeleccionada
+      ? (cartaSeleccionada.emoji ? `${cartaSeleccionada.emoji} ` : '') + cartaSeleccionada.name
+      : '';
+    preview.textContent = prefix
+      ? `${prefix} — ${msg || '(sin mensaje aún)'}`
       : msg || 'El mensaje aparecerá aquí...';
   }
 }
@@ -685,7 +808,13 @@ async function cargarPanelActual() {
     // Carta colectiva
     if(record.carta_colectiva) {
       const c = record.carta_colectiva;
-      if(c.num) seleccionarCarta(c.num);
+      if(c.num) {
+        if(typeof c.num === 'string' && c.num.startsWith('t')) {
+          seleccionarCarta('tarot', c.num);
+        } else {
+          seleccionarCarta('oracle', c.num);
+        }
+      }
       document.getElementById('cartaMensaje').value = c.mensaje || '';
       actualizarPreview();
     }
