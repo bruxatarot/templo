@@ -1,1 +1,387 @@
-coming soon/ pronto /
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Muro de Almas • Bruxa Tarot</title>
+  <!-- TIMESTAMP: 2026-06-22 19:00 -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--gold:#c9a84c;--gold-l:#e8c97a;--gold-p:#f5e6b8;--deep:#04060f;--card:#0e0820}
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--deep);color:#e8dfc8;font-family:'Cormorant Garamond',serif;min-height:100vh;overflow-x:hidden}
+
+    /* STARFIELD */
+    #starfield{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:radial-gradient(ellipse at 20% 30%,#0d1a3a 0%,#04060f 60%),
+                 radial-gradient(ellipse at 80% 70%,#1a0828 0%,transparent 60%)}
+    #starfield canvas{position:absolute;inset:0;width:100%;height:100%}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:1.2rem 2.5rem;
+      background:linear-gradient(to bottom,rgba(4,6,15,.97),transparent)}
+    .nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.3em;color:var(--gold);text-decoration:none}
+    .nav-link{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;color:rgba(201,168,76,.5);text-decoration:none;transition:color .3s}
+    .nav-link:hover{color:var(--gold)}
+    @media(max-width:600px){nav{padding:1rem 1.5rem}}
+
+    /* HERO */
+    .hero{position:relative;z-index:1;text-align:center;padding:7rem 2rem 3rem}
+    .hero-eyebrow{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.4em;color:rgba(201,168,76,.4);margin-bottom:1rem}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-style:italic;
+      font-size:clamp(2.2rem,6vw,3.8rem);color:var(--gold-p);font-weight:300;
+      line-height:1.15;margin-bottom:.8rem}
+    .hero-sub{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.22em;
+      color:rgba(201,168,76,.38);margin-bottom:2.5rem}
+    .hero-quote{font-family:'Cormorant Garamond',serif;font-style:italic;
+      font-size:1.05rem;color:rgba(201,168,76,.5);max-width:480px;margin:0 auto 2.5rem;line-height:1.8}
+    .hero-divider{display:flex;align-items:center;gap:1rem;max-width:240px;margin:0 auto 3rem}
+    .hero-divider-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.2),transparent)}
+
+    /* CONTADOR */
+    .counter-wrap{position:relative;z-index:1;display:flex;justify-content:center;gap:2rem;margin-bottom:3rem;flex-wrap:wrap}
+    .counter-item{text-align:center}
+    .counter-num{font-family:'Cinzel Decorative',serif;font-size:1.6rem;color:var(--gold-l);display:block}
+    .counter-label{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.2em;color:rgba(201,168,76,.4)}
+
+    /* FORM */
+    .form-wrap{position:relative;z-index:1;max-width:580px;margin:0 auto 4rem;padding:0 1.5rem}
+    .form-card{background:rgba(14,8,32,.8);border:1px solid rgba(201,168,76,.15);
+      border-radius:20px;padding:2rem;backdrop-filter:blur(8px)}
+    .form-title{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.25em;
+      color:rgba(201,168,76,.6);text-align:center;margin-bottom:1.5rem}
+
+    .form-row{margin-bottom:1.2rem}
+    .form-label{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.18em;
+      color:rgba(201,168,76,.45);display:block;margin-bottom:.5rem}
+    .form-input,.form-textarea{
+      width:100%;background:rgba(201,168,76,.04);
+      border:1px solid rgba(201,168,76,.15);border-radius:10px;
+      color:#e8dfc8;font-family:'Cormorant Garamond',serif;font-size:1rem;
+      padding:.7rem 1rem;outline:none;transition:border-color .3s;resize:none}
+    .form-input:focus,.form-textarea:focus{border-color:rgba(201,168,76,.4)}
+    .form-input::placeholder,.form-textarea::placeholder{color:rgba(201,168,76,.25)}
+    .form-textarea{height:90px;line-height:1.6}
+
+    /* EMOJI PICKER */
+    .emoji-row{display:flex;gap:.5rem;flex-wrap:wrap}
+    .emoji-btn{width:2.4rem;height:2.4rem;border-radius:50%;border:1px solid rgba(201,168,76,.15);
+      background:rgba(201,168,76,.04);font-size:1.15rem;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;transition:all .25s}
+    .emoji-btn:hover{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.1);transform:scale(1.1)}
+    .emoji-btn.selected{border-color:var(--gold);background:rgba(201,168,76,.15);
+      box-shadow:0 0 10px rgba(201,168,76,.2)}
+
+    /* SUBMIT */
+    .form-submit{width:100%;margin-top:1.4rem;
+      font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.22em;
+      padding:.85rem;border-radius:100px;border:1px solid rgba(201,168,76,.3);
+      color:var(--gold-l);background:rgba(201,168,76,.07);cursor:pointer;transition:all .3s}
+    .form-submit:hover{background:rgba(201,168,76,.14);border-color:rgba(201,168,76,.5)}
+    .form-submit:disabled{opacity:.4;cursor:default}
+    .form-msg{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.15em;
+      text-align:center;margin-top:.8rem;min-height:1.2rem;color:rgba(201,168,76,.6)}
+
+    /* SECTION LABEL */
+    .section-label{position:relative;z-index:1;display:flex;align-items:center;
+      gap:1rem;padding:0 2rem 2rem;max-width:900px;margin:0 auto}
+    .section-label-text{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.28em;
+      color:rgba(201,168,76,.3);white-space:nowrap}
+    .section-label-line{flex:1;height:1px;background:rgba(201,168,76,.08)}
+
+    /* MURO — grid de tarjetitas */
+    .muro{position:relative;z-index:1;
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+      gap:1.2rem;
+      padding:0 1.5rem 6rem;
+      max-width:1000px;margin:0 auto}
+    @media(max-width:600px){.muro{grid-template-columns:1fr 1fr;gap:.8rem;padding:0 1rem 5rem}}
+
+    /* TARJETITA */
+    .nota{
+      background:rgba(14,8,32,.7);
+      border:1px solid rgba(201,168,76,.12);
+      border-radius:14px;
+      padding:1.1rem 1.2rem 1rem;
+      position:relative;
+      cursor:default;
+      animation:flotar var(--dur,4s) ease-in-out infinite;
+      animation-delay:var(--delay,0s);
+      transition:transform .3s,box-shadow .3s,border-color .3s;
+    }
+    .nota:hover{
+      transform:translateY(-6px) scale(1.02);
+      box-shadow:0 12px 35px rgba(0,0,0,.45);
+      border-color:rgba(201,168,76,.28);
+    }
+    @keyframes flotar{
+      0%,100%{transform:translateY(0px)}
+      50%{transform:translateY(-6px)}
+    }
+    .nota:hover{animation-play-state:paused}
+
+    .nota-emoji{font-size:1.5rem;margin-bottom:.5rem;display:block}
+    .nota-texto{font-family:'Cormorant Garamond',serif;font-size:.95rem;
+      line-height:1.65;color:#d4c9a8;margin-bottom:.8rem;
+      word-break:break-word;
+      display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+    .nota-footer{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+    .nota-nombre{font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:.12em;
+      color:rgba(201,168,76,.45);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .nota-fecha{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.08em;
+      color:rgba(201,168,76,.25);white-space:nowrap}
+
+    /* color accent per emoji */
+    .nota[data-emoji="🌟"]{border-color:rgba(255,220,80,.12)}
+    .nota[data-emoji="⭐"]{border-color:rgba(255,220,80,.1)}
+    .nota[data-emoji="💫"]{border-color:rgba(180,160,255,.12)}
+    .nota[data-emoji="🌙"]{border-color:rgba(120,100,220,.12)}
+    .nota[data-emoji="☀️"]{border-color:rgba(255,180,60,.12)}
+    .nota[data-emoji="🌈"]{border-color:rgba(100,200,180,.12)}
+    .nota[data-emoji="🦋"]{border-color:rgba(201,168,76,.2)}
+
+    /* VACÍO */
+    .muro-vacio{position:relative;z-index:1;text-align:center;
+      padding:3rem 2rem;color:rgba(201,168,76,.3);
+      font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em}
+
+    /* LOADING */
+    .loading-dots{display:inline-flex;gap:.3rem;align-items:center}
+    .loading-dots span{width:5px;height:5px;border-radius:50%;
+      background:rgba(201,168,76,.4);
+      animation:blink 1.2s ease-in-out infinite}
+    .loading-dots span:nth-child(2){animation-delay:.2s}
+    .loading-dots span:nth-child(3){animation-delay:.4s}
+    @keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
+
+    @media(prefers-reduced-motion:reduce){.nota{animation:none}}
+  </style>
+</head>
+<body>
+<div id="starfield"><canvas id="stars"></canvas></div>
+
+<nav>
+  <a href="index.html" class="nav-link">← Templo</a>
+  <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
+  <a href="historias.html" class="nav-link">Historias</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <p class="hero-eyebrow">✦ Templo del Prisma ✦</p>
+  <h1 class="hero-title">Muro de Almas</h1>
+  <p class="hero-sub">Donde cada voz deja su huella</p>
+  <div class="hero-divider">
+    <div class="hero-divider-line"></div>
+    <span style="color:var(--gold);font-size:.7rem">✦</span>
+    <div class="hero-divider-line"></div>
+  </div>
+  <p class="hero-quote">"Cada palabra que dejas aquí se convierte en luz. Este muro guarda los susurros de todas las almas que han pasado por el Templo."</p>
+</header>
+
+<!-- CONTADOR -->
+<div class="counter-wrap">
+  <div class="counter-item">
+    <span class="counter-num" id="totalMensajes">…</span>
+    <span class="counter-label">almas escribieron</span>
+  </div>
+  <div class="counter-item">
+    <span class="counter-num" id="totalHoy">…</span>
+    <span class="counter-label">mensajes hoy</span>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+  <div class="form-card">
+    <p class="form-title">✦ Deja tu huella en el muro ✦</p>
+
+    <div class="form-row">
+      <label class="form-label" for="inputNombre">Tu nombre (o como quieras que te llamen)</label>
+      <input class="form-input" id="inputNombre" type="text" placeholder="Alma viajera…" maxlength="40"/>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label" for="inputMensaje">Tu mensaje para el Templo</label>
+      <textarea class="form-textarea" id="inputMensaje" placeholder="Escribe lo que lleva tu corazón…" maxlength="280"></textarea>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">Elige tu símbolo mágico</label>
+      <div class="emoji-row" id="emojiRow">
+        <button class="emoji-btn selected" data-emoji="🌟" title="Estrella">🌟</button>
+        <button class="emoji-btn" data-emoji="⭐" title="Estrella">⭐</button>
+        <button class="emoji-btn" data-emoji="💫" title="Destello">💫</button>
+        <button class="emoji-btn" data-emoji="🌙" title="Luna">🌙</button>
+        <button class="emoji-btn" data-emoji="☀️" title="Sol">☀️</button>
+        <button class="emoji-btn" data-emoji="🌈" title="Arcoíris">🌈</button>
+        <button class="emoji-btn" data-emoji="🦋" title="Mariposa">🦋</button>
+      </div>
+    </div>
+
+    <button class="form-submit" id="btnEnviar" onclick="enviarMensaje()">
+      ✦ Dejar mi huella ✦
+    </button>
+    <p class="form-msg" id="formMsg"></p>
+  </div>
+</div>
+
+<!-- MURO -->
+<div class="section-label">
+  <span class="section-label-text">✦ Últimos mensajes del Templo</span>
+  <div class="section-label-line"></div>
+</div>
+
+<div class="muro" id="muro">
+  <div class="muro-vacio">
+    <div class="loading-dots"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<script>
+// ── STARFIELD ──
+(function(){
+  const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');
+  let stars=[],W,H;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  function initStars(){stars=[];const n=Math.floor((W*H)/5000);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,alpha:Math.random()*.5+.1,ts:Math.random()*.015+.004,to:Math.random()*Math.PI*2})}
+  function draw(t){ctx.clearRect(0,0,W,H);stars.forEach(s=>{const a=s.alpha*(.6+.4*Math.sin(t*s.ts+s.to));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,240,${a})`;ctx.fill()});requestAnimationFrame(draw)}
+  window.addEventListener('resize',()=>{resize();initStars()});
+  resize();initStars();requestAnimationFrame(draw);
+})();
+
+// ── CONFIG ──
+const FB_URL = 'https://diario-del-alma-default-rtdb.firebaseio.com';
+const FB_MURO = FB_URL + '/templo/muro';
+const MAX_MENSAJES = 30;
+
+// ── EMOJI PICKER ──
+let emojiSeleccionado = '🌟';
+document.getElementById('emojiRow').addEventListener('click', e => {
+  const btn = e.target.closest('.emoji-btn');
+  if(!btn) return;
+  document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  emojiSeleccionado = btn.dataset.emoji;
+});
+
+// ── ENVIAR MENSAJE ──
+async function enviarMensaje(){
+  const nombre = document.getElementById('inputNombre').value.trim();
+  const texto  = document.getElementById('inputMensaje').value.trim();
+  const msg    = document.getElementById('formMsg');
+  const btn    = document.getElementById('btnEnviar');
+
+  if(!nombre){ msg.textContent = '✦ Dinos cómo llamarte…'; return; }
+  if(texto.length < 3){ msg.textContent = '✦ Escribe aunque sea un susurro…'; return; }
+
+  btn.disabled = true;
+  msg.textContent = '✦ Enviando tu mensaje al Templo…';
+
+  const entry = {
+    nombre:   nombre.slice(0,40),
+    texto:    texto.slice(0,280),
+    emoji:    emojiSeleccionado,
+    ts:       Date.now(),
+    fecha:    new Date().toLocaleDateString('es', {day:'numeric',month:'short',year:'numeric'})
+  };
+
+  try {
+    // POST a Firebase
+    const res = await fetch(FB_MURO + '.json', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(entry)
+    });
+    if(!res.ok) throw new Error('Firebase error');
+
+    msg.textContent = '✦ ¡Tu huella quedó en el Templo para siempre! ✦';
+    document.getElementById('inputNombre').value = '';
+    document.getElementById('inputMensaje').value = '';
+    document.querySelectorAll('.emoji-btn').forEach(b=>b.classList.remove('selected'));
+    document.querySelector('.emoji-btn').classList.add('selected');
+    emojiSeleccionado = '🌟';
+
+    // Recargar muro
+    await cargarMuro();
+  } catch(e) {
+    msg.textContent = '✦ Algo salió mal… intenta de nuevo.';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ── CARGAR MURO ──
+async function cargarMuro(){
+  const muroEl = document.getElementById('muro');
+  try {
+    // Obtener todos los mensajes ordenados por timestamp (últimos primero)
+    const res = await fetch(FB_MURO + '.json?orderBy="ts"&limitToLast=' + MAX_MENSAJES);
+    const data = await res.json();
+
+    if(!data || Object.keys(data).length === 0){
+      muroEl.innerHTML = '<div class="muro-vacio">✦ Sé la primera alma en dejar su huella ✦</div>';
+      document.getElementById('totalMensajes').textContent = '0';
+      document.getElementById('totalHoy').textContent = '0';
+      return;
+    }
+
+    // Convertir objeto a array y ordenar más reciente primero
+    const mensajes = Object.entries(data)
+      .map(([id, m]) => ({id, ...m}))
+      .sort((a,b) => b.ts - a.ts);
+
+    // Contar hoy
+    const hoy = new Date().toDateString();
+    const hoyCount = mensajes.filter(m => new Date(m.ts).toDateString() === hoy).length;
+
+    document.getElementById('totalMensajes').textContent = mensajes.length;
+    document.getElementById('totalHoy').textContent = hoyCount;
+
+    // Durations y delays aleatorios para animación flotante
+    const durs    = ['3.5s','4s','4.5s','5s','5.5s','6s'];
+    const delays  = ['0s','0.5s','1s','1.5s','2s','2.5s','3s'];
+
+    muroEl.innerHTML = mensajes.map((m, i) => {
+      const dur   = durs[i % durs.length];
+      const delay = delays[i % delays.length];
+      const texto = escapeHtml(m.texto || '');
+      const nombre = escapeHtml(m.nombre || 'Alma anónima');
+      const emoji  = m.emoji || '✨';
+      const fecha  = m.fecha || '';
+      return `<div class="nota" data-emoji="${emoji}" style="--dur:${dur};--delay:${delay}">
+        <span class="nota-emoji">${emoji}</span>
+        <p class="nota-texto">${texto}</p>
+        <div class="nota-footer">
+          <span class="nota-nombre">${nombre}</span>
+          <span class="nota-fecha">${fecha}</span>
+        </div>
+      </div>`;
+    }).join('');
+
+  } catch(e) {
+    muroEl.innerHTML = '<div class="muro-vacio">✦ No fue posible cargar los mensajes ✦</div>';
+  }
+}
+
+function escapeHtml(str){
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Enter en textarea = NO envía (solo Ctrl+Enter)
+document.getElementById('inputMensaje').addEventListener('keydown', e => {
+  if(e.key==='Enter' && (e.ctrlKey||e.metaKey)) enviarMensaje();
+});
+
+// ── INIT ──
+cargarMuro();
+
+// Refrescar cada 60 segundos
+setInterval(cargarMuro, 60000);
+</script>
+</body>
+</html>
