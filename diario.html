@@ -481,6 +481,22 @@
     }
     .perfil-nm-btn:hover{background:linear-gradient(135deg,rgba(120,80,220,.8),rgba(80,40,160,.8));}
 
+    /* ── RACHA DEL DIARIO ── */
+    .racha-wrap{background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.14);border-radius:16px;padding:1.4rem 1.6rem;margin-bottom:1.8rem;max-width:900px;margin-left:auto;margin-right:auto;margin-top:0;padding-left:1.5rem;padding-right:1.5rem}
+    .racha-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+    .racha-label{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.25em;color:rgba(201,168,76,.45)}
+    .racha-hito{font-size:.85rem}
+    .racha-main{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.5rem}
+    .racha-num{font-family:'Cinzel Decorative',serif;font-size:2.2rem;color:var(--gold-light,#e8c97a);line-height:1}
+    .racha-dias{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.18em;color:rgba(201,168,76,.45);align-self:center}
+    .racha-frase{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:rgba(201,168,76,.55);line-height:1.5;margin-bottom:1rem}
+    .racha-barra-wrap{background:rgba(201,168,76,.08);border-radius:100px;height:6px;overflow:hidden}
+    .racha-barra{height:100%;border-radius:100px;background:linear-gradient(to right,rgba(201,168,76,.4),var(--gold-light,#e8c97a));transition:width 1s cubic-bezier(.4,0,.2,1)}
+    .racha-meta{display:flex;justify-content:space-between;margin-top:.4rem}
+    .racha-meta span{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.1em;color:rgba(201,168,76,.3)}
+    .racha-celebracion{text-align:center;padding:.8rem;background:rgba(201,168,76,.06);border-radius:10px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:rgba(201,168,76,.7);border:1px solid rgba(201,168,76,.15);margin-top:.8rem;animation:rachaPulse 2s ease-in-out infinite}
+    @keyframes rachaPulse{0%,100%{opacity:.7}50%{opacity:1}}
+
     @media(max-width:640px){
       nav{padding:1rem 1.5rem}
       .form-grid{grid-template-columns:1fr}
@@ -550,6 +566,27 @@
       <span class="app-badge" data-i18n="diario_app_badge">✦ DIARIO DEL ALMA ✦</span>
       <h1 class="app-title" data-i18n-html="diario_app_title">Tu Diario<br>del Alma</h1>
       <p class="app-welcome"><span data-i18n="diario_welcome">Bienvenida,</span> <strong id="appUserName">Alma Brillante</strong> 🦋</p>
+    </div>
+
+    <!-- ── RACHA DEL DIARIO ── -->
+    <div class="racha-wrap" id="rachaWrap" style="display:none">
+      <div class="racha-header">
+        <span class="racha-label">✦ RACHA DEL DIARIO</span>
+        <span class="racha-hito" id="rachaHito"></span>
+      </div>
+      <div class="racha-main">
+        <span class="racha-num" id="rachaDias">0</span>
+        <span class="racha-dias">días seguidos</span>
+      </div>
+      <p class="racha-frase" id="rachaFrase"></p>
+      <div class="racha-barra-wrap">
+        <div class="racha-barra" id="rachaBarra" style="width:0%"></div>
+      </div>
+      <div class="racha-meta">
+        <span id="rachaMetaActual"></span>
+        <span id="rachaMetaProxima"></span>
+      </div>
+      <div class="racha-celebracion" id="rachaCelebracion" style="display:none"></div>
     </div>
 
     <div class="app-inner">
@@ -690,8 +727,78 @@
     document.getElementById('perfilNombreMistico').style.display = 'block';
     // Try to load saved nombre mistico
     cargarNombreMistico(user);
+    // Racha
+    iniciarRachaUI();
   }
   </script>
+
+<script>
+// ── RACHA DEL DIARIO ──
+const RACHA_KEY = 'bruxa_racha_v1';
+const HITOS = [
+  { dias:3,  emoji:'🌟', txt:'¡3 días de magia seguidos! Tu llama está encendida.' },
+  { dias:7,  emoji:'🦋', txt:'¡Una semana entera! Las mariposas bailan por ti.' },
+  { dias:15, emoji:'🔮', txt:'15 días… el Templo siente tu energía.' },
+  { dias:30, emoji:'🔥', txt:'¡30 días! Eres una bruja de fuego imparable.' },
+];
+const FRASES_RACHA = [
+  [1,  '✨ ¡Primer día! El viaje empieza con un solo paso.'],
+  [2,  '🌱 Dos días seguidos. La semilla está brotando.'],
+  [3,  '🌟 ¡Tres días! Tu constancia ya es magia.'],
+  [5,  '🌙 Cinco días. La luna nota tu presencia.'],
+  [7,  '🦋 Una semana completa. Estás volando.'],
+  [10, '✨ Diez días de alma pura. Increíble.'],
+  [14, '🌕 Dos semanas seguidas. Eres luz.'],
+  [15, '🔮 ¡Quince días! El Templo te pertenece.'],
+  [21, '🌈 Tres semanas. Tu ritual ya es parte de ti.'],
+  [30, '🔥 ¡Un mes entero! Leyenda del Diario.'],
+  [Infinity, '💜 Sigues aquí. El Templo te ama.'],
+];
+
+function getRachaData(){ try{ return JSON.parse(localStorage.getItem(RACHA_KEY)||'{}'); }catch(e){ return {}; } }
+function setRachaData(d){ localStorage.setItem(RACHA_KEY, JSON.stringify(d)); }
+function hoyStr(){ return new Date().toISOString().split('T')[0]; }
+function ayerStr(){ const d=new Date(); d.setDate(d.getDate()-1); return d.toISOString().split('T')[0]; }
+
+function actualizarRacha(){
+  const hoy=hoyStr(), ayer=ayerStr();
+  let data=getRachaData();
+  if(data.ultima===hoy){
+    // ya registrado hoy
+  } else if(data.ultima===ayer){
+    data.racha=(data.racha||1)+1;
+    data.ultima=hoy;
+    data.max=Math.max(data.racha,data.max||0);
+    setRachaData(data);
+  } else {
+    data.racha=1; data.ultima=hoy; data.max=Math.max(1,data.max||0);
+    setRachaData(data);
+  }
+  mostrarRacha(data.racha||1, data.max||1);
+}
+
+function mostrarRacha(dias, maxDias){
+  document.getElementById('rachaWrap').style.display='block';
+  document.getElementById('rachaDias').textContent=dias;
+  const fraseEntry=FRASES_RACHA.slice().reverse().find(f=>dias>=f[0]);
+  document.getElementById('rachaFrase').textContent=fraseEntry?fraseEntry[1]:'✨ Sigue brillando.';
+  const hitoActual=HITOS.slice().reverse().find(h=>dias>=h.dias);
+  const hitoProximo=HITOS.find(h=>dias<h.dias);
+  document.getElementById('rachaHito').textContent=hitoActual?hitoActual.emoji:'';
+  const metaDesde=hitoActual?hitoActual.dias:0;
+  const metaHasta=hitoProximo?hitoProximo.dias:metaDesde+30;
+  const progreso=hitoProximo?Math.min(100,((dias-metaDesde)/(metaHasta-metaDesde))*100):100;
+  document.getElementById('rachaBarra').style.width=progreso+'%';
+  document.getElementById('rachaMetaActual').textContent=`${dias} días`;
+  document.getElementById('rachaMetaProxima').textContent=hitoProximo?`Próximo hito: ${hitoProximo.emoji} en ${hitoProximo.dias-dias} día${hitoProximo.dias-dias!==1?'s':''}`:'🔥 ¡Máximo alcanzado!';
+  const hoyHito=HITOS.find(h=>h.dias===dias);
+  const celEl=document.getElementById('rachaCelebracion');
+  if(hoyHito){ celEl.style.display='block'; celEl.textContent=`${hoyHito.emoji} ${hoyHito.txt}`; }
+  else { celEl.style.display='none'; }
+}
+
+function iniciarRachaUI(){ actualizarRacha(); }
+</script>
 
 <script>
   // ── NOMBRE MÍSTICO — mismos arrays que index.html ──
