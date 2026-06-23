@@ -8,6 +8,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <script src="lang.js"></script>
+  <script src="js/data/oracle-cards.js"></script>
+  <script src="js/data/oracle-pt.js"></script>
+  <script src="js/data/oracle-it.js"></script>
+  <script src="js/data/oracle-ko.js"></script>
+  <script src="js/data/oracle-tr.js"></script>
+  <script src="js/data/oracle-ja.js"></script>
   <style>
     :root { --gold:#c9a84c;--gold-light:#e8c97a;--gold-pale:#f5e6b8;--deep:#04060f;--navy:#070c1a;--midnight:#0b1128; }
     *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
@@ -571,8 +577,11 @@
     <div class="lang-selector">
       <button class="lang-btn active" data-lang="es" onclick="LangEngine&&LangEngine.set('es')">ES</button>
       <button class="lang-btn" data-lang="en" onclick="LangEngine&&LangEngine.set('en')">EN</button>
+      <button class="lang-btn" data-lang="pt" onclick="LangEngine&&LangEngine.set('pt')">PT</button>
       <button class="lang-btn" data-lang="it" onclick="LangEngine&&LangEngine.set('it')">IT</button>
       <button class="lang-btn" data-lang="ko" onclick="LangEngine&&LangEngine.set('ko')">한국</button>
+      <button class="lang-btn" data-lang="tr" onclick="LangEngine&&LangEngine.set('tr')">TR</button>
+      <button class="lang-btn" data-lang="ja" onclick="LangEngine&&LangEngine.set('ja')">日本</button>
     </div>
   </nav>
 
@@ -1370,6 +1379,79 @@ async function cargarPanel() {
         llenarTextosCarta({...r, luna:{fase:fase.e,nombre:fase.n,mensaje:''}});
     }
   } catch(e) { console.log('Error panel:', e); }
+}
+
+// ── LOOKUP PAÍSES → COORDENADAS ──
+const PAIS_COORDS = {
+  'argentina':[-34.61,-58.38],'mexico':[-19.43,-99.13],'méxico':[-19.43,-99.13],
+  'colombia':[4.71,-74.07],'chile':[-33.45,-70.67],'peru':[-12.05,-77.04],
+  'perú':[-12.05,-77.04],'venezuela':[10.48,-66.88],'ecuador':[-0.22,-78.51],
+  'bolivia':[-16.5,-68.15],'paraguay':[-25.28,-57.64],'uruguay':[-34.9,-56.19],
+  'brasil':[-15.78,-47.93],'brazil':[-15.78,-47.93],'costa rica':[9.93,-84.08],
+  'guatemala':[14.64,-90.51],'honduras':[14.1,-87.22],'el salvador':[13.69,-89.19],
+  'nicaragua':[12.13,-86.29],'panama':[8.99,-79.52],'panamá':[8.99,-79.52],
+  'cuba':[23.13,-82.38],'república dominicana':[18.47,-69.9],'puerto rico':[18.46,-66.11],
+  'españa':[40.42,-3.7],'espana':[40.42,-3.7],'portugal':[38.72,-9.14],
+  'italia':[41.9,12.48],'francia':[48.86,2.35],'alemania':[52.52,13.4],
+  'reino unido':[51.51,-0.13],'holanda':[52.37,4.9],'bélgica':[50.85,4.35],
+  'belgica':[50.85,4.35],'suiza':[46.95,7.45],'austria':[48.21,16.37],
+  'estados unidos':[38.9,-77.04],'usa':[38.9,-77.04],'canada':[45.42,-75.7],
+  'canadá':[45.42,-75.7],'australia':[-33.87,151.21],'nueva zelanda':[-36.86,174.77],
+  'japón':[35.69,139.69],'japon':[35.69,139.69],'corea del sur':[37.57,126.98],
+  'china':[39.91,116.39],'india':[28.63,77.22],'sudáfrica':[-25.75,28.19],
+  'sudafrica':[-25.75,28.19],'marruecos':[33.99,-6.85],'egipto':[30.06,31.25],
+};
+function getCoordsForPais(pais) {
+  if(!pais) return null;
+  const key = pais.toLowerCase().trim();
+  if(PAIS_COORDS[key]) return PAIS_COORDS[key];
+  for(const [k,v] of Object.entries(PAIS_COORDS)) {
+    if(key.includes(k) || k.includes(key)) return v;
+  }
+  return null;
+}
+
+// ── MAPA INLINE ──
+let mapaInlineInstance = null;
+function iniciarMapaInline(almas) {
+  const container = document.getElementById('mapaInline');
+  if(!container || !window.L) return;
+  if(mapaInlineInstance) { mapaInlineInstance.remove(); mapaInlineInstance = null; }
+  const map = L.map('mapaInline', {
+    center: [20, 0], zoom: 2,
+    zoomControl: true, scrollWheelZoom: false, attributionControl: false
+  });
+  mapaInlineInstance = map;
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+  const revealParent = container.closest('.reveal');
+  if(revealParent) {
+    new MutationObserver((mutations, obs) => {
+      if(revealParent.classList.contains('visible')) {
+        setTimeout(() => map.invalidateSize(), 50);
+        obs.disconnect();
+      }
+    }).observe(revealParent, { attributes: true, attributeFilter: ['class'] });
+  }
+  setTimeout(() => map.invalidateSize(), 300);
+  const mIcon = L.divIcon({
+    html: '<span style="font-size:1.3rem;line-height:1;filter:drop-shadow(0 0 4px rgba(201,168,76,.8))">🦋</span>',
+    className: '', iconSize: [24,24], iconAnchor: [12,12]
+  });
+  const paises = new Set();
+  let placed = 0;
+  (almas || []).forEach(a => {
+    const coords = (a.lat && a.lng) ? [a.lat, a.lng] : getCoordsForPais(a.pais);
+    if(!coords) return;
+    const jLat = (Math.random()-.5)*1.5, jLng = (Math.random()-.5)*1.5;
+    L.marker([coords[0]+jLat, coords[1]+jLng], { icon: mIcon })
+      .bindPopup('<div style="font-family:\'Cinzel\',serif;font-size:.72rem;color:#c9a84c;text-align:center;min-width:120px">🦋 <strong>' + (a.nombre||'Alma') + '</strong><br><span style="font-size:.6rem;color:#aaa">' + (a.pais||'') + '</span><br><span style="font-size:.55rem;color:#777">' + (a.fecha||'') + '</span></div>').addTo(map);
+    if(a.pais) paises.add(a.pais.toLowerCase().trim());
+    placed++;
+  });
+  const statPaises = document.getElementById('mapaStatPaises');
+  const statAlmas  = document.getElementById('mapaStatAlmas');
+  if(statPaises) statPaises.textContent = paises.size || '-';
+  if(statAlmas)  statAlmas.textContent  = placed;
 }
 
 async function cargarLibroYContador() {
