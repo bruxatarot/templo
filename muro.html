@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Muro de Almas • Bruxa Tarot</title>
-  <!-- TIMESTAMP: 2026-06-22 19:00 -->
+  <script src="lang.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
   <style>
     :root{--gold:#c9a84c;--gold-l:#e8c97a;--gold-p:#f5e6b8;--deep:#04060f;--card:#0e0820}
@@ -26,6 +26,11 @@
     .nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.3em;color:var(--gold);text-decoration:none}
     .nav-link{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;color:rgba(201,168,76,.5);text-decoration:none;transition:color .3s}
     .nav-link:hover{color:var(--gold)}
+    .lang-selector{display:flex;align-items:center;gap:.35rem}
+    .lang-btn{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.12em;padding:.28rem .65rem;border-radius:100px;cursor:pointer;
+      border:1px solid rgba(201,168,76,.2);background:transparent;color:#b8a87a;transition:all .3s}
+    .lang-btn:hover{border-color:rgba(201,168,76,.5);color:var(--gold)}
+    .lang-btn.active{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.6);color:var(--gold)}
     @media(max-width:600px){nav{padding:1rem 1.5rem}}
 
     /* HERO */
@@ -92,7 +97,7 @@
       color:rgba(201,168,76,.3);white-space:nowrap}
     .section-label-line{flex:1;height:1px;background:rgba(201,168,76,.08)}
 
-    /* MURO — grid de tarjetitas */
+    /* MURO */
     .muro{position:relative;z-index:1;
       display:grid;
       grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
@@ -123,7 +128,6 @@
       50%{transform:translateY(-6px)}
     }
     .nota:hover{animation-play-state:paused}
-
     .nota-emoji{font-size:1.5rem;margin-bottom:.5rem;display:block}
     .nota-texto{font-family:'Cormorant Garamond',serif;font-size:.95rem;
       line-height:1.65;color:#d4c9a8;margin-bottom:.8rem;
@@ -135,7 +139,6 @@
     .nota-fecha{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.08em;
       color:rgba(201,168,76,.25);white-space:nowrap}
 
-    /* color accent per emoji */
     .nota[data-emoji="🌟"]{border-color:rgba(255,220,80,.12)}
     .nota[data-emoji="⭐"]{border-color:rgba(255,220,80,.1)}
     .nota[data-emoji="💫"]{border-color:rgba(180,160,255,.12)}
@@ -144,12 +147,10 @@
     .nota[data-emoji="🌈"]{border-color:rgba(100,200,180,.12)}
     .nota[data-emoji="🦋"]{border-color:rgba(201,168,76,.2)}
 
-    /* VACÍO */
     .muro-vacio{position:relative;z-index:1;text-align:center;
       padding:3rem 2rem;color:rgba(201,168,76,.3);
       font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em}
 
-    /* LOADING */
     .loading-dots{display:inline-flex;gap:.3rem;align-items:center}
     .loading-dots span{width:5px;height:5px;border-radius:50%;
       background:rgba(201,168,76,.4);
@@ -165,65 +166,73 @@
 <div id="starfield"><canvas id="stars"></canvas></div>
 
 <nav>
-  <a href="index.html" class="nav-link">← Templo</a>
+  <a href="index.html" class="nav-link" data-i18n="nav_back">← Templo</a>
   <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
-  <a href="historias.html" class="nav-link">Historias</a>
+  <div class="lang-selector">
+    <button class="lang-btn active" data-lang="es" onclick="LangEngine&&LangEngine.set('es')">ES</button>
+    <button class="lang-btn" data-lang="en"  onclick="LangEngine&&LangEngine.set('en')">EN</button>
+    <button class="lang-btn" data-lang="pt"  onclick="LangEngine&&LangEngine.set('pt')">PT</button>
+    <button class="lang-btn" data-lang="it"  onclick="LangEngine&&LangEngine.set('it')">IT</button>
+    <button class="lang-btn" data-lang="ko"  onclick="LangEngine&&LangEngine.set('ko')">한국</button>
+    <button class="lang-btn" data-lang="tr"  onclick="LangEngine&&LangEngine.set('tr')">TR</button>
+    <button class="lang-btn" data-lang="ja"  onclick="LangEngine&&LangEngine.set('ja')">日本</button>
+  </div>
 </nav>
 
 <!-- HERO -->
 <header class="hero">
-  <p class="hero-eyebrow">✦ Templo del Prisma ✦</p>
-  <h1 class="hero-title">Muro de Almas</h1>
-  <p class="hero-sub">Donde cada voz deja su huella</p>
+  <p class="hero-eyebrow" data-i18n="muro_eyebrow">✦ Templo del Prisma ✦</p>
+  <h1 class="hero-title" data-i18n="muro_title">Muro de Almas</h1>
+  <p class="hero-sub" data-i18n="muro_sub">Donde cada voz deja su huella</p>
   <div class="hero-divider">
     <div class="hero-divider-line"></div>
     <span style="color:var(--gold);font-size:.7rem">✦</span>
     <div class="hero-divider-line"></div>
   </div>
-  <p class="hero-quote">"Cada palabra que dejas aquí se convierte en luz. Este muro guarda los susurros de todas las almas que han pasado por el Templo."</p>
+  <p class="hero-quote" data-i18n="muro_quote">"Cada palabra que dejas aquí se convierte en luz. Este muro guarda los susurros de todas las almas que han pasado por el Templo."</p>
 </header>
 
 <!-- CONTADOR -->
 <div class="counter-wrap">
   <div class="counter-item">
     <span class="counter-num" id="totalMensajes">…</span>
-    <span class="counter-label">almas escribieron</span>
+    <span class="counter-label" data-i18n="muro_counter_total">almas escribieron</span>
   </div>
   <div class="counter-item">
     <span class="counter-num" id="totalHoy">…</span>
-    <span class="counter-label">mensajes hoy</span>
+    <span class="counter-label" data-i18n="muro_counter_hoy">mensajes hoy</span>
   </div>
 </div>
 
 <!-- FORM -->
 <div class="form-wrap">
   <div class="form-card">
-    <p class="form-title">✦ Deja tu huella en el muro ✦</p>
+    <p class="form-title" data-i18n="muro_form_title">✦ Deja tu huella en el muro ✦</p>
 
     <div class="form-row">
-      <label class="form-label" for="inputNombre">Tu nombre (o como quieras que te llamen)</label>
-      <input class="form-input" id="inputNombre" type="text" placeholder="Alma viajera…" maxlength="40"/>
+      <label class="form-label" for="inputNombre" data-i18n="muro_nombre_label">Tu nombre (o como quieras que te llamen)</label>
+      <input class="form-input" id="inputNombre" type="text" data-i18n-placeholder="muro_nombre_ph" placeholder="Alma viajera…" maxlength="40"/>
     </div>
 
     <div class="form-row">
-      <label class="form-label" for="inputMensaje">Tu mensaje para el Templo</label>
-      <textarea class="form-textarea" id="inputMensaje" placeholder="Escribe lo que lleva tu corazón…" maxlength="280"></textarea>
+      <label class="form-label" for="inputMensaje" data-i18n="muro_mensaje_label">Tu mensaje para el Templo</label>
+      <textarea class="form-textarea" id="inputMensaje" data-i18n-placeholder="muro_mensaje_ph" placeholder="Escribe lo que lleva tu corazón…" maxlength="280"></textarea>
     </div>
 
     <div class="form-row">
-      <label class="form-label">Elige tu símbolo mágico</label>
+      <label class="form-label" data-i18n="muro_emoji_label">Elige tu símbolo mágico</label>
       <div class="emoji-row" id="emojiRow">
-        <button class="emoji-btn selected" data-emoji="🌟" title="Estrella">🌟</button>
-        <button class="emoji-btn" data-emoji="⭐" title="Estrella">⭐</button>
-        <button class="emoji-btn" data-emoji="💫" title="Destello">💫</button>
-        <button class="emoji-btn" data-emoji="🌙" title="Luna">🌙</button>
-        <button class="emoji-btn" data-emoji="☀️" title="Sol">☀️</button>
-        <button class="emoji-btn" data-emoji="🌈" title="Arcoíris">🌈</button>
-        <button class="emoji-btn" data-emoji="🦋" title="Mariposa">🦋</button>
+        <button class="emoji-btn selected" data-emoji="🌟">🌟</button>
+        <button class="emoji-btn" data-emoji="⭐">⭐</button>
+        <button class="emoji-btn" data-emoji="💫">💫</button>
+        <button class="emoji-btn" data-emoji="🌙">🌙</button>
+        <button class="emoji-btn" data-emoji="☀️">☀️</button>
+        <button class="emoji-btn" data-emoji="🌈">🌈</button>
+        <button class="emoji-btn" data-emoji="🦋">🦋</button>
       </div>
     </div>
 
-    <button class="form-submit" id="btnEnviar" onclick="enviarMensaje()">
+    <button class="form-submit" id="btnEnviar" onclick="enviarMensaje()" data-i18n="muro_submit">
       ✦ Dejar mi huella ✦
     </button>
     <p class="form-msg" id="formMsg"></p>
@@ -232,7 +241,7 @@
 
 <!-- MURO -->
 <div class="section-label">
-  <span class="section-label-text">✦ Últimos mensajes del Templo</span>
+  <span class="section-label-text" data-i18n="muro_section">✦ Últimos mensajes del Templo</span>
   <div class="section-label-line"></div>
 </div>
 
@@ -254,8 +263,10 @@
   resize();initStars();requestAnimationFrame(draw);
 })();
 
+const _t = k => window.LangEngine?.t(k) || k;
+
 // ── CONFIG ──
-const FB_URL = 'https://diario-del-alma-default-rtdb.firebaseio.com';
+const FB_URL  = 'https://diario-del-alma-default-rtdb.firebaseio.com';
 const FB_MURO = FB_URL + '/templo/muro';
 const MAX_MENSAJES = 30;
 
@@ -276,22 +287,22 @@ async function enviarMensaje(){
   const msg    = document.getElementById('formMsg');
   const btn    = document.getElementById('btnEnviar');
 
-  if(!nombre){ msg.textContent = '✦ Dinos cómo llamarte…'; return; }
-  if(texto.length < 3){ msg.textContent = '✦ Escribe aunque sea un susurro…'; return; }
+  if(!nombre){ msg.textContent = _t('muro_err_nombre'); return; }
+  if(texto.length < 3){ msg.textContent = _t('muro_err_texto'); return; }
 
   btn.disabled = true;
-  msg.textContent = '✦ Enviando tu mensaje al Templo…';
+  msg.textContent = _t('muro_sending');
 
+  const locale = window.LangEngine?.current || 'es';
   const entry = {
-    nombre:   nombre.slice(0,40),
-    texto:    texto.slice(0,280),
-    emoji:    emojiSeleccionado,
-    ts:       Date.now(),
-    fecha:    new Date().toLocaleDateString('es', {day:'numeric',month:'short',year:'numeric'})
+    nombre: nombre.slice(0,40),
+    texto:  texto.slice(0,280),
+    emoji:  emojiSeleccionado,
+    ts:     Date.now(),
+    fecha:  new Date().toLocaleDateString(locale, {day:'numeric',month:'short',year:'numeric'})
   };
 
   try {
-    // POST a Firebase
     const res = await fetch(FB_MURO + '.json', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
@@ -299,17 +310,15 @@ async function enviarMensaje(){
     });
     if(!res.ok) throw new Error('Firebase error');
 
-    msg.textContent = '✦ ¡Tu huella quedó en el Templo para siempre! ✦';
+    msg.textContent = _t('muro_success');
     document.getElementById('inputNombre').value = '';
     document.getElementById('inputMensaje').value = '';
     document.querySelectorAll('.emoji-btn').forEach(b=>b.classList.remove('selected'));
     document.querySelector('.emoji-btn').classList.add('selected');
     emojiSeleccionado = '🌟';
-
-    // Recargar muro
     await cargarMuro();
   } catch(e) {
-    msg.textContent = '✦ Algo salió mal… intenta de nuevo.';
+    msg.textContent = _t('muro_error');
   } finally {
     btn.disabled = false;
   }
@@ -319,38 +328,34 @@ async function enviarMensaje(){
 async function cargarMuro(){
   const muroEl = document.getElementById('muro');
   try {
-    // Obtener todos los mensajes ordenados por timestamp (últimos primero)
     const res = await fetch(FB_MURO + '.json?orderBy="ts"&limitToLast=' + MAX_MENSAJES);
     const data = await res.json();
 
     if(!data || Object.keys(data).length === 0){
-      muroEl.innerHTML = '<div class="muro-vacio">✦ Sé la primera alma en dejar su huella ✦</div>';
+      muroEl.innerHTML = `<div class="muro-vacio">${_t('muro_vacio')}</div>`;
       document.getElementById('totalMensajes').textContent = '0';
       document.getElementById('totalHoy').textContent = '0';
       return;
     }
 
-    // Convertir objeto a array y ordenar más reciente primero
     const mensajes = Object.entries(data)
       .map(([id, m]) => ({id, ...m}))
       .sort((a,b) => b.ts - a.ts);
 
-    // Contar hoy
     const hoy = new Date().toDateString();
     const hoyCount = mensajes.filter(m => new Date(m.ts).toDateString() === hoy).length;
 
     document.getElementById('totalMensajes').textContent = mensajes.length;
     document.getElementById('totalHoy').textContent = hoyCount;
 
-    // Durations y delays aleatorios para animación flotante
-    const durs    = ['3.5s','4s','4.5s','5s','5.5s','6s'];
-    const delays  = ['0s','0.5s','1s','1.5s','2s','2.5s','3s'];
+    const durs   = ['3.5s','4s','4.5s','5s','5.5s','6s'];
+    const delays = ['0s','0.5s','1s','1.5s','2s','2.5s','3s'];
 
     muroEl.innerHTML = mensajes.map((m, i) => {
-      const dur   = durs[i % durs.length];
-      const delay = delays[i % delays.length];
-      const texto = escapeHtml(m.texto || '');
-      const nombre = escapeHtml(m.nombre || 'Alma anónima');
+      const dur    = durs[i % durs.length];
+      const delay  = delays[i % delays.length];
+      const texto  = escapeHtml(m.texto || '');
+      const nombre = escapeHtml(m.nombre || _t('muro_anon'));
       const emoji  = m.emoji || '✨';
       const fecha  = m.fecha || '';
       return `<div class="nota" data-emoji="${emoji}" style="--dur:${dur};--delay:${delay}">
@@ -364,7 +369,7 @@ async function cargarMuro(){
     }).join('');
 
   } catch(e) {
-    muroEl.innerHTML = '<div class="muro-vacio">✦ No fue posible cargar los mensajes ✦</div>';
+    muroEl.innerHTML = `<div class="muro-vacio">${_t('muro_load_error')}</div>`;
   }
 }
 
@@ -372,15 +377,14 @@ function escapeHtml(str){
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// Enter en textarea = NO envía (solo Ctrl+Enter)
 document.getElementById('inputMensaje').addEventListener('keydown', e => {
   if(e.key==='Enter' && (e.ctrlKey||e.metaKey)) enviarMensaje();
 });
 
-// ── INIT ──
-cargarMuro();
+// ── LANG ──
+if(typeof LangEngine !== 'undefined'){ LangEngine.detect(); LangEngine.apply(); }
 
-// Refrescar cada 60 segundos
+cargarMuro();
 setInterval(cargarMuro, 60000);
 </script>
 </body>
