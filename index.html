@@ -926,6 +926,18 @@
         <span id="fbVisitas" style="color:var(--gold-light);font-size:.85rem">...</span> almas brillantes han visitado el Templo
       </span>
     </div>
+    <div style="display:inline-flex;align-items:center;gap:.7rem;padding:.8rem 2rem;border-radius:100px;border:1px solid rgba(201,168,76,.15);background:rgba(11,17,40,.6);backdrop-filter:blur(4px)">
+      <span style="font-size:1.1rem">🌙</span>
+      <span style="font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.2em;color:rgba(201,168,76,.7)">
+        <span id="fbHoy" style="color:var(--gold-light);font-size:.85rem">...</span> almas visitaron hoy el Templo
+      </span>
+    </div>
+    <div style="display:inline-flex;align-items:center;gap:.7rem;padding:.8rem 2rem;border-radius:100px;border:1px solid rgba(201,168,76,.15);background:rgba(11,17,40,.6);backdrop-filter:blur(4px)">
+      <span style="font-size:1.1rem">🔥</span>
+      <span style="font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.2em;color:rgba(201,168,76,.7)">
+        récord: <span id="fbRecord" style="color:var(--gold-light);font-size:.85rem">...</span> almas al mismo tiempo
+      </span>
+    </div>
   </div>
 
   <!-- FLOTANTE ALMAS EN LÍNEA -->
@@ -1688,23 +1700,37 @@ async function fbDelete(path) {
 }
 
 async function fbRegistrarVisita() {
-  // Solo contar una vez cada 24h por dispositivo
-  const KEY = 'bruxa_ultima_visita';
-  const ultima = parseInt(localStorage.getItem(KEY) || '0');
-  const ahora = Date.now();
-  const ya_visito_hoy = (ahora - ultima) < 24 * 60 * 60 * 1000;
+  const KEY      = 'bruxa_ultima_visita';
+  const ultima   = parseInt(localStorage.getItem(KEY) || '0');
+  const ahora    = Date.now();
+  const ya_hoy   = (ahora - ultima) < 24 * 60 * 60 * 1000;
+  const fechaHoy = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
   const actual = await fbGet('/templo/visitas') || 0;
 
-  if(!ya_visito_hoy) {
+  if(!ya_hoy) {
     const nuevas = actual + 1;
     await fbPut('/templo/visitas', nuevas);
     localStorage.setItem(KEY, ahora.toString());
     document.getElementById('fbVisitas').textContent = nuevas.toLocaleString('es-MX');
   } else {
-    // Solo mostrar el número actual sin incrementar
     document.getElementById('fbVisitas').textContent = actual.toLocaleString('es-MX');
   }
+
+  // Contador del día
+  const hoyData = await fbGet('/templo/hoy') || { fecha: '', count: 0 };
+  let hoyCount = (hoyData.fecha === fechaHoy) ? hoyData.count : 0;
+  if(!ya_hoy) {
+    hoyCount++;
+    await fbPut('/templo/hoy', { fecha: fechaHoy, count: hoyCount });
+  }
+  const elHoy = document.getElementById('fbHoy');
+  if(elHoy) elHoy.textContent = hoyCount.toLocaleString('es-MX');
+
+  // Récord histórico
+  const record = await fbGet('/templo/record_online') || 0;
+  const elRec = document.getElementById('fbRecord');
+  if(elRec) elRec.textContent = record.toLocaleString('es-MX');
 }
 
 async function fbRegistrarPresencia() {
@@ -1733,6 +1759,14 @@ async function fbActualizarOnline() {
   const count = Math.max(1, activos);
   if(fn) fn.textContent = count.toLocaleString('es-MX');
   if(fl && floatShown) fl.classList.add('visible');
+
+  // Actualizar récord si se supera
+  const recActual = await fbGet('/templo/record_online') || 0;
+  if(count > recActual) {
+    await fbPut('/templo/record_online', count);
+    const elRec = document.getElementById('fbRecord');
+    if(elRec) elRec.textContent = count.toLocaleString('es-MX');
+  }
 
   // Limpiar sesiones caducadas
   if(presencia) Object.entries(presencia).forEach(([sid, v]) => {
