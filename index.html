@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- TIMESTAMP: 2026-06-14 10:59 -->
+<!-- TIMESTAMP: 2026-06-17 -->
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -296,6 +296,71 @@
       to{opacity:.85;transform:scale(1) translateY(0)}
     }
 
+    /* ── FLOTANTE ALMAS EN LÍNEA ── */
+    #floatOnline{
+      position:fixed;left:0;top:50%;transform:translateY(-50%);
+      z-index:150;
+      transition:opacity .4s;
+      opacity:0;pointer-events:none;
+    }
+    #floatOnline.visible{
+      opacity:1;pointer-events:auto;
+    }
+    #floatOnlineInner{
+      display:flex;align-items:center;gap:.6rem;
+      padding:.7rem 1.1rem .7rem .9rem;
+      background:rgba(8,6,28,.85);
+      border:1px solid rgba(120,80,220,.35);
+      border-left:none;
+      border-radius:0 50px 50px 0;
+      backdrop-filter:blur(8px);
+      box-shadow:4px 0 24px rgba(120,80,220,.2), inset 0 0 20px rgba(120,80,220,.05);
+      cursor:default;
+      transition:box-shadow .3s;
+    }
+    #floatOnline.visible:hover #floatOnlineInner{
+      box-shadow:4px 0 40px rgba(120,80,220,.4), inset 0 0 20px rgba(120,80,220,.1);
+    }
+    #floatButterfly{
+      font-size:1.4rem;
+      animation:mwiggle 3s ease-in-out infinite, mbreath 2s ease-in-out infinite;
+      display:block;
+    }
+    #floatNum{
+      font-family:'Cinzel Decorative',serif;
+      font-size:1.1rem;
+      color:#c8a8f0;
+      line-height:1;
+      letter-spacing:.05em;
+    }
+    #floatLabel{
+      font-family:'Cinzel',serif;
+      font-size:.48rem;
+      letter-spacing:.18em;
+      color:rgba(180,150,220,.6);
+      margin-top:.25rem;
+      white-space:nowrap;
+    }
+
+    /* MÓVIL — pegado abajo a la izquierda */
+    @media(max-width:768px){
+      #floatOnline{
+        left:0;top:auto;bottom:1.2rem;
+        transform:none;
+      }
+      #floatOnline.visible{
+        opacity:1;
+      }
+      #floatOnlineInner{
+        border-left:none;
+        border-radius:0 50px 50px 0;
+        padding:.55rem 1.2rem .55rem .9rem;
+        box-shadow:4px 0 24px rgba(120,80,220,.3), inset 0 0 20px rgba(120,80,220,.05);
+      }
+      #floatNum{ font-size:.95rem; }
+      #floatLabel{ font-size:.42rem; }
+    }
+
     /* ── SIDEBAR ── */
     .sidebar-trigger{
       display:flex;align-items:center;gap:.5rem;
@@ -545,24 +610,6 @@
     .prisma-reveal-extra{text-align:center;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.15em;color:rgba(201,168,76,.5);margin-top:.5rem}
     .prisma-reveal-hint{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;color:rgba(201,168,76,.25);text-align:center;margin-top:1rem}
 
-
-    /* ── FLOTANTE ALMAS EN LÍNEA ── */
-    #floatOnline{
-      position:fixed;left:0;top:50%;transform:translateY(-50%);
-      z-index:150;transition:opacity .4s;opacity:0;pointer-events:none;
-    }
-    #floatOnline.visible{opacity:1;pointer-events:auto}
-    #floatOnlineInner{
-      display:flex;align-items:center;gap:.6rem;
-      padding:.7rem 1.1rem .7rem .9rem;
-      background:rgba(8,6,28,.85);
-      border:1px solid rgba(120,80,220,.35);border-left:none;
-      border-radius:0 50px 50px 0;backdrop-filter:blur(8px);
-      box-shadow:4px 0 24px rgba(120,80,220,.2);
-    }
-    #floatButterfly{font-size:1.4rem;animation:mwiggle 3s ease-in-out infinite,mbreath 2s ease-in-out infinite;display:block}
-    #floatNum{font-family:'Cinzel Decorative',serif;font-size:1.1rem;color:#c8a8f0;line-height:1}
-    #floatLabel{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.18em;color:rgba(180,150,220,.6);margin-top:.25rem;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -589,21 +636,21 @@
   <div id="sidebarOverlay" class="sidebar-overlay"></div>
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-header">
-      <p class="sidebar-title">✦ El Más Allá</p>
+      <p class="sidebar-title" data-i18n="sidebar_title">✦ El Más Allá</p>
       <button class="sidebar-close" id="sidebarClose">✕</button>
     </div>
     <nav class="sidebar-nav">
-      <a href="tiradas.html" class="sidebar-link">🔮 Oráculo Prisma</a>
-      <a href="rituales.html" class="sidebar-link">🕯️ Rituales del Prisma</a>
-      <a href="pozo.html" class="sidebar-link">⭐ Pozo de los Deseos</a>
-      <a href="diario.html" class="sidebar-link">📖 Diario del Alma</a>
-      <a href="test.html" class="sidebar-link">🌓 Test Luz y Sombra</a>
-      <a href="historias.html" class="sidebar-link">📚 Historias Mágicas</a>
-      <a href="muro.html" class="sidebar-link">💌 Muro de Mensajes</a>
-      <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="sidebar-link">🎵 Frecuencias Sagradas</a>
+      <a href="tiradas.html" class="sidebar-link" data-i18n="sidebar_oraculo">🔮 Oráculo Prisma</a>
+      <a href="rituales.html" class="sidebar-link" data-i18n="sidebar_rituales">🕯️ Rituales del Prisma</a>
+      <a href="pozo.html" class="sidebar-link" data-i18n="sidebar_pozo">⭐ Pozo de los Deseos</a>
+      <a href="diario.html" class="sidebar-link" data-i18n="sidebar_diario">📖 Diario del Alma</a>
+      <a href="test.html" class="sidebar-link" data-i18n="sidebar_test">🌓 Test Luz y Sombra</a>
+      <a href="historias.html" class="sidebar-link" data-i18n="sidebar_historias">📚 Historias Mágicas</a>
+      <a href="mapa.html" class="sidebar-link" data-i18n="sidebar_muro">💌 Muro de Mensajes</a>
+      <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="sidebar-link" data-i18n="sidebar_frecuencias">🎵 Frecuencias Sagradas</a>
     </nav>
     <div class="sidebar-footer">
-      <p class="sidebar-footer-text">Templo del Prisma</p>
+      <p class="sidebar-footer-text" data-i18n="sidebar_footer">Templo del Prisma</p>
     </div>
   </aside>
 
@@ -660,20 +707,20 @@
   <section id="nombre-mistico" style="position:relative;z-index:1;padding:4rem 2rem;">
     <div class="section-inner" style="max-width:700px;margin:0 auto;text-align:center;">
       <div class="reveal">
-        <p class="section-label" style="text-align:center;">✦ ORÁCULO PRISMA</p>
-        <h2 class="section-title" style="text-align:center;">Tu Nombre Místico</h2>
-        <p class="section-body" style="margin:0 auto 2.5rem;text-align:center;">
+        <p class="section-label" style="text-align:center;" data-i18n="nombre_label">✦ ORÁCULO PRISMA</p>
+        <h2 class="section-title" style="text-align:center;" data-i18n="nombre_title">Tu Nombre Místico</h2>
+        <p class="section-body" style="margin:0 auto 2.5rem;text-align:center;" data-i18n-html="nombre_body">
           El Oráculo Prisma te ha asignado un nombre desde antes de que nacieras.<br>
           Ingresa tu fecha de nacimiento y descúbrelo.
         </p>
         <div style="background:rgba(11,17,40,.6);border:1px solid rgba(201,168,76,.15);border-radius:20px;padding:2rem;max-width:500px;margin:0 auto;">
           <div class="nombre-mistico-form">
             <input type="date" id="nombreFecha" placeholder="Tu fecha de nacimiento">
-            <button class="nombre-mistico-btn" onclick="calcularNombre()">✦ Revelar mi nombre</button>
+            <button class="nombre-mistico-btn" onclick="calcularNombre()" data-i18n="nombre_btn">✦ Revelar mi nombre</button>
           </div>
           <div class="nombre-resultado" id="nombreResultado">
             <div style="margin:1.2rem 0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.2),transparent)"></div>
-            <p style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.35em;color:rgba(201,168,76,.65);margin-bottom:.8rem;">✦ TU NOMBRE DEL PRISMA ES ✦</p>
+            <p style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.35em;color:rgba(201,168,76,.65);margin-bottom:.8rem;" data-i18n="nombre_resultado_label">✦ TU NOMBRE DEL PRISMA ES ✦</p>
             <p class="nombre-resultado-nombre" id="nombreTexto"></p>
             <div style="margin:.8rem 0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.15),transparent)"></div>
             <p class="nombre-resultado-sub" id="nombreSub"></p>
@@ -768,9 +815,9 @@
   <!-- LIBRO DE ALMAS -->
   <section id="libroAlmas" style="position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 2rem 4rem">
     <div class="reveal" style="text-align:center;margin-bottom:2.5rem">
-      <p class="section-label">✦ Comunidad</p>
-      <h2 class="section-title">Libro de Almas</h2>
-      <p class="section-body">Deja tu huella en el Templo del Prisma.<br>Tu mariposa aparecerá en el mapa de las almas.</p>
+      <p class="section-label" data-i18n="libro_label">✦ Comunidad</p>
+      <h2 class="section-title" data-i18n="libro_title">Libro de Almas</h2>
+      <p class="section-body" data-i18n-html="libro_body">Deja tu huella en el Templo del Prisma.<br>Tu mariposa aparecerá en el mapa de las almas.</p>
     </div>
 
     <!-- FORMULARIO MÍSTICO -->
@@ -778,7 +825,7 @@
       <div style="display:flex;flex-direction:column;gap:1rem;align-items:center">
         <div style="position:relative;width:100%">
           <span style="position:absolute;left:1.2rem;top:50%;transform:translateY(-50%);font-size:1rem;opacity:.5">🦋</span>
-          <input id="libroNombre" maxlength="60" placeholder="Tu nombre místico..."
+          <input id="libroNombre" maxlength="60" placeholder="Tu nombre místico..." data-i18n-placeholder="libro_placeholder_nombre"
             style="width:100%;padding:.9rem 1.2rem .9rem 3rem;border-radius:100px;
             border:1px solid rgba(201,168,76,.25);background:rgba(11,17,40,.6);
             color:#e8dfc8;font-family:'Cormorant Garamond',serif;font-size:1.05rem;
@@ -788,7 +835,7 @@
         </div>
         <div style="position:relative;width:100%">
           <span style="position:absolute;left:1.2rem;top:50%;transform:translateY(-50%);font-size:1rem;opacity:.5">🌍</span>
-          <input id="libroCiudad" maxlength="40" placeholder="Tu país... (ej: México)"
+          <input id="libroCiudad" maxlength="40" placeholder="Tu país... (ej: México)" data-i18n-placeholder="libro_placeholder_pais"
             style="width:100%;padding:.9rem 1.2rem .9rem 3rem;border-radius:100px;
             border:1px solid rgba(201,168,76,.25);background:rgba(11,17,40,.6);
             color:#e8dfc8;font-family:'Cormorant Garamond',serif;font-size:1.05rem;
@@ -803,7 +850,7 @@
           box-shadow:0 0 30px rgba(201,168,76,.25);transition:all .4s;width:100%"
           onmouseover="this.style.boxShadow='0 0 50px rgba(201,168,76,.45)';this.style.transform='translateY(-2px)'"
           onmouseout="this.style.boxShadow='0 0 30px rgba(201,168,76,.25)';this.style.transform='translateY(0)'">
-          🦋 Dejar mi huella en el Templo
+          <span data-i18n="libro_btn">🦋 Dejar mi huella en el Templo</span>
         </button>
         <p id="libroStatus" style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;
           color:rgba(201,168,76,.5);display:none;text-align:center"></p>
@@ -813,7 +860,7 @@
     <!-- MAPA -->
     <div class="reveal">
       <p style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.35em;
-        color:rgba(201,168,76,.35);text-align:center;margin-bottom:1rem">✦ DÓNDE ESTÁN LAS ALMAS ✦</p>
+        color:rgba(201,168,76,.35);text-align:center;margin-bottom:1rem" data-i18n="libro_mapa_label">✦ DÓNDE ESTÁN LAS ALMAS ✦</p>
       <div id="mapaInline" style="height:400px;border-radius:20px;
         border:1px solid rgba(201,168,76,.15);overflow:hidden;
         box-shadow:0 0 60px rgba(0,0,0,.5)"></div>
@@ -831,9 +878,9 @@
     <!-- REDES -->
   <section id="redes" style="position:relative;z-index:1;padding:3rem 2rem 4rem;text-align:center">
     <div class="section-inner reveal" style="max-width:600px;margin:0 auto">
-      <p class="section-label">✦ Comunidad</p>
-      <h2 class="section-title">Sígueme en Redes</h2>
-      <p class="section-body" style="margin-bottom:2rem">Energías semanales, canalizaciones y más magia del Prisma</p>
+      <p class="section-label" data-i18n="redes_section_label">✦ Comunidad</p>
+      <h2 class="section-title" data-i18n="redes_section_title">Sígueme en Redes</h2>
+      <p class="section-body" style="margin-bottom:2rem" data-i18n="redes_section_body">Energías semanales, canalizaciones y más magia del Prisma</p>
       <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
         <a href="https://www.instagram.com/bruxatarot" target="_blank"
           style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;
@@ -1001,9 +1048,11 @@
     const sub=tr?tr.subtitle:c.subtitle;
     const catLbl=LangEngine.getCatLabel(c.cat)||c.catLabel;
 
-    // Use sombra message if reversed, luz message if upright
+    // Use oracle-cards.js for reversed message in non-ES languages
+    const _lang=LangEngine.current;
+    const _oc=(typeof ORACLE_CARDS!=='undefined'&&ORACLE_CARDS[_lang])?ORACLE_CARDS[_lang][c.num-1]:null;
     const msg = isReversed
-      ? (c.sombra || c.message)
+      ? (_oc?_oc.reversed.message:(c.sombra||c.message))
       : (tr?tr.message:c.message);
     const kws=tr?tr.keywords:c.keywords;
 
@@ -1015,8 +1064,8 @@
 
       // Show upright/reversed badge
       const posLabel = isReversed
-        ? `<span class="reversed-badge">🌑 Carta Invertida — Sombra</span>`
-        : `<span class="upright-badge">☀️ Carta Derecha — Luz</span>`;
+        ? `<span class="reversed-badge">🌑 ${LangEngine.t('card_reversed_index')}</span>`
+        : `<span class="upright-badge">☀️ ${LangEngine.t('card_upright_index')}</span>`;
       document.getElementById('posicionBadge').innerHTML = posLabel;
 
       document.getElementById('cartaReadingTitle').textContent=`✦ ${c.name.toUpperCase()} ✦`;
@@ -1381,79 +1430,6 @@ async function cargarPanel() {
   } catch(e) { console.log('Error panel:', e); }
 }
 
-// ── LOOKUP PAÍSES → COORDENADAS ──
-const PAIS_COORDS = {
-  'argentina':[-34.61,-58.38],'mexico':[-19.43,-99.13],'méxico':[-19.43,-99.13],
-  'colombia':[4.71,-74.07],'chile':[-33.45,-70.67],'peru':[-12.05,-77.04],
-  'perú':[-12.05,-77.04],'venezuela':[10.48,-66.88],'ecuador':[-0.22,-78.51],
-  'bolivia':[-16.5,-68.15],'paraguay':[-25.28,-57.64],'uruguay':[-34.9,-56.19],
-  'brasil':[-15.78,-47.93],'brazil':[-15.78,-47.93],'costa rica':[9.93,-84.08],
-  'guatemala':[14.64,-90.51],'honduras':[14.1,-87.22],'el salvador':[13.69,-89.19],
-  'nicaragua':[12.13,-86.29],'panama':[8.99,-79.52],'panamá':[8.99,-79.52],
-  'cuba':[23.13,-82.38],'república dominicana':[18.47,-69.9],'puerto rico':[18.46,-66.11],
-  'españa':[40.42,-3.7],'espana':[40.42,-3.7],'portugal':[38.72,-9.14],
-  'italia':[41.9,12.48],'francia':[48.86,2.35],'alemania':[52.52,13.4],
-  'reino unido':[51.51,-0.13],'holanda':[52.37,4.9],'bélgica':[50.85,4.35],
-  'belgica':[50.85,4.35],'suiza':[46.95,7.45],'austria':[48.21,16.37],
-  'estados unidos':[38.9,-77.04],'usa':[38.9,-77.04],'canada':[45.42,-75.7],
-  'canadá':[45.42,-75.7],'australia':[-33.87,151.21],'nueva zelanda':[-36.86,174.77],
-  'japón':[35.69,139.69],'japon':[35.69,139.69],'corea del sur':[37.57,126.98],
-  'china':[39.91,116.39],'india':[28.63,77.22],'sudáfrica':[-25.75,28.19],
-  'sudafrica':[-25.75,28.19],'marruecos':[33.99,-6.85],'egipto':[30.06,31.25],
-};
-function getCoordsForPais(pais) {
-  if(!pais) return null;
-  const key = pais.toLowerCase().trim();
-  if(PAIS_COORDS[key]) return PAIS_COORDS[key];
-  for(const [k,v] of Object.entries(PAIS_COORDS)) {
-    if(key.includes(k) || k.includes(key)) return v;
-  }
-  return null;
-}
-
-// ── MAPA INLINE ──
-let mapaInlineInstance = null;
-function iniciarMapaInline(almas) {
-  const container = document.getElementById('mapaInline');
-  if(!container || !window.L) return;
-  if(mapaInlineInstance) { mapaInlineInstance.remove(); mapaInlineInstance = null; }
-  const map = L.map('mapaInline', {
-    center: [20, 0], zoom: 2,
-    zoomControl: true, scrollWheelZoom: false, attributionControl: false
-  });
-  mapaInlineInstance = map;
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
-  const revealParent = container.closest('.reveal');
-  if(revealParent) {
-    new MutationObserver((mutations, obs) => {
-      if(revealParent.classList.contains('visible')) {
-        setTimeout(() => map.invalidateSize(), 50);
-        obs.disconnect();
-      }
-    }).observe(revealParent, { attributes: true, attributeFilter: ['class'] });
-  }
-  setTimeout(() => map.invalidateSize(), 300);
-  const mIcon = L.divIcon({
-    html: '<span style="font-size:1.3rem;line-height:1;filter:drop-shadow(0 0 4px rgba(201,168,76,.8))">🦋</span>',
-    className: '', iconSize: [24,24], iconAnchor: [12,12]
-  });
-  const paises = new Set();
-  let placed = 0;
-  (almas || []).forEach(a => {
-    const coords = (a.lat && a.lng) ? [a.lat, a.lng] : getCoordsForPais(a.pais);
-    if(!coords) return;
-    const jLat = (Math.random()-.5)*1.5, jLng = (Math.random()-.5)*1.5;
-    L.marker([coords[0]+jLat, coords[1]+jLng], { icon: mIcon })
-      .bindPopup('<div style="font-family:\'Cinzel\',serif;font-size:.72rem;color:#c9a84c;text-align:center;min-width:120px">🦋 <strong>' + (a.nombre||'Alma') + '</strong><br><span style="font-size:.6rem;color:#aaa">' + (a.pais||'') + '</span><br><span style="font-size:.55rem;color:#777">' + (a.fecha||'') + '</span></div>').addTo(map);
-    if(a.pais) paises.add(a.pais.toLowerCase().trim());
-    placed++;
-  });
-  const statPaises = document.getElementById('mapaStatPaises');
-  const statAlmas  = document.getElementById('mapaStatAlmas');
-  if(statPaises) statPaises.textContent = paises.size || '-';
-  if(statAlmas)  statAlmas.textContent  = placed;
-}
-
 async function cargarLibroYContador() {
   try {
     const res = await fetch(JSONBIN_URL + LIBRO_BIN + '/latest', {
@@ -1507,14 +1483,20 @@ async function agregarAlma() {
     const data = await res.json();
     const record = data.record;
     const almas = record.almas || [];
-    almas.push({ nombre, pais: ciudad, fecha: hoy });
+    const coords = getCoordsForPais(ciudad);
+    const entrada = { nombre, pais: ciudad, fecha: hoy };
+    if(coords) { entrada.lat = coords[0]; entrada.lng = coords[1]; }
+    almas.push(entrada);
 
     await fetch(JSONBIN_URL + LIBRO_BIN, {
       method: 'PUT', headers: HEADERS,
       body: JSON.stringify({ ...record, almas })
     });
 
-    lanzarMariposa(record.contador || almas.length);
+    const newCount = record.contador || almas.length;
+    lanzarMariposa(newCount);
+    document.getElementById('numAlmas').textContent = newCount.toLocaleString('es-MX');
+    iniciarMapaInline(almas);
     document.getElementById('libroNombre').value = '';
     document.getElementById('libroCiudad').value = '';
     const st=document.getElementById('libroStatus');
@@ -1522,6 +1504,134 @@ async function agregarAlma() {
       setTimeout(()=>st.style.display='none',4000);}
 
   } catch(e) { alert('No se pudo guardar tu huella 😢 Intenta de nuevo'); }
+}
+
+// ── LOOKUP PAÍSES → COORDENADAS ──
+const PAIS_COORDS = {
+  'argentina':[-34.61,-58.38],'mexico':[-19.43,-99.13],'méxico':[-19.43,-99.13],
+  'colombia':[4.71,-74.07],'chile':[-33.45,-70.67],'peru':[-12.05,-77.04],
+  'perú':[-12.05,-77.04],'venezuela':[10.48,-66.88],'ecuador':[-0.22,-78.51],
+  'bolivia':[-16.5,-68.15],'paraguay':[-25.28,-57.64],'uruguay':[-34.9,-56.19],
+  'brasil':[-15.78,-47.93],'brazil':[-15.78,-47.93],'costa rica':[9.93,-84.08],
+  'guatemala':[14.64,-90.51],'honduras':[14.1,-87.22],'el salvador':[13.69,-89.19],
+  'nicaragua':[12.13,-86.29],'panama':[8.99,-79.52],'panamá':[8.99,-79.52],
+  'cuba':[23.13,-82.38],'república dominicana':[18.47,-69.9],'puerto rico':[18.46,-66.11],
+  'españa':[40.42,-3.7],'espana':[40.42,-3.7],'portugal':[38.72,-9.14],
+  'italia':[41.9,12.48],'francia':[48.86,2.35],'alemania':[52.52,13.4],
+  'reino unido':[51.51,-0.13],'holanda':[52.37,4.9],'bélgica':[50.85,4.35],
+  'belgica':[50.85,4.35],'suiza':[46.95,7.45],'austria':[48.21,16.37],
+  'estados unidos':[38.9,-77.04],'usa':[38.9,-77.04],'canada':[45.42,-75.7],
+  'canadá':[45.42,-75.7],'australia':[-33.87,151.21],'nueva zelanda':[-36.86,174.77],
+  'japón':[35.69,139.69],'japon':[35.69,139.69],'corea del sur':[37.57,126.98],
+  'china':[39.91,116.39],'india':[28.63,77.22],'sudáfrica':[-25.75,28.19],
+  'sudafrica':[-25.75,28.19],'marruecos':[33.99,-6.85],'egipto':[30.06,31.25],
+};
+
+function getCoordsForPais(pais) {
+  if(!pais) return null;
+  const key = pais.toLowerCase().trim();
+  if(PAIS_COORDS[key]) return PAIS_COORDS[key];
+  for(const [k,v] of Object.entries(PAIS_COORDS)) {
+    if(key.includes(k) || k.includes(key)) return v;
+  }
+  return null;
+}
+
+// ── MAPA INLINE ──
+let mapaInlineInstance = null;
+
+function iniciarMapaInline(almas) {
+  const container = document.getElementById('mapaInline');
+  if(!container || !window.L) return;
+
+  if(mapaInlineInstance) { mapaInlineInstance.remove(); mapaInlineInstance = null; }
+
+  const map = L.map('mapaInline', {
+    center: [20, 0], zoom: 2,
+    zoomControl: true, scrollWheelZoom: false,
+    attributionControl: false
+  });
+  mapaInlineInstance = map;
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19
+  }).addTo(map);
+
+  // IntersectionObserver sobre el propio contenedor — funciona siempre,
+  // tanto si el mapa se inicializa antes como después de que el usuario llegue a esa sección
+  const mapIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) {
+        setTimeout(() => map.invalidateSize(), 150);
+        mapIO.disconnect();
+      }
+    });
+  }, { threshold: 0.1 });
+  mapIO.observe(container);
+  // Fallback: si ya era visible cuando se inicializó
+  setTimeout(() => map.invalidateSize(), 400);
+
+  const mIcon = L.divIcon({
+    html: '<span style="font-size:1.3rem;line-height:1;filter:drop-shadow(0 0 4px rgba(201,168,76,.8))">🦋</span>',
+    className: '',
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
+  });
+
+  const paises = new Set();
+  let placed = 0;
+
+  (almas || []).forEach(a => {
+    const coords = (a.lat && a.lng)
+      ? [a.lat, a.lng]
+      : getCoordsForPais(a.pais);
+    if(!coords) return;
+
+    const jLat = (Math.random() - 0.5) * 1.5;
+    const jLng = (Math.random() - 0.5) * 1.5;
+
+    L.marker([coords[0] + jLat, coords[1] + jLng], { icon: mIcon })
+      .bindPopup(
+        `<div style="font-family:'Cinzel',serif;font-size:.72rem;color:#c9a84c;text-align:center;min-width:120px">
+          🦋 <strong>${a.nombre || 'Alma'}</strong><br>
+          <span style="font-size:.6rem;color:#aaa">${a.pais || ''}</span><br>
+          <span style="font-size:.55rem;color:#777">${a.fecha || ''}</span>
+        </div>`
+      )
+      .addTo(map);
+
+    if(a.pais) paises.add(a.pais.toLowerCase().trim());
+    placed++;
+  });
+
+  const statPaises = document.getElementById('mapaStatPaises');
+  const statAlmas  = document.getElementById('mapaStatAlmas');
+  if(statPaises) statPaises.textContent = paises.size || '-';
+  if(statAlmas)  statAlmas.textContent  = placed;
+}
+
+// ── ENJAMBRE DE MARIPOSAS ──
+function poblarEnjambre(total) {
+  const contenedor = document.getElementById('enjambre');
+  if(!contenedor) return;
+  const n = Math.min(total || 0, 120);
+  contenedor.innerHTML = '';
+  for(let i = 0; i < n; i++) {
+    const s = 10 + Math.random() * 14;
+    const delay = (Math.random() * 4).toFixed(2);
+    const dur1  = (2.5 + Math.random() * 3).toFixed(2);
+    const dur2  = (2 + Math.random() * 2).toFixed(2);
+    const op    = (0.45 + Math.random() * 0.45).toFixed(2);
+    const el = document.createElement('span');
+    el.className = 'm-svg';
+    el.style.cssText = `width:${s}px;height:${s}px;font-size:${s}px;line-height:1;opacity:${op};animation-duration:${dur1}s,${dur2}s;animation-delay:${delay}s,${delay}s`;
+    el.textContent = '🦋';
+    contenedor.appendChild(el);
+  }
+}
+
+function lanzarMariposa(idx) {
+  poblarEnjambre(idx + 1);
 }
 
 // ── SIDEBAR ──
@@ -1542,6 +1652,7 @@ function closeSidebar(){
 
 // ── FIREBASE PRESENCIA Y VISITAS ──
 const FB_URL = 'https://diario-del-alma-default-rtdb.firebaseio.com';
+// ID estable por tab: si refrescas, reutiliza el mismo ID → sobreescribe la misma entrada
 const FB_SID = (() => {
   const KEY = 'bruxa_sid';
   let sid = sessionStorage.getItem(KEY);
@@ -1551,55 +1662,80 @@ const FB_SID = (() => {
 let fbHeartbeatTimer = null;
 
 async function fbGet(path) {
-  try { const r = await fetch(FB_URL + path + '.json'); return r.ok ? await r.json() : null; } catch(e) { return null; }
+  try {
+    const r = await fetch(FB_URL + path + '.json');
+    return r.ok ? await r.json() : null;
+  } catch(e) { return null; }
 }
 async function fbPut(path, data) {
-  try { await fetch(FB_URL + path + '.json', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) }); } catch(e) {}
+  try {
+    await fetch(FB_URL + path + '.json', {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+  } catch(e) {}
 }
 async function fbDelete(path) {
-  try { await fetch(FB_URL + path + '.json', { method:'DELETE' }); } catch(e) {}
+  try {
+    await fetch(FB_URL + path + '.json', { method: 'DELETE' });
+  } catch(e) {}
 }
 
 async function fbRegistrarVisita() {
+  // Solo contar una vez cada 24h por dispositivo
   const KEY = 'bruxa_ultima_visita';
   const ultima = parseInt(localStorage.getItem(KEY) || '0');
   const ahora = Date.now();
-  const ya_visito_hoy = (ahora - ultima) < 24*60*60*1000;
+  const ya_visito_hoy = (ahora - ultima) < 24 * 60 * 60 * 1000;
+
   const actual = await fbGet('/templo/visitas') || 0;
+
   if(!ya_visito_hoy) {
     const nuevas = actual + 1;
     await fbPut('/templo/visitas', nuevas);
     localStorage.setItem(KEY, ahora.toString());
-    const el = document.getElementById('fbVisitas');
-    if(el) el.textContent = nuevas.toLocaleString('es-MX');
+    document.getElementById('fbVisitas').textContent = nuevas.toLocaleString('es-MX');
   } else {
-    const el = document.getElementById('fbVisitas');
-    if(el) el.textContent = actual.toLocaleString('es-MX');
+    // Solo mostrar el número actual sin incrementar
+    document.getElementById('fbVisitas').textContent = actual.toLocaleString('es-MX');
   }
 }
 
 async function fbRegistrarPresencia() {
-  await fbPut('/templo/presencia/' + FB_SID, { t: Date.now() });
+  const ahora = Date.now();
+  await fbPut('/templo/presencia/' + FB_SID, { t: ahora });
+
+  // Heartbeat cada 30s para mantener presencia activa
   fbHeartbeatTimer = setInterval(async () => {
     await fbPut('/templo/presencia/' + FB_SID, { t: Date.now() });
     fbActualizarOnline();
   }, 30000);
+
   fbActualizarOnline();
 }
 
 async function fbActualizarOnline() {
   const presencia = await fbGet('/templo/presencia');
   const limite = Date.now() - 90000;
-  const activos = presencia ? Object.values(presencia).filter(v => v && v.t > limite).length : 1;
-  const fn = document.getElementById('floatNum');
+  const activos = presencia
+    ? Object.values(presencia).filter(v => v && v.t > limite).length
+    : 1;
+
   const fl = document.getElementById('floatOnline');
-  if(fn) fn.textContent = Math.max(1, activos).toLocaleString('es-MX');
+  const fn = document.getElementById('floatNum');
+
+  const count = Math.max(1, activos);
+  if(fn) fn.textContent = count.toLocaleString('es-MX');
   if(fl && floatShown) fl.classList.add('visible');
-  if(presencia) Object.entries(presencia).forEach(([sid,v]) => {
+
+  // Limpiar sesiones caducadas
+  if(presencia) Object.entries(presencia).forEach(([sid, v]) => {
     if(v && v.t < Date.now() - 300000) fbDelete('/templo/presencia/' + sid);
   });
 }
 
+// Mostrar flotante tras primer scroll
 let floatShown = false;
 window.addEventListener('scroll', function() {
   if(!floatShown && window.scrollY > 120) {
@@ -1608,7 +1744,7 @@ window.addEventListener('scroll', function() {
     if(fl) fl.classList.add('visible');
     fbActualizarOnline();
   }
-}, { passive:true });
+}, { passive: true });
 
 function fbSalida() {
   fbDelete('/templo/presencia/' + FB_SID);
@@ -1631,7 +1767,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // 2. Load data
   cargarLibroYContador();
   cargarPanel();
-  // 3. Firebase
+  // 3. Firebase contadores
   fbRegistrarVisita();
   fbRegistrarPresencia();
 });
