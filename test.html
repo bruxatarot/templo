@@ -158,6 +158,30 @@
       color:rgba(201,168,76,.5);cursor:pointer;transition:all .3s}
     .lang-btn:hover,.lang-btn.active{border-color:rgba(201,168,76,.6);color:var(--gold);
       background:rgba(201,168,76,.08)}
+
+    /* STATS PERSONAJE */
+    .stats-wrap{margin-top:3rem;animation:fadeUp .6s ease .6s both}
+    .stats-highlight{font-family:'Cormorant Garamond',serif;font-style:italic;
+      font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--gold-pale);line-height:1.6;
+      margin-bottom:2rem;padding:1.2rem 1.8rem;
+      border:1px solid rgba(201,168,76,.2);border-radius:16px;
+      background:rgba(201,168,76,.04)}
+    .stats-highlight strong{font-family:'Cinzel Decorative',serif;font-size:1.4em;
+      color:var(--gold-light);font-style:normal}
+    .stats-ranking-title{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.35);margin-bottom:1rem}
+    .stats-ranking{display:flex;flex-direction:column;gap:.6rem;max-width:460px;margin:0 auto}
+    .stats-row{display:flex;align-items:center;gap:.8rem}
+    .stats-row-emoji{font-size:1.1rem;width:28px;text-align:center;flex-shrink:0}
+    .stats-row-name{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.12em;
+      color:rgba(201,168,76,.6);min-width:80px;text-align:left}
+    .stats-bar-wrap{flex:1;height:6px;background:rgba(201,168,76,.08);border-radius:100px;overflow:hidden}
+    .stats-bar{height:100%;border-radius:100px;
+      background:linear-gradient(to right,rgba(201,168,76,.3),var(--gold-light));
+      transition:width .8s cubic-bezier(.4,0,.2,1)}
+    .stats-bar.mine{background:linear-gradient(to right,#c9a84c,#e8c97a)}
+    .stats-row-count{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.1em;
+      color:rgba(201,168,76,.4);min-width:26px;text-align:right}
   </style>
 </head>
 <body>
@@ -237,6 +261,14 @@
         <a href="historias.html" class="btn btn-primary" data-i18n="test_btn_historia">📚 Conoce su historia</a>
         <a href="diario.html" class="btn btn-violet" data-i18n="test_btn_diario">📖 Guardar en mi Diario</a>
         <button onclick="reiniciarTest()" class="btn btn-ghost" data-i18n="test_btn_reiniciar">✦ Hacer el test de nuevo</button>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-wrap" id="statsWrap" style="display:none">
+        <div class="divider"><div class="divider-line"></div><span class="divider-sym">✦</span><div class="divider-line"></div></div>
+        <p id="statsHighlight" class="stats-highlight"></p>
+        <p class="stats-ranking-title">✦ LOS ESPÍRITUS MÁS LIBERADOS EN EL TEMPLO</p>
+        <div class="stats-ranking" id="statsRanking"></div>
       </div>
     </div>
   </section>
@@ -992,7 +1024,7 @@ const PREGUNTAS = {
 // ── ENGINE ──
 const _L = typeof LangEngine !== 'undefined' ? LangEngine : {t:k=>k,current:'es'};
 
-let estado = { preguntaActual:'p1', elemento:null, historial:[], qNum:0 };
+let estado = { preguntaActual:'p1', elemento:null, historial:[], qNum:0, opcionesActuales:[] };
 
 function getTestData() {
   const lang = _L.current || 'es';
@@ -1029,13 +1061,17 @@ function renderPregunta(id) {
   const badge = getTipoLabel(p.tipo);
   const elemClass = p.elemClass || '';
 
+  // Shuffle options (copy, don't mutate source data)
+  const opciones = [...p.opciones].sort(() => Math.random() - 0.5);
+  estado.opcionesActuales = opciones;
+
   const html = `
     <div class="question-card ${elemClass}">
       <span class="q-element-badge q-type-${p.tipo}">${badge}</span>
       <p class="q-number">${_L.t('test_q_number').replace('{n}', p.num)}</p>
       <h2 class="q-text">${p.texto}</h2>
       <div class="options-grid">
-        ${p.opciones.map((op, i) => `
+        ${opciones.map((op, i) => `
           <button class="option-btn" onclick="elegir(${i})">
             <span class="option-emoji">${op.emoji}</span>
             <span class="option-text">${op.texto}</span>
@@ -1050,8 +1086,7 @@ function renderPregunta(id) {
 }
 
 function elegir(idx) {
-  const p = getTestData().preguntas[estado.preguntaActual];
-  const op = p.opciones[idx];
+  const op = estado.opcionesActuales[idx];
 
   // Mark selected
   document.querySelectorAll('.option-btn').forEach((btn, i) => {
@@ -1103,10 +1138,108 @@ function mostrarResultado(result) {
   document.getElementById('sombraFrase').textContent = sombra.frase;
 
   document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('statsWrap').style.display = 'none';
+  actualizarYMostrarStats(result.luz);
+}
+
+// ── ESTADÍSTICAS DE PERSONAJES ──
+const FB_STATS = 'https://diario-del-alma-default-rtdb.firebaseio.com/templo/test_stats';
+
+const MENSAJES = {
+  dante:    ['alma de fuego renació de sus cenizas','almas de fuego renacieron de sus cenizas'],
+  tony:     ['Dios del Tiempo despertó','Dioses del Tiempo despertaron'],
+  jade:     ['guardiana del Karma encontró su equilibrio','guardianas del Karma encontraron su equilibrio'],
+  alberto:  ['voz de justicia se alzó','voces de justicia se alzaron'],
+  valeria:  ['veneno sutil fue revelado','venenos sutiles fueron revelados'],
+  karina:   ['diamante encontró su poder','diamantes encontraron su poder'],
+  alvaro:   ['tejedor de sombras emergió','tejedores de sombras emergieron'],
+  mia:      ['Diosa del Amor Propio despertó','Diosas del Amor Propio despertaron'],
+  sebastian:['voz sin filtros habló','voces sin filtros hablaron'],
+  marta:    ['flor de sanación floreció','flores de sanación florecieron'],
+  lucia:    ['susurro eterno resonó','susurros eternos resonaron'],
+  oracio:   ['protector de corazones se reveló','protectores de corazones se revelaron'],
+  samuel:   ['alma de melancolía habló','almas de melancolía hablaron'],
+  daniela:  ['Cheerleader del Alma encendió su luz','Cheerleaders del Alma encendieron su luz'],
+  emmanuel: ['eco de la duda encontró su camino','ecos de la duda encontraron su camino'],
+  jazmin:   ['Cupido Encubierto tejió su magia','Cupidos Encubiertos tejieron su magia'],
+  sofia:    ['romántica creyó en el amor épico','románticas creyeron en el amor épico'],
+  mariana:  ['luz que conecta mundos brilló','luces que conectan mundos brillaron'],
+  rosario:  ['Druida del Espejo habló','Druidas del Espejo hablaron'],
+  violeta:  ['voz de la realidad se alzó','voces de la realidad se alzaron'],
+  elena:    ['Diosa del Camino guió','Diosas del Camino guiaron'],
+  natalia:  ['resiliente se negó a rendirse','resilientes se negaron a rendirse'],
+  renata:   ['Estratega del Corazón actuó','Estrategas del Corazón actuaron'],
+  adam:     ['lucidez incómoda habló','lucideces incómodas hablaron'],
+  erebus:   ['Iluminado vio la verdad','Iluminados vieron la verdad'],
+  tatiana:  ['Prisionera del Ayer buscó la libertad','Prisioneras del Ayer buscaron la libertad'],
+  marcos:   ['oportunista mostró su verdad','oportunistas mostraron su verdad'],
+  nabi:     ['espíritu cazador fue liberado','espíritus cazadores fueron liberados'],
+  bruxa:    ['Bruxa pintó el mundo de color','Bruxas pintaron el mundo de color'],
+  aetherius:['Viajero del Inframundo regresó','Viajeros del Inframundo regresaron'],
+  heimdall: ['Guardián de Portales despertó','Guardianes de Portales despertaron'],
+};
+
+async function actualizarYMostrarStats(luzKey) {
+  try {
+    // Leer stats actuales
+    const res = await fetch(FB_STATS + '.json');
+    const stats = (await res.json()) || {};
+
+    // Incrementar el personaje actual
+    stats[luzKey] = (stats[luzKey] || 0) + 1;
+
+    // Guardar de vuelta
+    await fetch(FB_STATS + '.json', {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(stats)
+    });
+
+    mostrarStats(stats, luzKey);
+  } catch(e) {
+    console.log('stats error:', e);
+  }
+}
+
+function mostrarStats(stats, luzKey) {
+  const count = stats[luzKey] || 1;
+  const msgs  = MENSAJES[luzKey];
+  const data  = getTestData();
+  const p     = data.personajes[luzKey];
+  const emoji = p ? p.emoji : '✨';
+
+  // Mensaje principal
+  const msg = msgs ? (count === 1 ? msgs[0] : msgs[1]) : luzKey;
+  document.getElementById('statsHighlight').innerHTML =
+    `${emoji} <strong>${count}</strong> ${msg} en el Templo`;
+
+  // Top 6 ranking
+  const sorted = Object.entries(stats)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0, 6);
+  const maxVal = sorted[0]?.[1] || 1;
+
+  document.getElementById('statsRanking').innerHTML = sorted.map(([key, val]) => {
+    const pj  = data.personajes[key];
+    const em  = pj ? pj.emoji : '✨';
+    const nm  = pj ? pj.nombre : key;
+    const pct = Math.round((val / maxVal) * 100);
+    const mine = key === luzKey;
+    return `<div class="stats-row">
+      <span class="stats-row-emoji">${em}</span>
+      <span class="stats-row-name" style="${mine?'color:var(--gold-light)':''}">${nm.split(' ')[0]}</span>
+      <div class="stats-bar-wrap">
+        <div class="stats-bar${mine?' mine':''}" style="width:${pct}%"></div>
+      </div>
+      <span class="stats-row-count">${val}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('statsWrap').style.display = 'block';
 }
 
 function reiniciarTest() {
-  estado = { preguntaActual:'p1', elemento:null, historial:[], qNum:0 };
+  estado = { preguntaActual:'p1', elemento:null, historial:[], qNum:0, opcionesActuales:[] };
   document.getElementById('result-section').style.display = 'none';
   document.getElementById('hero').style.display = 'flex';
   window.scrollTo({ top: 0, behavior: 'smooth' });
