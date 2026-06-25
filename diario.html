@@ -497,10 +497,58 @@
     .racha-celebracion{text-align:center;padding:.8rem;background:rgba(201,168,76,.06);border-radius:10px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:rgba(201,168,76,.7);border:1px solid rgba(201,168,76,.15);margin-top:.8rem;animation:rachaPulse 2s ease-in-out infinite}
     @keyframes rachaPulse{0%,100%{opacity:.7}50%{opacity:1}}
 
+    .form-field-select{
+      width:100%;padding:.7rem 1rem;border-radius:12px;
+      border:1px solid rgba(201,168,76,.18);background:rgba(4,6,15,.5);
+      color:#f5e6b8;font-family:'Cormorant Garamond',serif;font-size:1rem;
+      outline:none;transition:border-color .3s;cursor:pointer}
+    .form-field-select:focus{border-color:rgba(201,168,76,.45)}
+    .form-field-select option,.form-field-select optgroup{background:#0b1128;color:#f5e6b8}
+    .form-field-select optgroup{color:rgba(201,168,76,.6);font-size:.9rem}
+
+    /* ── WELCOME MODAL ── */
+    #welcomeModal{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:1.5rem;
+      background:rgba(4,6,15,.85);backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .6s}
+    #welcomeModal.show{opacity:1;pointer-events:all}
+    .wm-box{width:100%;max-width:420px;background:linear-gradient(160deg,rgba(15,21,53,.97),rgba(4,6,15,.99));
+      border:1px solid rgba(201,168,76,.25);border-radius:24px;padding:2.8rem 2.2rem;text-align:center;
+      box-shadow:0 40px 80px rgba(0,0,0,.7),0 0 80px rgba(201,168,76,.08);
+      transform:translateY(20px);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+    #welcomeModal.show .wm-box{transform:translateY(0)}
+    .wm-glyph{font-size:2.8rem;margin-bottom:1.2rem;display:block;animation:wmFloat 3s ease-in-out infinite}
+    @keyframes wmFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    .wm-badge{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.4em;color:var(--gold);
+      border:1px solid rgba(201,168,76,.2);padding:.3rem 1rem;border-radius:100px;
+      background:rgba(201,168,76,.04);display:inline-block;margin-bottom:1.2rem}
+    .wm-title{font-family:'Cinzel Decorative',serif;font-size:1.5rem;color:var(--gold-pale);
+      font-weight:400;line-height:1.3;margin-bottom:1rem}
+    .wm-text{font-style:italic;color:#b8a87a;font-size:1rem;line-height:1.8;margin-bottom:1.8rem}
+    .wm-btn{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.2em;padding:.9rem 2.4rem;
+      border-radius:100px;border:none;background:linear-gradient(135deg,#c9a84c,#a07828);
+      color:var(--deep);cursor:pointer;transition:all .4s;box-shadow:0 0 25px rgba(201,168,76,.2)}
+    .wm-btn:hover{box-shadow:0 0 45px rgba(201,168,76,.4);transform:translateY(-2px)}
+    .wm-skip{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.12em;color:rgba(201,168,76,.3);
+      cursor:pointer;margin-top:1rem;display:block;transition:color .3s}
+    .wm-skip:hover{color:rgba(201,168,76,.6)}
+
+    /* ── LOGIN GREETING TOAST ── */
+    #loginGreet{position:fixed;top:5.5rem;left:50%;transform:translateX(-50%) translateY(-10px);
+      background:linear-gradient(135deg,rgba(15,21,53,.97),rgba(4,6,15,.99));
+      border:1px solid rgba(201,168,76,.25);border-radius:16px;
+      padding:1rem 1.8rem;text-align:center;z-index:200;opacity:0;pointer-events:none;
+      transition:opacity .5s,transform .5s;backdrop-filter:blur(10px);
+      box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px rgba(201,168,76,.06);min-width:260px;max-width:90vw}
+    #loginGreet.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .lg-emoji{font-size:1.4rem;display:block;margin-bottom:.35rem}
+    .lg-title{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.2em;color:var(--gold);margin-bottom:.3rem}
+    .lg-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:#c4b090;line-height:1.5}
+
     @media(max-width:640px){
       nav{padding:1rem 1.5rem}
       .form-grid{grid-template-columns:1fr}
       .auth-box{padding:2rem 1.5rem}
+      .wm-box{padding:2rem 1.4rem}
+      .wm-title{font-size:1.2rem}
     }
   </style>
 </head>
@@ -617,7 +665,50 @@
             <div class="form-grid">
               <div class="form-field">
                 <label data-i18n="diario_carta_label">Carta del día</label>
-                <input id="entrCarta" type="text" placeholder="¿Qué carta te salió hoy?" data-i18n-placeholder="diario_carta_ph">
+                <select id="entrCarta" class="form-field-select">
+                  <option value="">— Elige tu carta —</option>
+                  <optgroup label="✦ Esencias Sagradas">
+                    <option value="Bruxa Tarot">🔮 Bruxa Tarot · Canalizadora del Prisma</option>
+                    <option value="Nabi">🦋 Nabi · Cazadora de Espíritus</option>
+                    <option value="Marta">🌸 Marta · Diosa de la Sanación</option>
+                    <option value="Jade">🌿 Jade · Diosa del Karma</option>
+                    <option value="Elena">✨ Elena · Diosa del Camino</option>
+                    <option value="Mia">🌊 Mía · Diosa del Amor Propio</option>
+                    <option value="Tony">⏳ Tony · Dios del Tiempo</option>
+                    <option value="Dante">🔥 Dante · Dios del Fuego y la Resurrección</option>
+                    <option value="La Voz Clara">🕯️ La Voz Clara · Regreso Interior</option>
+                    <option value="El Llamado del Alma">🔥 El Llamado del Alma · Despertar Espiritual</option>
+                    <option value="El Regreso a Casa">🏡 El Regreso a Casa · Reconexión</option>
+                  </optgroup>
+                  <optgroup label="🌒 Dualidades">
+                    <option value="Álvaro">🌫️ Álvaro · Tejedor de Sombras</option>
+                    <option value="Emmanuel">🌀 Emmanuel · Eco de la Duda</option>
+                    <option value="Valeria">🍷 Valeria · El Veneno Sutil</option>
+                    <option value="Karina">💎 Karina · Intromisión Silenciosa</option>
+                    <option value="Tatiana">⏳ Tatiana · Prisionera del Ayer</option>
+                    <option value="Lucía y Samuel">💔 Lucía y Samuel · Susurro Eterno</option>
+                  </optgroup>
+                  <optgroup label="🛡️ Guardianes">
+                    <option value="Alberto">⚖️ Alberto · La Voz que Enfrenta la Injusticia</option>
+                    <option value="Oracio">🧿 Oracio · Protector de los Corazones Rotos</option>
+                    <option value="Rosario">🪞 Rosario · La Druida del Espejo</option>
+                    <option value="Las Tres Aliadas">🌟 Las Tres Aliadas · Renata, Cristina y Sofía</option>
+                    <option value="Jazmín">💘 Jazmín · Cupido Encubierto</option>
+                    <option value="Daniela">🌟 Daniela · Cheerleader del Alma</option>
+                  </optgroup>
+                  <optgroup label="💠 Llaves Prismáticas">
+                    <option value="Heimdall">🌉 Heimdall · Guardián de los Portales</option>
+                    <option value="Erebus">💻 Erebus · El Iluminado</option>
+                    <option value="Aetherius">🌌 Aetherius · El Viajero del Inframundo</option>
+                  </optgroup>
+                  <optgroup label="🌌 Portales Místicos">
+                    <option value="El Umbral del Inframundo">🌑 El Umbral del Inframundo</option>
+                    <option value="El Concilio de la Magia">✨ El Concilio de la Magia</option>
+                    <option value="El Portal del Caos">🌀 El Portal del Caos</option>
+                    <option value="El Inframundo de las Pociones">🧪 El Inframundo de las Pociones</option>
+                    <option value="El Portal del Conocimiento Infinito">📚 El Portal del Conocimiento Infinito</option>
+                  </optgroup>
+                </select>
               </div>
               <div class="form-field">
                 <label data-i18n="diario_humor_label">Estado del alma</label>
@@ -693,6 +784,25 @@
 
   <div id="toast"></div>
 
+  <!-- ── WELCOME MODAL ── -->
+  <div id="welcomeModal">
+    <div class="wm-box">
+      <span class="wm-glyph">🔮</span>
+      <span class="wm-badge">✦ DIARIO DEL ALMA ✦</span>
+      <h2 class="wm-title">Hola, Alma Brillante</h2>
+      <p class="wm-text">Soy tu Diario Mágico.<br>Te invito a escribir en mí tu carta diaria —<br>lo que te hizo sentir, cómo te habló el Oráculo<br>y cómo te ayudó el día de hoy.</p>
+      <button class="wm-btn" onclick="cerrarWelcome()">✦ Entrar al Diario</button>
+      <span class="wm-skip" onclick="cerrarWelcomeNoVolver()">No mostrar de nuevo</span>
+    </div>
+  </div>
+
+  <!-- ── LOGIN GREETING ── -->
+  <div id="loginGreet">
+    <span class="lg-emoji">🌙</span>
+    <p class="lg-title" id="lgTitle">Hola, Alma Brillante</p>
+    <p class="lg-text" id="lgText">¡Qué bueno verte! ¿Qué me contarás hoy?</p>
+  </div>
+
   <script>
   // ── STARFIELD ──
   (function(){
@@ -729,6 +839,9 @@
     cargarNombreMistico(user);
     // Racha
     iniciarRachaUI();
+    // Login greeting
+    cerrarWelcome();
+    setTimeout(() => mostrarLoginGreeting(name), 400);
   }
   </script>
 
@@ -892,6 +1005,56 @@ function iniciarRachaUI(){ actualizarRacha(); }
   }
 </script>
 <script>
+// ── WELCOME MODAL ──
+const WM_KEY = 'bruxa_diario_welcome_v1';
+
+function mostrarWelcomeModal(){
+  if(localStorage.getItem(WM_KEY)) return; // ya visto
+  const m = document.getElementById('welcomeModal');
+  m.style.display = 'flex';
+  setTimeout(() => m.classList.add('show'), 60);
+}
+
+function cerrarWelcome(){
+  const m = document.getElementById('welcomeModal');
+  m.classList.remove('show');
+  setTimeout(() => m.style.display = 'none', 600);
+}
+
+function cerrarWelcomeNoVolver(){
+  localStorage.setItem(WM_KEY, '1');
+  cerrarWelcome();
+}
+
+// ── LOGIN GREETING ──
+const SALUDOS = [
+  '¡Qué bueno verte! ¿Qué me contarás hoy?',
+  'El Templo te esperaba. ¿Lista para escribir?',
+  'Tu energía ilumina el Diario. ¿Qué hay en tu corazón?',
+  'Bienvenida de vuelta al espacio sagrado.',
+  '¿Qué secretos del alma quieres guardar hoy?',
+  'El Oráculo ha hablado. ¿Lo escribimos juntas?',
+  'Tu magia está aquí. Cuéntame todo.',
+];
+
+function mostrarLoginGreeting(nombre){
+  const greet = document.getElementById('loginGreet');
+  const title = document.getElementById('lgTitle');
+  const text  = document.getElementById('lgText');
+  const saludo = SALUDOS[Math.floor(Date.now() / 86400000) % SALUDOS.length];
+  title.textContent = 'Hola, ' + nombre + ' ✨';
+  text.textContent  = saludo;
+  greet.classList.add('show');
+  setTimeout(() => greet.classList.remove('show'), 4500);
+}
+
+// Show welcome on page load
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(mostrarWelcomeModal, 700);
+});
+</script>
+
+<script>
 // ── LANG INIT ──
 window.addEventListener('langchange', () => {
   if (typeof LangEngine !== 'undefined') LangEngine.apply();
@@ -900,7 +1063,7 @@ window.addEventListener('langchange', () => {
 if (typeof LangEngine !== 'undefined') { LangEngine.detect(); LangEngine.apply(); }
 </script>
 <script>
-// Dynamic back button based on origin
+// Dynamic back button based on origin + auto-select carta from URL param
 (function(){
   const params = new URLSearchParams(window.location.search);
   const from = params.get('from');
@@ -908,6 +1071,15 @@ if (typeof LangEngine !== 'undefined') { LangEngine.detect(); LangEngine.apply()
   if(btn && from === 'web'){
     btn.href = 'web.html';
     btn.textContent = '← Volver';
+  }
+  const carta = params.get('carta');
+  if(carta){
+    const sel = document.getElementById('entrCarta');
+    if(sel){
+      for(const opt of sel.options){
+        if(opt.value === carta){ sel.value = carta; break; }
+      }
+    }
   }
 })();
 </script>
