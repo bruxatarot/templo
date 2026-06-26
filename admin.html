@@ -89,6 +89,17 @@
       color:#b090e0;padding:.25rem .7rem;border-radius:100px;
     }
 
+    /* ENTRADAS DIARIO ADMIN */
+    .adm-entrada{background:rgba(4,6,15,.5);border:1px solid rgba(201,168,76,.12);border-radius:12px;padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.5rem}
+    .adm-entrada-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+    .adm-entrada-meta{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap}
+    .adm-entrada-autor{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.15em;color:var(--gold)}
+    .adm-entrada-fecha{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.1em;color:rgba(201,168,76,.4)}
+    .adm-entrada-texto{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:#d4c9a8;font-style:italic;line-height:1.5}
+    .adm-entrada-carta{font-size:.8rem;color:rgba(201,168,76,.6)}
+    .adm-btn-borrar{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;padding:.35rem .9rem;border-radius:8px;border:1px solid rgba(200,60,60,.4);background:rgba(200,60,60,.08);color:#e08080;cursor:pointer;transition:all .2s}
+    .adm-btn-borrar:hover{background:rgba(200,60,60,.2);border-color:rgba(200,60,60,.6)}
+
     /* CARDS */
     .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
     @media(max-width:700px){.admin-grid{grid-template-columns:1fr}}
@@ -354,6 +365,22 @@
       </div>
 
     </div><!-- /admin-grid -->
+
+    <!-- ENTRADAS DEL DIARIO PÚBLICAS -->
+    <div class="admin-card" style="margin-bottom:2rem" id="adminDiarioSection">
+      <span class="admin-card-icon">📔</span>
+      <span class="admin-card-title">ENTRADAS DEL DIARIO · PÚBLICAS</span>
+      <p style="color:rgba(201,168,76,.35);font-family:'Cormorant Garamond',serif;font-size:.9rem;margin:.5rem 0 1.2rem">
+        Estas entradas fueron compartidas por las almas del Templo. Solo tú puedes eliminarlas.
+      </p>
+      <div id="adminDiarioList" style="display:flex;flex-direction:column;gap:.8rem">
+        <p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem">Cargando entradas...</p>
+      </div>
+      <button class="save-btn" onclick="cargarEntradasAdmin()" style="margin-top:1rem;background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.3)">
+        ↺ Recargar
+      </button>
+    </div>
+
   </div><!-- /admin-content -->
 </div><!-- /adminPanel -->
 
@@ -866,6 +893,67 @@ function mostrarStatus(okId, errId, ok) {
 }
 
 // ══════════════════════════════════════════
+// ENTRADAS DEL DIARIO (PÚBLICAS) — ADMIN
+// ══════════════════════════════════════════
+async function cargarEntradasAdmin() {
+  const lista = document.getElementById('adminDiarioList');
+  if (!lista) return;
+  lista.innerHTML = '<p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem">Cargando entradas...</p>';
+  try {
+    const { getFirestore, collection, query, where, orderBy, getDocs, deleteDoc, doc } =
+      await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    const db = getFirestore();
+    const q = query(collection(db, 'entradas'), where('publica', '==', true), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+    if (snap.empty) {
+      lista.innerHTML = '<p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem">No hay entradas públicas aún.</p>';
+      return;
+    }
+    lista.innerHTML = '';
+    snap.forEach(docSnap => {
+      const d = docSnap.data();
+      const id = docSnap.id;
+      const fecha = d.createdAt?.toDate?.()?.toLocaleDateString('es', { day:'numeric', month:'long', year:'numeric' }) || '—';
+      const autor = d.displayName || 'Alma Anónima';
+      const div = document.createElement('div');
+      div.className = 'adm-entrada';
+      div.id = 'adm-e-' + id;
+      div.innerHTML = `
+        <div class="adm-entrada-header">
+          <div class="adm-entrada-meta">
+            <span class="adm-entrada-autor">✦ ${autor}</span>
+            <span class="adm-entrada-fecha">${fecha}</span>
+            ${d.humor ? `<span>${d.humor}</span>` : ''}
+            ${d.luna ? `<span>${d.luna}</span>` : ''}
+          </div>
+          <button class="adm-btn-borrar" onclick="adminBorrarEntrada('${id}')">✕ Eliminar</button>
+        </div>
+        ${d.carta ? `<div class="adm-entrada-carta">🔮 ${d.carta}</div>` : ''}
+        ${d.reflexion ? `<p class="adm-entrada-texto">"${d.reflexion}"</p>` : ''}
+        ${d.ritual ? `<div class="adm-entrada-carta">🕯️ ${d.ritual}</div>` : ''}
+      `;
+      lista.appendChild(div);
+    });
+    window._adminDb = db;
+  } catch(e) {
+    lista.innerHTML = '<p style="color:#e08080;font-size:.85rem">Error cargando entradas: ' + e.message + '</p>';
+  }
+}
+
+async function adminBorrarEntrada(id) {
+  if (!confirm('¿Eliminar esta entrada del diario? Esta acción no se puede deshacer.')) return;
+  try {
+    const { getFirestore, doc, deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    await deleteDoc(doc(getFirestore(), 'entradas', id));
+    const el = document.getElementById('adm-e-' + id);
+    if (el) el.remove();
+    mostrarFeedback('ok', 'Entrada eliminada.');
+  } catch(e) {
+    mostrarFeedback('err', 'Error: ' + e.message);
+  }
+}
+
+// ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
 function iniciarAdmin() {
@@ -873,6 +961,7 @@ function iniciarAdmin() {
   renderCartaGrid();
   cargarAdmin();
   cargarPanelActual();
+  cargarEntradasAdmin();
 }
 
 // Enter en login
