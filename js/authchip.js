@@ -185,9 +185,22 @@ function injectUI() {
 
     const loginBtn = document.createElement('button');
     loginBtn.id = 'acLoginBtn';
-    loginBtn.textContent = _t('ac_nav_btn') || '✦ Mi Cuenta';
+    loginBtn.textContent = '✦ Mi Cuenta';
     loginBtn.onclick = () => window._acAbrirModal();
     logo.insertAdjacentElement('afterend', loginBtn);
+  }
+
+  // Inyectar en sidebar si existe
+  const sidebarNav = document.querySelector('.sidebar-nav');
+  if (sidebarNav) {
+    const sidebarEntry = document.createElement('div');
+    sidebarEntry.id = 'acSidebarEntry';
+    sidebarEntry.style.cssText = 'margin-top:.5rem;padding-top:.8rem;border-top:1px solid rgba(201,168,76,.1)';
+    sidebarEntry.innerHTML = `
+      <a id="acSidebarChip" href="diario.html" style="display:none;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.15em;color:rgba(201,168,76,.7);padding:.5rem 1rem;display:none;align-items:center;gap:.5rem;text-decoration:none;transition:color .3s" class="sidebar-link">🌙 <span id="acSidebarName">Mi Diario</span></a>
+      <button id="acSidebarBtn" onclick="window._acAbrirModal()" style="width:100%;margin-top:.3rem;font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.18em;padding:.7rem 1rem;border-radius:100px;border:1px solid rgba(201,168,76,.35);background:rgba(201,168,76,.07);color:#c9a84c;cursor:pointer;transition:all .3s;text-align:center">✦ Crear cuenta · Iniciar sesión</button>
+    `;
+    sidebarNav.appendChild(sidebarEntry);
   }
 }
 
@@ -304,20 +317,28 @@ onAuthStateChanged(auth, user => {
   const chip     = document.getElementById('acChip');
   const loginBtn = document.getElementById('acLoginBtn');
 
+  const sidebarChip = document.getElementById('acSidebarChip');
+  const sidebarBtn  = document.getElementById('acSidebarBtn');
+  const sidebarName = document.getElementById('acSidebarName');
+
   if (user) {
     const name = user.displayName || user.email?.split('@')[0] || 'Alma';
-    if (chip)     { chip.textContent = '🌙 ' + name; chip.style.display = 'inline-flex'; }
-    if (loginBtn) loginBtn.style.display = 'none';
+    if (chip)        { chip.textContent = '🌙 ' + name; chip.style.display = 'inline-flex'; }
+    if (loginBtn)    loginBtn.style.display = 'none';
+    if (sidebarChip) { sidebarChip.style.display = 'flex'; }
+    if (sidebarName) sidebarName.textContent = name + ' · Mi Diario';
+    if (sidebarBtn)  sidebarBtn.style.display = 'none';
 
-    // Primera vez que se loguea en esta sesión de navegador
     if (prevUid !== user.uid) {
       prevUid = user.uid;
       mostrarBienvenida(user);
     }
   } else {
     prevUid = null;
-    if (chip)     chip.style.display = 'none';
-    if (loginBtn) loginBtn.style.display = 'inline-block';
+    if (chip)        chip.style.display = 'none';
+    if (loginBtn)    loginBtn.style.display = 'inline-block';
+    if (sidebarChip) sidebarChip.style.display = 'none';
+    if (sidebarBtn)  sidebarBtn.style.display = 'block';
   }
 });
 
