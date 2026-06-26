@@ -895,14 +895,29 @@ function mostrarStatus(okId, errId, ok) {
 // ══════════════════════════════════════════
 // ENTRADAS DEL DIARIO (PÚBLICAS) — ADMIN
 // ══════════════════════════════════════════
+async function _adminInitFb() {
+  const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+  const cfg = {
+    apiKey:"AIzaSyCCAIQPfCXAr0lIb5GyyyCj_lySbF5Liqg",
+    authDomain:"diario-del-alma.firebaseapp.com",
+    projectId:"diario-del-alma",
+    storageBucket:"diario-del-alma.firebasestorage.app",
+    messagingSenderId:"40226201072",
+    appId:"1:40226201072:web:b8870564b9f6a270f71135"
+  };
+  const app = getApps().length ? getApp() : initializeApp(cfg);
+  const { getFirestore } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+  return getFirestore(app);
+}
+
 async function cargarEntradasAdmin() {
   const lista = document.getElementById('adminDiarioList');
   if (!lista) return;
   lista.innerHTML = '<p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem">Cargando entradas...</p>';
   try {
-    const { getFirestore, collection, query, where, orderBy, getDocs, deleteDoc, doc } =
+    const { collection, query, where, orderBy, getDocs, deleteDoc, doc } =
       await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-    const db = getFirestore();
+    const db = await _adminInitFb();
     const q = query(collection(db, 'entradas'), where('publica', '==', true), orderBy('createdAt', 'desc'));
     const snap = await getDocs(q);
     if (snap.empty) {
@@ -943,8 +958,9 @@ async function cargarEntradasAdmin() {
 async function adminBorrarEntrada(id) {
   if (!confirm('¿Eliminar esta entrada del diario? Esta acción no se puede deshacer.')) return;
   try {
-    const { getFirestore, doc, deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-    await deleteDoc(doc(getFirestore(), 'entradas', id));
+    const { doc, deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    const db = await _adminInitFb();
+    await deleteDoc(doc(db, 'entradas', id));
     const el = document.getElementById('adm-e-' + id);
     if (el) el.remove();
     mostrarFeedback('ok', 'Entrada eliminada.');
