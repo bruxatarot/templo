@@ -115,9 +115,11 @@ const CSS = `
 .bv-btn:hover{box-shadow:0 0 44px rgba(201,168,76,.4);transform:translateY(-2px)}
 `;
 
+// ── HELPER TRADUCCIÓN ────────────────────────────
+const _t = k => window.LangEngine?.t(k) || k;
+
 // ── INYECTAR ESTILOS Y HTML ───────────────────────
 function injectUI() {
-  // Estilos
   const style = document.createElement('style');
   style.textContent = CSS;
   document.head.appendChild(style);
@@ -130,29 +132,29 @@ function injectUI() {
       <button class="ac-close" onclick="window._acCerrarModal()">✕</button>
       <div style="text-align:center;margin-bottom:1.6rem">
         <span class="ac-badge">✦ TEMPLO DEL PRISMA ✦</span>
-        <h2 class="ac-title" id="acModalTitle">Tu cuenta sagrada</h2>
-        <p class="ac-sub" id="acModalSub">Accede al Templo para guardar tu camino en el Manuscrito Antiguo.</p>
+        <h2 class="ac-title" id="acModalTitle">${_t('ac_modal_title_reg')}</h2>
+        <p class="ac-sub" id="acModalSub">${_t('ac_modal_sub_reg')}</p>
       </div>
       <button class="ac-google" onclick="window._acGoogle()">
         <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Continuar con Google
+        <span id="acGoogleTxt">${_t('ac_google')}</span>
       </button>
-      <div class="ac-sep"><span>o con email</span></div>
+      <div class="ac-sep"><span id="acSepTxt">${_t('ac_sep')}</span></div>
       <div id="acNameWrap" class="ac-field">
-        <label>Nombre mágico</label>
-        <input id="acName" type="text" placeholder="¿Cómo quieres que te llamemos?">
+        <label id="acNameLbl">${_t('ac_name_label')}</label>
+        <input id="acName" type="text" placeholder="${_t('ac_name_ph')}">
       </div>
       <div class="ac-field">
-        <label>Email</label>
+        <label id="acEmailLbl">${_t('ac_email_label')}</label>
         <input id="acEmail" type="email" placeholder="tu@email.com">
       </div>
       <div class="ac-field">
-        <label>Contraseña</label>
-        <input id="acPass" type="password" placeholder="Mínimo 6 caracteres">
+        <label id="acPassLbl">${_t('ac_pass_label')}</label>
+        <input id="acPass" type="password" placeholder="${_t('ac_pass_ph')}">
       </div>
-      <button class="ac-submit" id="acSubmit" onclick="window._acEmail()">Crear cuenta</button>
+      <button class="ac-submit" id="acSubmit" onclick="window._acEmail()">${_t('ac_btn_reg')}</button>
       <p class="ac-err" id="acErr"></p>
-      <p class="ac-toggle" id="acToggle" onclick="window._acToggle()">¿Ya tienes cuenta? Inicia sesión</p>
+      <p class="ac-toggle" id="acToggle" onclick="window._acToggle()">${_t('ac_toggle_to_login')}</p>
     </div>
   `;
   document.body.appendChild(modal);
@@ -163,18 +165,11 @@ function injectUI() {
   bv.innerHTML = `
     <div id="acBvBox">
       <span class="bv-glyph">📜</span>
-      <span class="bv-badge">✦ EL TEMPLO TE RECONOCE ✦</span>
-      <h2 class="bv-name" id="bvNombre">Bienvenida, Alma Brillante</h2>
+      <span class="bv-badge" id="bvBadge">${_t('ac_bv_badge')}</span>
+      <h2 class="bv-name" id="bvNombre">${_t('ac_bv_saludo')} Alma Brillante</h2>
       <div class="bv-line"></div>
-      <p class="bv-text">
-        Has cruzado el umbral sagrado.<br><br>
-        Desde este momento, el <em>Manuscrito Antiguo del Templo</em><br>
-        guardará tu camino —<br>
-        las cartas que consultes, los mensajes del Oráculo,<br>
-        los rituales que realices.<br><br>
-        <em>Tu historia en el Prisma ha comenzado.</em>
-      </p>
-      <button class="bv-btn" onclick="window._acCerrarBv()">✦ Entrar al Templo</button>
+      <p class="bv-text" id="bvText"></p>
+      <button class="bv-btn" id="bvBtn" onclick="window._acCerrarBv()">${_t('ac_bv_btn')}</button>
     </div>
   `;
   document.body.appendChild(bv);
@@ -190,7 +185,7 @@ function injectUI() {
 
     const loginBtn = document.createElement('button');
     loginBtn.id = 'acLoginBtn';
-    loginBtn.textContent = '✦ Mi Cuenta';
+    loginBtn.textContent = _t('ac_nav_btn') || '✦ Mi Cuenta';
     loginBtn.onclick = () => window._acAbrirModal();
     logo.insertAdjacentElement('afterend', loginBtn);
   }
@@ -213,13 +208,11 @@ window._acCerrarBv = () => {
 window._acToggle = () => {
   acMode = acMode === 'register' ? 'login' : 'register';
   const isReg = acMode === 'register';
-  document.getElementById('acModalTitle').textContent = isReg ? 'Tu cuenta sagrada' : 'Bienvenida de vuelta';
-  document.getElementById('acModalSub').textContent   = isReg
-    ? 'Accede al Templo para guardar tu camino en el Manuscrito Antiguo.'
-    : 'El Templo recuerda cada paso tuyo.';
+  document.getElementById('acModalTitle').textContent = isReg ? _t('ac_modal_title_reg') : _t('ac_modal_title_login');
+  document.getElementById('acModalSub').textContent   = isReg ? _t('ac_modal_sub_reg') : _t('ac_modal_sub_login');
   document.getElementById('acNameWrap').style.display = isReg ? 'block' : 'none';
-  document.getElementById('acSubmit').textContent     = isReg ? 'Crear cuenta' : 'Entrar al Templo';
-  document.getElementById('acToggle').textContent     = isReg ? '¿Ya tienes cuenta? Inicia sesión' : '¿Primera vez? Crear cuenta';
+  document.getElementById('acSubmit').textContent     = isReg ? _t('ac_btn_reg') : _t('ac_btn_login');
+  document.getElementById('acToggle').textContent     = isReg ? _t('ac_toggle_to_login') : _t('ac_toggle_to_reg');
   document.getElementById('acErr').textContent = '';
 };
 
@@ -244,10 +237,10 @@ window._acEmail = async () => {
     window._acCerrarModal();
   } catch(e) {
     const msgs = {
-      'auth/wrong-password':'Contraseña incorrecta.',
-      'auth/user-not-found':'No existe esa cuenta.',
-      'auth/email-already-in-use':'Ese email ya está registrado.',
-      'auth/weak-password':'La contraseña es muy corta.'
+      'auth/wrong-password': _t('ac_err_pass'),
+      'auth/user-not-found': _t('ac_err_no_account'),
+      'auth/email-already-in-use': _t('ac_err_email_used'),
+      'auth/weak-password': _t('ac_err_weak_pass'),
     };
     document.getElementById('acErr').textContent = msgs[e.code] || e.message;
   }
@@ -268,8 +261,22 @@ async function mostrarBienvenida(user) {
     }
   } catch(e) {}
 
-  const el = document.getElementById('bvNombre');
-  if (el) el.textContent = 'Bienvenida, ' + nombre;
+  const elNombre = document.getElementById('bvNombre');
+  if (elNombre) elNombre.textContent = _t('ac_bv_saludo') + ' ' + nombre;
+
+  const elBadge = document.getElementById('bvBadge');
+  if (elBadge) elBadge.textContent = _t('ac_bv_badge');
+
+  const elText = document.getElementById('bvText');
+  if (elText) {
+    const raw = _t('ac_bv_text');
+    elText.innerHTML = raw
+      .replace(/Manuscrito Antiguo del Templo|Ancient Manuscript of the Temple|Antico Manoscritto del Tempio|古代 El Yazması|古代写本|古代필사본|Manuscrito Antigo do Templo/g, m => `<em>${m}</em>`)
+      .replace(/\n/g, '<br>');
+  }
+
+  const elBtn = document.getElementById('bvBtn');
+  if (elBtn) elBtn.textContent = _t('ac_bv_btn');
 
   setTimeout(() => {
     document.getElementById('acBienvenida')?.classList.add('open');
