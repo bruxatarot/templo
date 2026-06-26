@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <script src="lang.js"></script>
+  <script type="module" src="js/auth-chip.js"></script>
   <script src="js/data/oracle-cards.js"></script>
   <script src="js/data/oracle-pt.js"></script>
   <script src="js/data/oracle-it.js"></script>
@@ -719,6 +720,14 @@
           Ingresa tu fecha de nacimiento y descúbrelo.
         </p>
         <div style="background:rgba(11,17,40,.6);border:1px solid rgba(201,168,76,.15);border-radius:20px;padding:2rem;max-width:500px;margin:0 auto;">
+          <div style="display:flex;gap:1.8rem;justify-content:center;margin-bottom:1rem">
+            <label style="display:flex;align-items:center;gap:.5rem;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.15em;color:rgba(201,168,76,.5);cursor:pointer">
+              <input type="radio" name="nmGeneroIdx" value="f" checked style="accent-color:#c9a84c;width:14px;height:14px"> ♀ Femenino
+            </label>
+            <label style="display:flex;align-items:center;gap:.5rem;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.15em;color:rgba(201,168,76,.5);cursor:pointer">
+              <input type="radio" name="nmGeneroIdx" value="m" style="accent-color:#c9a84c;width:14px;height:14px"> ♂ Masculino
+            </label>
+          </div>
           <div class="nombre-mistico-form">
             <input type="date" id="nombreFecha" placeholder="Tu fecha de nacimiento">
             <button class="nombre-mistico-btn" onclick="calcularNombre()" data-i18n="nombre_btn">✦ Revelar mi nombre</button>
@@ -886,33 +895,22 @@
       <p class="section-label" data-i18n="redes_section_label">✦ Comunidad</p>
       <h2 class="section-title" data-i18n="redes_section_title">Sígueme en Redes</h2>
       <p class="section-body" style="margin-bottom:2rem" data-i18n="redes_section_body">Energías semanales, canalizaciones y más magia del Prisma</p>
-      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-        <a href="https://www.instagram.com/bruxatarot" target="_blank"
-          style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;
-          padding:.8rem 1.8rem;border-radius:100px;text-decoration:none;
-          border:1px solid rgba(201,168,76,.3);color:var(--gold);
-          transition:all .3s;background:rgba(201,168,76,.05)"
-          onmouseover="this.style.background='rgba(201,168,76,.1)'"
-          onmouseout="this.style.background='rgba(201,168,76,.05)'">
-          📸 Instagram
+      <div style="display:flex;gap:2rem;justify-content:center;flex-wrap:wrap">
+        <a href="https://www.instagram.com/bruxatarot" target="_blank" class="acf-social-btn">
+          <img src="images/insta.png" alt="Instagram">
+          <span>Instagram</span>
         </a>
-        <a href="https://www.youtube.com/@BruxaTarot" target="_blank"
-          style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;
-          padding:.8rem 1.8rem;border-radius:100px;text-decoration:none;
-          border:1px solid rgba(201,168,76,.3);color:var(--gold);
-          transition:all .3s;background:rgba(201,168,76,.05)"
-          onmouseover="this.style.background='rgba(201,168,76,.1)'"
-          onmouseout="this.style.background='rgba(201,168,76,.05)'">
-          🎵 YouTube
+        <a href="https://www.facebook.com/bruxatarot" target="_blank" class="acf-social-btn">
+          <img src="images/facebook.png" alt="Facebook">
+          <span>Facebook</span>
         </a>
-        <a href="https://www.tiktok.com/@bruxatarot" target="_blank"
-          style="font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.2em;
-          padding:.8rem 1.8rem;border-radius:100px;text-decoration:none;
-          border:1px solid rgba(201,168,76,.3);color:var(--gold);
-          transition:all .3s;background:rgba(201,168,76,.05)"
-          onmouseover="this.style.background='rgba(201,168,76,.1)'"
-          onmouseout="this.style.background='rgba(201,168,76,.05)'">
-          🎬 TikTok
+        <a href="https://www.tiktok.com/@bruxatarot" target="_blank" class="acf-social-btn">
+          <img src="images/tiktok.png" alt="TikTok">
+          <span>TikTok</span>
+        </a>
+        <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="acf-social-btn">
+          <img src="images/youtube.png" alt="YouTube">
+          <span>YouTube</span>
         </a>
       </div>
     </div>
@@ -1074,6 +1072,10 @@
     const kws=tr?tr.keywords:c.keywords;
 
     document.getElementById('cardName').textContent=c.name;
+    // Update diario link with card name
+    document.querySelectorAll('a.diario-link[href^="diario"]').forEach(el => {
+      el.href = 'diario.html?carta=' + encodeURIComponent(c.name);
+    });
     document.getElementById('cardSubtitle').textContent=sub;
     document.getElementById('cardScene').classList.add('flipped');
     setTimeout(()=>{
@@ -1093,6 +1095,8 @@
       // Show diario reminder
       document.getElementById('diarioReminder').classList.add('visible');
     },1000);
+    // Auto-save card for logged-in users
+    if (window._guardarCartaFirestore) window._guardarCartaFirestore(c.name);
   }
 
   function resetCard(){
@@ -1111,54 +1115,60 @@
   // ── NOMBRE MÍSTICO ──
   // Día (1-31) → Palabra
   const NM_DIAS = [
-    'Iluminado/a',   // 1
-    'Hechicero/a',   // 2
-    'Viajero/a',     // 3
-    'Guardián/a',    // 4
-    'Portador/a',    // 5
-    'Mago/a',        // 6
-    'Encubierto/a',  // 7
-    'Tejedor/a',     // 8
-    'Sanador/a',     // 9
-    'Vidente',       // 10
-    'Invocador/a',   // 11
-    'Buscador/a',    // 12
-    'Protector/a',   // 13
-    'Velador/a',     // 14
-    'Prisionero/a',  // 15
-    'Liberador/a',   // 16
-    'Custodio/a',    // 17
-    'Olvidado/a',    // 18
-    'Renacido/a',    // 19
-    'Cazador/a',     // 20
-    'Susurrador/a',  // 21
-    'Caminante',     // 22
-    'Venenoso/a',    // 23
-    'Druida',        // 24
-    'Musa',          // 25
-    'Encantador/a',  // 26
-    'Canalizador/a', // 27
-    'Ancestral',     // 28
-    'Primordial',    // 29
-    'Revelado/a',    // 30
-    'Dios/Diosa',    // 31
+    'Iluminado|Iluminada',    // 1
+    'Hechicero|Hechicera',    // 2
+    'Viajero|Viajera',        // 3
+    'Guardián|Guardiana',     // 4
+    'Portador|Portadora',     // 5
+    'Mago|Maga',              // 6
+    'Encubierto|Encubierta',  // 7
+    'Tejedor|Tejedora',       // 8
+    'Sanador|Sanadora',       // 9
+    'Vidente|Vidente',        // 10
+    'Invocador|Invocadora',   // 11
+    'Buscador|Buscadora',     // 12
+    'Protector|Protectora',   // 13
+    'Velador|Veladora',       // 14
+    'Prisionero|Prisionera',  // 15
+    'Liberador|Liberadora',   // 16
+    'Custodio|Custodia',      // 17
+    'Olvidado|Olvidada',      // 18
+    'Renacido|Renacida',      // 19
+    'Cazador|Cazadora',       // 20
+    'Susurrador|Susurradora', // 21
+    'Caminante|Caminante',    // 22
+    'Venenoso|Venenosa',      // 23
+    'Druida|Druida',          // 24
+    'Inspirador|Musa',        // 25
+    'Encantador|Encantadora', // 26
+    'Canalizador|Canalizadora', // 27
+    'Ancestral|Ancestral',    // 28
+    'Primordial|Primordial',  // 29
+    'Revelado|Revelada',      // 30
+    'Dios|Diosa',             // 31
   ];
 
-  // Mes (0-11) → Adjetivo
+  // Mes (0-11) → masc|fem
   const NM_MESES = [
-    'Etéreo/a',       // Enero
-    'Gélido/a',       // Febrero
-    'Tempestuoso/a',  // Marzo
-    'Floreciente',    // Abril
-    'Eterno/a',       // Mayo
-    'Apasionado/a',         // Junio
-    'Mágico/a',       // Julio
-    'Sutil',          // Agosto
-    'Sabio/a',        // Septiembre
-    'Místico/a',      // Octubre
-    'Silencioso/a',   // Noviembre
-    'Ancestral',      // Diciembre
+    'Etéreo|Etérea',
+    'Gélido|Gélida',
+    'Tempestuoso|Tempestuosa',
+    'Floreciente|Floreciente',
+    'Eterno|Eterna',
+    'Apasionado|Apasionada',
+    'Mágico|Mágica',
+    'Sutil|Sutil',
+    'Sabio|Sabia',
+    'Místico|Mística',
+    'Silencioso|Silenciosa',
+    'Ancestral|Ancestral',
   ];
+
+  function genNMIdx(txt, g) {
+    if (!txt.includes('|')) return txt;
+    const [m, f] = txt.split('|');
+    return g === 'f' ? f : m;
+  }
 
   // Últimos 2 dígitos del año (00-99) → Frase
   // 52-99 repite el ciclo 00-47 (usando módulo 50 desde 51)
@@ -1220,16 +1230,17 @@
   function calcularNombre(){
     const fecha = document.getElementById('nombreFecha').value;
     if(!fecha){ return; }
+    const g = document.querySelector('input[name="nmGeneroIdx"]:checked')?.value || 'f';
     const d = new Date(fecha + 'T12:00:00'); // evitar timezone issues
     const dia  = d.getDate();       // 1-31
     const mes  = d.getMonth();      // 0-11
     const anio = d.getFullYear();
 
     // Palabra del día
-    const palabra = NM_DIAS[dia - 1] || NM_DIAS[30];
+    const palabra = genNMIdx(NM_DIAS[dia - 1] || NM_DIAS[30], g);
 
     // Adjetivo del mes
-    const adjetivo = NM_MESES[mes];
+    const adjetivo = genNMIdx(NM_MESES[mes], g);
 
     // Frase del año — últimos 2 dígitos
     // 00-51 → directo | 52-99 → repite desde 00 (52-52=00, 53-52=01, etc.)
