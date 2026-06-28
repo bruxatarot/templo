@@ -1065,7 +1065,25 @@
       document.getElementById('diarioReminder').classList.add('visible');
     },1000);
     // Auto-save card for logged-in users
-    if (window._guardarCartaFirestore) window._guardarCartaFirestore(c.name);
+    if (window._guardarCartaFirestore) {
+      window._guardarCartaFirestore(c.name);
+    } else {
+      // Fallback directo si auth-chip.js no lo provee
+      const user = window._indexAuthUser;
+      if (user) {
+        (async () => {
+          try {
+            const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+            const { getFirestore, doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+            const cfg = {apiKey:"AIzaSyCCAIQPfCXAr0lIb5GyyyCj_lySbF5Liqg",authDomain:"diario-del-alma.firebaseapp.com",projectId:"diario-del-alma",storageBucket:"diario-del-alma.firebasestorage.app",messagingSenderId:"40226201072",appId:"1:40226201072:web:b8870564b9f6a270f71135"};
+            const app = getApps().length ? getApp() : initializeApp(cfg);
+            const db = getFirestore(app);
+            const hoy = new Date().toLocaleDateString('sv-SE');
+            await setDoc(doc(db, 'perfiles', user.uid, 'cartas', hoy), { carta: c.name, fecha: hoy, ts: serverTimestamp() });
+          } catch(e) { console.log('carta no guardada:', e); }
+        })();
+      }
+    }
   }
 
   function resetCard(){
@@ -1680,18 +1698,16 @@ async function fbDelete(path) {
 }
 
 async function fbRegistrarVisita() {
-  const KEY      = 'bruxa_ultima_visita';
-  const ultima   = parseInt(localStorage.getItem(KEY) || '0');
-  const ahora    = Date.now();
-  const ya_hoy   = (ahora - ultima) < 24 * 60 * 60 * 1000;
-  const fechaHoy = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  const KEY      = 'bruxa_ultima_visita_fecha';
+  const fechaHoy = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD en hora local
+  const ya_hoy   = localStorage.getItem(KEY) === fechaHoy;
 
   const actual = await fbGet('/templo/visitas') || 0;
 
   if(!ya_hoy) {
     const nuevas = actual + 1;
     await fbPut('/templo/visitas', nuevas);
-    localStorage.setItem(KEY, ahora.toString());
+    localStorage.setItem(KEY, fechaHoy);
     document.getElementById('fbVisitas').textContent = nuevas.toLocaleString('es-MX');
   } else {
     document.getElementById('fbVisitas').textContent = actual.toLocaleString('es-MX');
