@@ -1217,6 +1217,23 @@ if (typeof LangEngine !== 'undefined') { LangEngine.detect(); LangEngine.apply()
       }
     }
   }
+
+  // Auto-fill desde resultado del test
+  const testLuz = params.get('test_luz');
+  if(testLuz){
+    const luzNombre = params.get('test_luz_nombre') || testLuz;
+    const sombraNombre = params.get('test_sombra_nombre') || params.get('test_sombra') || '';
+    const elemEmoji = params.get('test_elem') || '✨';
+    const reflexionEl = document.getElementById('entrReflexion');
+    if(reflexionEl && !reflexionEl.value){
+      reflexionEl.value = `${elemEmoji} Mi alma de luz es: ${luzNombre}${sombraNombre ? ' · Mi sombra: ' + sombraNombre : ''}`;
+    }
+    // Scroll al formulario
+    setTimeout(() => {
+      const form = document.getElementById('entradaForm');
+      if(form) form.scrollIntoView({ behavior:'smooth' });
+    }, 800);
+  }
 })();
 </script>
 </body>
