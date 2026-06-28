@@ -1156,14 +1156,12 @@ function mostrarResultado(result) {
 }
 
 async function guardarTestFirestore(luzKey, luzNombre, sombraKey, sombraNombre, elemEmoji) {
-  const user = window._indexAuthUser;
-  if (!user) return;
   try {
-    const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
-    const { getFirestore, doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-    const cfg = {apiKey:"AIzaSyCCAIQPfCXAr0lIb5GyyyCj_lySbF5Liqg",authDomain:"diario-del-alma.firebaseapp.com",projectId:"diario-del-alma",storageBucket:"diario-del-alma.firebasestorage.app",messagingSenderId:"40226201072",appId:"1:40226201072:web:b8870564b9f6a270f71135"};
-    const app = getApps().length ? getApp() : initializeApp(cfg);
-    const db = getFirestore(app);
+    const { app, db } = await _fbInit();
+    const { getAuth } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+    const user = getAuth(app).currentUser;
+    if (!user) return;
+    const { doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
     const hoy = new Date().toLocaleDateString('sv-SE');
     await setDoc(doc(db, 'perfiles', user.uid, 'tests', hoy), {
       luzKey, luzNombre, sombraKey, sombraNombre, elemEmoji, fecha: hoy, ts: serverTimestamp()
@@ -1208,25 +1206,36 @@ const MENSAJES = {
   heimdall: ['Guardián de Portales despertó','Guardianes de Portales despertaron'],
 };
 
+const _FB_CFG = {apiKey:"AIzaSyCCAIQPfCXAr0lIb5GyyyCj_lySbF5Liqg",authDomain:"diario-del-alma.firebaseapp.com",projectId:"diario-del-alma",storageBucket:"diario-del-alma.firebasestorage.app",messagingSenderId:"40226201072",appId:"1:40226201072:web:b8870564b9f6a270f71135"};
+
+async function _fbInit() {
+  const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+  const app = getApps().length ? getApp() : initializeApp(_FB_CFG);
+  const { getFirestore } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+  return { app, db: getFirestore(app) };
+}
+
 async function actualizarYMostrarStats(luzKey) {
   try {
-    // Leer stats actuales
-    const res = await fetch(FB_STATS + '.json');
-    const stats = (await res.json()) || {};
+    const { app, db } = await _fbInit();
+    const { doc, getDoc, setDoc, increment, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
 
-    // Incrementar el personaje actual
-    stats[luzKey] = (stats[luzKey] || 0) + 1;
+    // Intentar incrementar con merge
+    const ref = doc(db, 'test_stats', 'personajes');
+    try {
+      await updateDoc(ref, { [luzKey]: increment(1) });
+    } catch(e) {
+      await setDoc(ref, { [luzKey]: 1 }, { merge: true });
+    }
 
-    // Guardar de vuelta
-    await fetch(FB_STATS + '.json', {
-      method: 'PUT',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(stats)
-    });
-
+    // Leer stats actualizadas
+    const snap = await getDoc(ref);
+    const stats = snap.exists() ? snap.data() : { [luzKey]: 1 };
     mostrarStats(stats, luzKey);
   } catch(e) {
     console.log('stats error:', e);
+    // Mostrar con count=1 si falla
+    mostrarStats({ [luzKey]: 1 }, luzKey);
   }
 }
 
