@@ -815,6 +815,15 @@
         <p class="carta-entry-hint">Las cartas se registran automáticamente cuando las consultas en el Templo 🔮</p>
       </div>
 
+      <!-- MIS TESTS DEL ALMA -->
+      <div id="mis-tests" class="cartas-oracle-wrap" style="margin-top:1.5rem">
+        <p class="section-title">✦ MIS TESTS DEL ALMA</p>
+        <div class="cartas-timeline" id="testsTimeline">
+          <p class="carta-entry-empty">Cargando tus tests…</p>
+        </div>
+        <p class="carta-entry-hint">Los resultados se guardan automáticamente al hacer el test 🌟</p>
+      </div>
+
       <!-- ADMIN: ENTRADAS PÚBLICAS -->
       <div id="adminPanel" class="admin-panel" style="display:none">
         <div class="divider"><div class="divider-line"></div><span class="divider-sym">✦</span><div class="divider-line"></div></div>
@@ -888,6 +897,7 @@
     setTimeout(() => mostrarLoginGreeting(name), 400);
     // Load oracle card history
     loadCartasOraculo(user);
+    loadTestsAlma(user);
   }
   </script>
 
@@ -1186,6 +1196,35 @@ async function loadCartasOraculo(user) {
   } catch(e) {
     tl.innerHTML = '<p class="carta-entry-empty">No se pudo cargar el historial.</p>';
     console.log('cartas historial error:', e);
+  }
+}
+
+async function loadTestsAlma(user) {
+  const tl = document.getElementById('testsTimeline');
+  if (!tl) return;
+  try {
+    const { collection, getDocs, getFirestore } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    const db = window._db || getFirestore();
+    const snap = await getDocs(collection(db, 'perfiles', user.uid, 'tests'));
+    if (snap.empty) {
+      tl.innerHTML = '<p class="carta-entry-empty">Aún no has hecho el test del alma. <a href="test.html" style="color:var(--gold)">¡Hazlo aquí!</a> 🌟</p>';
+      return;
+    }
+    const entries = [];
+    snap.forEach(d => entries.push({ id: d.id, ...d.data() }));
+    entries.sort((a, b) => b.id.localeCompare(a.id));
+    tl.innerHTML = '';
+    entries.forEach(e => {
+      const fechaDisplay = new Date(e.id + 'T12:00:00').toLocaleDateString('es', { day:'numeric', month:'short', year:'numeric' });
+      const div = document.createElement('div');
+      div.className = 'carta-entry';
+      div.innerHTML = `<span class="carta-entry-fecha">${fechaDisplay}</span><span class="carta-entry-nombre">${e.elemEmoji || '✨'} ${e.luzNombre || e.luzKey} · sombra: ${e.sombraNombre || e.sombraKey}</span>`;
+      tl.appendChild(div);
+    });
+  } catch(e) {
+    const tl2 = document.getElementById('testsTimeline');
+    if (tl2) tl2.innerHTML = '<p class="carta-entry-empty">No se pudo cargar los tests.</p>';
+    console.log('tests error:', e);
   }
 }
 </script>
