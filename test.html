@@ -1218,23 +1218,17 @@ async function _fbInit() {
 async function actualizarYMostrarStats(luzKey) {
   try {
     const { app, db } = await _fbInit();
-    const { doc, getDoc, setDoc, increment, updateDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-
-    // Intentar incrementar con merge
+    const { doc, getDoc, setDoc, increment } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
     const ref = doc(db, 'test_stats', 'personajes');
-    try {
-      await updateDoc(ref, { [luzKey]: increment(1) });
-    } catch(e) {
-      await setDoc(ref, { [luzKey]: 1 }, { merge: true });
-    }
 
-    // Leer stats actualizadas
+    // setDoc con merge siempre funciona, existe o no el documento
+    await setDoc(ref, { [luzKey]: increment(1) }, { merge: true });
+
     const snap = await getDoc(ref);
     const stats = snap.exists() ? snap.data() : { [luzKey]: 1 };
     mostrarStats(stats, luzKey);
   } catch(e) {
     console.log('stats error:', e);
-    // Mostrar con count=1 si falla
     mostrarStats({ [luzKey]: 1 }, luzKey);
   }
 }
