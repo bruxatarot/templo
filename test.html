@@ -214,6 +214,13 @@
       <span class="elem-pill" data-i18n="test_elem_air">🌬️ Aire · Espadas</span>
     </div>
     <button class="start-btn" onclick="iniciarTest()" data-i18n="test_start_btn">✦ Comenzar el Test</button>
+
+    <!-- STATS PREVIAS AL TEST -->
+    <div id="heroStatsWrap" style="margin-top:2.5rem;max-width:500px;width:100%">
+      <p style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.35em;color:rgba(201,168,76,.35);margin-bottom:1.2rem">✦ ALMAS LIBERADAS EN EL TEMPLO ✦</p>
+      <p id="heroStatsHighlight" style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#b8a87a;font-style:italic;margin-bottom:1.2rem"></p>
+      <div id="heroStatsRanking"></div>
+    </div>
   </section>
 
   <!-- TEST -->
@@ -1215,23 +1222,60 @@ async function _fbInit() {
   return { app, db: getFirestore(app) };
 }
 
+async function _cargarStats() {
+  try {
+    const { app, db } = await _fbInit();
+    const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    const snap = await getDoc(doc(db, 'test_stats', 'personajes'));
+    return snap.exists() ? snap.data() : {};
+  } catch(e) { return {}; }
+}
+
 async function actualizarYMostrarStats(luzKey) {
   try {
     const { app, db } = await _fbInit();
     const { doc, getDoc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
     const ref = doc(db, 'test_stats', 'personajes');
 
-    // Leer → sumar → guardar (más confiable que increment en doc nuevo)
     const snap = await getDoc(ref);
     const stats = snap.exists() ? { ...snap.data() } : {};
     stats[luzKey] = (stats[luzKey] || 0) + 1;
     await setDoc(ref, stats);
 
     mostrarStats(stats, luzKey);
+    renderHeroStats(stats, null); // actualizar también el hero
   } catch(e) {
     console.log('stats error:', e);
     mostrarStats({ [luzKey]: 1 }, luzKey);
   }
+}
+
+function renderHeroStats(stats, luzKey) {
+  const data = getTestData();
+  const entries = Object.entries(stats).sort((a,b) => b[1]-a[1]).slice(0, 6);
+  if (!entries.length) return;
+  const maxVal = entries[0][1];
+  const top = entries[0];
+  const topP = data.personajes[top[0]];
+  const topEmoji = topP ? topP.emoji : '✨';
+  const topNombre = topP ? topP.nombre.split(' ')[0] : top[0];
+  const hl = document.getElementById('heroStatsHighlight');
+  if (hl) hl.innerHTML = `${topEmoji} <strong>${top[1]}</strong> ${MENSAJES[top[0]] ? MENSAJES[top[0]][1] : top[0]}`;
+  const ranking = document.getElementById('heroStatsRanking');
+  if (!ranking) return;
+  ranking.innerHTML = entries.map(([key, val]) => {
+    const pj = data.personajes[key];
+    const em = pj ? pj.emoji : '✨';
+    const nm = pj ? pj.nombre.split(' ')[0] : key;
+    const pct = Math.round((val / maxVal) * 100);
+    const mine = key === luzKey;
+    return `<div class="stats-row">
+      <span class="stats-row-emoji">${em}</span>
+      <span class="stats-row-name" style="${mine?'color:var(--gold-light)':''}">${nm}</span>
+      <div class="stats-bar-wrap"><div class="stats-bar${mine?' mine':''}" style="width:${pct}%"></div></div>
+      <span class="stats-row-count">${val}</span>
+    </div>`;
+  }).join('');
 }
 
 function mostrarStats(stats, luzKey) {
@@ -1289,6 +1333,9 @@ if (typeof LangEngine !== 'undefined') {
   LangEngine.detect();
   LangEngine.apply();
 }
+
+// Cargar stats al inicio
+_cargarStats().then(stats => { if (Object.keys(stats).length) renderHeroStats(stats, null); });
 </script>
 </body>
 </html>
