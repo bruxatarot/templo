@@ -1279,7 +1279,6 @@ function reiniciarTest() {
 }
 
 document.addEventListener('langchange', () => {
-  if (typeof LangEngine !== 'undefined') LangEngine.apply();
   const testSec = document.getElementById('test-section');
   if (testSec && testSec.style.display !== 'none') {
     renderPregunta(estado.preguntaActual);
