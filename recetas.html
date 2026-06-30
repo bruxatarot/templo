@@ -189,37 +189,49 @@
       color:rgba(201,168,76,.4);margin-bottom:1.5rem}
     .reader-when span{color:var(--gold-l);font-family:'Cormorant Garamond',serif;
       font-size:.95rem;letter-spacing:.05em;font-style:italic;display:block;margin-top:.3rem}
+    .lang-btn{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;padding:.3rem .6rem;
+      border-radius:6px;border:1px solid rgba(201,168,76,.25);background:transparent;
+      color:rgba(201,168,76,.5);cursor:pointer;transition:all .3s}
+    .lang-btn:hover,.lang-btn.active{border-color:rgba(201,168,76,.6);color:var(--gold);
+      background:rgba(201,168,76,.08)}
   </style>
+  <script src="lang.js"></script>
+  <script type="module" src="js/auth-chip.js"></script>
 </head>
 <body>
 <div id="starfield"><canvas id="stars"></canvas></div>
 
 <nav>
-  <a href="index.html" class="nav-back">← Templo</a>
+  <a href="index.html" class="nav-back" data-i18n="nav_back">← Templo</a>
   <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
-  <div style="display:flex;gap:1.2rem">
-    <a href="historias.html" class="nav-back">Historias</a>
-    <a href="muro.html" class="nav-back">Muro</a>
+  <div class="lang-switcher" style="display:flex;gap:.4rem;flex-wrap:wrap">
+    <button onclick="LangEngine.set('es')" class="lang-btn" data-lang="es">ES</button>
+    <button onclick="LangEngine.set('en')" class="lang-btn" data-lang="en">EN</button>
+    <button onclick="LangEngine.set('pt')" class="lang-btn" data-lang="pt">PT</button>
+    <button onclick="LangEngine.set('it')" class="lang-btn" data-lang="it">IT</button>
+    <button onclick="LangEngine.set('ko')" class="lang-btn" data-lang="ko">한국</button>
+    <button onclick="LangEngine.set('tr')" class="lang-btn" data-lang="tr">TR</button>
+    <button onclick="LangEngine.set('ja')" class="lang-btn" data-lang="ja">日本</button>
   </div>
 </nav>
 
 <!-- ── HERO ── -->
 <header class="hero">
-  <p class="hero-eyebrow">✦ Bruxa Tarot · Recetario del Alma ✦</p>
-  <h1 class="hero-title">Recetas<br>con Alma</h1>
-  <p class="hero-sub">Cada plato tiene una historia. Cada historia, un sabor.</p>
+  <p class="hero-eyebrow" data-i18n="recetas_eyebrow">✦ Bruxa Tarot · Recetario del Alma ✦</p>
+  <h1 class="hero-title" data-i18n-html="recetas_title">Recetas<br>con Alma</h1>
+  <p class="hero-sub" data-i18n="recetas_sub">Cada plato tiene una historia. Cada historia, un sabor.</p>
   <div class="hero-divider"><div class="hero-divider-line"></div><span class="hero-divider-sym">✦</span><div class="hero-divider-line"></div></div>
   <p class="hero-quote">"Hay ingredientes que no aparecen en ninguna lista… como la memoria, el silencio y las ganas de no soltar del todo."</p>
 </header>
 
 <!-- ── FILTERS ── -->
 <div class="filters">
-  <button class="filter-btn active" data-filter="all">Todas</button>
-  <button class="filter-btn" data-filter="dulce">Dulces 🍫</button>
-  <button class="filter-btn" data-filter="salada">Saladas 🧀</button>
-  <button class="filter-btn" data-filter="bebida">Bebidas 🍵</button>
-  <button class="filter-btn" data-filter="magica">Pociones Mágicas 🔮</button>
-  <button class="filter-btn" data-filter="navidad">Sin Fronteras 🎄</button>
+  <button class="filter-btn active" data-filter="all" data-i18n="recetas_filter_all">Todas</button>
+  <button class="filter-btn" data-filter="dulce" data-i18n="recetas_filter_dulce">Dulces 🍫</button>
+  <button class="filter-btn" data-filter="salada" data-i18n="recetas_filter_salada">Saladas 🧀</button>
+  <button class="filter-btn" data-filter="bebida" data-i18n="recetas_filter_bebida">Bebidas 🍵</button>
+  <button class="filter-btn" data-filter="magica" data-i18n="recetas_filter_magica">Pociones Mágicas 🔮</button>
+  <button class="filter-btn" data-filter="navidad" data-i18n="recetas_filter_sinfronteras">Sin Fronteras 🎄</button>
 </div>
 
 <!-- ── SECTION: CON HISTORIA ── -->
@@ -561,7 +573,7 @@
 <!-- ── RECIPE READER ── -->
 <div id="recipeReader">
   <nav class="reader-nav">
-    <button class="reader-back" onclick="cerrarReceta()">← Volver a recetas</button>
+    <button class="reader-back" onclick="cerrarReceta()" data-i18n="recetas_cerrar">← Volver a recetas</button>
     <span class="reader-title-small" id="readerTitleSmall"></span>
   </nav>
   <div class="reader-content" id="readerContent"></div>
@@ -1183,6 +1195,9 @@ function cerrarReceta(){
   document.getElementById('recipeReader').classList.remove('open');
   document.body.style.overflow='';
 }
+
+if (typeof LangEngine !== 'undefined') { LangEngine.detect(); LangEngine.apply(); }
+document.addEventListener('langchange', () => { if (typeof LangEngine !== 'undefined') LangEngine.apply(); });
 </script>
 </body>
 </html>
