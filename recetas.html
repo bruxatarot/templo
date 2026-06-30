@@ -196,6 +196,7 @@
       background:rgba(201,168,76,.08)}
   </style>
   <script src="lang.js"></script>
+  <script src="lang-recetas.js"></script>
   <script type="module" src="js/auth-chip.js"></script>
 </head>
 <body>
@@ -243,7 +244,7 @@
 <div class="recipes-grid" id="recipesGrid">
 
   <!-- 1. Sombras de Chocolate -->
-  <div class="recipe-card" data-cat="dulce" onclick="abrirReceta('sombras')">
+  <div class="recipe-card" data-cat="dulce" data-id="sombras" onclick="abrirReceta('sombras')">
     <div class="card-banner banner-dulce">
       <span class="card-banner-emoji">🍫</span>
       <span class="card-banner-mood">Melancólica</span>
@@ -261,7 +262,7 @@
   </div>
 
   <!-- 2. Tarta En Busca de Esperanza -->
-  <div class="recipe-card" data-cat="dulce" onclick="abrirReceta('esperanza')">
+  <div class="recipe-card" data-cat="dulce" data-id="esperanza" onclick="abrirReceta('esperanza')">
     <div class="card-banner banner-dulce">
       <span class="card-banner-emoji">🍋</span>
       <span class="card-banner-mood">Esperanzadora</span>
@@ -279,7 +280,7 @@
   </div>
 
   <!-- 3. Última Hojaldrada -->
-  <div class="recipe-card" data-cat="salada" onclick="abrirReceta('hojaldrada')">
+  <div class="recipe-card" data-cat="salada" data-id="hojaldrada" onclick="abrirReceta('hojaldrada')">
     <div class="card-banner banner-salada">
       <span class="card-banner-emoji">🥐</span>
       <span class="card-banner-mood">Revancha</span>
@@ -297,7 +298,7 @@
   </div>
 
   <!-- 4. Suspiros de mi Alma -->
-  <div class="recipe-card" data-cat="dulce" onclick="abrirReceta('suspiros')">
+  <div class="recipe-card" data-cat="dulce" data-id="suspiros" onclick="abrirReceta('suspiros')">
     <div class="card-banner banner-bebida">
       <span class="card-banner-emoji">🌙</span>
       <span class="card-banner-mood">Nostálgica</span>
@@ -315,7 +316,7 @@
   </div>
 
   <!-- 5. Besos de Coco -->
-  <div class="recipe-card" data-cat="dulce" onclick="abrirReceta('besos')">
+  <div class="recipe-card" data-cat="dulce" data-id="besos" onclick="abrirReceta('besos')">
     <div class="card-banner banner-dulce">
       <span class="card-banner-emoji">🥥</span>
       <span class="card-banner-mood">Enamorada</span>
@@ -333,7 +334,7 @@
   </div>
 
   <!-- 6. Churros Sin Piedad -->
-  <div class="recipe-card" data-cat="dulce" onclick="abrirReceta('churros')">
+  <div class="recipe-card" data-cat="dulce" data-id="churros" onclick="abrirReceta('churros')">
     <div class="card-banner banner-dulce">
       <span class="card-banner-emoji">🍩</span>
       <span class="card-banner-mood">Tiempo que pesa</span>
@@ -351,7 +352,7 @@
   </div>
 
   <!-- 7. Flan Atrapado en tu Miel -->
-  <div class="recipe-card" data-cat="dulce" onclick="abrirReceta('flan')">
+  <div class="recipe-card" data-cat="dulce" data-id="flan" onclick="abrirReceta('flan')">
     <div class="card-banner banner-dulce">
       <span class="card-banner-emoji">🍮</span>
       <span class="card-banner-mood">Atrapado</span>
@@ -369,7 +370,7 @@
   </div>
 
   <!-- 8. Wrap Spicy -->
-  <div class="recipe-card" data-cat="salada" onclick="abrirReceta('wrap')">
+  <div class="recipe-card" data-cat="salada" data-id="wrap" onclick="abrirReceta('wrap')">
     <div class="card-banner banner-salada">
       <span class="card-banner-emoji">🌯</span>
       <span class="card-banner-mood">Fuego interior</span>
@@ -390,14 +391,14 @@
 
 <!-- ── SECTION: SIN FRONTERAS ── -->
 <div class="section-label">
-  <span class="section-label-text">✦ Recetas sin fronteras</span>
+  <span class="section-label-text" data-section-id="sinfronteras">✦ Recetas sin fronteras</span>
   <div class="section-label-line"></div>
 </div>
 
 <div class="recipes-grid">
 
   <!-- 9. Letria -->
-  <div class="recipe-card" data-cat="navidad" onclick="abrirReceta('letria')">
+  <div class="recipe-card" data-cat="navidad" data-id="letria" onclick="abrirReceta('letria')">
     <div class="card-banner banner-navidad">
       <span class="card-banner-emoji">🥛</span>
       <span class="card-banner-mood">Navideña</span>
@@ -415,7 +416,7 @@
   </div>
 
   <!-- 10. Pan de Jamón -->
-  <div class="recipe-card" data-cat="navidad" onclick="abrirReceta('pan-jamon')">
+  <div class="recipe-card" data-cat="navidad" data-id="pan-jamon" onclick="abrirReceta('pan-jamon')">
     <div class="card-banner banner-navidad">
       <span class="card-banner-emoji">🍞</span>
       <span class="card-banner-mood">Nido vacío</span>
@@ -433,7 +434,7 @@
   </div>
 
   <!-- 11. Quesadilla -->
-  <div class="recipe-card" data-cat="navidad" onclick="abrirReceta('quesadilla')">
+  <div class="recipe-card" data-cat="navidad" data-id="quesadilla" onclick="abrirReceta('quesadilla')">
     <div class="card-banner banner-salada">
       <span class="card-banner-emoji">🫔</span>
       <span class="card-banner-mood">Amor de mamá</span>
@@ -454,14 +455,14 @@
 
 <!-- ── SECTION: POCIONES MÁGICAS ── -->
 <div class="section-label">
-  <span class="section-label-text">✦ Pociones y elixires mágicos</span>
+  <span class="section-label-text" data-section-id="magicas">✦ Pociones y elixires mágicos</span>
   <div class="section-label-line"></div>
 </div>
 
 <div class="recipes-grid">
 
   <!-- 12. Brebaje del Corazón Roto -->
-  <div class="recipe-card" data-cat="magica" onclick="abrirReceta('corazon-roto')">
+  <div class="recipe-card" data-cat="magica" data-id="corazon-roto" onclick="abrirReceta('corazon-roto')">
     <div class="card-banner banner-bebida-magica">
       <span class="card-banner-emoji">💔</span>
       <span class="card-banner-mood">Para el duelo</span>
@@ -479,7 +480,7 @@
   </div>
 
   <!-- 13. Elixir de la Voz -->
-  <div class="recipe-card" data-cat="magica" onclick="abrirReceta('elixir-voz')">
+  <div class="recipe-card" data-cat="magica" data-id="elixir-voz" onclick="abrirReceta('elixir-voz')">
     <div class="card-banner banner-bebida-magica">
       <span class="card-banner-emoji">🍋</span>
       <span class="card-banner-mood">Para expresarte</span>
@@ -497,7 +498,7 @@
   </div>
 
   <!-- 14. Elixir Serenidad -->
-  <div class="recipe-card" data-cat="magica" onclick="abrirReceta('serenidad')">
+  <div class="recipe-card" data-cat="magica" data-id="serenidad" onclick="abrirReceta('serenidad')">
     <div class="card-banner banner-bebida-magica">
       <span class="card-banner-emoji">💜</span>
       <span class="card-banner-mood">Para la ansiedad</span>
@@ -515,7 +516,7 @@
   </div>
 
   <!-- 15. Poción del Buen Sueño -->
-  <div class="recipe-card" data-cat="magica" onclick="abrirReceta('sueno')">
+  <div class="recipe-card" data-cat="magica" data-id="sueno" onclick="abrirReceta('sueno')">
     <div class="card-banner banner-bebida-magica">
       <span class="card-banner-emoji">🌙</span>
       <span class="card-banner-mood">Para dormir</span>
@@ -533,7 +534,7 @@
   </div>
 
   <!-- 16. Té del Valor Interno -->
-  <div class="recipe-card" data-cat="magica" onclick="abrirReceta('valor')">
+  <div class="recipe-card" data-cat="magica" data-id="valor" onclick="abrirReceta('valor')">
     <div class="card-banner banner-bebida-magica">
       <span class="card-banner-emoji">🔥</span>
       <span class="card-banner-mood">Para el miedo</span>
@@ -551,7 +552,7 @@
   </div>
 
   <!-- 17. Agua Lunar de Claridad -->
-  <div class="recipe-card" data-cat="magica" onclick="abrirReceta('lunar')">
+  <div class="recipe-card" data-cat="magica" data-id="lunar" onclick="abrirReceta('lunar')">
     <div class="card-banner banner-bebida-magica">
       <span class="card-banner-emoji">🌕</span>
       <span class="card-banner-mood">Para la confusión</span>
@@ -1136,53 +1137,62 @@ const RECETAS={
   },
 };
 
+function _rl(id, key) {
+  const lang = window.LangEngine?.current || 'es';
+  const ld = window.RECETAS_LANG;
+  return ld?.[lang]?.[id]?.[key] ?? ld?.es?.[id]?.[key];
+}
+function _ui(key) {
+  const lang = window.LangEngine?.current || 'es';
+  const ld = window.RECETAS_LANG;
+  return ld?.[lang]?.ui?.[key] ?? ld?.es?.ui?.[key] ?? key;
+}
+
 function abrirReceta(id){
   const r=RECETAS[id];
   if(!r)return;
-  document.getElementById('readerTitleSmall').textContent=r.nombre;
+  const nombre = _rl(id,'nombre') || r.nombre;
+  const frase  = _rl(id,'frase')  || r.frase;
+  const tag    = _rl(id,'tag')    || r.tag;
+  const cuando = _rl(id,'cuando') ?? r.cuando;
+  const ritual = _rl(id,'ritual') ?? r.ritual;
+  const ingredientes = _rl(id,'ingredientes') || r.ingredientes;
+  const pasos        = _rl(id,'pasos')        || r.pasos;
+
+  document.getElementById('readerTitleSmall').textContent=nombre;
 
   let html=`
-  <div class="reader-banner banner-${r.nombre.length%2===0?'dulce':'bebida-magica'}" style="background:linear-gradient(135deg,#1a0a2e,#04060f)">
+  <div class="reader-banner" style="background:linear-gradient(135deg,#1a0a2e,#04060f)">
     <span style="font-size:5rem">${r.emoji}</span>
     <div class="reader-banner-overlay"></div>
   </div>
-
-  <p class="reader-story-tag">${r.tag}</p>
-  <h1 class="reader-recipe-name">${r.nombre}</h1>
-  ${r.cuando?`<p class="reader-when">Úsalo cuando… <span>${r.cuando}</span></p>`:''}
+  <p class="reader-story-tag">${tag}</p>
+  <h1 class="reader-recipe-name">${nombre}</h1>
+  ${cuando?`<p class="reader-when">${_ui('cuando_prefix')} <span>${cuando}</span></p>`:''}
   `;
 
   if(r.narrativa){
-    html+=`
-    <div class="reader-narrative">${r.narrativa}</div>
-    <div class="stain-divider"><span class="stain-sym">✦ receta ✦</span></div>
-    `;
+    html+=`<div class="reader-narrative">${r.narrativa}</div>
+    <div class="stain-divider"><span class="stain-sym">${_ui('divider')}</span></div>`;
   }
 
-  html+=`<p class="reader-section-title">Ingredientes</p>
+  html+=`<p class="reader-section-title">${_ui('ingredientes')}</p>
   <ul class="reader-ingredients">
-  ${r.ingredientes.map(i=>i.startsWith('─')?
-    `<li><span class="sub-header">${i}</span></li>`:
-    `<li>${i}</li>`
-  ).join('')}
+  ${ingredientes.map(i=>i.startsWith('─')?`<li><span class="sub-header">${i}</span></li>`:`<li>${i}</li>`).join('')}
   </ul>
-
-  <p class="reader-section-title">Preparación</p>
+  <p class="reader-section-title">${_ui('preparacion')}</p>
   <div class="reader-steps">
-  ${r.pasos.map(p=>`<div class="reader-step">${p}</div>`).join('')}
-  </div>
-  `;
+  ${pasos.map(p=>`<div class="reader-step">${p}</div>`).join('')}
+  </div>`;
 
-  if(r.ritual){
-    html+=`
-    <div class="reader-ritual">
-      <p class="reader-ritual-title">✦ Mini ritual</p>
-      <p>${r.ritual}</p>
-    </div>
-    `;
+  if(ritual){
+    html+=`<div class="reader-ritual">
+      <p class="reader-ritual-title">${_ui('ritual')}</p>
+      <p>${ritual}</p>
+    </div>`;
   }
 
-  html+=`<div class="reader-frase">${r.frase}</div>`;
+  html+=`<div class="reader-frase">${frase}</div>`;
 
   document.getElementById('readerContent').innerHTML=html;
   const reader=document.getElementById('recipeReader');
@@ -1196,8 +1206,46 @@ function cerrarReceta(){
   document.body.style.overflow='';
 }
 
+function applyRecetasLang(){
+  const lang = window.LangEngine?.current || 'es';
+  const ld = window.RECETAS_LANG;
+  if(!ld) return;
+
+  // section labels
+  document.querySelectorAll('[data-section-id]').forEach(el=>{
+    const key = 'section_' + el.dataset.sectionId;
+    const val = ld[lang]?.ui?.[key] || ld.es?.ui?.[key];
+    if(val) el.textContent = val;
+  });
+
+  // cards
+  document.querySelectorAll('.recipe-card[data-id]').forEach(card=>{
+    const id = card.dataset.id;
+    const cd = ld[lang]?.[id] || ld.es?.[id];
+    if(!cd) return;
+    const nameEl    = card.querySelector('.card-name');
+    const quoteEl   = card.querySelector('.card-quote');
+    const tagEl     = card.querySelector('.card-story-tag');
+    const personaEl = card.querySelector('.card-persona');
+    const moodEl    = card.querySelector('.card-banner-mood');
+    const typeEl    = card.querySelector('.card-banner-type');
+    const ctaEl     = card.querySelector('.card-cta');
+    if(nameEl    && cd.nombre)  nameEl.textContent    = cd.nombre;
+    if(quoteEl   && cd.quote)   quoteEl.textContent   = cd.quote;
+    if(tagEl     && cd.tag)     tagEl.textContent     = cd.tag;
+    if(personaEl && cd.persona) personaEl.textContent = cd.persona;
+    if(moodEl    && cd.mood)    moodEl.textContent    = cd.mood;
+    if(typeEl    && cd.type)    typeEl.textContent    = cd.type;
+    if(ctaEl) {
+      const isPocion = card.dataset.cat === 'magica';
+      ctaEl.textContent = isPocion ? _ui('ver_pocion') : _ui('leer');
+    }
+  });
+}
+
 if (typeof LangEngine !== 'undefined') { LangEngine.detect(); LangEngine.apply(); }
-document.addEventListener('langchange', () => { if (typeof LangEngine !== 'undefined') LangEngine.apply(); });
+applyRecetasLang();
+document.addEventListener('langchange', () => { applyRecetasLang(); });
 </script>
 </body>
 </html>
