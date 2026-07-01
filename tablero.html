@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>El Mural de las Almas • Bruxa Tarot</title>
+  <script src="lang.js"></script>
+  <script type="module" src="js/auth-chip.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --gold-l: #e8c97a;
+      --gold-p: #f5e6b8;
+      --deep: #04060f;
+      --purple-deep: #0d0118;
+      --purple-mid: #1a0a2e;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: linear-gradient(135deg, #0d0118 0%, #1a0a2e 50%, #04060f 100%);
+      color: #e8dfc8;
+      font-family: 'Cormorant Garamond', serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── STARFIELD ── */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0;
+      animation: twinkle var(--dur, 4s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.8); }
+      50% { opacity: var(--max-op, 0.7); transform: scale(1); }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: linear-gradient(to bottom, rgba(13,1,24,.97), transparent);
+    }
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem; letter-spacing: .3em;
+      color: var(--gold); text-decoration: none;
+    }
+    .nav-back {
+      font-family: 'Cinzel', serif;
+      font-size: .6rem; letter-spacing: .2em;
+      color: rgba(201,168,76,.5); text-decoration: none; transition: color .3s;
+    }
+    .nav-back:hover { color: var(--gold); }
+    .nav-right {
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .lang-selector { display: flex; align-items: center; gap: .35rem; }
+    .lang-btn {
+      font-family: 'Cinzel', serif; font-size: .58rem; letter-spacing: .12em;
+      padding: .28rem .65rem; border-radius: 100px; cursor: pointer;
+      border: 1px solid rgba(201,168,76,.2); background: transparent;
+      color: #b8a87a; transition: all .3s;
+    }
+    .lang-btn:hover { border-color: rgba(201,168,76,.5); color: var(--gold); }
+    .lang-btn.active { background: rgba(201,168,76,.15); border-color: rgba(201,168,76,.6); color: var(--gold); }
+    @media(max-width:600px) { nav { padding: 1rem 1.2rem; } .lang-selector { display: none; } }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; z-index: 1;
+      text-align: center; padding: 7.5rem 2rem 3rem;
+    }
+    .hero-eyebrow {
+      font-family: 'Cinzel', serif; font-size: .55rem; letter-spacing: .45em;
+      color: rgba(201,168,76,.38); margin-bottom: 1.1rem;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      color: var(--gold-p); line-height: 1.1; margin-bottom: .7rem;
+    }
+    .hero-tagline {
+      font-family: 'Cinzel', serif; font-size: .56rem; letter-spacing: .22em;
+      color: rgba(201,168,76,.4); margin-bottom: 2.4rem;
+    }
+    .hero-divider {
+      display: flex; align-items: center; gap: 1rem;
+      max-width: 260px; margin: 0 auto 1rem;
+    }
+    .hero-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(201,168,76,.2), transparent); }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+      gap: .5rem; flex-wrap: wrap;
+      padding: 1rem 1.5rem 2rem;
+    }
+    .filter-label {
+      font-family: 'Cinzel', serif; font-size: .48rem; letter-spacing: .2em;
+      color: rgba(201,168,76,.35); margin-right: .3rem;
+    }
+    .filter-btn {
+      font-family: 'Cinzel', serif; font-size: .5rem; letter-spacing: .12em;
+      padding: .35rem .9rem; border-radius: 100px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      color: rgba(232,220,200,.55); cursor: pointer; transition: all .25s;
+      white-space: nowrap;
+    }
+    .filter-btn:hover {
+      border-color: rgba(201,168,76,.35);
+      color: var(--gold-l);
+      background: rgba(201,168,76,.06);
+    }
+    .filter-btn.active {
+      border-color: rgba(201,168,76,.5);
+      color: var(--gold-l);
+      background: rgba(201,168,76,.1);
+      box-shadow: 0 0 10px rgba(201,168,76,.15);
+    }
+
+    /* ── MURAL BOARD ── */
+    .mural-wrap {
+      position: relative; z-index: 1;
+      padding: 0 1.5rem 7rem;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .mural-section-label {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .mural-section-text {
+      font-family: 'Cinzel', serif; font-size: .5rem; letter-spacing: .28em;
+      color: rgba(201,168,76,.3); white-space: nowrap;
+    }
+    .mural-section-line { flex: 1; height: 1px; background: rgba(201,168,76,.08); }
+    .mural {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.3rem;
+    }
+    @media(max-width: 700px) {
+      .mural { grid-template-columns: 1fr 1fr; gap: .9rem; }
+      .mural-wrap { padding: 0 1rem 7rem; }
+    }
+    @media(max-width: 420px) {
+      .mural { grid-template-columns: 1fr; }
+    }
+
+    /* ── ALMA CARD ── */
+    .alma-card {
+      position: relative;
+      background: rgba(10, 5, 20, 0.85);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 1.3rem 1.2rem 1rem;
+      backdrop-filter: blur(10px);
+      cursor: default;
+      transform: rotate(var(--rot, 0deg));
+      box-shadow:
+        0 0 20px rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.25),
+        inset 0 0 30px rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.04),
+        0 4px 20px rgba(0,0,0,.5);
+      border-color: rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.22);
+      transition: transform .35s cubic-bezier(.17,.67,.38,1.3), box-shadow .35s, border-color .35s;
+      animation: float-card var(--float-dur, 5s) ease-in-out infinite;
+      animation-delay: var(--float-delay, 0s);
+    }
+    @keyframes float-card {
+      0%, 100% { transform: rotate(var(--rot,0deg)) translateY(0); }
+      50% { transform: rotate(var(--rot,0deg)) translateY(-6px); }
+    }
+    .alma-card:hover {
+      animation-play-state: paused;
+      transform: rotate(0deg) translateY(-10px) scale(1.03) !important;
+      border-color: rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.55);
+      box-shadow:
+        0 0 40px rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.5),
+        0 0 80px rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.15),
+        inset 0 0 30px rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.08),
+        0 12px 40px rgba(0,0,0,.6);
+    }
+    @media(prefers-reduced-motion: reduce) { .alma-card { animation: none; } }
+
+    .card-rune {
+      position: absolute; top: .7rem; right: .9rem;
+      font-size: .6rem; letter-spacing: .15em;
+      color: rgba(255,255,255,.1);
+      font-family: 'Cinzel', serif;
+    }
+    .card-energia-emoji {
+      display: block; font-size: 1.8rem;
+      margin-bottom: .6rem; line-height: 1;
+      filter: drop-shadow(0 0 8px rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.6));
+    }
+    .card-texto {
+      font-family: 'Cormorant Garamond', serif; font-size: 1rem;
+      line-height: 1.65; color: #d4c9b8;
+      margin-bottom: .9rem; word-break: break-word;
+      display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: .4rem; margin-bottom: .7rem;
+    }
+    .card-autor {
+      font-family: 'Cinzel', serif; font-size: .44rem; letter-spacing: .12em;
+      color: rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.65);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .card-energia-label {
+      font-family: 'Cinzel', serif; font-size: .4rem; letter-spacing: .1em;
+      color: rgba(255,255,255,.2); white-space: nowrap;
+    }
+    .card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: .5rem; padding-top: .7rem;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .card-luces {
+      font-family: 'Cinzel', serif; font-size: .46rem; letter-spacing: .1em;
+      color: rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.55);
+    }
+    .btn-luz {
+      font-family: 'Cinzel', serif; font-size: .44rem; letter-spacing: .1em;
+      padding: .3rem .75rem; border-radius: 100px;
+      border: 1px solid rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.25);
+      background: rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.07);
+      color: rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.7);
+      cursor: pointer; transition: all .25s; white-space: nowrap;
+    }
+    .btn-luz:hover {
+      border-color: rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.55);
+      background: rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.15);
+      color: #e8dfc8;
+      box-shadow: 0 0 10px rgba(var(--glow-r,107), var(--glow-g,33), var(--glow-b,168), 0.3);
+    }
+    .btn-luz.lit { opacity: .5; cursor: default; }
+
+    /* ── EMPTY STATE ── */
+    .mural-vacio {
+      grid-column: 1 / -1; text-align: center;
+      padding: 4rem 2rem; color: rgba(201,168,76,.3);
+      font-family: 'Cinzel', serif; font-size: .6rem; letter-spacing: .2em;
+    }
+    .loading-dots { display: inline-flex; gap: .3rem; align-items: center; }
+    .loading-dots span {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(201,168,76,.4);
+      animation: blink 1.2s ease-in-out infinite;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: .2s; }
+    .loading-dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink { 0%,80%,100% { opacity: .2; } 40% { opacity: 1; } }
+
+    /* ── FAB ── */
+    .fab {
+      position: fixed; bottom: 2.2rem; right: 2.2rem; z-index: 200;
+      font-family: 'Cinzel', serif; font-size: .55rem; letter-spacing: .18em;
+      padding: .85rem 1.5rem; border-radius: 100px;
+      border: 1px solid rgba(201,168,76,.4);
+      background: rgba(13,1,24,.92);
+      color: var(--gold-l); cursor: pointer;
+      box-shadow: 0 0 25px rgba(107,33,168,.4), 0 4px 20px rgba(0,0,0,.5);
+      backdrop-filter: blur(12px);
+      transition: all .3s;
+    }
+    .fab:hover {
+      background: rgba(26,10,46,.95);
+      border-color: rgba(201,168,76,.7);
+      box-shadow: 0 0 40px rgba(107,33,168,.6), 0 4px 30px rgba(0,0,0,.5);
+      transform: translateY(-3px);
+    }
+    @media(max-width:600px) { .fab { bottom: 1.5rem; right: 1.5rem; } }
+
+    /* ── MODAL ── */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(4,6,15,.85);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    .modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: linear-gradient(160deg, #0d0118 0%, #1a0a2e 100%);
+      border: 1px solid rgba(201,168,76,.18);
+      border-radius: 20px;
+      padding: 2rem 1.8rem 1.8rem;
+      width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 0 60px rgba(107,33,168,.3), 0 20px 60px rgba(0,0,0,.6);
+      transform: translateY(20px);
+      transition: transform .3s;
+    }
+    .modal-backdrop.open .modal { transform: translateY(0); }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.6rem;
+    }
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+      font-size: 1.5rem; color: var(--gold-p);
+    }
+    .modal-close {
+      background: none; border: none; cursor: pointer;
+      color: rgba(201,168,76,.4); font-size: 1.2rem; transition: color .2s;
+      padding: .3rem;
+    }
+    .modal-close:hover { color: var(--gold); }
+
+    /* energia grid */
+    .energia-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: .5rem; margin-bottom: 1.4rem;
+    }
+    @media(max-width:400px) { .energia-grid { grid-template-columns: repeat(4, 1fr); } }
+    .energia-btn {
+      display: flex; flex-direction: column; align-items: center;
+      gap: .25rem; padding: .6rem .3rem; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      cursor: pointer; transition: all .25s;
+    }
+    .energia-btn:hover {
+      border-color: rgba(201,168,76,.3);
+      background: rgba(201,168,76,.06);
+    }
+    .energia-btn.selected {
+      border-color: rgba(201,168,76,.5);
+      background: rgba(201,168,76,.1);
+      box-shadow: 0 0 12px rgba(201,168,76,.15);
+    }
+    .energia-btn-emoji { font-size: 1.3rem; }
+    .energia-btn-label {
+      font-family: 'Cinzel', serif; font-size: .36rem; letter-spacing: .08em;
+      color: rgba(201,168,76,.5); text-align: center; line-height: 1.2;
+    }
+
+    /* form fields */
+    .form-row { margin-bottom: 1.1rem; }
+    .form-label {
+      font-family: 'Cinzel', serif; font-size: .48rem; letter-spacing: .15em;
+      color: rgba(201,168,76,.45); display: block; margin-bottom: .45rem;
+    }
+    .form-textarea {
+      width: 100%; background: rgba(201,168,76,.04);
+      border: 1px solid rgba(201,168,76,.14); border-radius: 10px;
+      color: #e8dfc8; font-family: 'Cormorant Garamond', serif; font-size: 1.05rem;
+      padding: .75rem 1rem; outline: none; resize: none;
+      transition: border-color .3s; height: 110px; line-height: 1.6;
+    }
+    .form-textarea:focus { border-color: rgba(201,168,76,.4); }
+    .form-textarea::placeholder { color: rgba(201,168,76,.25); }
+    .anon-toggle {
+      display: flex; align-items: center; gap: .65rem;
+      font-family: 'Cinzel', serif; font-size: .5rem; letter-spacing: .12em;
+      color: rgba(201,168,76,.5); cursor: pointer; user-select: none;
+    }
+    .anon-toggle input { display: none; }
+    .toggle-pill {
+      width: 34px; height: 18px; border-radius: 100px;
+      border: 1px solid rgba(201,168,76,.2);
+      background: rgba(201,168,76,.04);
+      position: relative; transition: all .25s; flex-shrink: 0;
+    }
+    .toggle-pill::after {
+      content: ''; position: absolute;
+      top: 2px; left: 2px; width: 12px; height: 12px;
+      border-radius: 50%; background: rgba(201,168,76,.3);
+      transition: transform .25s, background .25s;
+    }
+    .anon-toggle input:checked + .toggle-pill {
+      background: rgba(107,33,168,.25); border-color: rgba(107,33,168,.5);
+    }
+    .anon-toggle input:checked + .toggle-pill::after {
+      transform: translateX(16px); background: #a855f7;
+    }
+    .btn-submit {
+      width: 100%; margin-top: 1.3rem;
+      font-family: 'Cinzel', serif; font-size: .56rem; letter-spacing: .2em;
+      padding: .9rem; border-radius: 100px;
+      border: 1px solid rgba(201,168,76,.3);
+      background: rgba(107,33,168,.12);
+      color: var(--gold-l); cursor: pointer; transition: all .3s;
+    }
+    .btn-submit:hover {
+      background: rgba(107,33,168,.25);
+      border-color: rgba(201,168,76,.55);
+      box-shadow: 0 0 20px rgba(107,33,168,.3);
+    }
+    .btn-submit:disabled { opacity: .4; cursor: default; }
+    .form-msg {
+      font-family: 'Cinzel', serif; font-size: .5rem; letter-spacing: .12em;
+      text-align: center; margin-top: .7rem; min-height: 1.2rem;
+      color: rgba(201,168,76,.6);
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 5.5rem; left: 50%; transform: translateX(-50%) translateY(20px);
+      z-index: 500;
+      font-family: 'Cinzel', serif; font-size: .55rem; letter-spacing: .18em;
+      padding: .75rem 1.6rem; border-radius: 100px;
+      background: rgba(26,10,46,.95);
+      border: 1px solid rgba(201,168,76,.35);
+      color: var(--gold-l);
+      box-shadow: 0 0 25px rgba(107,33,168,.4);
+      backdrop-filter: blur(10px);
+      opacity: 0; pointer-events: none;
+      transition: all .4s cubic-bezier(.17,.67,.38,1.3);
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1; transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- STARFIELD -->
+<div class="stars" id="starfield"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-back">← Templo</a>
+  <a href="index.html" class="nav-logo">✦ Bruxa Tarot</a>
+  <div class="nav-right">
+    <div class="lang-selector">
+      <button class="lang-btn active" data-lang="es" onclick="LangEngine&&LangEngine.set('es')">ES</button>
+      <button class="lang-btn" data-lang="en"  onclick="LangEngine&&LangEngine.set('en')">EN</button>
+      <button class="lang-btn" data-lang="pt"  onclick="LangEngine&&LangEngine.set('pt')">PT</button>
+      <button class="lang-btn" data-lang="it"  onclick="LangEngine&&LangEngine.set('it')">IT</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <p class="hero-eyebrow">✦ Templo del Prisma ✦</p>
+  <h1 class="hero-title">El Mural de las Almas</h1>
+  <p class="hero-tagline">Un espacio sagrado donde las almas comparten su energía</p>
+  <div class="hero-divider">
+    <div class="hero-divider-line"></div>
+    <span style="color:var(--gold);font-size:.75rem">✦</span>
+    <div class="hero-divider-line"></div>
+  </div>
+</header>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="filterBar">
+  <span class="filter-label">Filtrar ·</span>
+  <button class="filter-btn active" data-filter="all">✦ Todas</button>
+</div>
+
+<!-- MURAL -->
+<div class="mural-wrap">
+  <div class="mural-section-label">
+    <span class="mural-section-text">✦ Energías del Universo</span>
+    <div class="mural-section-line"></div>
+  </div>
+  <div class="mural" id="mural">
+    <div class="mural-vacio">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FAB -->
+<button class="fab" id="fabBtn" onclick="openModal()">✦ Compartir</button>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="handleBackdropClick(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modalTitle">Comparte tu energía</h2>
+      <button class="modal-close" onclick="closeModal()" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">Elige tu energía</label>
+      <div class="energia-grid" id="energiaGrid"></div>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label" for="inputTexto">¿Qué quieres soltar al universo?</label>
+      <textarea class="form-textarea" id="inputTexto" placeholder="Escribe lo que lleva tu alma…" maxlength="300"></textarea>
+    </div>
+
+    <label class="anon-toggle">
+      <input type="checkbox" id="anonCheck" checked/>
+      <span class="toggle-pill"></span>
+      Anónima 🌙
+    </label>
+
+    <button class="btn-submit" id="btnSoltar" onclick="soltar()">Soltar al Universo ✨</button>
+    <p class="form-msg" id="formMsg"></p>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script type="module">
+// ── FIREBASE ──
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import {
+  getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment,
+  query, orderBy, limit, onSnapshot, serverTimestamp
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCCAIQPfCXAr0lIb5GyyyCj_lySbF5Liqg",
+  authDomain: "diario-del-alma.firebaseapp.com",
+  projectId: "diario-del-alma",
+  storageBucket: "diario-del-alma.firebasestorage.app",
+  messagingSenderId: "40226201072",
+  appId: "1:40226201072:web:b8870564b9f6a270f71135"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── ENERGÍAS ──
+const ENERGIAS = {
+  'luna-nueva': { emoji: '🌑', label: 'Luna Nueva',  color: '#1a0a2e', glow: '#6b21a8', rgb: '107,33,168' },
+  'luna-llena': { emoji: '🌕', label: 'Luna Llena',  color: '#1c1a00', glow: '#d4af37', rgb: '212,175,55' },
+  'fuego':      { emoji: '🔥', label: 'Fuego',        color: '#1c0a00', glow: '#ea580c', rgb: '234,88,12' },
+  'agua':       { emoji: '💧', label: 'Agua',         color: '#00101c', glow: '#0ea5e9', rgb: '14,165,233' },
+  'tierra':     { emoji: '🌿', label: 'Tierra',       color: '#001410', glow: '#16a34a', rgb: '22,163,74' },
+  'tormenta':   { emoji: '⚡', label: 'Tormenta',     color: '#0a0a1a', glow: '#818cf8', rgb: '129,140,248' },
+  'amor':       { emoji: '💕', label: 'Amor',         color: '#1c001a', glow: '#ec4899', rgb: '236,72,153' },
+  'sombra':     { emoji: '🌒', label: 'Sombra',       color: '#0a0a0a', glow: '#7c3aed', rgb: '124,58,237' },
+  'gratitud':   { emoji: '🌸', label: 'Gratitud',     color: '#1c0010', glow: '#f0abfc', rgb: '240,171,252' },
+  'claridad':   { emoji: '✨', label: 'Claridad',     color: '#0a0a18', glow: '#e0f2fe', rgb: '224,242,254' },
+};
+
+const RUNES = ['ᚠ', 'ᚢ', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ', 'ᚺ', 'ᚾ', 'ᛁ', 'ᛃ', 'ᛇ', 'ᛈ', 'ᛉ', 'ᛊ', 'ᛏ', 'ᛒ', 'ᛖ', 'ᛗ', 'ᛚ', 'ᛜ', 'ᛞ', 'ᛟ'];
+const FLOAT_DURS   = ['4s','4.5s','5s','5.5s','6s','6.5s','7s'];
+const FLOAT_DELAYS = ['0s','0.6s','1.2s','1.8s','2.4s','3s','3.6s','4.2s'];
+const ROTS = ['-1.5deg','-1deg','-.5deg','0deg','.5deg','1deg','1.5deg','2deg','-2deg'];
+
+// ── SAMPLE CARDS (shown before Firebase loads) ──
+const SAMPLES = [
+  { id:'s1', energia:'luna-nueva', texto:'El silencio de la luna nueva me recuerda que los nuevos comienzos nacen en la oscuridad.', autor:'Alma Viajera', anonima:true, luces:12 },
+  { id:'s2', energia:'fuego', texto:'Estoy transformando todo lo que ya no me sirve en luz y poder. El fuego purifica.', autor:'Salamandra', anonima:false, luces:7 },
+  { id:'s3', energia:'amor', texto:'El amor que siento hoy no necesita destino. Es un río que fluye hacia el universo.', autor:'Ánima Mundi', anonima:true, luces:23 },
+  { id:'s4', energia:'claridad', texto:'Por fin veo con nitidez el camino. Las estrellas siempre estuvieron ahí, solo necesitaba quitar las nubes.', autor:'Lumina', anonima:false, luces:5 },
+  { id:'s5', energia:'tormenta', texto:'En medio de la tormenta interior encontré mi propio ojo, sereno y testigo de todo.', autor:'Ciclona', anonima:true, luces:18 },
+  { id:'s6', energia:'gratitud', texto:'Gracias al universo por cada señal, cada sincronía, cada pequeño milagro disfrazado de casualidad.', autor:'Rosa Mística', anonima:false, luces:31 },
+];
+
+// State
+let currentFilter = 'all';
+let allCards = [];
+
+// ── BUILD FILTER BAR ──
+function buildFilterBar() {
+  const bar = document.getElementById('filterBar');
+  Object.entries(ENERGIAS).forEach(([key, e]) => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.filter = key;
+    btn.textContent = e.emoji + ' ' + e.label;
+    btn.addEventListener('click', () => setFilter(key));
+    bar.appendChild(btn);
+  });
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.filter === f);
+  });
+  renderCards();
+}
+
+// ── RENDER CARDS ──
+function renderCards() {
+  const mural = document.getElementById('mural');
+  const cards = currentFilter === 'all' ? allCards : allCards.filter(c => c.energia === currentFilter);
+  if (cards.length === 0) {
+    mural.innerHTML = `<div class="mural-vacio">No hay mensajes con esta energía aún.<br>¡Sé la primera! ✦</div>`;
+    return;
+  }
+  mural.innerHTML = cards.map((c, i) => buildCard(c, i)).join('');
+  // attach luz buttons
+  mural.querySelectorAll('.btn-luz').forEach(btn => {
+    btn.addEventListener('click', () => mandarLuz(btn));
+  });
+}
+
+function buildCard(c, i) {
+  const e = ENERGIAS[c.energia] || ENERGIAS['luna-nueva'];
+  const rune = RUNES[i % RUNES.length];
+  const rot = ROTS[i % ROTS.length];
+  const dur = FLOAT_DURS[i % FLOAT_DURS.length];
+  const delay = FLOAT_DELAYS[i % FLOAT_DELAYS.length];
+  const autor = c.anonima ? 'Alma Anónima 🌙' : escHtml(c.autor || 'Alma del Templo');
+  const luces = c.luces || 0;
+  const isFirestore = !c.id.startsWith('s');
+  return `<div class="alma-card"
+    style="--glow-r:${e.rgb.split(',')[0]};--glow-g:${e.rgb.split(',')[1]};--glow-b:${e.rgb.split(',')[2]};--rot:${rot};--float-dur:${dur};--float-delay:${delay}"
+    data-id="${escHtml(c.id)}" data-energia="${c.energia}">
+    <span class="card-rune">${rune}</span>
+    <span class="card-energia-emoji">${e.emoji}</span>
+    <p class="card-texto">${escHtml(c.texto || '')}</p>
+    <div class="card-meta">
+      <span class="card-autor">${autor}</span>
+      <span class="card-energia-label">${e.label}</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-luces">✦ ${luces} luces</span>
+      ${isFirestore ? `<button class="btn-luz" data-id="${escHtml(c.id)}">🕯️ Mandar luz</button>` : `<span class="card-luces" style="opacity:.35">🕯️ muestra</span>`}
+    </div>
+  </div>`;
+}
+
+// ── MANDAR LUZ ──
+async function mandarLuz(btn) {
+  if (btn.classList.contains('lit')) return;
+  const id = btn.dataset.id;
+  btn.classList.add('lit');
+  btn.textContent = '🕯️ Enviada';
+  try {
+    await updateDoc(doc(db, 'mural_almas', id), { luces: increment(1) });
+    // update local count display
+    const card = btn.closest('.alma-card');
+    const lucesEl = card.querySelector('.card-luces');
+    const cur = parseInt(lucesEl.textContent.match(/\d+/)?.[0] || '0');
+    lucesEl.textContent = `✦ ${cur + 1} luces`;
+  } catch(e) {
+    console.warn('luz error', e);
+  }
+}
+
+// ── LOAD FROM FIRESTORE ──
+async function loadMural() {
+  try {
+    const q = query(collection(db, 'mural_almas'), orderBy('ts', 'desc'), limit(60));
+    // real-time
+    onSnapshot(q, snap => {
+      const firestoreCards = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      // show firestore cards; fallback to samples if empty
+      allCards = firestoreCards.length > 0 ? firestoreCards : SAMPLES;
+      renderCards();
+    }, err => {
+      console.warn('snapshot err', err);
+      if (allCards.length === 0) { allCards = SAMPLES; renderCards(); }
+    });
+  } catch(e) {
+    console.warn('load err', e);
+    allCards = SAMPLES; renderCards();
+  }
+}
+
+// ── ENERGIA PICKER ──
+let selectedEnergia = 'luna-nueva';
+function buildEnergiaPicker() {
+  const grid = document.getElementById('energiaGrid');
+  Object.entries(ENERGIAS).forEach(([key, e]) => {
+    const btn = document.createElement('button');
+    btn.className = 'energia-btn' + (key === selectedEnergia ? ' selected' : '');
+    btn.dataset.key = key;
+    btn.innerHTML = `<span class="energia-btn-emoji">${e.emoji}</span><span class="energia-btn-label">${e.label}</span>`;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.energia-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedEnergia = key;
+    });
+    grid.appendChild(btn);
+  });
+}
+
+// ── MODAL ──
+window.openModal = function() {
+  document.getElementById('modalBackdrop').classList.add('open');
+  document.getElementById('inputTexto').focus();
+};
+window.closeModal = function() {
+  document.getElementById('modalBackdrop').classList.remove('open');
+};
+window.handleBackdropClick = function(e) {
+  if (e.target === document.getElementById('modalBackdrop')) closeModal();
+};
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── SOLTAR ──
+window.soltar = async function() {
+  const texto = document.getElementById('inputTexto').value.trim();
+  const anonima = document.getElementById('anonCheck').checked;
+  const msg = document.getElementById('formMsg');
+  const btn = document.getElementById('btnSoltar');
+
+  if (texto.length < 3) { msg.textContent = 'Escribe al menos 3 caracteres para soltar tu energía.'; return; }
+
+  btn.disabled = true;
+  msg.textContent = 'Enviando al universo…';
+
+  const user = window._fbUser;
+  const autor = anonima ? 'Alma Anónima' : (user?.displayName || user?.email?.split('@')[0] || 'Alma del Templo');
+
+  try {
+    await addDoc(collection(db, 'mural_almas'), {
+      energia: selectedEnergia,
+      texto: texto.slice(0, 300),
+      autor: autor,
+      anonima: anonima,
+      luces: 0,
+      ts: serverTimestamp(),
+      uid: user?.uid || null
+    });
+    closeModal();
+    document.getElementById('inputTexto').value = '';
+    showToast('Tu mensaje fue soltado al universo ✨');
+    msg.textContent = '';
+  } catch(e) {
+    msg.textContent = 'Algo salió mal. Intenta de nuevo.';
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+  }
+};
+
+// ── TOAST ──
+function showToast(text) {
+  const t = document.getElementById('toast');
+  t.textContent = text;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3800);
+}
+
+// ── STARS ──
+function buildStars() {
+  const container = document.getElementById('starfield');
+  const count = 30;
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('span');
+    s.className = 'star';
+    const size = Math.random() * 2 + 0.5;
+    const maxOp = Math.random() * 0.6 + 0.2;
+    s.style.cssText = [
+      `width:${size}px`, `height:${size}px`,
+      `top:${Math.random()*100}%`, `left:${Math.random()*100}%`,
+      `--dur:${(Math.random()*4+2).toFixed(1)}s`,
+      `--delay:${(Math.random()*6).toFixed(1)}s`,
+      `--max-op:${maxOp.toFixed(2)}`
+    ].join(';');
+    container.appendChild(s);
+  }
+}
+
+// ── INIT ──
+buildStars();
+buildFilterBar();
+buildEnergiaPicker();
+// Show samples immediately, then load real data
+allCards = SAMPLES;
+renderCards();
+loadMural();
+
+// ── HELPERS ──
+function escHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
