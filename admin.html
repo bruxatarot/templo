@@ -477,10 +477,22 @@ window._rolTemplo = null;   // 'admin' | 'mod'
 window._adminUid  = null;
 
 async function consultarRol(uid){
+  // 1) Roles en Realtime Database: /templo/roles/{uid} = 'admin' | 'mod'
   try{
     const res = await fetch(`${FB_RTDB}/templo/roles/${uid}.json`);
-    return await res.json(); // 'admin' | 'mod' | null
-  }catch(e){ return null }
+    const rol = await res.json();
+    if(rol === 'admin' || rol === 'mod') return rol;
+  }catch(e){}
+  // 2) Firestore: perfiles/{uid} con isAdmin: true (creado desde la consola)
+  try{
+    const res = await fetch(`https://firestore.googleapis.com/v1/projects/diario-del-alma/databases/(default)/documents/perfiles/${uid}`);
+    if(res.ok){
+      const doc = await res.json();
+      if(doc.fields?.isAdmin?.booleanValue === true) return 'admin';
+      if(doc.fields?.isMod?.booleanValue === true) return 'mod';
+    }
+  }catch(e){}
+  return null;
 }
 
 function entrarPanel(rol){
