@@ -189,15 +189,15 @@ function injectUI() {
       <div class="ac-sep"><span>${_t('ac_sep')}</span></div>
       <div id="acNameWrap" class="ac-field">
         <label>${_t('ac_name_label')}</label>
-        <input id="acName" type="text" placeholder="${_t('ac_name_ph')}">
+        <input id="acName" type="text" placeholder="${_t('ac_name_ph')}" autocomplete="off" disabled>
       </div>
       <div class="ac-field">
         <label>${_t('ac_email_label')}</label>
-        <input id="acEmail" type="email" placeholder="tu@email.com">
+        <input id="acEmail" type="email" placeholder="tu@email.com" autocomplete="off" disabled>
       </div>
       <div class="ac-field">
         <label>${_t('ac_pass_label')}</label>
-        <input id="acPass" type="password" placeholder="${_t('ac_pass_ph')}">
+        <input id="acPass" type="password" placeholder="${_t('ac_pass_ph')}" autocomplete="new-password" disabled>
       </div>
       <button class="ac-submit" id="acSubmit" onclick="window._acEmail()">${_t('ac_btn_reg')}</button>
       <p class="ac-err" id="acErr"></p>
@@ -303,8 +303,12 @@ let acMode = 'register';
 window._acAbrirModal = () => {
   document.getElementById('acModal')?.classList.add('open');
   document.getElementById('acErr').textContent = '';
+  ['acName','acEmail','acPass'].forEach(id => { const el = document.getElementById(id); if(el) el.disabled = false; });
 };
-window._acCerrarModal = () => document.getElementById('acModal')?.classList.remove('open');
+window._acCerrarModal = () => {
+  document.getElementById('acModal')?.classList.remove('open');
+  ['acName','acEmail','acPass'].forEach(id => { const el = document.getElementById(id); if(el) el.disabled = true; });
+};
 window._acCerrarBv    = () => document.getElementById('acBienvenida')?.classList.remove('open');
 window._acSalir       = async () => { try { await signOut(auth); } catch(e) {} };
 
