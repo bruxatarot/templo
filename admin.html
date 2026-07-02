@@ -212,10 +212,12 @@
     <span class="login-icon">🔮</span>
     <h1 class="login-title">Panel del Templo</h1>
     <p class="login-sub">✦ ACCESO RESTRINGIDO ✦</p>
+    <button class="login-btn" onclick="loginConCuenta()" style="margin-bottom:1rem">✦ Entrar con mi cuenta (Google)</button>
+    <p style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;color:rgba(201,168,76,.3);margin-bottom:1rem">— o con contraseña maestra —</p>
     <input type="password" class="login-input" id="loginPass"
-      placeholder="Contraseña" onkeydown="if(event.key==='Enter')verificarLogin()">
+      placeholder="Contraseña" onkeydown="if(event.key==='Enter')verificarLogin()" autocomplete="off">
     <button class="login-btn" onclick="verificarLogin()">✦ Entrar al Templo</button>
-    <p class="login-error" id="loginError">Contraseña incorrecta. Inténtalo de nuevo.</p>
+    <p class="login-error" id="loginError">Sin acceso. Verifica tu cuenta o contraseña.</p>
   </div>
 </div>
 
@@ -381,6 +383,61 @@
       </button>
     </div>
 
+    <!-- MODERACIÓN DEL MURO (admin + moderadores) -->
+    <div class="admin-card" style="margin-bottom:2rem" id="adminMuroSection">
+      <span class="admin-card-icon">💌</span>
+      <span class="admin-card-title">MODERACIÓN DEL MURO DE ALMAS</span>
+      <p style="color:rgba(201,168,76,.35);font-family:'Cormorant Garamond',serif;font-size:.9rem;margin:.5rem 0 1.2rem">
+        Mensajes del muro. Elimina los que no honren el espíritu del Templo.
+      </p>
+      <div id="adminMuroList" style="display:flex;flex-direction:column;gap:.8rem">
+        <p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem">Cargando mensajes...</p>
+      </div>
+      <button class="save-btn" onclick="cargarMuroAdmin()" style="margin-top:1rem;background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.3)">
+        ↺ Recargar
+      </button>
+    </div>
+
+    <!-- ROLES Y MODERADORES (solo admin) -->
+    <div class="admin-card solo-admin" style="margin-bottom:2rem" id="adminRolesSection">
+      <span class="admin-card-icon">🛡️</span>
+      <span class="admin-card-title">ROLES · MODERADORES DEL TEMPLO</span>
+      <p style="color:rgba(201,168,76,.35);font-family:'Cormorant Garamond',serif;font-size:.9rem;margin:.5rem 0 1.2rem">
+        Otorga poder de moderación a otras almas. El UID aparece en Firebase → Authentication → Users.
+        Los moderadores pueden eliminar mensajes del muro y entradas públicas del diario, pero no tocan la configuración del Templo.
+      </p>
+      <label class="admin-label">UID del alma</label>
+      <input class="admin-input" id="rolUid" placeholder="Ej: a1B2c3D4..." autocomplete="off"/>
+      <label class="admin-label">Rol</label>
+      <select class="admin-select" id="rolTipo">
+        <option value="mod">🛡️ Moderador — modera muro y diario</option>
+        <option value="admin">👑 Admin — poder total</option>
+      </select>
+      <div style="display:flex;gap:.8rem;margin-top:1rem;flex-wrap:wrap">
+        <button class="save-btn" onclick="asignarRol()">✦ Otorgar rol</button>
+        <button class="save-btn" onclick="quitarRol()" style="background:rgba(200,80,80,.15);color:#e0a0a0;border:1px solid rgba(200,80,80,.35)">✕ Quitar rol</button>
+      </div>
+      <div id="rolesLista" style="margin-top:1.4rem;display:flex;flex-direction:column;gap:.5rem">
+        <p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem">Cargando roles...</p>
+      </div>
+      <p id="rolMsg" style="font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.12em;color:rgba(201,168,76,.6);margin-top:.8rem;min-height:1rem"></p>
+    </div>
+
+    <!-- OTORGAR STARBITS (solo admin) -->
+    <div class="admin-card solo-admin" style="margin-bottom:2rem" id="adminStarbitsSection">
+      <span class="admin-card-icon">⭐</span>
+      <span class="admin-card-title">OTORGAR STARBITS</span>
+      <p style="color:rgba(201,168,76,.35);font-family:'Cormorant Garamond',serif;font-size:.9rem;margin:.5rem 0 1.2rem">
+        Regala Starbits a un alma del Templo (premios, sorteos, agradecimientos).
+      </p>
+      <label class="admin-label">UID del alma</label>
+      <input class="admin-input" id="sbUid" placeholder="UID de la cuenta" autocomplete="off"/>
+      <label class="admin-label">Cantidad de Starbits</label>
+      <input class="admin-input" id="sbCantidad" type="number" min="1" value="10"/>
+      <button class="save-btn" onclick="otorgarStarbits()" style="margin-top:1rem">⭐ Otorgar</button>
+      <p id="sbMsg" style="font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.12em;color:rgba(201,168,76,.6);margin-top:.8rem;min-height:1rem"></p>
+    </div>
+
   </div><!-- /admin-content -->
 </div><!-- /adminPanel -->
 
@@ -408,21 +465,184 @@ function syncColorPicker(val) {
 }
 
 const ADMIN_PASSWORD = 'templo2026';
+const FB_RTDB = 'https://diario-del-alma-default-rtdb.firebaseio.com';
 
 // ══════════════════════════════════════════
-// LOGIN
+// LOGIN + ROLES
+//   Roles en Firebase RTDB: /templo/roles/{uid} = 'admin' | 'mod'
+//   'admin' → poder total · 'mod' → moderación de muro y diario
+//   La contraseña maestra sigue funcionando como admin (respaldo)
 // ══════════════════════════════════════════
+window._rolTemplo = null;   // 'admin' | 'mod'
+window._adminUid  = null;
+
+async function consultarRol(uid){
+  try{
+    const res = await fetch(`${FB_RTDB}/templo/roles/${uid}.json`);
+    return await res.json(); // 'admin' | 'mod' | null
+  }catch(e){ return null }
+}
+
+function entrarPanel(rol){
+  window._rolTemplo = rol;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  // Los moderadores solo ven las secciones de moderación
+  if(rol !== 'admin'){
+    document.querySelectorAll('.solo-admin').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.admin-grid, #adminStatsSection').forEach(el => { if(el) el.style.display = 'none' });
+    const greeting = document.querySelector('.admin-greeting');
+    if(greeting) greeting.textContent = '🛡️ Modo Moderador';
+  }
+  iniciarAdmin(rol);
+}
+
+async function loginConCuenta(){
+  try{
+    const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+    const { getAuth, GoogleAuthProvider, signInWithPopup } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+    const cfg = {
+      apiKey:"AIzaSyCCAIQPfCXAr0lIb5GyyyCj_lySbF5Liqg",
+      authDomain:"diario-del-alma.firebaseapp.com",
+      projectId:"diario-del-alma",
+      storageBucket:"diario-del-alma.firebasestorage.app",
+      messagingSenderId:"40226201072",
+      appId:"1:40226201072:web:b8870564b9f6a270f71135"
+    };
+    const app = getApps().length ? getApp() : initializeApp(cfg);
+    const auth = getAuth(app);
+    const cred = await signInWithPopup(auth, new GoogleAuthProvider());
+    window._adminUid = cred.user.uid;
+    const rol = await consultarRol(cred.user.uid);
+    if(rol === 'admin' || rol === 'mod'){
+      entrarPanel(rol);
+    } else {
+      document.getElementById('loginError').textContent = 'Tu cuenta no tiene rol de admin ni moderador.';
+      document.getElementById('loginError').style.display = 'block';
+    }
+  }catch(e){
+    document.getElementById('loginError').textContent = 'No se pudo iniciar sesión: ' + e.message;
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
 function verificarLogin() {
   const pass = document.getElementById('loginPass').value;
   if (pass === ADMIN_PASSWORD) {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('adminPanel').style.display = 'block';
-    iniciarAdmin();
+    entrarPanel('admin');
   } else {
     document.getElementById('loginError').style.display = 'block';
     document.getElementById('loginPass').value = '';
     document.getElementById('loginPass').focus();
   }
+}
+
+// ══════════════════════════════════════════
+// MODERACIÓN DEL MURO
+// ══════════════════════════════════════════
+async function cargarMuroAdmin(){
+  const lista = document.getElementById('adminMuroList');
+  if(!lista) return;
+  lista.innerHTML = '<p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem">Cargando mensajes...</p>';
+  try{
+    const res = await fetch(`${FB_RTDB}/templo/muro.json?orderBy="ts"&limitToLast=60`);
+    const data = await res.json();
+    if(!data){ lista.innerHTML = '<p style="color:rgba(201,168,76,.3);font-style:italic">No hay mensajes.</p>'; return; }
+    const msgs = Object.entries(data).map(([id,m])=>({id,...m})).sort((a,b)=>b.ts-a.ts);
+    lista.innerHTML = msgs.map(m => `
+      <div class="adm-entrada" id="adm-m-${m.id}">
+        <div class="adm-entrada-header">
+          <div class="adm-entrada-meta">
+            <span class="adm-entrada-autor">${m.emoji||'✨'} ${escAdm(m.nombre||'Alma')}</span>
+            <span class="adm-entrada-fecha">${m.fecha||''}</span>
+            <span>🕯️ ${m.luces||0}</span>
+            ${m.uid ? `<span style="opacity:.5;font-size:.62rem" title="UID — cópialo para roles o starbits">uid: ${m.uid}</span>` : ''}
+          </div>
+          <button class="adm-btn-borrar" onclick="adminBorrarMuroMsg('${m.id}')">✕ Eliminar</button>
+        </div>
+        <p class="adm-entrada-texto">"${escAdm(m.texto||'')}"</p>
+      </div>`).join('');
+  }catch(e){
+    lista.innerHTML = '<p style="color:#e08080;font-size:.85rem">Error: '+e.message+'</p>';
+  }
+}
+
+async function adminBorrarMuroMsg(id){
+  if(!confirm('¿Eliminar este mensaje del muro?')) return;
+  try{
+    await fetch(`${FB_RTDB}/templo/muro/${id}.json`, {method:'DELETE'});
+    document.getElementById('adm-m-'+id)?.remove();
+  }catch(e){ alert('Error: '+e.message) }
+}
+
+function escAdm(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+
+// ══════════════════════════════════════════
+// ROLES (solo admin)
+// ══════════════════════════════════════════
+async function cargarRoles(){
+  const cont = document.getElementById('rolesLista');
+  if(!cont) return;
+  try{
+    const res = await fetch(`${FB_RTDB}/templo/roles.json`);
+    const data = await res.json();
+    if(!data){ cont.innerHTML = '<p style="color:rgba(201,168,76,.3);font-style:italic;font-size:.9rem">Sin roles asignados aún. Asigna tu propio UID como admin.</p>'; return; }
+    cont.innerHTML = Object.entries(data).map(([uid,rol]) => `
+      <div style="display:flex;align-items:center;gap:.8rem;padding:.5rem .8rem;border:1px solid rgba(201,168,76,.15);border-radius:10px;font-size:.85rem">
+        <span>${rol==='admin'?'👑':'🛡️'}</span>
+        <span style="font-family:monospace;font-size:.72rem;color:#d4c9a8;flex:1;overflow:hidden;text-overflow:ellipsis">${uid}</span>
+        <span style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.15em;color:var(--gold)">${rol.toUpperCase()}</span>
+      </div>`).join('');
+  }catch(e){ cont.innerHTML = '<p style="color:#e08080;font-size:.85rem">Error: '+e.message+'</p>' }
+}
+
+async function asignarRol(){
+  const uid = document.getElementById('rolUid').value.trim();
+  const rol = document.getElementById('rolTipo').value;
+  const msg = document.getElementById('rolMsg');
+  if(!uid){ msg.textContent = '✦ Escribe el UID del alma'; return; }
+  try{
+    await fetch(`${FB_RTDB}/templo/roles/${uid}.json`, {
+      method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(rol)
+    });
+    msg.textContent = `✦ Rol ${rol.toUpperCase()} otorgado`;
+    document.getElementById('rolUid').value = '';
+    cargarRoles();
+  }catch(e){ msg.textContent = '✦ Error: '+e.message }
+}
+
+async function quitarRol(){
+  const uid = document.getElementById('rolUid').value.trim();
+  const msg = document.getElementById('rolMsg');
+  if(!uid){ msg.textContent = '✦ Escribe el UID del alma'; return; }
+  if(!confirm('¿Quitar el rol a esta alma?')) return;
+  try{
+    await fetch(`${FB_RTDB}/templo/roles/${uid}.json`, {method:'DELETE'});
+    msg.textContent = '✦ Rol eliminado';
+    document.getElementById('rolUid').value = '';
+    cargarRoles();
+  }catch(e){ msg.textContent = '✦ Error: '+e.message }
+}
+
+// ══════════════════════════════════════════
+// OTORGAR STARBITS (solo admin)
+// ══════════════════════════════════════════
+async function otorgarStarbits(){
+  const uid = document.getElementById('sbUid').value.trim();
+  const n = parseInt(document.getElementById('sbCantidad').value)||0;
+  const msg = document.getElementById('sbMsg');
+  if(!uid || n < 1){ msg.textContent = '✦ UID y cantidad válida requeridos'; return; }
+  try{
+    const url = `${FB_RTDB}/templo/usuarios/${uid}/guardianes.json`;
+    const res = await fetch(url);
+    const datos = (await res.json()) || {};
+    const nuevoSaldo = (parseInt(datos.starbits)||0) + n;
+    await fetch(url, {
+      method:'PATCH', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({starbits: nuevoSaldo, ts: Date.now()})
+    });
+    msg.textContent = `✦ +${n} ⭐ otorgados · nuevo saldo: ${nuevoSaldo}`;
+  }catch(e){ msg.textContent = '✦ Error: '+e.message }
 }
 
 function cerrarSesion() {
@@ -972,12 +1192,16 @@ async function adminBorrarEntrada(id) {
 // ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
-function iniciarAdmin() {
-  mostrarLunaAuto();
-  renderCartaGrid();
-  cargarAdmin();
-  cargarPanelActual();
+function iniciarAdmin(rol) {
+  if(rol === 'admin' || !rol){
+    mostrarLunaAuto();
+    renderCartaGrid();
+    cargarAdmin();
+    cargarPanelActual();
+    cargarRoles();
+  }
   cargarEntradasAdmin();
+  cargarMuroAdmin();
 }
 
 // Enter en login
