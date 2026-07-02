@@ -6,6 +6,7 @@
   <title>Diario del Alma • Bruxa Tarot</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <script src="lang.js"></script>
+  <script src="js/starbits.js"></script>
 
   <!-- Firebase SDK -->
   <script type="module">
@@ -131,6 +132,7 @@
           btn.textContent = _t('diario_guardar_btn');
         }
         limpiarForm();
+        window.Starbits?.premiar('diario');
         await loadEntradas(user);
         showToast(_t('diario_saved_toast'));
         document.getElementById('mis-entradas').scrollIntoView({ behavior:'smooth' });
