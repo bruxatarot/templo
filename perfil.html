@@ -210,7 +210,7 @@ function renderPerfil(user){
 
   const nombre = user.displayName || user.email?.split('@')[0] || 'Alma del Templo';
   document.getElementById('almaNombre').textContent = nombre;
-  document.getElementById('almaEmail').textContent = user.email || '';
+  document.getElementById('almaEmail').textContent = (user.email || '') + '  ·  uid: ' + user.uid;
 
   // Stats
   document.getElementById('stSb').textContent = Starbits.get();
