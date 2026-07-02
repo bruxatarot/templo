@@ -573,7 +573,11 @@ async function cargarMuro(){
       const petTag = m.mascota && MASCOTAS[m.mascota] ? petHtml(m.mascota, .48) : '';
       const lit = lucesEncendidas.has(m.id);
       const nLuces = m.luces || 0;
+      const modBtn = (rolTemplo==='admin'||rolTemplo==='mod')
+        ? `<button onclick="modBorrarMsg('${m.id}')" title="Eliminar (moderación)" style="position:absolute;top:.4rem;right:.5rem;background:rgba(200,80,80,.15);border:1px solid rgba(200,80,80,.35);color:#e0a0a0;border-radius:100px;font-size:.6rem;padding:.15rem .5rem;cursor:pointer">✕</button>`
+        : '';
       return `<div class="nota" data-emoji="${emoji}" style="--dur:${dur};--delay:${delay}">
+        ${modBtn}
         <div class="nota-header">
           <span class="nota-emoji">${emoji}</span>
           ${petTag}
@@ -593,6 +597,38 @@ async function cargarMuro(){
 
 function escapeHtml(str){
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── MODERACIÓN (admin / mod via /templo/roles/{uid}) ──
+let rolTemplo = null;
+document.addEventListener('authchange', async e=>{
+  if(!e.detail.user){ rolTemplo = null; return; }
+  const uid = e.detail.user.uid;
+  rolTemplo = null;
+  try{
+    const res = await fetch(`${FB_URL}/templo/roles/${uid}.json`);
+    const rol = await res.json();
+    if(rol === 'admin' || rol === 'mod') rolTemplo = rol;
+  }catch(err){}
+  if(!rolTemplo){
+    // Firestore: perfiles/{uid}.isAdmin (creado desde la consola)
+    try{
+      const res = await fetch(`https://firestore.googleapis.com/v1/projects/diario-del-alma/databases/(default)/documents/perfiles/${uid}`);
+      if(res.ok){
+        const doc = await res.json();
+        if(doc.fields?.isAdmin?.booleanValue === true) rolTemplo = 'admin';
+        else if(doc.fields?.isMod?.booleanValue === true) rolTemplo = 'mod';
+      }
+    }catch(err){}
+  }
+  if(rolTemplo) cargarMuro();
+});
+async function modBorrarMsg(id){
+  if(!confirm('🛡️ ¿Eliminar este mensaje del muro?')) return;
+  try{
+    await fetch(`${FB_MURO}/${id}.json`, {method:'DELETE'});
+    cargarMuro();
+  }catch(e){}
 }
 
 // ── VELITAS 🕯️ ──
