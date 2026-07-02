@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Santuario • Bruxa Tarot</title>
+  <script src="lang.js"></script>
+  <script src="js/guardianes.js"></script>
+  <script src="js/starbits.js"></script>
+  <script type="module" src="js/auth-chip.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--gold:#c9a84c;--gold-l:#e8c97a;--gold-p:#f5e6b8;--deep:#04060f}
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--deep);color:#e8dfc8;font-family:'Cormorant Garamond',serif;min-height:100vh;overflow-x:hidden}
+
+    #starfield{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:radial-gradient(ellipse at 20% 30%,#0d1a3a 0%,#04060f 60%),
+                 radial-gradient(ellipse at 80% 70%,#1a0828 0%,transparent 60%)}
+    #starfield canvas{position:absolute;inset:0;width:100%;height:100%}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:1.2rem 2.5rem;
+      background:linear-gradient(to bottom,rgba(4,6,15,.97),transparent)}
+    .nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.3em;color:var(--gold);text-decoration:none}
+    .nav-link{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;color:rgba(201,168,76,.5);text-decoration:none;transition:color .3s}
+    .nav-link:hover{color:var(--gold)}
+    @media(max-width:600px){nav{padding:1rem 1.5rem}}
+
+    .hero{position:relative;z-index:1;text-align:center;padding:7rem 2rem 2rem}
+    .hero-eyebrow{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.4em;color:rgba(201,168,76,.4);margin-bottom:1rem}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-style:italic;
+      font-size:clamp(2rem,5vw,3.2rem);color:var(--gold-p);font-weight:300;line-height:1.15;margin-bottom:.5rem}
+    .hero-sub{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.22em;color:rgba(201,168,76,.38)}
+
+    .wrap{position:relative;z-index:1;max-width:840px;margin:0 auto;padding:2rem 1.5rem 6rem;
+      display:flex;flex-direction:column;gap:1.4rem}
+
+    .panel{background:linear-gradient(160deg,rgba(30,20,56,.9),rgba(16,10,34,.92));
+      border:1px solid rgba(201,168,76,.25);border-radius:20px;padding:1.8rem;backdrop-filter:blur(8px)}
+    .panel-title{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.28em;
+      color:rgba(201,168,76,.6);margin-bottom:1.3rem;display:flex;align-items:center;gap:.8rem}
+    .panel-title::after{content:'';flex:1;height:1px;background:rgba(201,168,76,.12)}
+
+    /* Cabecera del alma */
+    .alma-head{display:flex;align-items:center;gap:1.6rem;flex-wrap:wrap}
+    .alma-guardian{flex:none;width:120px;height:124px;display:flex;align-items:center;justify-content:center;
+      background:radial-gradient(circle,rgba(201,168,76,.1),transparent 70%);border-radius:50%}
+    .alma-datos{flex:1;min-width:200px}
+    .alma-nombre{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.7rem;color:var(--gold-p);margin-bottom:.2rem}
+    .alma-email{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.15em;color:rgba(201,168,76,.4);margin-bottom:1rem}
+    .alma-stats{display:flex;gap:1.6rem;flex-wrap:wrap}
+    .stat{text-align:center}
+    .stat-num{font-family:'Cinzel Decorative',serif;font-size:1.5rem;color:var(--gold-l);display:block;font-variant-numeric:tabular-nums}
+    .stat-label{font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.18em;color:rgba(201,168,76,.4)}
+
+    /* No sesión */
+    .no-sesion{text-align:center;padding:3rem 1.5rem}
+    .no-sesion p{font-style:italic;font-size:1.05rem;color:rgba(201,168,76,.55);margin-bottom:1.6rem;line-height:1.8}
+    .btn-login{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.2em;
+      padding:.85rem 2.2rem;border-radius:100px;cursor:pointer;border:none;
+      background:linear-gradient(135deg,rgba(201,168,76,.7),rgba(160,120,40,.8));color:#04060f}
+    .btn-login:hover{box-shadow:0 0 25px rgba(201,168,76,.35)}
+
+    /* Colección */
+    .coleccion{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.9rem}
+    .col-item{border-radius:16px;padding:1rem .6rem .8rem;text-align:center;position:relative;
+      background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.18);transition:all .3s}
+    .col-item:hover{border-color:rgba(201,168,76,.45);transform:translateY(-3px)}
+    .col-item.sel{border-color:var(--gold);box-shadow:0 0 16px rgba(201,168,76,.25)}
+    .col-item.bloqueado{opacity:.32;filter:grayscale(.6)}
+    .col-item.bloqueado::after{content:'🔒';position:absolute;top:.5rem;right:.6rem;font-size:.8rem}
+    .col-stage{height:78px;display:flex;align-items:center;justify-content:center;margin-bottom:.4rem}
+    .col-nombre{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;color:var(--gold-p)}
+    .col-badge{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;color:rgba(201,168,76,.45);display:block;margin-top:.2rem}
+    .col-item.sel .col-badge{color:var(--gold-l)}
+
+    /* Cómo ganar */
+    .ganar-lista{display:flex;flex-direction:column;gap:.55rem}
+    .ganar-item{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+      font-size:.98rem;font-style:italic;color:#d4c9a8;
+      padding:.5rem .2rem;border-bottom:1px solid rgba(201,168,76,.07)}
+    .ganar-sb{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.1em;color:var(--gold-l);white-space:nowrap}
+    .ganar-lim{font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.1em;color:rgba(201,168,76,.35);display:block}
+
+    /* Accesos */
+    .accesos{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.8rem}
+    .acceso{display:flex;align-items:center;gap:.7rem;text-decoration:none;
+      font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.14em;color:var(--gold-l);
+      padding:.85rem 1.1rem;border-radius:14px;border:1px solid rgba(201,168,76,.2);
+      background:rgba(201,168,76,.05);transition:all .25s}
+    .acceso:hover{border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.1);transform:translateY(-2px)}
+
+    /* Mis mensajes */
+    .mis-msgs{display:flex;flex-direction:column;gap:.7rem}
+    .mi-msg{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.15);
+      border-radius:12px;padding:.9rem 1.1rem;font-style:italic;font-size:.98rem;color:#e0d4b4;line-height:1.6}
+    .mi-msg small{display:block;font-family:'Cinzel',serif;font-style:normal;font-size:.44rem;
+      letter-spacing:.12em;color:rgba(201,168,76,.4);margin-top:.4rem}
+    .vacio{font-style:italic;color:rgba(201,168,76,.4);text-align:center;padding:1rem}
+  </style>
+</head>
+<body>
+<div id="starfield"><canvas id="stars"></canvas></div>
+
+<nav>
+  <a href="index.html" class="nav-link" data-i18n="nav_back">← Templo</a>
+  <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
+  <span></span>
+</nav>
+
+<header class="hero">
+  <p class="hero-eyebrow">✦ Templo del Prisma ✦</p>
+  <h1 class="hero-title">Mi Santuario</h1>
+  <p class="hero-sub">Tu alma, tus guardianes, tu camino</p>
+</header>
+
+<div class="wrap">
+
+  <!-- SIN SESIÓN -->
+  <div class="panel no-sesion" id="panelNoSesion">
+    <p>Inicia sesión con tu cuenta del Templo para ver tu santuario:<br/>
+    tu Guardián, tus Starbits, tu racha de días y tus mensajes.</p>
+    <button class="btn-login" onclick="window._acAbrirModal&&window._acAbrirModal()">✦ Crear cuenta · Iniciar sesión</button>
+  </div>
+
+  <!-- CABECERA DEL ALMA -->
+  <div class="panel" id="panelAlma" style="display:none">
+    <div class="alma-head">
+      <div class="alma-guardian" id="guardianGrande"></div>
+      <div class="alma-datos">
+        <p class="alma-nombre" id="almaNombre">Alma del Templo</p>
+        <p class="alma-email" id="almaEmail"></p>
+        <div class="alma-stats">
+          <div class="stat"><span class="stat-num" id="stSb">0</span><span class="stat-label">⭐ STARBITS</span></div>
+          <div class="stat"><span class="stat-num" id="stRacha">0</span><span class="stat-label">🔥 DÍAS SEGUIDOS</span></div>
+          <div class="stat"><span class="stat-num" id="stGuard">1</span><span class="stat-label">🛡️ GUARDIANES</span></div>
+          <div class="stat"><span class="stat-num" id="stMsgs">0</span><span class="stat-label">💌 MENSAJES</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLECCIÓN DE GUARDIANES -->
+  <div class="panel" id="panelColeccion" style="display:none">
+    <p class="panel-title">🛡️ MIS GUARDIANES DEL TEMPLO</p>
+    <div class="coleccion" id="coleccion"></div>
+  </div>
+
+  <!-- MIS MENSAJES DEL MURO -->
+  <div class="panel" id="panelMsgs" style="display:none">
+    <p class="panel-title">💌 MIS MENSAJES EN EL MURO</p>
+    <div class="mis-msgs" id="misMsgs"><p class="vacio">Cargando…</p></div>
+  </div>
+
+  <!-- CÓMO GANAR STARBITS -->
+  <div class="panel">
+    <p class="panel-title">⭐ CÓMO GANAR STARBITS</p>
+    <div class="ganar-lista">
+      <div class="ganar-item"><span>🏛️ Visitar el Templo<span class="ganar-lim">una vez al día</span></span><span class="ganar-sb">+2 ⭐</span></div>
+      <div class="ganar-item"><span>🃏 Sacar tu Carta del Día<span class="ganar-lim">una vez al día</span></span><span class="ganar-sb">+1 ⭐</span></div>
+      <div class="ganar-item"><span>📖 Escribir en tu Diario del Alma<span class="ganar-lim">una vez al día</span></span><span class="ganar-sb">+3 ⭐</span></div>
+      <div class="ganar-item"><span>🔮 Hacer una tirada del Oráculo<span class="ganar-lim">una vez al día</span></span><span class="ganar-sb">+2 ⭐</span></div>
+      <div class="ganar-item"><span>💌 Dejar un mensaje en el Muro<span class="ganar-lim">una vez al día</span></span><span class="ganar-sb">+5 ⭐</span></div>
+      <div class="ganar-item"><span>🕯️ Prender velitas a otras almas<span class="ganar-lim">hasta 5 al día</span></span><span class="ganar-sb">+1 ⭐ c/u</span></div>
+      <div class="ganar-item"><span>⭐ Lanzar un deseo al Pozo<span class="ganar-lim">una vez por semana</span></span><span class="ganar-sb">+5 ⭐</span></div>
+      <div class="ganar-item"><span>📚 Leer un capítulo de las Historias<span class="ganar-lim">una vez al día</span></span><span class="ganar-sb">+1 ⭐</span></div>
+      <div class="ganar-item"><span>🌓 Completar el Test Luz y Sombra<span class="ganar-lim">una sola vez</span></span><span class="ganar-sb">+10 ⭐</span></div>
+      <div class="ganar-item"><span>🔥 Racha de 7 días seguidos<span class="ganar-lim">cada 7 días</span></span><span class="ganar-sb">+7 ⭐</span></div>
+    </div>
+  </div>
+
+  <!-- ACCESOS -->
+  <div class="panel">
+    <p class="panel-title">✦ MI CAMINO</p>
+    <div class="accesos">
+      <a class="acceso" href="diario.html">📖 Mi Diario del Alma</a>
+      <a class="acceso" href="test.html">🌓 Test Luz y Sombra</a>
+      <a class="acceso" href="muro.html">💌 Muro de Almas</a>
+      <a class="acceso" href="tiradas.html">🔮 Oráculo Prisma</a>
+      <a class="acceso" href="pozo.html">⭐ Pozo de los Deseos</a>
+      <a class="acceso" href="historias.html">📚 Historias Mágicas</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── STARFIELD ──
+(function(){
+  const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');
+  let stars=[],W,H;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  function initStars(){stars=[];const n=Math.floor((W*H)/5000);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,alpha:Math.random()*.5+.1,ts:Math.random()*.015+.004,to:Math.random()*Math.PI*2})}
+  function draw(t){ctx.clearRect(0,0,W,H);stars.forEach(s=>{const a=s.alpha*(.6+.4*Math.sin(t*s.ts+s.to));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,240,${a})`;ctx.fill()});requestAnimationFrame(draw)}
+  window.addEventListener('resize',()=>{resize();initStars()});
+  resize();initStars();requestAnimationFrame(draw);
+})();
+
+const FB_URL = 'https://diario-del-alma-default-rtdb.firebaseio.com';
+
+function renderPerfil(user){
+  document.getElementById('panelNoSesion').style.display = user ? 'none' : 'block';
+  ['panelAlma','panelColeccion','panelMsgs'].forEach(id=>{
+    document.getElementById(id).style.display = user ? 'block' : 'none';
+  });
+  if(!user) return;
+
+  const nombre = user.displayName || user.email?.split('@')[0] || 'Alma del Templo';
+  document.getElementById('almaNombre').textContent = nombre;
+  document.getElementById('almaEmail').textContent = user.email || '';
+
+  // Stats
+  document.getElementById('stSb').textContent = Starbits.get();
+  document.getElementById('stRacha').textContent = Starbits.racha().n || 0;
+  document.getElementById('stGuard').textContent = Starbits.owned().length;
+
+  // Guardián elegido, grande
+  const sel = Starbits.getSel() || 'vela';
+  document.getElementById('guardianGrande').innerHTML = petHtml(sel, 1.05);
+
+  // Colección
+  const owned = Starbits.owned();
+  document.getElementById('coleccion').innerHTML = Object.entries(MASCOTAS).map(([key,m])=>{
+    const has = owned.includes(key);
+    const esSel = key === sel;
+    return `<div class="col-item ${has?'':'bloqueado'} ${esSel?'sel':''}" ${has?`onclick="elegirGuardian('${key}')" style="cursor:pointer"`:''}>
+      <div class="col-stage">${petHtml(key, .68)}</div>
+      <p class="col-nombre">${m.nombre}</p>
+      <span class="col-badge">${esSel ? '✦ TE ACOMPAÑA' : has ? 'ADOPTADO' : RAREZA_LABEL[m.rareza]}</span>
+    </div>`;
+  }).join('');
+
+  cargarMisMensajes(user.uid);
+}
+
+window.elegirGuardian = function(key){
+  Starbits.setSel(key);
+  renderPerfil(window._fbUser);
+};
+
+async function cargarMisMensajes(uid){
+  const cont = document.getElementById('misMsgs');
+  try{
+    const res = await fetch(`${FB_URL}/templo/muro.json?orderBy="uid"&equalTo="${uid}"`);
+    const data = await res.json();
+    const msgs = data ? Object.values(data).sort((a,b)=>b.ts-a.ts) : [];
+    document.getElementById('stMsgs').textContent = msgs.length;
+    if(!msgs.length){
+      cont.innerHTML = '<p class="vacio">Aún no has dejado tu huella en el muro ✦ <a href="muro.html" style="color:var(--gold-l)">Escribe tu primer mensaje</a></p>';
+      return;
+    }
+    cont.innerHTML = msgs.slice(0,10).map(m=>
+      `<div class="mi-msg">${m.emoji||'✨'} ${escHtml(m.texto||'')}
+        <small>${m.fecha||''} · 🕯️ ${m.luces||0} luces recibidas</small></div>`
+    ).join('');
+  }catch(e){
+    // El índice por uid puede no estar habilitado en las reglas — fallback: traer y filtrar
+    try{
+      const res = await fetch(`${FB_URL}/templo/muro.json?orderBy="ts"&limitToLast=100`);
+      const data = await res.json();
+      const msgs = data ? Object.values(data).filter(m=>m.uid===uid).sort((a,b)=>b.ts-a.ts) : [];
+      document.getElementById('stMsgs').textContent = msgs.length;
+      cont.innerHTML = msgs.length
+        ? msgs.slice(0,10).map(m=>`<div class="mi-msg">${m.emoji||'✨'} ${escHtml(m.texto||'')}<small>${m.fecha||''} · 🕯️ ${m.luces||0} luces recibidas</small></div>`).join('')
+        : '<p class="vacio">Aún no has dejado tu huella en el muro ✦ <a href="muro.html" style="color:var(--gold-l)">Escribe tu primer mensaje</a></p>';
+    }catch(e2){
+      cont.innerHTML = '<p class="vacio">No se pudieron cargar tus mensajes</p>';
+    }
+  }
+}
+
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+
+document.addEventListener('authchange', e=>{
+  // pequeña espera para que la sincronización con la nube termine
+  setTimeout(()=>renderPerfil(e.detail.user), e.detail.user ? 1200 : 0);
+});
+Starbits.onChange(()=>{
+  const el = document.getElementById('stSb');
+  if(el) el.textContent = Starbits.get();
+});
+
+if(typeof LangEngine !== 'undefined'){ LangEngine.detect(); LangEngine.apply(); }
+</script>
+</body>
+</html>
