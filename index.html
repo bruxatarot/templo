@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <script src="lang.js"></script>
+  <script src="js/starbits.js"></script>
   <script type="module" src="js/auth-chip.js"></script>
   <script src="js/data/oracle-cards.js"></script>
   <script src="js/data/oracle-pt.js"></script>
@@ -653,6 +654,7 @@
       <a href="test.html" class="sidebar-link" data-i18n="sidebar_test">🌓 Test Luz y Sombra</a>
       <a href="historias.html" class="sidebar-link" data-i18n="sidebar_historias">📚 Historias Mágicas</a>
       <a href="muro.html" class="sidebar-link" data-i18n="sidebar_muro">💌 Muro de Mensajes</a>
+      <a href="perfil.html" class="sidebar-link" data-i18n="sidebar_perfil">🌟 Mi Santuario</a>
       <a href="recetas.html" class="sidebar-link" data-i18n="sidebar_esencias">🌈 Esencias Sagradas</a>
       <a href="https://www.youtube.com/@BruxaTarot" target="_blank" class="sidebar-link" data-i18n="sidebar_frecuencias">🎵 Frecuencias Sagradas</a>
     </nav>
@@ -1017,6 +1019,7 @@
 
   function flipCard(){
     if(flipped)return;flipped=true;
+    window.Starbits?.premiar('carta');
     const c=pickCard();
     // Determine if reversed — use day+month as seed for variety
     const today=new Date();
