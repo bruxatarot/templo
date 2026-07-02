@@ -27,7 +27,7 @@
     .nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.3em;color:var(--gold);text-decoration:none}
     .nav-link{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;color:rgba(201,168,76,.5);text-decoration:none;transition:color .3s}
     .nav-link:hover{color:var(--gold)}
-    .lang-selector{display:flex;align-items:center;gap:.35rem}
+    .lang-selector{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap}
     .lang-btn{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.12em;padding:.28rem .65rem;border-radius:100px;cursor:pointer;
       border:1px solid rgba(201,168,76,.2);background:transparent;color:#b8a87a;transition:all .3s}
     .lang-btn:hover{border-color:rgba(201,168,76,.5);color:var(--gold)}
@@ -35,17 +35,35 @@
     @media(max-width:600px){nav{padding:1rem 1.5rem}}
 
     /* HERO */
-    .hero{position:relative;z-index:1;text-align:center;padding:7rem 2rem 3rem}
+    .hero{position:relative;z-index:1;text-align:center;padding:7rem 2rem 2.5rem}
     .hero-eyebrow{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.4em;color:rgba(201,168,76,.4);margin-bottom:1rem}
     .hero-title{font-family:'Cormorant Garamond',serif;font-style:italic;
       font-size:clamp(2.2rem,6vw,3.8rem);color:var(--gold-p);font-weight:300;
       line-height:1.15;margin-bottom:.8rem}
     .hero-sub{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.22em;
-      color:rgba(201,168,76,.38);margin-bottom:2.5rem}
+      color:rgba(201,168,76,.38);margin-bottom:2rem}
     .hero-quote{font-family:'Cormorant Garamond',serif;font-style:italic;
-      font-size:1.05rem;color:rgba(201,168,76,.5);max-width:480px;margin:0 auto 2.5rem;line-height:1.8}
-    .hero-divider{display:flex;align-items:center;gap:1rem;max-width:240px;margin:0 auto 3rem}
+      font-size:1.05rem;color:rgba(201,168,76,.5);max-width:480px;margin:0 auto 2rem;line-height:1.8}
+    .hero-divider{display:flex;align-items:center;gap:1rem;max-width:240px;margin:0 auto 2rem}
     .hero-divider-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,.2),transparent)}
+
+    /* ── STARBITS BAR ── */
+    .starbits-bar{position:relative;z-index:1;display:flex;justify-content:center;
+      align-items:center;gap:1.2rem;margin-bottom:2rem;flex-wrap:wrap}
+    .starbits-chip{display:flex;align-items:center;gap:.5rem;
+      font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.15em;
+      padding:.55rem 1.3rem;border-radius:100px;
+      background:linear-gradient(135deg,rgba(201,168,76,.14),rgba(139,79,158,.12));
+      border:1px solid rgba(201,168,76,.35);color:var(--gold-l);
+      box-shadow:0 0 18px rgba(201,168,76,.12)}
+    .starbits-icon{font-size:1rem;filter:drop-shadow(0 0 6px rgba(255,220,120,.7));
+      animation:sb-spin 6s linear infinite;display:inline-block}
+    @keyframes sb-spin{0%,100%{transform:rotate(-10deg) scale(1)}50%{transform:rotate(10deg) scale(1.12)}}
+    .btn-tienda{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.18em;
+      padding:.55rem 1.4rem;border-radius:100px;cursor:pointer;
+      border:1px solid rgba(180,120,220,.45);color:#d4a8f0;
+      background:rgba(139,79,158,.12);transition:all .3s}
+    .btn-tienda:hover{background:rgba(139,79,158,.25);box-shadow:0 0 18px rgba(180,120,220,.25)}
 
     /* CONTADOR */
     .counter-wrap{position:relative;z-index:1;display:flex;justify-content:center;gap:2rem;margin-bottom:3rem;flex-wrap:wrap}
@@ -55,27 +73,97 @@
 
     /* FORM */
     .form-wrap{position:relative;z-index:1;max-width:580px;margin:0 auto 4rem;padding:0 1.5rem}
-    .form-card{background:rgba(14,8,32,.8);border:1px solid rgba(201,168,76,.15);
+    .form-card{background:rgba(22,14,44,.85);border:1px solid rgba(201,168,76,.22);
       border-radius:20px;padding:2rem;backdrop-filter:blur(8px)}
     .form-title{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.25em;
       color:rgba(201,168,76,.6);text-align:center;margin-bottom:1.5rem}
 
     .form-row{margin-bottom:1.2rem}
     .form-label{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.18em;
-      color:rgba(201,168,76,.45);display:block;margin-bottom:.5rem}
+      color:rgba(201,168,76,.5);display:block;margin-bottom:.5rem}
     .form-input,.form-textarea{
-      width:100%;background:rgba(201,168,76,.04);
-      border:1px solid rgba(201,168,76,.15);border-radius:10px;
-      color:#e8dfc8;font-family:'Cormorant Garamond',serif;font-size:1rem;
+      width:100%;background:rgba(201,168,76,.05);
+      border:1px solid rgba(201,168,76,.2);border-radius:10px;
+      color:#f0e8d4;font-family:'Cormorant Garamond',serif;font-size:1.05rem;
       padding:.7rem 1rem;outline:none;transition:border-color .3s;resize:none}
-    .form-input:focus,.form-textarea:focus{border-color:rgba(201,168,76,.4)}
-    .form-input::placeholder,.form-textarea::placeholder{color:rgba(201,168,76,.25)}
+    .form-input:focus,.form-textarea:focus{border-color:rgba(201,168,76,.5)}
+    .form-input::placeholder,.form-textarea::placeholder{color:rgba(201,168,76,.3)}
     .form-textarea{height:90px;line-height:1.6}
 
-    /* EMOJI PICKER */
+    /* ── MASCOTA PICKER ── */
+    .pet-row{display:flex;gap:.6rem;flex-wrap:wrap}
+    .pet-btn{width:3.2rem;height:3.2rem;border-radius:14px;border:1px solid rgba(201,168,76,.2);
+      background:rgba(201,168,76,.05);cursor:pointer;position:relative;
+      display:flex;align-items:center;justify-content:center;transition:all .25s}
+    .pet-btn:hover{border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.12);transform:scale(1.08)}
+    .pet-btn.selected{border-color:var(--gold);background:rgba(201,168,76,.18);
+      box-shadow:0 0 14px rgba(201,168,76,.3)}
+    .pet-btn.locked{opacity:.4;cursor:pointer}
+    .pet-btn.locked::after{content:'🔒';position:absolute;bottom:-4px;right:-4px;font-size:.7rem}
+    .pet-btn .pet{transform:scale(.75)}
+    .pet-none{font-size:.85rem;color:rgba(201,168,76,.4)}
+
+    /* ── MASCOTAS (CSS ANIMADAS) ── */
+    .pet{position:relative;display:inline-flex;align-items:center;justify-content:center;
+      width:2.6rem;height:2.6rem;font-size:1.7rem;line-height:1}
+    /* Vela — parpadea con fuego dorado */
+    .pet-vela{animation:vela-flicker 2.2s ease-in-out infinite;
+      filter:drop-shadow(0 0 8px rgba(255,190,80,.85))}
+    @keyframes vela-flicker{
+      0%,100%{filter:drop-shadow(0 0 6px rgba(255,190,80,.7));transform:scale(1)}
+      30%{filter:drop-shadow(0 0 14px rgba(255,210,100,1));transform:scale(1.05)}
+      55%{filter:drop-shadow(0 0 8px rgba(255,170,60,.8));transform:scale(.98)}
+      75%{filter:drop-shadow(0 0 12px rgba(255,200,90,.95));transform:scale(1.03)}}
+    /* Luna — flota lenta con brillo plateado */
+    .pet-luna{animation:luna-float 5s ease-in-out infinite;
+      filter:drop-shadow(0 0 10px rgba(200,210,255,.8))}
+    @keyframes luna-float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-7px) rotate(4deg)}}
+    /* Estrella — centellea con polvo cósmico */
+    .pet-estrella{animation:estrella-twinkle 1.8s ease-in-out infinite;
+      filter:drop-shadow(0 0 10px rgba(255,230,120,.9))}
+    .pet-estrella::after{content:'✦';position:absolute;top:-6px;right:-8px;font-size:.6rem;
+      color:#ffe89a;animation:sparkle-orbit 2.5s linear infinite}
+    @keyframes estrella-twinkle{0%,100%{transform:scale(1)}50%{transform:scale(1.18) rotate(8deg)}}
+    @keyframes sparkle-orbit{0%{transform:rotate(0) translateX(14px) rotate(0);opacity:1}
+      100%{transform:rotate(360deg) translateX(14px) rotate(-360deg);opacity:.4}}
+    /* Bola de cristal — gira con reflejos */
+    .pet-bola{animation:bola-shimmer 4s ease-in-out infinite;
+      filter:drop-shadow(0 0 10px rgba(160,200,255,.8))}
+    @keyframes bola-shimmer{0%,100%{filter:drop-shadow(0 0 8px rgba(160,200,255,.7)) hue-rotate(0)}
+      50%{filter:drop-shadow(0 0 16px rgba(200,160,255,.95)) hue-rotate(40deg);transform:rotate(10deg)}}
+    /* Ojo místico — parpadea con brillo azul */
+    .pet-ojo{animation:ojo-blink 3.5s ease-in-out infinite;
+      filter:drop-shadow(0 0 10px rgba(80,140,255,.85))}
+    @keyframes ojo-blink{0%,88%,100%{transform:scaleY(1)}92%,96%{transform:scaleY(.12)}}
+    /* Brillito — chispa traviesa que salta */
+    .pet-brillito{animation:brillito-bounce 1.6s ease-in-out infinite;
+      filter:drop-shadow(0 0 12px rgba(255,215,90,1))}
+    .pet-brillito::before{content:'✧';position:absolute;bottom:-4px;left:-8px;font-size:.55rem;
+      color:#ffe89a;animation:sparkle-orbit 2s linear infinite reverse}
+    .pet-brillito::after{content:'✦';position:absolute;top:-6px;right:-8px;font-size:.6rem;
+      color:#fff3c0;animation:sparkle-orbit 2.8s linear infinite}
+    @keyframes brillito-bounce{0%,100%{transform:translateY(0) scale(1)}
+      40%{transform:translateY(-8px) scale(1.1) rotate(-8deg)}60%{transform:translateY(-4px) scale(1.05) rotate(6deg)}}
+    /* Alma — flota con halo dorado y polvo de estrellas */
+    .pet-alma{animation:alma-float 4.5s ease-in-out infinite;
+      filter:drop-shadow(0 0 12px rgba(255,235,180,.95))}
+    .pet-alma::before{content:'';position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+      width:1.4rem;height:.45rem;border-radius:50%;border:2px solid rgba(255,220,120,.9);
+      box-shadow:0 0 8px rgba(255,220,120,.7);animation:halo-glow 3s ease-in-out infinite}
+    .pet-alma::after{content:'✦ ✧';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+      font-size:.5rem;color:rgba(255,235,180,.8);letter-spacing:.3em;
+      animation:dust-fade 2.5s ease-in-out infinite}
+    @keyframes alma-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    @keyframes halo-glow{0%,100%{opacity:.7;box-shadow:0 0 6px rgba(255,220,120,.5)}
+      50%{opacity:1;box-shadow:0 0 14px rgba(255,220,120,.95)}}
+    @keyframes dust-fade{0%,100%{opacity:.4;transform:translateX(-50%) translateY(0)}
+      50%{opacity:1;transform:translateX(-50%) translateY(3px)}}
+    @media(prefers-reduced-motion:reduce){.pet,.pet::before,.pet::after{animation:none!important}}
+
+    /* EMOJI PICKER (símbolo) */
     .emoji-row{display:flex;gap:.5rem;flex-wrap:wrap}
-    .emoji-btn{width:2.4rem;height:2.4rem;border-radius:50%;border:1px solid rgba(201,168,76,.15);
-      background:rgba(201,168,76,.04);font-size:1.15rem;cursor:pointer;
+    .emoji-btn{width:2.4rem;height:2.4rem;border-radius:50%;border:1px solid rgba(201,168,76,.2);
+      background:rgba(201,168,76,.05);font-size:1.15rem;cursor:pointer;
       display:flex;align-items:center;justify-content:center;transition:all .25s}
     .emoji-btn:hover{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.1);transform:scale(1.1)}
     .emoji-btn.selected{border-color:var(--gold);background:rgba(201,168,76,.15);
@@ -101,16 +189,16 @@
     /* MURO */
     .muro{position:relative;z-index:1;
       display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+      grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
       gap:1.2rem;
       padding:0 1.5rem 6rem;
       max-width:1000px;margin:0 auto}
     @media(max-width:600px){.muro{grid-template-columns:1fr 1fr;gap:.8rem;padding:0 1rem 5rem}}
 
-    /* TARJETITA */
+    /* TARJETITA — más clara y legible */
     .nota{
-      background:rgba(14,8,32,.7);
-      border:1px solid rgba(201,168,76,.12);
+      background:linear-gradient(160deg,rgba(38,26,66,.92),rgba(24,16,46,.94));
+      border:1px solid rgba(201,168,76,.3);
       border-radius:14px;
       padding:1.1rem 1.2rem 1rem;
       position:relative;
@@ -118,35 +206,29 @@
       animation:flotar var(--dur,4s) ease-in-out infinite;
       animation-delay:var(--delay,0s);
       transition:transform .3s,box-shadow .3s,border-color .3s;
+      box-shadow:0 4px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.04);
     }
     .nota:hover{
       transform:translateY(-6px) scale(1.02);
-      box-shadow:0 12px 35px rgba(0,0,0,.45);
-      border-color:rgba(201,168,76,.28);
+      box-shadow:0 12px 35px rgba(0,0,0,.5),0 0 25px rgba(201,168,76,.15);
+      border-color:rgba(201,168,76,.55);
     }
     @keyframes flotar{
       0%,100%{transform:translateY(0px)}
       50%{transform:translateY(-6px)}
     }
     .nota:hover{animation-play-state:paused}
-    .nota-emoji{font-size:1.5rem;margin-bottom:.5rem;display:block}
-    .nota-texto{font-family:'Cormorant Garamond',serif;font-size:.95rem;
-      line-height:1.65;color:#d4c9a8;margin-bottom:.8rem;
+    .nota-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
+    .nota-emoji{font-size:1.5rem;display:block}
+    .nota-texto{font-family:'Cormorant Garamond',serif;font-size:1.05rem;
+      line-height:1.65;color:#f0e6cc;margin-bottom:.8rem;
       word-break:break-word;
       display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
     .nota-footer{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-    .nota-nombre{font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:.12em;
-      color:rgba(201,168,76,.45);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .nota-nombre{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.12em;
+      color:rgba(232,201,122,.75);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .nota-fecha{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.08em;
-      color:rgba(201,168,76,.25);white-space:nowrap}
-
-    .nota[data-emoji="🌟"]{border-color:rgba(255,220,80,.12)}
-    .nota[data-emoji="⭐"]{border-color:rgba(255,220,80,.1)}
-    .nota[data-emoji="💫"]{border-color:rgba(180,160,255,.12)}
-    .nota[data-emoji="🌙"]{border-color:rgba(120,100,220,.12)}
-    .nota[data-emoji="☀️"]{border-color:rgba(255,180,60,.12)}
-    .nota[data-emoji="🌈"]{border-color:rgba(100,200,180,.12)}
-    .nota[data-emoji="🦋"]{border-color:rgba(201,168,76,.2)}
+      color:rgba(201,168,76,.45);white-space:nowrap}
 
     .muro-vacio{position:relative;z-index:1;text-align:center;
       padding:3rem 2rem;color:rgba(201,168,76,.3);
@@ -161,6 +243,68 @@
     @keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
 
     @media(prefers-reduced-motion:reduce){.nota{animation:none}}
+
+    /* ── TIENDA MODAL ── */
+    .modal-overlay{position:fixed;inset:0;z-index:300;
+      background:rgba(4,6,15,.88);backdrop-filter:blur(6px);
+      display:flex;align-items:center;justify-content:center;
+      padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .3s}
+    .modal-overlay.open{opacity:1;pointer-events:all}
+    .tienda-modal{background:linear-gradient(160deg,rgba(30,20,56,.98),rgba(16,10,34,.98));
+      border:1px solid rgba(201,168,76,.3);
+      border-radius:22px;padding:2rem;max-width:560px;width:100%;
+      max-height:85vh;overflow-y:auto;position:relative;
+      box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 45px rgba(139,79,158,.12);
+      transform:translateY(20px);transition:transform .3s}
+    .modal-overlay.open .tienda-modal{transform:none}
+    .tienda-title{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.3em;
+      color:var(--gold-l);text-align:center;margin-bottom:.4rem}
+    .tienda-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;
+      color:rgba(201,168,76,.55);text-align:center;margin-bottom:1.6rem}
+    .modal-close{position:absolute;top:1rem;right:1.2rem;
+      font-size:1.1rem;color:rgba(201,168,76,.4);cursor:pointer;
+      background:none;border:none;transition:color .2s}
+    .modal-close:hover{color:rgba(201,168,76,.8)}
+    .tienda-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.9rem}
+    .tienda-item{border-radius:16px;padding:1.1rem .8rem .9rem;text-align:center;
+      background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.18);
+      transition:all .3s;position:relative}
+    .tienda-item:hover{border-color:rgba(201,168,76,.45);transform:translateY(-3px)}
+    .tienda-item.rareza-comun{border-color:rgba(160,180,160,.3)}
+    .tienda-item.rareza-rara{border-color:rgba(140,160,255,.35);background:rgba(100,120,255,.05)}
+    .tienda-item.rareza-legendaria{border-color:rgba(255,200,90,.5);background:rgba(255,200,90,.06);
+      box-shadow:0 0 18px rgba(255,200,90,.1)}
+    .tienda-rareza{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.18em;
+      padding:.15rem .5rem;border-radius:100px;display:inline-block;margin-bottom:.55rem}
+    .rareza-comun .tienda-rareza{color:#a8c0a8;border:1px solid rgba(160,180,160,.35)}
+    .rareza-rara .tienda-rareza{color:#a8b8ff;border:1px solid rgba(140,160,255,.4)}
+    .rareza-legendaria .tienda-rareza{color:#ffd870;border:1px solid rgba(255,200,90,.55)}
+    .tienda-pet{margin-bottom:.5rem;display:flex;justify-content:center}
+    .tienda-nombre{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.15em;
+      color:var(--gold-p);margin-bottom:.2rem}
+    .tienda-energia{font-family:'Cormorant Garamond',serif;font-style:italic;
+      font-size:.82rem;color:rgba(201,168,76,.55);margin-bottom:.7rem;line-height:1.4}
+    .tienda-btn{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;
+      padding:.42rem 1rem;border-radius:100px;cursor:pointer;
+      border:1px solid rgba(201,168,76,.35);color:var(--gold-l);
+      background:rgba(201,168,76,.08);transition:all .25s;white-space:nowrap}
+    .tienda-btn:hover{background:rgba(201,168,76,.18)}
+    .tienda-btn:disabled{opacity:.35;cursor:default}
+    .tienda-btn.owned{border-color:rgba(120,200,140,.4);color:#a8e0b8;background:rgba(120,200,140,.08);cursor:default}
+    .tienda-msg{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;
+      text-align:center;margin-top:1rem;min-height:1rem;color:rgba(201,168,76,.6)}
+    .tienda-earn{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;
+      color:rgba(201,168,76,.45);text-align:center;margin-top:1.2rem;line-height:1.6;
+      border-top:1px solid rgba(201,168,76,.12);padding-top:1rem}
+
+    /* Toast Starbits */
+    .sb-toast{position:fixed;top:5rem;left:50%;transform:translateX(-50%) translateY(-16px);
+      z-index:500;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.15em;
+      padding:.7rem 1.5rem;border-radius:100px;
+      background:rgba(30,20,56,.96);border:1px solid rgba(255,215,90,.5);
+      color:#ffe6a0;box-shadow:0 0 22px rgba(255,215,90,.25);
+      opacity:0;pointer-events:none;transition:all .4s;white-space:nowrap}
+    .sb-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   </style>
 </head>
 <body>
@@ -193,6 +337,15 @@
   <p class="hero-quote" data-i18n="muro_quote">"Cada palabra que dejas aquí se convierte en luz. Este muro guarda los susurros de todas las almas que han pasado por el Templo."</p>
 </header>
 
+<!-- STARBITS -->
+<div class="starbits-bar">
+  <div class="starbits-chip">
+    <span class="starbits-icon">⭐</span>
+    <span id="sbCount">0</span>&nbsp;STARBITS
+  </div>
+  <button class="btn-tienda" onclick="abrirTienda()">🌙 Tienda Mística</button>
+</div>
+
 <!-- CONTADOR -->
 <div class="counter-wrap">
   <div class="counter-item">
@@ -212,12 +365,12 @@
 
     <div class="form-row">
       <label class="form-label" for="inputNombre" data-i18n="muro_nombre_label">Tu nombre (o como quieras que te llamen)</label>
-      <input class="form-input" id="inputNombre" type="text" data-i18n-placeholder="muro_nombre_ph" placeholder="Alma viajera…" maxlength="40"/>
+      <input class="form-input" id="inputNombre" type="text" data-i18n-placeholder="muro_nombre_ph" placeholder="Alma viajera…" maxlength="40" autocomplete="off" name="apodo-mistico"/>
     </div>
 
     <div class="form-row">
       <label class="form-label" for="inputMensaje" data-i18n="muro_mensaje_label">Tu mensaje para el Templo</label>
-      <textarea class="form-textarea" id="inputMensaje" data-i18n-placeholder="muro_mensaje_ph" placeholder="Escribe lo que lleva tu corazón…" maxlength="280"></textarea>
+      <textarea class="form-textarea" id="inputMensaje" data-i18n-placeholder="muro_mensaje_ph" placeholder="Escribe lo que lleva tu corazón…" maxlength="280" autocomplete="off" name="mensaje-templo"></textarea>
     </div>
 
     <div class="form-row">
@@ -231,6 +384,11 @@
         <button class="emoji-btn" data-emoji="🌈">🌈</button>
         <button class="emoji-btn" data-emoji="🦋">🦋</button>
       </div>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">Tu mascota mística (acompaña tu mensaje)</label>
+      <div class="pet-row" id="petRow"></div>
     </div>
 
     <button class="form-submit" id="btnEnviar" onclick="enviarMensaje()" data-i18n="muro_submit">
@@ -252,6 +410,20 @@
   </div>
 </div>
 
+<!-- TIENDA -->
+<div class="modal-overlay" id="tiendaOverlay">
+  <div class="tienda-modal">
+    <button class="modal-close" onclick="cerrarTienda()">✕</button>
+    <p class="tienda-title">🌙 TIENDA MÍSTICA</p>
+    <p class="tienda-sub">Adopta una mascota mística con tus Starbits ⭐</p>
+    <div class="tienda-grid" id="tiendaGrid"></div>
+    <p class="tienda-msg" id="tiendaMsg"></p>
+    <p class="tienda-earn">✦ Gana Starbits: +10 por visitar cada día · +5 por dejar un mensaje ✦</p>
+  </div>
+</div>
+
+<div class="sb-toast" id="sbToast"></div>
+
 <script>
 // ── STARFIELD ──
 (function(){
@@ -270,6 +442,126 @@ const _t = k => window.LangEngine?.t(k) || k;
 const FB_URL  = 'https://diario-del-alma-default-rtdb.firebaseio.com';
 const FB_MURO = FB_URL + '/templo/muro';
 const MAX_MENSAJES = 30;
+
+// ══════════════════════════════════════
+//  MASCOTAS MÍSTICAS
+// ══════════════════════════════════════
+const MASCOTAS = {
+  vela:     {emoji:'🕯️', nombre:'Vela',            energia:'Luz interior, guía',      rareza:'comun',      precio:0},
+  estrella: {emoji:'⭐',  nombre:'Estrella',        energia:'Deseos, esperanza',       rareza:'comun',      precio:15},
+  luna:     {emoji:'🌙', nombre:'Luna',             energia:'Intuición, sueños',       rareza:'rara',       precio:35},
+  bola:     {emoji:'🔮', nombre:'Bola de Cristal',  energia:'Claridad, visión',        rareza:'rara',       precio:50},
+  ojo:      {emoji:'🧿', nombre:'Ojo Místico',      energia:'Protección, poder',       rareza:'rara',       precio:50},
+  brillito: {emoji:'🌟', nombre:'Brillito',         energia:'Chispa, alegría',         rareza:'legendaria', precio:100},
+  alma:     {emoji:'🌛', nombre:'Alma',             energia:'Conciencia, luz interior',rareza:'legendaria', precio:150},
+};
+const RAREZA_LABEL = {comun:'COMÚN', rara:'RARA', legendaria:'LEGENDARIA'};
+
+function petHtml(key, extraClass=''){
+  const m = MASCOTAS[key];
+  if(!m) return '';
+  return `<span class="pet pet-${key} ${extraClass}" title="${m.nombre} · ${m.energia}">${m.emoji}</span>`;
+}
+
+// ══════════════════════════════════════
+//  STARBITS
+// ══════════════════════════════════════
+function sbGet(){ return parseInt(localStorage.getItem('starbits')||'0') }
+function sbSet(n){ localStorage.setItem('starbits', String(Math.max(0,n))); sbRender() }
+function sbAdd(n, motivo){ sbSet(sbGet()+n); if(n>0) sbToast(`+${n} ⭐ Starbits — ${motivo}`) }
+function sbRender(){ document.getElementById('sbCount').textContent = sbGet() }
+function sbToast(txt){
+  const t=document.getElementById('sbToast');
+  t.textContent=txt; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+// Bono diario
+(function(){
+  const hoy = new Date().toDateString();
+  if(localStorage.getItem('starbits_last') !== hoy){
+    localStorage.setItem('starbits_last', hoy);
+    setTimeout(()=>sbAdd(10,'bono diario ✨'), 900);
+  }
+})();
+
+// ── MASCOTAS DEL USUARIO ──
+function petsOwned(){
+  let owned = [];
+  try{ owned = JSON.parse(localStorage.getItem('mascotas')||'[]') }catch(e){}
+  if(!owned.includes('vela')) owned.unshift('vela'); // Vela es gratis para todas
+  return owned;
+}
+function petsAdd(key){
+  const owned = petsOwned();
+  if(!owned.includes(key)){ owned.push(key); localStorage.setItem('mascotas', JSON.stringify(owned)) }
+}
+
+let mascotaSeleccionada = localStorage.getItem('mascota_sel') || '';
+
+function renderPetPicker(){
+  const row = document.getElementById('petRow');
+  const owned = petsOwned();
+  let html = `<button class="pet-btn ${!mascotaSeleccionada?'selected':''}" data-pet="" title="Sin mascota"><span class="pet-none">—</span></button>`;
+  Object.keys(MASCOTAS).forEach(key=>{
+    const has = owned.includes(key);
+    const sel = mascotaSeleccionada===key ? 'selected' : '';
+    html += `<button class="pet-btn ${sel} ${has?'':'locked'}" data-pet="${key}" title="${MASCOTAS[key].nombre}${has?'':' · 🔒 en la Tienda'}">${petHtml(key)}</button>`;
+  });
+  row.innerHTML = html;
+}
+document.getElementById('petRow').addEventListener('click', e=>{
+  const btn = e.target.closest('.pet-btn');
+  if(!btn) return;
+  const key = btn.dataset.pet;
+  if(key && !petsOwned().includes(key)){ abrirTienda(); return; }
+  mascotaSeleccionada = key;
+  localStorage.setItem('mascota_sel', key);
+  renderPetPicker();
+});
+
+// ══════════════════════════════════════
+//  TIENDA
+// ══════════════════════════════════════
+function abrirTienda(){ renderTienda(); document.getElementById('tiendaOverlay').classList.add('open') }
+function cerrarTienda(){ document.getElementById('tiendaOverlay').classList.remove('open') }
+document.getElementById('tiendaOverlay').addEventListener('click', e=>{
+  if(e.target===document.getElementById('tiendaOverlay')) cerrarTienda();
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') cerrarTienda() });
+
+function renderTienda(){
+  const grid = document.getElementById('tiendaGrid');
+  const owned = petsOwned();
+  grid.innerHTML = Object.entries(MASCOTAS).map(([key,m])=>{
+    const has = owned.includes(key);
+    const btn = has
+      ? `<button class="tienda-btn owned">✓ Adoptada</button>`
+      : m.precio===0
+        ? `<button class="tienda-btn" onclick="comprarPet('${key}')">Gratis ✨</button>`
+        : `<button class="tienda-btn" onclick="comprarPet('${key}')" ${sbGet()<m.precio?'disabled':''}>⭐ ${m.precio}</button>`;
+    return `<div class="tienda-item rareza-${m.rareza}">
+      <span class="tienda-rareza">${RAREZA_LABEL[m.rareza]}</span>
+      <div class="tienda-pet">${petHtml(key)}</div>
+      <p class="tienda-nombre">${m.nombre}</p>
+      <p class="tienda-energia">${m.energia}</p>
+      ${btn}
+    </div>`;
+  }).join('');
+}
+
+function comprarPet(key){
+  const m = MASCOTAS[key];
+  const msg = document.getElementById('tiendaMsg');
+  if(petsOwned().includes(key)) return;
+  if(sbGet() < m.precio){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
+  sbSet(sbGet() - m.precio);
+  petsAdd(key);
+  mascotaSeleccionada = key;
+  localStorage.setItem('mascota_sel', key);
+  msg.textContent = `✦ ¡${m.nombre} se ha unido a tu alma! ✦`;
+  renderTienda(); renderPetPicker();
+  sbToast(`${m.emoji} ¡${m.nombre} adoptada!`);
+}
 
 // ── EMOJI PICKER ──
 let emojiSeleccionado = '🌟';
@@ -299,6 +591,7 @@ async function enviarMensaje(){
     nombre: nombre.slice(0,40),
     texto:  texto.slice(0,280),
     emoji:  emojiSeleccionado,
+    mascota: mascotaSeleccionada || null,
     ts:     Date.now(),
     fecha:  new Date().toLocaleDateString(locale, {day:'numeric',month:'short',year:'numeric'})
   };
@@ -312,11 +605,8 @@ async function enviarMensaje(){
     if(!res.ok) throw new Error('Firebase error');
 
     msg.textContent = _t('muro_success');
-    document.getElementById('inputNombre').value = '';
     document.getElementById('inputMensaje').value = '';
-    document.querySelectorAll('.emoji-btn').forEach(b=>b.classList.remove('selected'));
-    document.querySelector('.emoji-btn').classList.add('selected');
-    emojiSeleccionado = '🌟';
+    sbAdd(5, 'por tu mensaje 💌');
     await cargarMuro();
   } catch(e) {
     msg.textContent = _t('muro_error');
@@ -359,8 +649,12 @@ async function cargarMuro(){
       const nombre = escapeHtml(m.nombre || _t('muro_anon'));
       const emoji  = m.emoji || '✨';
       const fecha  = m.fecha || '';
+      const petTag = m.mascota && MASCOTAS[m.mascota] ? petHtml(m.mascota) : '';
       return `<div class="nota" data-emoji="${emoji}" style="--dur:${dur};--delay:${delay}">
-        <span class="nota-emoji">${emoji}</span>
+        <div class="nota-header">
+          <span class="nota-emoji">${emoji}</span>
+          ${petTag}
+        </div>
         <p class="nota-texto">${texto}</p>
         <div class="nota-footer">
           <span class="nota-nombre">${nombre}</span>
@@ -385,6 +679,8 @@ document.getElementById('inputMensaje').addEventListener('keydown', e => {
 // ── LANG ──
 if(typeof LangEngine !== 'undefined'){ LangEngine.detect(); LangEngine.apply(); }
 
+sbRender();
+renderPetPicker();
 cargarMuro();
 setInterval(cargarMuro, 60000);
 </script>
