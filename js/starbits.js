@@ -112,6 +112,28 @@ function addPet(key){
 function getSel(){ return localStorage.getItem('mascota_sel') || '' }
 function setSel(key){ localStorage.setItem('mascota_sel', key||''); guardarNube() }
 
+// ── Skins de pergamino ──
+function ownedSkins(){
+  let o = lsGet('skins', []);
+  if(!o.includes('pergamino')) o.unshift('pergamino');
+  return o;
+}
+function addSkin(key){
+  const o = ownedSkins();
+  if(!o.includes(key)){ o.push(key); lsSet('skins', o); guardarNube() }
+}
+function getSkin(){ return localStorage.getItem('skin_sel') || 'pergamino' }
+function setSkin(key){ localStorage.setItem('skin_sel', key||'pergamino'); guardarNube() }
+
+// ── Auras del guardián ──
+function ownedAuras(){ return lsGet('auras', []) }
+function addAura(key){
+  const o = ownedAuras();
+  if(!o.includes(key)){ o.push(key); lsSet('auras', o); guardarNube() }
+}
+function getAura(){ return localStorage.getItem('aura_sel') || '' }
+function setAura(key){ localStorage.setItem('aura_sel', key||''); guardarNube() }
+
 // ── Sincronización con la cuenta ──
 let _syncListo = false, _guardarTimer = null;
 function _nubeUrl(){
@@ -128,6 +150,10 @@ function guardarNube(){
         starbits: get(),
         mascotas: owned(),
         mascota_sel: getSel(),
+        skins: ownedSkins(),
+        skin_sel: getSkin(),
+        auras: ownedAuras(),
+        aura_sel: getAura(),
         premios: lsGet('sb_premios', {}),
         racha: lsGet('sb_racha', {last:'',n:0}),
         ts: Date.now()
@@ -146,6 +172,10 @@ async function cargarNube(){
       const unidas = [...new Set([...(nube.mascotas||[]), ...owned()])];
       lsSet('mascotas', unidas);
       if(nube.mascota_sel && !getSel()) localStorage.setItem('mascota_sel', nube.mascota_sel);
+      lsSet('skins', [...new Set([...(nube.skins||[]), ...ownedSkins()])]);
+      if(nube.skin_sel && getSkin()==='pergamino') localStorage.setItem('skin_sel', nube.skin_sel);
+      lsSet('auras', [...new Set([...(nube.auras||[]), ...ownedAuras()])]);
+      if(nube.aura_sel && !getAura()) localStorage.setItem('aura_sel', nube.aura_sel);
       // Fusionar premios: conservar límites más restrictivos (evita doble premio entre dispositivos)
       const locP = lsGet('sb_premios', {}), nubeP = nube.premios || {};
       Object.keys(nubeP).forEach(ev=>{
@@ -197,6 +227,8 @@ function toast(txt){
 
 // ── API pública ──
 window.Starbits = { get, add, gastar, premiar, racha, owned, addPet, getSel, setSel,
+  ownedSkins, addSkin, getSkin, setSkin,
+  ownedAuras, addAura, getAura, setAura,
   onChange: cb => cambioCbs.push(cb), toast, EVENTOS };
 
 // ── Al cargar: racha + bono de visita ──
