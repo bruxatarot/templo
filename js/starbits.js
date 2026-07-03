@@ -45,15 +45,25 @@ function lsSet(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
 let cambioCbs = [];
 function notificar(){ cambioCbs.forEach(cb=>{ try{cb()}catch(e){} }) }
 
+// ── Historial de movimientos (tesoro del alma) ──
+function historial(){ return lsGet('sb_hist', []) }
+function registrar(tipo, n, motivo){
+  const h = historial();
+  h.unshift({t: tipo, n: n, m: motivo || '', ts: Date.now()});
+  lsSet('sb_hist', h.slice(0, 120));
+}
+
 // ── Saldo ──
 function get(){ return parseInt(localStorage.getItem('starbits')||'0') }
 function setSaldo(n){ localStorage.setItem('starbits', String(Math.max(0,n))); notificar(); guardarNube() }
 function add(n, label){
+  if(n>0) registrar('gano', n, label || '');
   setSaldo(get()+n);
   if(n>0 && label) toast(`+${n} ⭐ ${label}`);
 }
-function gastar(n){
+function gastar(n, motivo){
   if(get() < n) return false;
+  registrar('gasto', n, motivo || 'compra en la Tienda');
   setSaldo(get()-n);
   return true;
 }
@@ -98,6 +108,24 @@ function actualizarRacha(){
   return r;
 }
 function racha(){ return lsGet('sb_racha', {last:'', n:0}) }
+
+// ── Progreso de premios: qué llevas hoy y qué falta ──
+function progreso(){
+  const premios = lsGet('sb_premios', {});
+  const out = {};
+  Object.entries(EVENTOS).forEach(([ev, cfg])=>{
+    if(cfg.limite === 'auto') return;
+    const p = premios[ev] || {};
+    let hecho = 0;
+    const max = cfg.max || 1;
+    if(cfg.limite === 'dia')    hecho = (p.d === hoy()) ? (p.n||0) : 0;
+    if(cfg.limite === 'semana') hecho = (p.w === semana()) ? 1 : 0;
+    if(cfg.limite === 'unavez') hecho = p.once ? 1 : 0;
+    out[ev] = {label: cfg.label, sb: cfg.sb, limite: cfg.limite, max, hecho,
+               completo: hecho >= max};
+  });
+  return out;
+}
 
 // ── Guardianes ──
 function owned(){
@@ -156,6 +184,7 @@ function guardarNube(){
         aura_sel: getAura(),
         premios: lsGet('sb_premios', {}),
         racha: lsGet('sb_racha', {last:'',n:0}),
+        hist: historial().slice(0, 120),
         ts: Date.now()
       })
     }).catch(()=>{});
@@ -190,6 +219,11 @@ async function cargarNube(){
       // Racha: la mayor
       const locR = lsGet('sb_racha',{last:'',n:0}), nubeR = nube.racha||{last:'',n:0};
       if((nubeR.n||0) > locR.n) lsSet('sb_racha', nubeR);
+      // Historial: fusionar por timestamp
+      const vistos = new Set(historial().map(x=>x.ts));
+      const fusion = [...historial(), ...(nube.hist||[]).filter(x=>!vistos.has(x.ts))]
+        .sort((a,b)=>b.ts-a.ts).slice(0,120);
+      lsSet('sb_hist', fusion);
     }
     _syncListo = true;
     guardarNube();
@@ -229,6 +263,7 @@ function toast(txt){
 window.Starbits = { get, add, gastar, premiar, racha, owned, addPet, getSel, setSel,
   ownedSkins, addSkin, getSkin, setSkin,
   ownedAuras, addAura, getAura, setAura,
+  historial, progreso,
   onChange: cb => cambioCbs.push(cb), toast, EVENTOS };
 
 // ── Al cargar: racha + bono de visita ──
