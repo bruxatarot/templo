@@ -77,6 +77,37 @@
     .col-badge{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;color:rgba(201,168,76,.45);display:block;margin-top:.2rem}
     .col-item.sel .col-badge{color:var(--gold-l)}
 
+    /* Desplegable */
+    details.panel{padding:0}
+    details.panel summary{list-style:none;cursor:pointer;padding:1.8rem;
+      display:flex;align-items:center;gap:.8rem;
+      font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.28em;
+      color:rgba(201,168,76,.6);user-select:none}
+    details.panel summary::-webkit-details-marker{display:none}
+    details.panel summary::after{content:'▾';margin-left:auto;color:rgba(201,168,76,.5);
+      transition:transform .3s;font-size:.9rem}
+    details.panel[open] summary::after{transform:rotate(180deg)}
+    details.panel .det-body{padding:0 1.8rem 1.8rem}
+    .prog-badge{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;
+      padding:.25rem .8rem;border-radius:100px;
+      border:1px solid rgba(201,168,76,.35);color:var(--gold-l);background:rgba(201,168,76,.08)}
+    .ganar-check{font-size:1rem;flex:none;width:1.6rem;text-align:center}
+    .ganar-item.hecho{opacity:.55}
+    .ganar-item.hecho span:first-of-type{text-decoration:line-through solid rgba(201,168,76,.4) 1px}
+
+    /* Tesoro */
+    .tesoro-stats{display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem}
+    .mov-lista{display:flex;flex-direction:column;gap:.4rem;max-height:300px;overflow-y:auto}
+    .mov{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+      font-size:.95rem;font-style:italic;color:#d4c9a8;
+      padding:.45rem .6rem;border-radius:8px;background:rgba(201,168,76,.03)}
+    .mov-n{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.08em;white-space:nowrap;
+      font-variant-numeric:tabular-nums}
+    .mov-gano .mov-n{color:#a8e0b8}
+    .mov-gasto .mov-n{color:#e8a0a8}
+    .mov-fecha{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.08em;
+      color:rgba(201,168,76,.35);white-space:nowrap}
+
     /* Cómo ganar */
     .ganar-lista{display:flex;flex-direction:column;gap:.55rem}
     .ganar-item{display:flex;align-items:center;justify-content:space-between;gap:1rem;
@@ -155,22 +186,27 @@
     <div class="mis-msgs" id="misMsgs"><p class="vacio">Cargando…</p></div>
   </div>
 
-  <!-- CÓMO GANAR STARBITS -->
-  <div class="panel">
-    <p class="panel-title">⭐ CÓMO GANAR STARBITS</p>
-    <div class="ganar-lista">
-      <div class="ganar-item"><span>🏛️ Visitar el Templo<span class="ganar-lim">una vez al día</span></span><span class="ganar-sb">+2 ⭐</span></div>
-      <div class="ganar-item"><span>🃏 Sacar tu Carta del Día<span class="ganar-lim">una vez al día</span></span><span class="ganar-sb">+1 ⭐</span></div>
-      <div class="ganar-item"><span>📖 Escribir en tu Diario del Alma<span class="ganar-lim">una vez al día</span></span><span class="ganar-sb">+3 ⭐</span></div>
-      <div class="ganar-item"><span>🔮 Hacer una tirada del Oráculo<span class="ganar-lim">una vez al día</span></span><span class="ganar-sb">+2 ⭐</span></div>
-      <div class="ganar-item"><span>💌 Dejar un mensaje en el Muro<span class="ganar-lim">una vez al día</span></span><span class="ganar-sb">+5 ⭐</span></div>
-      <div class="ganar-item"><span>🕯️ Prender velitas a otras almas<span class="ganar-lim">hasta 5 al día</span></span><span class="ganar-sb">+1 ⭐ c/u</span></div>
-      <div class="ganar-item"><span>⭐ Lanzar un deseo al Pozo<span class="ganar-lim">una vez por semana</span></span><span class="ganar-sb">+5 ⭐</span></div>
-      <div class="ganar-item"><span>📚 Leer un capítulo de las Historias<span class="ganar-lim">una vez al día</span></span><span class="ganar-sb">+1 ⭐</span></div>
-      <div class="ganar-item"><span>🌓 Completar el Test Luz y Sombra<span class="ganar-lim">una sola vez</span></span><span class="ganar-sb">+10 ⭐</span></div>
-      <div class="ganar-item"><span>🔥 Racha de 7 días seguidos<span class="ganar-lim">cada 7 días</span></span><span class="ganar-sb">+7 ⭐</span></div>
+  <!-- TESORO -->
+  <div class="panel" id="panelTesoro" style="display:none">
+    <p class="panel-title">💰 MI TESORO</p>
+    <div class="tesoro-stats">
+      <div class="stat"><span class="stat-num" id="tesActual">0</span><span class="stat-label">⭐ TENGO</span></div>
+      <div class="stat"><span class="stat-num" id="tesGanado">0</span><span class="stat-label">📈 GANADOS</span></div>
+      <div class="stat"><span class="stat-num" id="tesGastado">0</span><span class="stat-label">🌙 GASTADOS</span></div>
     </div>
+    <p class="panel-title" style="margin-top:.5rem">🛍️ MIS COMPRAS</p>
+    <div class="mov-lista" id="listaCompras"><p class="vacio">Aún no has comprado nada en la Tienda Mística</p></div>
+    <p class="panel-title" style="margin-top:1.2rem">📜 ÚLTIMOS MOVIMIENTOS</p>
+    <div class="mov-lista" id="listaMovs"><p class="vacio">Sin movimientos aún</p></div>
   </div>
+
+  <!-- CÓMO GANAR STARBITS (desplegable con progreso) -->
+  <details class="panel">
+    <summary>⭐ CÓMO GANAR STARBITS <span class="prog-badge" id="progBadge">0 de 0 hoy</span></summary>
+    <div class="det-body">
+      <div class="ganar-lista" id="ganarLista"></div>
+    </div>
+  </details>
 
   <!-- ACCESOS -->
   <div class="panel">
@@ -210,7 +246,7 @@ function renderPerfil(user){
 
   const nombre = user.displayName || user.email?.split('@')[0] || 'Alma del Templo';
   document.getElementById('almaNombre').textContent = nombre;
-  document.getElementById('almaEmail').textContent = user.email || '';
+  document.getElementById('almaEmail').textContent = (user.email || '') + '  ·  uid: ' + user.uid;
 
   // Stats
   document.getElementById('stSb').textContent = Starbits.get();
@@ -234,6 +270,49 @@ function renderPerfil(user){
   }).join('');
 
   cargarMisMensajes(user.uid);
+  renderTesoro();
+  renderProgreso();
+}
+
+// ── TESORO: ganado, gastado, compras y movimientos ──
+function renderTesoro(){
+  document.getElementById('panelTesoro').style.display = 'block';
+  const hist = Starbits.historial();
+  const ganado  = hist.filter(m=>m.t==='gano').reduce((a,m)=>a+m.n,0);
+  const gastado = hist.filter(m=>m.t==='gasto').reduce((a,m)=>a+m.n,0);
+  document.getElementById('tesActual').textContent  = Starbits.get();
+  document.getElementById('tesGanado').textContent  = ganado;
+  document.getElementById('tesGastado').textContent = gastado;
+
+  const fmt = ts => new Date(ts).toLocaleDateString('es',{day:'numeric',month:'short'});
+  const compras = hist.filter(m=>m.t==='gasto');
+  document.getElementById('listaCompras').innerHTML = compras.length
+    ? compras.map(m=>`<div class="mov mov-gasto"><span>${escHtml(m.m)}</span>
+        <span style="display:flex;gap:.8rem;align-items:center"><span class="mov-n">−${m.n} ⭐</span><span class="mov-fecha">${fmt(m.ts)}</span></span></div>`).join('')
+    : '<p class="vacio">Aún no has comprado nada en la Tienda Mística ✦ <a href="muro.html" style="color:var(--gold-l)">Visítala</a></p>';
+
+  document.getElementById('listaMovs').innerHTML = hist.length
+    ? hist.slice(0,15).map(m=>`<div class="mov mov-${m.t}"><span>${escHtml(m.m||'—')}</span>
+        <span style="display:flex;gap:.8rem;align-items:center"><span class="mov-n">${m.t==='gano'?'+':'−'}${m.n} ⭐</span><span class="mov-fecha">${fmt(m.ts)}</span></span></div>`).join('')
+    : '<p class="vacio">Sin movimientos aún</p>';
+}
+
+// ── PROGRESO: qué llevas hoy y qué te falta ──
+function renderProgreso(){
+  const prog = Starbits.progreso();
+  const LIM_LABEL = {dia:'una vez al día', semana:'una vez por semana', unavez:'una sola vez'};
+  const items = Object.entries(prog);
+  const hechos = items.filter(([,p])=>p.completo).length;
+  document.getElementById('progBadge').textContent = `${hechos} de ${items.length} completadas`;
+  document.getElementById('ganarLista').innerHTML = items.map(([ev,p])=>{
+    const check = p.completo ? '✅' : (p.max>1 && p.hecho>0 ? `${p.hecho}/${p.max}` : '⬜');
+    const extra = p.max>1 ? ` (${p.hecho}/${p.max} hoy)` : '';
+    return `<div class="ganar-item ${p.completo?'hecho':''}">
+      <span class="ganar-check">${check}</span>
+      <span style="flex:1">${p.label}${extra}<span class="ganar-lim">${LIM_LABEL[p.limite]||''}</span></span>
+      <span class="ganar-sb">+${p.sb} ⭐</span>
+    </div>`;
+  }).join('');
 }
 
 window.elegirGuardian = function(key){
@@ -278,12 +357,21 @@ document.addEventListener('authchange', e=>{
   // pequeña espera para que la sincronización con la nube termine
   setTimeout(()=>renderPerfil(e.detail.user), e.detail.user ? 1200 : 0);
 });
+// Respaldo: si authchange disparó antes de que este script escuchara,
+// o el evento nunca llega (versión vieja de auth-chip), revisar directamente
+let _intentos = 0;
+const _chequeo = setInterval(()=>{
+  _intentos++;
+  if(window._fbUser){ clearInterval(_chequeo); renderPerfil(window._fbUser); }
+  else if(_intentos > 16) clearInterval(_chequeo); // ~8s y desistir
+}, 500);
 Starbits.onChange(()=>{
   const el = document.getElementById('stSb');
   if(el) el.textContent = Starbits.get();
 });
 
 if(typeof LangEngine !== 'undefined'){ LangEngine.detect(); LangEngine.apply(); }
+renderProgreso();
 </script>
 </body>
 </html>
