@@ -15,8 +15,26 @@ window.MASCOTAS = {
   ojo:      {emoji:'🧿', nombre:'Ojo Místico',      energia:'Protección, poder',       rareza:'rara',       precio:50},
   brillito: {emoji:'🌟', nombre:'Brillito',         energia:'Chispa, alegría',         rareza:'legendaria', precio:100},
   alma:     {emoji:'🌛', nombre:'Alma',             energia:'Conciencia, luz interior',rareza:'legendaria', precio:150},
+  nabi:     {emoji:'🐱', nombre:'Nabi',             energia:'Magia felina, vuelo de mariposa', rareza:'unica', precio:null, exclusiva:true},
 };
-window.RAREZA_LABEL = {comun:'COMÚN', rara:'RARA', legendaria:'LEGENDARIA'};
+window.RAREZA_LABEL = {comun:'COMÚN', rara:'RARA', legendaria:'LEGENDARIA', unica:'ÚNICA 👑'};
+
+// ── Skins de pergamino (para los mensajes del muro) ──
+window.SKINS = {
+  pergamino: {nombre:'Pergamino Clásico', precio:0,  rareza:'comun'},
+  nocturno:  {nombre:'Papel de Medianoche', precio:20, rareza:'comun'},
+  rosa:      {nombre:'Pétalos de Rosa',   precio:20, rareza:'comun'},
+  bosque:    {nombre:'Hoja del Bosque',   precio:30, rareza:'rara'},
+  real:      {nombre:'Violeta Real',      precio:45, rareza:'rara'},
+  solar:     {nombre:'Oro Solar',         precio:90, rareza:'legendaria'},
+};
+
+// ── Auras animadas (para tu guardián en la página) ──
+window.AURAS = {
+  dorada:   {nombre:'Aura Dorada',        precio:25, rareza:'comun',      emoji:'🌟'},
+  chispas:  {nombre:'Chispas Orbitales',  precio:40, rareza:'rara',       emoji:'✨'},
+  estrellas:{nombre:'Lluvia de Estrellas',precio:60, rareza:'legendaria', emoji:'💫'},
+};
 
 const FACE = `<span class="pface"><span class="pojos"><span class="pojo"></span><span class="pojo"></span></span><span class="pboca"></span></span>`;
 const FACE_ZZZ = `<span class="pface pzzz"><span class="pojos"><span class="pojo"></span><span class="pojo"></span></span><span class="pboca"></span></span>`;
@@ -29,6 +47,7 @@ const PET_ART = {
   ojo: `<span class="po"><span class="a1"><span class="a2"><span class="a3"><span class="pupila"></span></span></span></span></span>`,
   brillito: `<span class="pbr"><span class="anillo"></span><span class="cuerpo"></span>${FACE}</span>`,
   alma: `<span class="pa"><span class="halo"></span><span class="cuerpo"></span><span class="anillop"></span>${FACE}<span class="cola">✦ ✧ ✦</span></span>`,
+  nabi: `<span class="pn"><span class="ala ala-i"></span><span class="ala ala-d"></span><span class="cabeza"><span class="oreja o-i"></span><span class="oreja o-d"></span>${FACE}<span class="nariz"></span></span><span class="brillo-n">✧</span></span>`,
 };
 
 window.petHtml = function(key, scale=1){
@@ -103,6 +122,88 @@ const css = `
 .pa .cola{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);font-size:.6rem;color:rgba(255,236,190,.85);letter-spacing:.4em;animation:pa-polvo 2.6s ease-in-out infinite;z-index:1}
 @keyframes pa-halo{0%,100%{opacity:.75}50%{opacity:1}}
 @keyframes pa-polvo{0%,100%{opacity:.35;transform:translateX(-50%) translateY(0)}50%{opacity:1;transform:translateX(-50%) translateY(4px)}}
+/* 🐱🦋 NABI — gatita con alas de mariposa multicolor (exclusiva) */
+.pn{position:relative;width:96px;height:96px;animation:pet-flot 4.2s ease-in-out infinite;
+  filter:drop-shadow(0 0 14px rgba(255,160,220,.55))}
+.pn .ala{position:absolute;top:14px;width:36px;height:56px;z-index:1;
+  border-radius:65% 65% 55% 55%/75% 75% 45% 45%;opacity:.92;
+  background:linear-gradient(160deg,#ff8ab8 0%,#ffd76a 26%,#8af0b0 50%,#7ac8ff 74%,#c89aff 100%);
+  box-shadow:inset 0 0 10px rgba(255,255,255,.5),0 0 12px rgba(255,160,220,.45)}
+.pn .ala::after{content:'';position:absolute;inset:22%;border-radius:inherit;
+  background:radial-gradient(circle,rgba(255,255,255,.65),transparent 70%)}
+.pn .ala-i{left:0;transform-origin:right center;animation:nabi-aleteo 1.1s ease-in-out infinite}
+.pn .ala-d{right:0;transform-origin:left center;animation:nabi-aleteo-d 1.1s ease-in-out infinite}
+@keyframes nabi-aleteo{0%,100%{transform:rotate(10deg) scaleX(1)}50%{transform:rotate(-16deg) scaleX(.82)}}
+@keyframes nabi-aleteo-d{0%,100%{transform:scaleX(-1) rotate(10deg)}50%{transform:scaleX(-.82) rotate(-16deg)}}
+.pn .cabeza{position:absolute;top:24px;left:50%;transform:translateX(-50%);
+  width:54px;height:50px;border-radius:50% 50% 46% 46%;z-index:2;
+  background:radial-gradient(circle at 38% 32%,#fffdf6 0%,#f2e4d2 55%,#ddc8b2 100%);
+  box-shadow:inset -4px -3px 10px rgba(180,140,110,.3)}
+.pn .oreja{position:absolute;top:-11px;width:0;height:0;z-index:1;
+  border-left:9px solid transparent;border-right:9px solid transparent;
+  border-bottom:17px solid #ecdcc8}
+.pn .o-i{left:5px;transform:rotate(-14deg)}
+.pn .o-d{right:5px;transform:rotate(14deg)}
+.pn .pface{top:15px}
+.pn .nariz{position:absolute;top:31px;left:50%;transform:translateX(-50%);
+  width:6px;height:4.5px;background:#e88aa0;border-radius:50% 50% 60% 60%;z-index:3}
+.pn .brillo-n{position:absolute;top:2px;right:6px;font-size:.62rem;color:#ffc8e8;
+  animation:pet-tw 2s ease-in-out infinite;z-index:3}
+
+/* ══════ SKINS DE PERGAMINO ══════ */
+.nota.skin-nocturno{background:linear-gradient(175deg,#332c5c 0%,#262048 55%,#1c1838 100%);
+  border-color:rgba(180,170,230,.4)}
+.nota.skin-nocturno::before,.nota.skin-nocturno::after{background:linear-gradient(to bottom,#8a80c0,#5a5290)}
+.nota.skin-nocturno .nota-texto{color:#e0d8f8}
+.nota.skin-nocturno .nota-nombre{color:#b0a4e0}
+.nota.skin-nocturno .nota-luz{color:#c0b4e8;background:rgba(255,255,255,.06);border-color:rgba(180,170,230,.4)}
+.nota.skin-rosa{background:linear-gradient(175deg,#fce4ec 0%,#f5c8d8 55%,#eab0c4 100%);
+  border-color:rgba(200,110,140,.45)}
+.nota.skin-rosa::before,.nota.skin-rosa::after{background:linear-gradient(to bottom,#d890a8,#b06880)}
+.nota.skin-rosa .nota-texto{color:#6a2840}
+.nota.skin-rosa .nota-nombre{color:#a04868}
+.nota.skin-bosque{background:linear-gradient(175deg,#e4eecc 0%,#ccdca8 55%,#b4c890 100%);
+  border-color:rgba(110,140,70,.5)}
+.nota.skin-bosque::before,.nota.skin-bosque::after{background:linear-gradient(to bottom,#98b068,#708844)}
+.nota.skin-bosque .nota-texto{color:#2c4014}
+.nota.skin-bosque .nota-nombre{color:#54702c}
+.nota.skin-real{background:linear-gradient(175deg,#ecdcf8 0%,#d8bcf0 55%,#c0a0e0 100%);
+  border-color:rgba(140,90,190,.5)}
+.nota.skin-real::before,.nota.skin-real::after{background:linear-gradient(to bottom,#a878d0,#7c50a8)}
+.nota.skin-real .nota-texto{color:#3c1c64}
+.nota.skin-real .nota-nombre{color:#6c3ca0}
+.nota.skin-solar{background:linear-gradient(175deg,#fff0be 0%,#ffdf8a 55%,#f0c25e 100%);
+  border-color:rgba(200,150,40,.6);
+  box-shadow:0 6px 20px rgba(0,0,0,.45),0 0 24px rgba(255,200,80,.45),inset 0 0 30px rgba(255,230,150,.4)!important}
+.nota.skin-solar::before,.nota.skin-solar::after{background:linear-gradient(to bottom,#e8b850,#b8862a)}
+.nota.skin-solar .nota-texto{color:#5c3c08}
+.nota.skin-solar .nota-nombre{color:#8a5c10}
+
+/* ══════ AURAS DEL GUARDIÁN ══════ */
+.aura-dorada .pets{filter:drop-shadow(0 0 16px rgba(255,215,100,.9));
+  animation:aura-pulso 2.4s ease-in-out infinite}
+@keyframes aura-pulso{0%,100%{filter:drop-shadow(0 0 10px rgba(255,215,100,.6))}
+  50%{filter:drop-shadow(0 0 26px rgba(255,215,100,1))}}
+.aura-chispas{position:relative}
+.aura-chispas::before,.aura-chispas::after{position:absolute;top:50%;left:50%;
+  font-size:.75rem;color:#ffe9a0;z-index:5;pointer-events:none;
+  text-shadow:0 0 6px rgba(255,220,120,.9)}
+.aura-chispas::before{content:'✦';animation:aura-orb 3.2s linear infinite}
+.aura-chispas::after{content:'✧';animation:aura-orb 3.2s linear infinite reverse;font-size:.55rem}
+@keyframes aura-orb{0%{transform:rotate(0) translateX(56px) rotate(0);opacity:1}
+  100%{transform:rotate(360deg) translateX(56px) rotate(-360deg);opacity:.4}}
+.aura-estrellas{position:relative}
+.aura-estrellas::before{content:'✦  ✧  ✦';position:absolute;top:-20px;left:50%;
+  transform:translateX(-50%);font-size:.6rem;letter-spacing:.6em;color:#cfe0ff;
+  text-shadow:0 0 6px rgba(160,200,255,.9);z-index:5;pointer-events:none;
+  animation:aura-lluvia 2.2s linear infinite}
+.aura-estrellas::after{content:'✧  ✦  ✧';position:absolute;top:-20px;left:50%;
+  transform:translateX(-50%);font-size:.45rem;letter-spacing:.9em;color:#ffe0f0;
+  text-shadow:0 0 6px rgba(255,180,230,.9);z-index:5;pointer-events:none;
+  animation:aura-lluvia 2.2s linear infinite;animation-delay:1.1s}
+@keyframes aura-lluvia{0%{transform:translateX(-50%) translateY(0);opacity:0}
+  25%{opacity:1}100%{transform:translateX(-50%) translateY(95px);opacity:0}}
+
 @media(prefers-reduced-motion:reduce){.pets,.pets *,.pets *::before,.pets *::after{animation:none!important}}
 `;
 const style = document.createElement('style');
