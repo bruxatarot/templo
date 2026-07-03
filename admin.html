@@ -383,6 +383,30 @@
       </button>
     </div>
 
+    <!-- SORTEO MÍSTICO (solo admin) -->
+    <div class="admin-card solo-admin" style="margin-bottom:2rem" id="adminSorteoSection">
+      <span class="admin-card-icon">🎴</span>
+      <span class="admin-card-title">SORTEO MÍSTICO</span>
+      <p style="color:rgba(201,168,76,.35);font-family:'Cormorant Garamond',serif;font-size:.9rem;margin:.5rem 0 1.2rem">
+        Deja que el azar sagrado elija la carta. Perfecto para la energía de la semana.
+      </p>
+      <div style="display:flex;gap:.8rem;flex-wrap:wrap">
+        <button class="save-btn" onclick="sortearCarta('oracle')">🔮 Carta del Oráculo</button>
+        <button class="save-btn" onclick="sortearCarta('tarot')" style="background:rgba(139,79,158,.2);color:#d4a8f0;border:1px solid rgba(180,120,220,.4)">🎴 Carta del Tarot</button>
+      </div>
+      <div id="sorteoResultado" style="display:none;margin-top:1.5rem;text-align:center;
+        padding:1.6rem;border:1px solid rgba(201,168,76,.3);border-radius:16px;
+        background:radial-gradient(circle at 50% 30%,rgba(201,168,76,.08),transparent 70%)">
+        <div id="sorteoEmoji" style="font-size:2.4rem;margin-bottom:.6rem"></div>
+        <div id="sorteoNombre" style="font-family:'Cinzel Decorative',serif;font-size:1.3rem;color:#f5e6b8;margin-bottom:.3rem"></div>
+        <div id="sorteoTipo" style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.25em;color:rgba(201,168,76,.5);margin-bottom:1.2rem"></div>
+        <div style="display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap">
+          <button class="save-btn" onclick="sortearOtraVez()" style="background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.3)">↺ Sortear de nuevo</button>
+          <button class="save-btn" onclick="usarEnSemana()">✦ Usar en Energía de la Semana</button>
+        </div>
+      </div>
+    </div>
+
     <!-- MODERACIÓN DEL MURO (admin + moderadores) -->
     <div class="admin-card" style="margin-bottom:2rem" id="adminMuroSection">
       <span class="admin-card-icon">💌</span>
@@ -547,6 +571,46 @@ function verificarLogin() {
     document.getElementById('loginPass').value = '';
     document.getElementById('loginPass').focus();
   }
+}
+
+// ══════════════════════════════════════════
+// SORTEO MÍSTICO 🎴
+// ══════════════════════════════════════════
+let _ultimoSorteoTipo = 'oracle';
+const SUIT_NOMBRES = {mayor:'Arcano Mayor', copas:'Copas', oros:'Oros', espadas:'Espadas', bastos:'Bastos'};
+
+function sortearCarta(tipo){
+  _ultimoSorteoTipo = tipo;
+  const box = document.getElementById('sorteoResultado');
+  box.style.display = 'block';
+
+  // Barajado con suspenso: nombres pasan rápido y se detiene en la elegida
+  const lista = tipo === 'oracle' ? CARTAS : TAROT;
+  const elegida = lista[Math.floor(Math.random() * lista.length)];
+  let pasos = 0;
+  const totalPasos = 14;
+  const intervalo = setInterval(()=>{
+    pasos++;
+    const azar = lista[Math.floor(Math.random() * lista.length)];
+    const carta = pasos >= totalPasos ? elegida : azar;
+    document.getElementById('sorteoEmoji').textContent = tipo==='oracle' ? (carta.emoji||'🔮') : '🎴';
+    document.getElementById('sorteoNombre').textContent = carta.name;
+    document.getElementById('sorteoTipo').textContent = tipo==='oracle'
+      ? `ORÁCULO PRISMA · CARTA ${carta.num} DE 31`
+      : `TAROT · ${(SUIT_NOMBRES[carta.suit]||carta.suit).toUpperCase()}`;
+    if(pasos >= totalPasos) clearInterval(intervalo);
+  }, 90);
+}
+function sortearOtraVez(){ sortearCarta(_ultimoSorteoTipo) }
+function usarEnSemana(){
+  const nombre = document.getElementById('sorteoNombre').textContent;
+  const tipo = document.getElementById('sorteoTipo').textContent;
+  const ta = document.getElementById('mensajeSemanal');
+  if(!ta || !nombre) return;
+  const linea = `✦ Carta de la semana: ${nombre} (${tipo.includes('ORÁCULO') ? 'Oráculo Prisma' : 'Tarot'})`;
+  ta.value = ta.value ? linea + '\n\n' + ta.value : linea + '\n\n';
+  ta.focus();
+  ta.scrollIntoView({behavior:'smooth', block:'center'});
 }
 
 // ══════════════════════════════════════════
