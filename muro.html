@@ -625,7 +625,7 @@ function comprarSkin(key){
   const sk = SKINS[key];
   const msg = document.getElementById('tiendaMsg');
   if(Starbits.ownedSkins().includes(key)) return;
-  if(!Starbits.gastar(sk.precio)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
+  if(!Starbits.gastar(sk.precio, '📜 Skin ' + sk.nombre)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
   Starbits.addSkin(key);
   Starbits.setSkin(key);
   msg.textContent = `✦ ¡${sk.nombre} es tuya! Tus mensajes volarán con ella ✦`;
@@ -638,7 +638,7 @@ function comprarAura(key){
   const a = AURAS[key];
   const msg = document.getElementById('tiendaMsg');
   if(Starbits.ownedAuras().includes(key)) return;
-  if(!Starbits.gastar(a.precio)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
+  if(!Starbits.gastar(a.precio, a.emoji + ' Aura ' + a.nombre)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
   Starbits.addAura(key);
   Starbits.setAura(key);
   msg.textContent = `✦ ¡${a.nombre} envuelve a tu guardián! ✦`;
@@ -651,7 +651,7 @@ function comprarPet(key){
   const m = MASCOTAS[key];
   const msg = document.getElementById('tiendaMsg');
   if(petsOwned().includes(key)) return;
-  if(!Starbits.gastar(m.precio)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
+  if(!Starbits.gastar(m.precio, '🛡️ Guardián ' + m.nombre)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
   petsAdd(key);
   mascotaSeleccionada = key;
   Starbits.setSel(key);
