@@ -883,7 +883,9 @@ document.addEventListener('authchange', async e=>{
 async function modBorrarMsg(id){
   if(!confirm('🛡️ ¿Eliminar este mensaje del muro?')) return;
   try{
-    await fetch(`${FB_MURO}/${id}.json`, {method:'DELETE'});
+    let tk = '';
+    try{ tk = window._fbUser?.getIdToken ? '?auth=' + await window._fbUser.getIdToken() : '' }catch(e){}
+    await fetch(`${FB_MURO}/${id}.json` + tk, {method:'DELETE'});
     cargarMuro();
   }catch(e){}
 }
