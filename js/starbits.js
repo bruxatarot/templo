@@ -168,12 +168,21 @@ function _nubeUrl(){
   const uid = window._fbUser?.uid;
   return uid ? `${FB_URL}/templo/usuarios/${uid}/guardianes.json` : null;
 }
+// Token de sesión: las reglas de la base exigen auth para /usuarios
+async function _authParam(){
+  try{
+    const u = window._fbUser;
+    if(!u?.getIdToken) return '';
+    return '?auth=' + await u.getIdToken();
+  }catch(e){ return '' }
+}
 function guardarNube(){
   const url = _nubeUrl();
   if(!url || !_syncListo) return;
   clearTimeout(_guardarTimer);
-  _guardarTimer = setTimeout(()=>{
-    fetch(url, {method:'PUT', headers:{'Content-Type':'application/json'},
+  _guardarTimer = setTimeout(async ()=>{
+    const tk = await _authParam();
+    fetch(url + tk, {method:'PUT', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         starbits: get(),
         mascotas: owned(),
@@ -194,7 +203,7 @@ async function cargarNube(){
   const url = _nubeUrl();
   if(!url){ _syncListo = false; return; }
   try{
-    const res = await fetch(url);
+    const res = await fetch(url + await _authParam());
     const nube = await res.json();
     if(nube){
       localStorage.setItem('starbits', String(Math.max(get(), parseInt(nube.starbits||0))));
