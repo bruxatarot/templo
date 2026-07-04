@@ -543,35 +543,78 @@ function entrarPanel(rol){
   iniciarAdmin(rol);
 }
 
-async function loginConCuenta(){
-  try{
-    const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
-    const { getAuth, GoogleAuthProvider, signInWithPopup } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-    const cfg = {
-      apiKey:"AIzaSyCCAIQPfCXAr0lIb5GyyyCj_lySbF5Liqg",
-      authDomain:"diario-del-alma.firebaseapp.com",
-      projectId:"diario-del-alma",
-      storageBucket:"diario-del-alma.firebasestorage.app",
-      messagingSenderId:"40226201072",
-      appId:"1:40226201072:web:b8870564b9f6a270f71135"
-    };
-    const app = getApps().length ? getApp() : initializeApp(cfg);
-    const auth = getAuth(app);
-    const cred = await signInWithPopup(auth, new GoogleAuthProvider());
-    window._adminUid = cred.user.uid;
-    window._adminUser = cred.user;
-    const rol = await consultarRol(cred.user.uid);
-    if(rol === 'admin' || rol === 'mod'){
-      entrarPanel(rol);
-    } else {
-      document.getElementById('loginError').textContent = 'Tu cuenta no tiene rol de admin ni moderador.';
-      document.getElementById('loginError').style.display = 'block';
-    }
-  }catch(e){
-    document.getElementById('loginError').textContent = 'No se pudo iniciar sesión: ' + e.message;
+async function _adminAuth(){
+  const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+  const authMod = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+  const cfg = {
+    apiKey:"AIzaSyCCAIQPfCXAr0lIb5GyyyCj_lySbF5Liqg",
+    authDomain:"diario-del-alma.firebaseapp.com",
+    projectId:"diario-del-alma",
+    storageBucket:"diario-del-alma.firebasestorage.app",
+    messagingSenderId:"40226201072",
+    appId:"1:40226201072:web:b8870564b9f6a270f71135"
+  };
+  const app = getApps().length ? getApp() : initializeApp(cfg);
+  return { auth: authMod.getAuth(app), m: authMod };
+}
+
+async function _adminEntrarConUsuario(user){
+  window._adminUid = user.uid;
+  window._adminUser = user;
+  const rol = await consultarRol(user.uid);
+  if(rol === 'admin' || rol === 'mod'){
+    entrarPanel(rol);
+  } else {
+    document.getElementById('loginError').textContent = 'Tu cuenta no tiene rol de admin ni moderador.';
     document.getElementById('loginError').style.display = 'block';
   }
 }
+
+async function loginConCuenta(){
+  const err = document.getElementById('loginError');
+  try{
+    const { auth, m } = await _adminAuth();
+    const cred = await m.signInWithPopup(auth, new m.GoogleAuthProvider());
+    await _adminEntrarConUsuario(cred.user);
+  }catch(e){
+    // Safari bloquea popups: usar redirect (va a Google y regresa a esta página)
+    if(['auth/popup-blocked','auth/popup-closed-by-user','auth/cancelled-popup-request',
+        'auth/operation-not-supported-in-this-environment','auth/web-storage-unsupported'].includes(e.code)){
+      err.textContent = 'Abriendo Google…';
+      err.style.display = 'block';
+      try{
+        const { auth, m } = await _adminAuth();
+        await m.signInWithRedirect(auth, new m.GoogleAuthProvider());
+      }catch(e2){
+        err.textContent = 'No se pudo iniciar sesión: ' + e2.message;
+        err.style.display = 'block';
+      }
+    } else {
+      err.textContent = 'No se pudo iniciar sesión: ' + e.message;
+      err.style.display = 'block';
+    }
+  }
+}
+
+// Al volver del redirect de Google (Safari), completar la entrada
+(async ()=>{
+  try{
+    const { auth, m } = await _adminAuth();
+    // Si ya hay sesión persistida, entrar directo
+    m.onAuthStateChanged(auth, async user => {
+      if(user && !window._adminUser && document.getElementById('adminPanel').style.display !== 'block'){
+        const rol = await consultarRol(user.uid);
+        if(rol === 'admin' || rol === 'mod'){
+          window._adminUid = user.uid;
+          window._adminUser = user;
+          entrarPanel(rol);
+        }
+      }
+    });
+    const res = await m.getRedirectResult(auth);
+    if(res?.user) await _adminEntrarConUsuario(res.user);
+  }catch(e){ console.warn('redirect admin:', e.code || e.message) }
+})();
 
 function verificarLogin() {
   const pass = document.getElementById('loginPass').value;
