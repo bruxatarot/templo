@@ -162,6 +162,32 @@ function addAura(key){
 function getAura(){ return localStorage.getItem('aura_sel') || '' }
 function setAura(key){ localStorage.setItem('aura_sel', key||''); guardarNube() }
 
+// ── Colores del guardián ──
+function ownedColores(){
+  let o = lsGet('pcolores', []);
+  if(!o.includes('natural')) o.unshift('natural');
+  return o;
+}
+function addColor(key){
+  const o = ownedColores();
+  if(!o.includes(key)){ o.push(key); lsSet('pcolores', o); guardarNube() }
+}
+function getColor(){ return localStorage.getItem('pcolor_sel') || 'natural' }
+function setColor(key){ localStorage.setItem('pcolor_sel', key||'natural'); guardarNube() }
+
+// ── Emociones del alma (la de hoy) ──
+function ownedEmos(){
+  let o = lsGet('pemos', []);
+  if(!o.includes('feliz')) o.unshift('feliz');
+  return o;
+}
+function addEmo(key){
+  const o = ownedEmos();
+  if(!o.includes(key)){ o.push(key); lsSet('pemos', o); guardarNube() }
+}
+function getEmo(){ return localStorage.getItem('pemo_sel') || 'feliz' }
+function setEmo(key){ localStorage.setItem('pemo_sel', key||'feliz'); guardarNube() }
+
 // ── Sincronización con la cuenta ──
 let _syncListo = false, _guardarTimer = null;
 function _nubeUrl(){
@@ -191,6 +217,10 @@ function guardarNube(){
         skin_sel: getSkin(),
         auras: ownedAuras(),
         aura_sel: getAura(),
+        pcolores: ownedColores(),
+        pcolor_sel: getColor(),
+        pemos: ownedEmos(),
+        pemo_sel: getEmo(),
         premios: lsGet('sb_premios', {}),
         racha: lsGet('sb_racha', {last:'',n:0}),
         hist: historial().slice(0, 120),
@@ -214,6 +244,10 @@ async function cargarNube(){
       if(nube.skin_sel && getSkin()==='pergamino') localStorage.setItem('skin_sel', nube.skin_sel);
       lsSet('auras', [...new Set([...(nube.auras||[]), ...ownedAuras()])]);
       if(nube.aura_sel && !getAura()) localStorage.setItem('aura_sel', nube.aura_sel);
+      lsSet('pcolores', [...new Set([...(nube.pcolores||[]), ...ownedColores()])]);
+      if(nube.pcolor_sel && getColor()==='natural') localStorage.setItem('pcolor_sel', nube.pcolor_sel);
+      lsSet('pemos', [...new Set([...(nube.pemos||[]), ...ownedEmos()])]);
+      if(nube.pemo_sel && getEmo()==='feliz') localStorage.setItem('pemo_sel', nube.pemo_sel);
       // Fusionar premios: conservar límites más restrictivos (evita doble premio entre dispositivos)
       const locP = lsGet('sb_premios', {}), nubeP = nube.premios || {};
       Object.keys(nubeP).forEach(ev=>{
@@ -272,6 +306,8 @@ function toast(txt){
 window.Starbits = { get, add, gastar, premiar, racha, owned, addPet, getSel, setSel,
   ownedSkins, addSkin, getSkin, setSkin,
   ownedAuras, addAura, getAura, setAura,
+  ownedColores, addColor, getColor, setColor,
+  ownedEmos, addEmo, getEmo, setEmo,
   historial, progreso,
   onChange: cb => cambioCbs.push(cb), toast, EVENTOS };
 
