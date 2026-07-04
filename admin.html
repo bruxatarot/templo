@@ -499,6 +499,16 @@ const FB_RTDB = 'https://diario-del-alma-default-rtdb.firebaseio.com';
 // ══════════════════════════════════════════
 window._rolTemplo = null;   // 'admin' | 'mod'
 window._adminUid  = null;
+window._adminUser = null;
+
+// Token de sesión para escrituras protegidas por las reglas de Firebase
+async function adminAuthParam(){
+  try{
+    if(!window._adminUser?.getIdToken) return '';
+    return '?auth=' + await window._adminUser.getIdToken();
+  }catch(e){ return '' }
+}
+const SIN_SESION_MSG = '✦ Entra con tu cuenta Google (no contraseña) para esta acción — las reglas de Firebase lo exigen';
 
 async function consultarRol(uid){
   // 1) Roles en Realtime Database: /templo/roles/{uid} = 'admin' | 'mod'
@@ -549,6 +559,7 @@ async function loginConCuenta(){
     const auth = getAuth(app);
     const cred = await signInWithPopup(auth, new GoogleAuthProvider());
     window._adminUid = cred.user.uid;
+    window._adminUser = cred.user;
     const rol = await consultarRol(cred.user.uid);
     if(rol === 'admin' || rol === 'mod'){
       entrarPanel(rol);
@@ -646,7 +657,9 @@ async function cargarMuroAdmin(){
 async function adminBorrarMuroMsg(id){
   if(!confirm('¿Eliminar este mensaje del muro?')) return;
   try{
-    await fetch(`${FB_RTDB}/templo/muro/${id}.json`, {method:'DELETE'});
+    const tk = await adminAuthParam();
+    const r = await fetch(`${FB_RTDB}/templo/muro/${id}.json` + tk, {method:'DELETE'});
+    if(!r.ok) throw new Error(tk ? 'denegado ('+r.status+')' : 'entra con tu cuenta Google para borrar');
     document.getElementById('adm-m-'+id)?.remove();
   }catch(e){ alert('Error: '+e.message) }
 }
@@ -678,9 +691,12 @@ async function asignarRol(){
   const msg = document.getElementById('rolMsg');
   if(!uid){ msg.textContent = '✦ Escribe el UID del alma'; return; }
   try{
-    await fetch(`${FB_RTDB}/templo/roles/${uid}.json`, {
+    const tk = await adminAuthParam();
+    if(!tk){ msg.textContent = SIN_SESION_MSG; return; }
+    const r = await fetch(`${FB_RTDB}/templo/roles/${uid}.json` + tk, {
       method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(rol)
     });
+    if(!r.ok) throw new Error('denegado (' + r.status + ')');
     msg.textContent = `✦ Rol ${rol.toUpperCase()} otorgado`;
     document.getElementById('rolUid').value = '';
     cargarRoles();
@@ -693,7 +709,10 @@ async function quitarRol(){
   if(!uid){ msg.textContent = '✦ Escribe el UID del alma'; return; }
   if(!confirm('¿Quitar el rol a esta alma?')) return;
   try{
-    await fetch(`${FB_RTDB}/templo/roles/${uid}.json`, {method:'DELETE'});
+    const tk = await adminAuthParam();
+    if(!tk){ msg.textContent = SIN_SESION_MSG; return; }
+    const r = await fetch(`${FB_RTDB}/templo/roles/${uid}.json` + tk, {method:'DELETE'});
+    if(!r.ok) throw new Error('denegado (' + r.status + ')');
     msg.textContent = '✦ Rol eliminado';
     document.getElementById('rolUid').value = '';
     cargarRoles();
@@ -708,15 +727,19 @@ async function otorgarStarbits(){
   const n = parseInt(document.getElementById('sbCantidad').value)||0;
   const msg = document.getElementById('sbMsg');
   if(!uid || n < 1){ msg.textContent = '✦ UID y cantidad válida requeridos'; return; }
+  const tk = await adminAuthParam();
+  if(!tk){ msg.textContent = SIN_SESION_MSG; return; }
   try{
     const url = `${FB_RTDB}/templo/usuarios/${uid}/guardianes.json`;
-    const res = await fetch(url);
+    const res = await fetch(url + tk);
+    if(!res.ok) throw new Error('lectura denegada (' + res.status + ')');
     const datos = (await res.json()) || {};
     const nuevoSaldo = (parseInt(datos.starbits)||0) + n;
-    await fetch(url, {
+    const res2 = await fetch(url + tk, {
       method:'PATCH', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({starbits: nuevoSaldo, ts: Date.now()})
     });
+    if(!res2.ok) throw new Error('escritura denegada (' + res2.status + ')');
     msg.textContent = `✦ +${n} ⭐ otorgados · nuevo saldo: ${nuevoSaldo}`;
   }catch(e){ msg.textContent = '✦ Error: '+e.message }
 }
