@@ -255,7 +255,7 @@ function renderPerfil(user){
 
   // Guardián elegido, grande
   const sel = Starbits.getSel() || 'vela';
-  document.getElementById('guardianGrande').innerHTML = petHtml(sel, 1.05);
+  document.getElementById('guardianGrande').innerHTML = petHtml(sel, 1.05, {color:Starbits.getColor(), emo:Starbits.getEmo()});
 
   // Colección
   const owned = Starbits.owned();
@@ -263,7 +263,7 @@ function renderPerfil(user){
     const has = owned.includes(key);
     const esSel = key === sel;
     return `<div class="col-item ${has?'':'bloqueado'} ${esSel?'sel':''}" ${has?`onclick="elegirGuardian('${key}')" style="cursor:pointer"`:''}>
-      <div class="col-stage">${petHtml(key, .68)}</div>
+      <div class="col-stage">${petHtml(key, .68, has?{color:Starbits.getColor(), emo:Starbits.getEmo()}:{})}</div>
       <p class="col-nombre">${m.nombre}</p>
       <span class="col-badge">${esSel ? '✦ TE ACOMPAÑA' : has ? 'ADOPTADO' : RAREZA_LABEL[m.rareza]}</span>
     </div>`;
