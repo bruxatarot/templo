@@ -36,6 +36,27 @@ window.AURAS = {
   estrellas:{nombre:'Lluvia de Estrellas',precio:60, rareza:'legendaria', emoji:'💫'},
 };
 
+// ── Colores del guardián (tintes mágicos) ──
+window.COLORES = {
+  natural:  {nombre:'Natural',        precio:0,  rareza:'comun',      emoji:'🤍'},
+  rosa:     {nombre:'Rosa Cuarzo',    precio:20, rareza:'comun',      emoji:'🌸'},
+  esmeralda:{nombre:'Esmeralda',      precio:20, rareza:'comun',      emoji:'💚'},
+  celeste:  {nombre:'Celeste Lunar',  precio:25, rareza:'rara',       emoji:'💙'},
+  violeta:  {nombre:'Violeta Místico',precio:30, rareza:'rara',       emoji:'💜'},
+  fuego:    {nombre:'Fuego Interior', precio:40, rareza:'rara',       emoji:'❤️‍🔥'},
+  arcoiris: {nombre:'Prisma Arcoíris',precio:80, rareza:'legendaria', emoji:'🌈'},
+};
+
+// ── Emociones del alma (la carita de tu guardián) ──
+window.EMOCIONES = {
+  feliz:     {nombre:'Feliz',       precio:0,  rareza:'comun',      emoji:'😊'},
+  sonadora:  {nombre:'Soñadora',    precio:15, rareza:'comun',      emoji:'😌'},
+  sorprendida:{nombre:'Sorprendida',precio:20, rareza:'comun',      emoji:'😮'},
+  triste:    {nombre:'Melancólica', precio:20, rareza:'rara',       emoji:'🥺'},
+  enamorada: {nombre:'Enamorada',   precio:35, rareza:'rara',       emoji:'😍'},
+  estelar:   {nombre:'Estelar',     precio:50, rareza:'legendaria', emoji:'🤩'},
+};
+
 const FACE = `<span class="pface"><span class="pojos"><span class="pojo"></span><span class="pojo"></span></span><span class="pboca"></span></span>`;
 const FACE_ZZZ = `<span class="pface pzzz"><span class="pojos"><span class="pojo"></span><span class="pojo"></span></span><span class="pboca"></span></span>`;
 
@@ -50,12 +71,14 @@ const PET_ART = {
   nabi: `<span class="pn"><span class="ala ala-i"></span><span class="ala ala-d"></span><span class="cabeza"><span class="oreja o-i"></span><span class="oreja o-d"></span>${FACE}<span class="nariz"></span></span><span class="brillo-n">✧</span></span>`,
 };
 
-window.petHtml = function(key, scale=1){
+window.petHtml = function(key, scale=1, opts={}){
   const m = window.MASCOTAS[key];
   if(!m || !PET_ART[key]) return '';
   const w = Math.round(96*scale), h = Math.round(100*scale);
-  return `<span class="petw" style="width:${w}px;height:${h}px" title="${m.nombre} · ${m.energia}">
-    <span class="pets" style="transform:scale(${scale})">${PET_ART[key]}</span></span>`;
+  const cCls = opts.color && opts.color!=='natural' && window.COLORES[opts.color] ? ` pcolor-${opts.color}` : '';
+  const eCls = opts.emo && opts.emo!=='feliz' && window.EMOCIONES[opts.emo] ? ` pemo-${opts.emo}` : '';
+  return `<span class="petw${cCls}" style="width:${w}px;height:${h}px" title="${m.nombre} · ${m.energia}">
+    <span class="pets${eCls}" style="transform:scale(${scale})">${PET_ART[key]}</span></span>`;
 };
 
 const css = `
@@ -203,6 +226,40 @@ const css = `
   animation:aura-lluvia 2.2s linear infinite;animation-delay:1.1s}
 @keyframes aura-lluvia{0%{transform:translateX(-50%) translateY(0);opacity:0}
   25%{opacity:1}100%{transform:translateX(-50%) translateY(95px);opacity:0}}
+
+/* ══════ COLORES DEL GUARDIÁN (tintes) ══════ */
+.pcolor-rosa{filter:hue-rotate(305deg) saturate(1.25)}
+.pcolor-esmeralda{filter:hue-rotate(85deg) saturate(1.15)}
+.pcolor-celeste{filter:hue-rotate(165deg) saturate(1.2)}
+.pcolor-violeta{filter:hue-rotate(230deg) saturate(1.25)}
+.pcolor-fuego{filter:hue-rotate(-25deg) saturate(1.6) brightness(1.05)}
+.pcolor-arcoiris{animation:pcolor-ciclo 6s linear infinite}
+@keyframes pcolor-ciclo{0%{filter:hue-rotate(0deg) saturate(1.3)}100%{filter:hue-rotate(360deg) saturate(1.3)}}
+
+/* ══════ EMOCIONES (la carita cambia) ══════ */
+/* Soñadora: ojitos cerrados serenos */
+.pemo-sonadora .pojo{height:2.5px;border-radius:3px;margin-top:5px}
+.pemo-sonadora .pojo::after{display:none}
+/* Sorprendida: boca en O y ojos grandes */
+.pemo-sorprendida .pboca{width:8px;height:8px;border:1.6px solid #2a1a10;border-radius:50%;margin-top:2px}
+.pemo-sorprendida .pojo{width:11px;height:12px}
+/* Melancólica: boquita triste y lagrimita */
+.pemo-triste .pboca{border:none;border-top:1.6px solid #2a1a10;border-radius:9px 9px 0 0;height:5px;margin-top:4px}
+.pemo-triste .pface::after{content:'💧';position:absolute;right:-11px;top:3px;font-size:.5rem;
+  animation:pemo-lagrima 2.4s ease-in-out infinite}
+@keyframes pemo-lagrima{0%,100%{opacity:.4;transform:translateY(0)}50%{opacity:1;transform:translateY(3px)}}
+/* Enamorada: ojitos de corazón */
+.pemo-enamorada .pojo{background:none;width:11px;height:11px}
+.pemo-enamorada .pojo::after{content:'♥';position:static;width:auto;height:auto;background:none;
+  color:#e8506a;font-size:12px;line-height:1;display:block;text-align:center;
+  animation:pemo-latido 1.2s ease-in-out infinite}
+@keyframes pemo-latido{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+/* Estelar: ojos de estrella brillante */
+.pemo-estelar .pojo{background:none;width:12px;height:12px}
+.pemo-estelar .pojo::after{content:'✦';position:static;width:auto;height:auto;background:none;
+  color:#e8a020;font-size:12px;line-height:1;display:block;text-align:center;
+  text-shadow:0 0 5px rgba(255,200,80,.9);animation:pet-tw 1.6s ease-in-out infinite}
+.pemo-estelar .pboca{width:11px;height:7px;background:#7a3010;border:none;border-radius:0 0 11px 11px}
 
 @media(prefers-reduced-motion:reduce){.pets,.pets *,.pets *::before,.pets *::after{animation:none!important}}
 `;
