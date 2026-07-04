@@ -437,6 +437,11 @@
       <div class="pet-row" id="petRow"></div>
     </div>
 
+    <div class="form-row">
+      <label class="form-label">💭 ¿Cómo se siente tu alma hoy?</label>
+      <div class="emoji-row" id="emoRow"></div>
+    </div>
+
     <button class="form-submit" id="btnEnviar" onclick="enviarMensaje()" data-i18n="muro_submit">
       ✦ Dejar mi huella ✦
     </button>
@@ -527,7 +532,7 @@ function renderPetPicker(){
     const has = owned.includes(key);
     if(MASCOTAS[key].exclusiva && !has) return; // Nabi solo aparece si es tuya
     const sel = mascotaSeleccionada===key ? 'selected' : '';
-    html += `<button class="pet-btn ${sel} ${has?'':'locked'}" data-pet="${key}" title="${MASCOTAS[key].nombre}${has?'':' · 🔒 en la Tienda'}">${petHtml(key, .4)}</button>`;
+    html += `<button class="pet-btn ${sel} ${has?'':'locked'}" data-pet="${key}" title="${MASCOTAS[key].nombre}${has?'':' · 🔒 en la Tienda'}">${petHtml(key, .4, has?{color:Starbits.getColor(), emo:Starbits.getEmo()}:{})}</button>`;
   });
   row.innerHTML = html;
 }
@@ -542,11 +547,31 @@ document.getElementById('petRow').addEventListener('click', e=>{
   renderGuardianPage();
 });
 
+// ── EMOCIÓN DEL DÍA (solo las adquiridas) ──
+function renderEmoPicker(){
+  const row = document.getElementById('emoRow');
+  if(!row) return;
+  const owned = Starbits.ownedEmos();
+  const sel = Starbits.getEmo();
+  row.innerHTML = Object.entries(EMOCIONES).map(([key,em])=>{
+    const has = owned.includes(key);
+    if(!has) return '';
+    return `<button class="emoji-btn ${sel===key?'selected':''}" data-emo="${key}" title="${em.nombre}">${em.emoji}</button>`;
+  }).join('') + `<button class="emoji-btn" onclick="abrirTienda()" title="Más emociones en la Tienda" style="opacity:.5">＋</button>`;
+}
+document.getElementById('emoRow').addEventListener('click', e=>{
+  const btn = e.target.closest('.emoji-btn');
+  if(!btn || !btn.dataset.emo) return;
+  Starbits.setEmo(btn.dataset.emo);
+  renderEmoPicker(); renderPetPicker(); renderGuardianPage();
+});
+
 // ══════════════════════════════════════
 //  MODAL PUBLICAR
 // ══════════════════════════════════════
 function abrirPublicar(){
   renderPetPicker();
+  renderEmoPicker();
   document.getElementById('publicarOverlay').classList.add('open');
   setTimeout(()=>document.getElementById('inputMensaje').focus(), 200);
 }
@@ -598,7 +623,7 @@ function renderGuardianPage(){
   const sel = Starbits.getSel();
   const aura = Starbits.getAura();
   el.className = aura && AURAS[aura] ? 'aura-' + aura : '';
-  el.innerHTML = sel && MASCOTAS[sel] ? petHtml(sel, .85) : '';
+  el.innerHTML = sel && MASCOTAS[sel] ? petHtml(sel, .85, {color:Starbits.getColor(), emo:Starbits.getEmo()}) : '';
 }
 
 // ══════════════════════════════════════
@@ -684,8 +709,78 @@ function renderTienda(){
     </div>`;
   }).join('');
 
+  // ── Colores del guardián ──
+  const colOwned = Starbits.ownedColores();
+  const colSel = Starbits.getColor();
+  html += `<div class="tienda-seccion">🎨 COLORES DEL GUARDIÁN</div>`;
+  html += Object.entries(COLORES).map(([key,c])=>{
+    const has = colOwned.includes(key);
+    const activa = colSel === key;
+    const btn = activa
+      ? `<button class="tienda-btn owned">✓ En uso</button>`
+      : has
+        ? `<button class="tienda-btn" onclick="usarColor('${key}')">Usar</button>`
+        : c.precio===0
+          ? `<button class="tienda-btn" onclick="comprarColor('${key}')">Gratis ✨</button>`
+          : `<button class="tienda-btn" onclick="comprarColor('${key}')" ${sbGet()<c.precio?'disabled':''}>⭐ ${c.precio}</button>`;
+    return `<div class="tienda-item rareza-${c.rareza}">
+      <span class="tienda-rareza">${RAREZA_LABEL[c.rareza]}</span>
+      <div class="tienda-pet" style="min-height:90px">${petHtml(Starbits.getSel()||'vela', .6, {color:key})}</div>
+      <p class="tienda-nombre">${c.emoji} ${c.nombre}</p>
+      ${btn}
+    </div>`;
+  }).join('');
+
+  // ── Emociones del alma ──
+  const emoOwned = Starbits.ownedEmos();
+  const emoSel = Starbits.getEmo();
+  html += `<div class="tienda-seccion">💭 EMOCIONES DEL ALMA</div>`;
+  html += Object.entries(EMOCIONES).map(([key,em])=>{
+    const has = emoOwned.includes(key);
+    const activa = emoSel === key;
+    const btn = activa
+      ? `<button class="tienda-btn owned">✓ Hoy me siento así</button>`
+      : has
+        ? `<button class="tienda-btn" onclick="usarEmo('${key}')">Sentirla</button>`
+        : em.precio===0
+          ? `<button class="tienda-btn" onclick="comprarEmo('${key}')">Gratis ✨</button>`
+          : `<button class="tienda-btn" onclick="comprarEmo('${key}')" ${sbGet()<em.precio?'disabled':''}>⭐ ${em.precio}</button>`;
+    return `<div class="tienda-item rareza-${em.rareza}">
+      <span class="tienda-rareza">${RAREZA_LABEL[em.rareza]}</span>
+      <div class="tienda-pet" style="min-height:90px">${petHtml(Starbits.getSel()||'vela', .6, {emo:key})}</div>
+      <p class="tienda-nombre">${em.emoji} ${em.nombre}</p>
+      ${btn}
+    </div>`;
+  }).join('');
+
   grid.innerHTML = html;
 }
+
+function comprarColor(key){
+  const c = COLORES[key];
+  const msg = document.getElementById('tiendaMsg');
+  if(Starbits.ownedColores().includes(key)) return;
+  if(!Starbits.gastar(c.precio, '🎨 Color ' + c.nombre)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
+  Starbits.addColor(key);
+  Starbits.setColor(key);
+  msg.textContent = `✦ ¡Tu guardián brilla en ${c.nombre}! ✦`;
+  renderTienda(); renderGuardianPage(); renderPetPicker();
+  sbToast(`${c.emoji} ¡Color ${c.nombre} adquirido!`);
+}
+function usarColor(key){ Starbits.setColor(key); renderTienda(); renderGuardianPage(); renderPetPicker(); }
+
+function comprarEmo(key){
+  const em = EMOCIONES[key];
+  const msg = document.getElementById('tiendaMsg');
+  if(Starbits.ownedEmos().includes(key)) return;
+  if(!Starbits.gastar(em.precio, '💭 Emoción ' + em.nombre)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
+  Starbits.addEmo(key);
+  Starbits.setEmo(key);
+  msg.textContent = `✦ Tu guardián ahora puede sentirse ${em.nombre.toLowerCase()} ✦`;
+  renderTienda(); renderGuardianPage(); renderPetPicker(); renderEmoPicker();
+  sbToast(`${em.emoji} ¡Emoción ${em.nombre} adquirida!`);
+}
+function usarEmo(key){ Starbits.setEmo(key); renderTienda(); renderGuardianPage(); renderPetPicker(); renderEmoPicker(); }
 
 function comprarSkin(key){
   const sk = SKINS[key];
@@ -755,6 +850,8 @@ async function enviarMensaje(){
     texto:  texto.slice(0,280),
     emoji:  emojiSeleccionado,
     mascota: mascotaSeleccionada || null,
+    mcolor: mascotaSeleccionada && Starbits.getColor() !== 'natural' ? Starbits.getColor() : null,
+    memo:   mascotaSeleccionada && Starbits.getEmo() !== 'feliz' ? Starbits.getEmo() : null,
     skin:   Starbits.getSkin() !== 'pergamino' ? Starbits.getSkin() : null,
     uid:    window._fbUser?.uid || null,
     ts:     Date.now(),
@@ -817,7 +914,7 @@ async function cargarMuro(){
       const nombre = escapeHtml(m.nombre || _t('muro_anon'));
       const emoji  = m.emoji || '✨';
       const fecha  = m.fecha || '';
-      const petTag = m.mascota && MASCOTAS[m.mascota] ? petHtml(m.mascota, .48) : '';
+      const petTag = m.mascota && MASCOTAS[m.mascota] ? petHtml(m.mascota, .48, {color:m.mcolor, emo:m.memo}) : '';
       const lit = lucesEncendidas.has(m.id);
       const nLuces = m.luces || 0;
       const modBtn = (rolTemplo==='admin'||rolTemplo==='mod')
