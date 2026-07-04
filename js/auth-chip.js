@@ -7,8 +7,9 @@
 // ═══════════════════════════════════════════════════
 
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signInWithPopup, signInWithEmailAndPassword,
-         createUserWithEmailAndPassword, GoogleAuthProvider, signOut, updateProfile }
+import { getAuth, onAuthStateChanged, signInWithPopup, signInWithRedirect, getRedirectResult,
+         signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider,
+         signOut, updateProfile, browserLocalPersistence, setPersistence }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -26,6 +27,12 @@ const fbApp = getApps().length ? getApps()[0] : initializeApp(fbCfg);
 const auth  = getAuth(fbApp);
 const db    = getFirestore(fbApp);
 const gProv = new GoogleAuthProvider();
+
+// Safari: asegurar que la sesión persista y completar el login por redirect
+setPersistence(auth, browserLocalPersistence).catch(()=>{});
+getRedirectResult(auth).then(res => {
+  if (res?.user) window._acCerrarModal?.();
+}).catch(e => console.warn('redirect login:', e.code || e.message));
 
 const IS_DIARIO = location.pathname.includes('diario');
 const BV_KEY    = 'bruxa_templo_bienvenida_v1';
@@ -224,8 +231,8 @@ function injectUI() {
   if (logo) {
     const chip = document.createElement('a');
     chip.id = 'acChip';
-    chip.href = 'diario.html';
-    chip.title = 'Ir a mi Diario';
+    chip.href = 'perfil.html';
+    chip.title = 'Ir a Mi Santuario';
     logo.insertAdjacentElement('afterend', chip);
 
     const loginBtn = document.createElement('button');
@@ -242,7 +249,7 @@ function injectUI() {
     se.id = 'acSidebarEntry';
     se.style.cssText = 'margin-top:.5rem;padding-top:.8rem;border-top:1px solid rgba(201,168,76,.1)';
     se.innerHTML = `
-      <a id="acSidebarChip" href="diario.html" style="display:none;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.15em;color:rgba(201,168,76,.7);padding:.5rem 1rem;align-items:center;gap:.5rem;text-decoration:none;transition:color .3s" class="sidebar-link">🌙 <span id="acSidebarName">Mi Diario</span></a>
+      <a id="acSidebarChip" href="perfil.html" style="display:none;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.15em;color:rgba(201,168,76,.7);padding:.5rem 1rem;align-items:center;gap:.5rem;text-decoration:none;transition:color .3s" class="sidebar-link">🌙 <span id="acSidebarName">Mi Diario</span></a>
       <button id="acSidebarBtn" onclick="window._acAbrirModal()" style="width:100%;margin-top:.3rem;font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.18em;padding:.7rem 1rem;border-radius:100px;border:none;background:linear-gradient(135deg,rgba(201,168,76,.6),rgba(160,120,40,.7));color:#04060f;cursor:pointer;transition:all .3s;text-align:center">✦ Crear cuenta · Iniciar sesión</button>`;
     sidebarNav.appendChild(se);
   }
@@ -324,8 +331,23 @@ window._acToggle = () => {
 };
 
 window._acGoogle = async () => {
-  try { await signInWithPopup(auth, gProv); window._acCerrarModal(); }
-  catch(e) { document.getElementById('acErr').textContent = e.message; }
+  const err = document.getElementById('acErr');
+  try {
+    await signInWithPopup(auth, gProv);
+    window._acCerrarModal();
+  } catch(e) {
+    // Safari y bloqueadores de popups: usar redirect (va a Google y regresa)
+    const usarRedirect = ['auth/popup-blocked','auth/popup-closed-by-user',
+      'auth/cancelled-popup-request','auth/operation-not-supported-in-this-environment',
+      'auth/web-storage-unsupported'].includes(e.code);
+    if (usarRedirect) {
+      err.textContent = 'Abriendo Google…';
+      try { await signInWithRedirect(auth, gProv); }
+      catch(e2) { err.textContent = e2.message; }
+    } else {
+      err.textContent = e.message;
+    }
+  }
 };
 
 window._acEmail = async () => {
@@ -394,6 +416,10 @@ let prevUid = null;
 
 onAuthStateChanged(auth, user => {
   window._indexAuthUser = user || null;
+  window._fbUser = user || null;
+  document.dispatchEvent(new CustomEvent('authchange', { detail: { user: user || null } }));
+  window._fbUser = user || null;
+  document.dispatchEvent(new CustomEvent('authchange', { detail: { user: user || null } }));
 
   const chip       = document.getElementById('acChip');
   const loginBtn   = document.getElementById('acLoginBtn');
