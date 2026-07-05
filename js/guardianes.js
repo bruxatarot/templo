@@ -268,4 +268,57 @@ style.id = 'guardianes-css';
 style.textContent = css;
 (document.head || document.documentElement).appendChild(style);
 
+// ═══════════════════════════════════════════════════
+//  GUARDIÁN ACOMPAÑANTE — te sigue por todo el Templo
+//  Aparece en cualquier página cuando hay sesión iniciada
+//  y tienes un guardián elegido. Clic → Mi Santuario.
+// ═══════════════════════════════════════════════════
+const compCss = document.createElement('style');
+compCss.textContent = `
+#guardianCompanion{position:fixed;bottom:1.4rem;right:1.4rem;z-index:90;
+  cursor:pointer;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));
+  animation:comp-idle 6s ease-in-out infinite;transition:transform .3s}
+#guardianCompanion:hover{transform:scale(1.12)}
+@keyframes comp-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@media(max-width:600px){#guardianCompanion{bottom:.8rem;right:.8rem;transform:scale(.75)}}
+`;
+(document.head || document.documentElement).appendChild(compCss);
+
+function renderCompanion(){
+  // El muro tiene su propio guardián de página — no duplicar
+  if(document.getElementById('guardianPage')) return;
+  if(!window.Starbits || !document.body) return;
+
+  let el = document.getElementById('guardianCompanion');
+  const sel = window.Starbits.getSel();
+  const conSesion = !!window._fbUser;
+
+  if(!conSesion || !sel || !window.MASCOTAS[sel]){
+    if(el) el.remove();
+    return;
+  }
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'guardianCompanion';
+    el.title = 'Tu guardián · ir a Mi Santuario';
+    el.onclick = () => location.href = 'perfil.html';
+    document.body.appendChild(el);
+  }
+  const aura = window.Starbits.getAura();
+  const firma = sel + '|' + window.Starbits.getColor() + '|' + window.Starbits.getEmo() + '|' + aura;
+  if(el.dataset.firma === firma) return; // sin cambios, no re-dibujar
+  el.dataset.firma = firma;
+  el.className = aura && window.AURAS[aura] ? 'aura-' + aura : '';
+  el.innerHTML = window.petHtml(sel, .8, {color: window.Starbits.getColor(), emo: window.Starbits.getEmo()});
+}
+
+document.addEventListener('authchange', () => setTimeout(renderCompanion, 1500));
+// Chequeo suave por si la sesión o la selección cambian sin evento
+setInterval(renderCompanion, 4000);
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', () => setTimeout(renderCompanion, 800));
+} else {
+  setTimeout(renderCompanion, 800);
+}
+
 })();
