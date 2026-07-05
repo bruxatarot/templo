@@ -1703,13 +1703,14 @@ async function fbRegistrarVisita() {
 
   const actual = await fbGet('/templo/visitas') || 0;
 
+  const elVisitas = document.getElementById('fbVisitas'); // puede no existir
   if(!ya_hoy) {
     const nuevas = actual + 1;
     await fbPut('/templo/visitas', nuevas);
     localStorage.setItem(KEY, fechaHoy);
-    document.getElementById('fbVisitas').textContent = nuevas.toLocaleString('es-MX');
+    if(elVisitas) elVisitas.textContent = nuevas.toLocaleString('es-MX');
   } else {
-    document.getElementById('fbVisitas').textContent = actual.toLocaleString('es-MX');
+    if(elVisitas) elVisitas.textContent = actual.toLocaleString('es-MX');
   }
 
   // Contador del día
