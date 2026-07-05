@@ -281,10 +281,13 @@ function renderPerfil(user){
 
   // Guardián elegido, grande
   const sel = Starbits.getSel() || 'vela';
-  document.getElementById('guardianGrande').innerHTML = petHtml(sel, 1.05, {color:Starbits.getColor(), emo:Starbits.getEmo(), nivel:Starbits.nivel()});
-  const nv = Starbits.nivel();
+  // Compatibilidad: si el starbits.js publicado es anterior, no romper la página
+  const _color = Starbits.getColor ? Starbits.getColor() : 'natural';
+  const _emo   = Starbits.getEmo   ? Starbits.getEmo()   : 'feliz';
+  const _nv    = Starbits.nivel    ? Starbits.nivel()    : 1;
+  document.getElementById('guardianGrande').innerHTML = petHtml(sel, 1.05, {color:_color, emo:_emo, nivel:_nv});
   const elNv = document.getElementById('stNivel');
-  if(elNv) elNv.textContent = NIVELES[nv].nombre;
+  if(elNv) elNv.textContent = (window.NIVELES && NIVELES[_nv]) ? NIVELES[_nv].nombre : 'Alma Joven';
 
   // Colección — solo los guardianes que YA son tuyos
   const owned = Starbits.owned();
@@ -294,17 +297,17 @@ function renderPerfil(user){
       const m = MASCOTAS[key];
       const esSel = key === sel;
       return `<div class="col-item ${esSel?'sel':''}" onclick="elegirGuardian('${key}')" style="cursor:pointer">
-        <div class="col-stage">${petHtml(key, .68, {color:Starbits.getColor(), emo:Starbits.getEmo()})}</div>
+        <div class="col-stage">${petHtml(key, .68, {color:_color, emo:_emo})}</div>
         <p class="col-nombre">${m.nombre}</p>
         <span class="col-badge">${esSel ? '✦ TE ACOMPAÑA' : 'ADOPTADO'}</span>
       </div>`;
     }).join('');
 
-  renderItems();
+  try{ renderItems(); }catch(e){ console.warn('adquisiciones:', e) }
 
   cargarMisMensajes(user.uid);
-  renderTesoro();
-  renderProgreso();
+  try{ renderTesoro(); }catch(e){ console.warn('tesoro:', e) }
+  try{ renderProgreso(); }catch(e){ console.warn('progreso:', e) }
 }
 
 // ── TESORO: ganado, gastado, compras y movimientos ──
@@ -350,6 +353,8 @@ function renderProgreso(){
 
 // ── Mis adquisiciones: solo lo comprado, clic para activar ──
 function renderItems(){
+  // Requiere la versión nueva de starbits.js
+  if(!Starbits.ownedSkins || !window.SKINS) return;
   document.getElementById('panelItems').style.display = 'block';
   const sel = Starbits.getSel() || 'vela';
 
