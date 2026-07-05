@@ -53,8 +53,18 @@ window.EMOCIONES = {
   sonadora:  {nombre:'Soñadora',    precio:15, rareza:'comun',      emoji:'😌'},
   sorprendida:{nombre:'Sorprendida',precio:20, rareza:'comun',      emoji:'😮'},
   triste:    {nombre:'Melancólica', precio:20, rareza:'rara',       emoji:'🥺'},
+  picara:    {nombre:'Pícara',      precio:25, rareza:'rara',       emoji:'😏'},
   enamorada: {nombre:'Enamorada',   precio:35, rareza:'rara',       emoji:'😍'},
+  celebrando:{nombre:'Celebrando',  precio:40, rareza:'rara',       emoji:'🎉'},
   estelar:   {nombre:'Estelar',     precio:50, rareza:'legendaria', emoji:'🤩'},
+  bendecida: {nombre:'Bendecida',   precio:60, rareza:'legendaria', emoji:'😇'},
+};
+
+// ── Evoluciones del guardián (crece con tu racha de días) ──
+window.NIVELES = {
+  1: {nombre:'Alma Joven', dias:0,  desc:'Recién llegado al Templo'},
+  2: {nombre:'Despierto',  dias:7,  desc:'7 días seguidos — su luz se intensifica'},
+  3: {nombre:'Ancestral',  dias:30, desc:'30 días seguidos — porta la corona del Templo'},
 };
 
 const FACE = `<span class="pface"><span class="pojos"><span class="pojo"></span><span class="pojo"></span></span><span class="pboca"></span></span>`;
@@ -77,7 +87,8 @@ window.petHtml = function(key, scale=1, opts={}){
   const w = Math.round(96*scale), h = Math.round(100*scale);
   const cCls = opts.color && opts.color!=='natural' && window.COLORES[opts.color] ? ` pcolor-${opts.color}` : '';
   const eCls = opts.emo && opts.emo!=='feliz' && window.EMOCIONES[opts.emo] ? ` pemo-${opts.emo}` : '';
-  return `<span class="petw${cCls}" style="width:${w}px;height:${h}px" title="${m.nombre} · ${m.energia}">
+  const nCls = opts.nivel >= 2 ? ` pnv${Math.min(opts.nivel,3)}` : '';
+  return `<span class="petw${cCls}${nCls}" style="width:${w}px;height:${h}px" title="${m.nombre} · ${m.energia}">
     <span class="pets${eCls}" style="transform:scale(${scale})">${PET_ART[key]}</span></span>`;
 };
 
@@ -261,6 +272,45 @@ const css = `
   text-shadow:0 0 5px rgba(255,200,80,.9);animation:pet-tw 1.6s ease-in-out infinite}
 .pemo-estelar .pboca{width:11px;height:7px;background:#7a3010;border:none;border-radius:0 0 11px 11px}
 
+/* Pícara: guiño con sonrisita ladeada */
+.pemo-picara .pojo:first-child{height:2.5px;border-radius:3px;margin-top:5px}
+.pemo-picara .pojo:first-child::after{display:none}
+.pemo-picara .pboca{transform:rotate(-8deg);width:11px}
+/* Celebrando: sonrisota + confeti */
+.pemo-celebrando .pboca{width:12px;height:8px;background:#7a3010;border:none;border-radius:0 0 12px 12px}
+.pemo-celebrando .pface::before{content:'🎊';position:absolute;left:-16px;top:-4px;font-size:.55rem;
+  animation:pemo-conf 1.4s ease-in-out infinite}
+.pemo-celebrando .pface::after{content:'🎉';position:absolute;right:-16px;top:-4px;font-size:.55rem;
+  animation:pemo-conf 1.4s ease-in-out infinite .7s}
+@keyframes pemo-conf{0%,100%{transform:translateY(0) rotate(-10deg)}50%{transform:translateY(-5px) rotate(10deg)}}
+/* Bendecida: serena con halo pequeño */
+.pemo-bendecida .pojo{height:2.5px;border-radius:3px;margin-top:5px}
+.pemo-bendecida .pojo::after{display:none}
+.pemo-bendecida .pboca{width:10px}
+.pemo-bendecida .pface::before{content:'';position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  width:16px;height:5px;border-radius:50%;border:1.5px solid rgba(255,225,140,.95);
+  box-shadow:0 0 6px rgba(255,216,112,.8);animation:pet-tw 2.4s ease-in-out infinite}
+
+/* ══════ EVOLUCIONES ══════ */
+.pnv2{transform:scale(1.12)}
+.pnv2 .pets{filter:drop-shadow(0 0 12px rgba(255,230,150,.75))}
+.pnv3{transform:scale(1.22);position:relative}
+.pnv3 .pets{filter:drop-shadow(0 0 16px rgba(255,216,112,.95))}
+.pnv3::before{content:'♕';position:absolute;top:-15px;left:50%;transform:translateX(-50%);
+  color:#ffd870;font-size:15px;z-index:7;pointer-events:none;
+  text-shadow:0 0 9px rgba(255,216,112,.95);animation:pnv-corona 2.4s ease-in-out infinite}
+@keyframes pnv-corona{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
+
+/* ══════ CARICIA 💞 ══════ */
+@keyframes caricia-salto{0%,100%{transform:translateY(0) scale(1)}
+  30%{transform:translateY(-14px) scale(1.12) rotate(-6deg)}
+  55%{transform:translateY(-4px) scale(1.06) rotate(5deg)}}
+.caricia-anim{animation:caricia-salto .7s ease-in-out!important}
+.caricia-corazon{position:absolute;font-size:.9rem;pointer-events:none;z-index:99;
+  animation:caricia-sube 1.1s ease-out forwards}
+@keyframes caricia-sube{0%{opacity:1;transform:translateY(0) scale(.7)}
+  100%{opacity:0;transform:translateY(-46px) scale(1.25)}}
+
 @media(prefers-reduced-motion:reduce){.pets,.pets *,.pets *::before,.pets *::after{animation:none!important}}
 `;
 const style = document.createElement('style');
@@ -300,8 +350,9 @@ function renderCompanion(){
   if(!el){
     el = document.createElement('div');
     el.id = 'guardianCompanion';
-    el.title = 'Tu guardián · ir a Mi Santuario';
-    el.onclick = () => location.href = 'perfil.html';
+    el.title = 'Acariciar 💞 · doble clic: Mi Santuario';
+    el.onclick = () => window.acariciarGuardian(el);
+    el.ondblclick = () => location.href = 'perfil.html';
     document.body.appendChild(el);
   }
   const aura = window.Starbits.getAura();
@@ -311,6 +362,25 @@ function renderCompanion(){
   el.className = aura && window.AURAS[aura] ? 'aura-' + aura : '';
   el.innerHTML = window.petHtml(sel, .8, {color: window.Starbits.getColor(), emo: window.Starbits.getEmo()});
 }
+
+// ── Acariciar: salto + corazones + Starbits (con tope diario) ──
+window.acariciarGuardian = function(el){
+  if(!el) return;
+  el.classList.remove('caricia-anim');
+  void el.offsetWidth; // reiniciar la animación
+  el.classList.add('caricia-anim');
+  for(let i=0;i<3;i++){
+    const c = document.createElement('span');
+    c.className = 'caricia-corazon';
+    c.textContent = ['💛','💖','✨'][i];
+    c.style.left = (18 + Math.random()*46) + 'px';
+    c.style.top  = (8 + Math.random()*18) + 'px';
+    c.style.animationDelay = (i*.12) + 's';
+    el.appendChild(c);
+    setTimeout(()=>c.remove(), 1400);
+  }
+  window.Starbits?.premiar('caricia');
+};
 
 document.addEventListener('authchange', () => setTimeout(renderCompanion, 1500));
 // Chequeo suave por si la sesión o la selección cambian sin evento
