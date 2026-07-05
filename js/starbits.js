@@ -32,6 +32,7 @@ const EVENTOS = {
   luz:      {sb:1,  limite:'dia',    label:'luz a otra alma 🕯️', max:5},
   test:     {sb:10, limite:'unavez', label:'Test Luz y Sombra 🌓'},
   historia: {sb:1,  limite:'dia',    label:'lectura mágica 📚'},
+  caricia:  {sb:1,  limite:'dia',    label:'cariñito a tu guardián 💞', max:3},
   racha7:   {sb:7,  limite:'auto',   label:'¡7 días seguidos! 🔥'},
 };
 
@@ -108,6 +109,21 @@ function actualizarRacha(){
   return r;
 }
 function racha(){ return lsGet('sb_racha', {last:'', n:0}) }
+
+// ── Nivel de evolución del guardián (según la racha) ──
+function nivel(){
+  const n = racha().n || 0;
+  return n >= 30 ? 3 : n >= 7 ? 2 : 1;
+}
+function chequearEvolucion(){
+  const nv = nivel();
+  const visto = parseInt(localStorage.getItem('pnivel_visto')||'1');
+  if(nv > visto){
+    localStorage.setItem('pnivel_visto', String(nv));
+    const nombres = {2:'Despierto 🌟', 3:'Ancestral 👑'};
+    setTimeout(()=>toast(`✦ ¡Tu guardián ha evolucionado a ${nombres[nv]}!`), 1600);
+  }
+}
 
 // ── Progreso de premios: qué llevas hoy y qué falta ──
 function progreso(){
@@ -303,7 +319,7 @@ function toast(txt){
 }
 
 // ── API pública ──
-window.Starbits = { get, add, gastar, premiar, racha, owned, addPet, getSel, setSel,
+window.Starbits = { get, add, gastar, premiar, racha, nivel, owned, addPet, getSel, setSel,
   ownedSkins, addSkin, getSkin, setSkin,
   ownedAuras, addAura, getAura, setAura,
   ownedColores, addColor, getColor, setColor,
@@ -315,6 +331,7 @@ window.Starbits = { get, add, gastar, premiar, racha, owned, addPet, getSel, set
 function iniciar(){
   actualizarRacha();
   premiar('visita');
+  chequearEvolucion();
 }
 if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
 else iniciar();
