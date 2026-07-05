@@ -180,6 +180,7 @@
           <div class="stat"><span class="stat-num" id="stSb">0</span><span class="stat-label">⭐ STARBITS</span></div>
           <div class="stat"><span class="stat-num" id="stRacha">0</span><span class="stat-label">🔥 DÍAS SEGUIDOS</span></div>
           <div class="stat"><span class="stat-num" id="stGuard">1</span><span class="stat-label">🛡️ GUARDIANES</span></div>
+          <div class="stat"><span class="stat-num" id="stNivel" style="font-size:.95rem;padding-top:.4rem">Alma Joven</span><span class="stat-label">🌟 EVOLUCIÓN</span></div>
           <div class="stat"><span class="stat-num" id="stMsgs">0</span><span class="stat-label">💌 MENSAJES</span></div>
         </div>
       </div>
@@ -280,7 +281,10 @@ function renderPerfil(user){
 
   // Guardián elegido, grande
   const sel = Starbits.getSel() || 'vela';
-  document.getElementById('guardianGrande').innerHTML = petHtml(sel, 1.05, {color:Starbits.getColor(), emo:Starbits.getEmo()});
+  document.getElementById('guardianGrande').innerHTML = petHtml(sel, 1.05, {color:Starbits.getColor(), emo:Starbits.getEmo(), nivel:Starbits.nivel()});
+  const nv = Starbits.nivel();
+  const elNv = document.getElementById('stNivel');
+  if(elNv) elNv.textContent = NIVELES[nv].nombre;
 
   // Colección — solo los guardianes que YA son tuyos
   const owned = Starbits.owned();

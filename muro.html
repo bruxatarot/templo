@@ -271,7 +271,7 @@
 
     /* ── GUARDIÁN EN LA PÁGINA ── */
     #guardianPage{position:fixed;bottom:1.4rem;right:1.4rem;z-index:90;
-      pointer-events:none;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));
+      pointer-events:auto;cursor:pointer;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));
       animation:guardian-idle 6s ease-in-out infinite}
     @keyframes guardian-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
     @media(max-width:600px){#guardianPage{bottom:.8rem;right:.8rem;transform:scale(.8)}}
@@ -623,7 +623,10 @@ function renderGuardianPage(){
   const sel = Starbits.getSel();
   const aura = Starbits.getAura();
   el.className = aura && AURAS[aura] ? 'aura-' + aura : '';
-  el.innerHTML = sel && MASCOTAS[sel] ? petHtml(sel, .85, {color:Starbits.getColor(), emo:Starbits.getEmo()}) : '';
+  el.innerHTML = sel && MASCOTAS[sel] ? petHtml(sel, .85, {color:Starbits.getColor(), emo:Starbits.getEmo(), nivel:Starbits.nivel()}) : '';
+  el.onclick = () => window.acariciarGuardian(el);
+  el.ondblclick = () => location.href = 'perfil.html';
+  el.title = 'Acariciar 💞 · doble clic: Mi Santuario';
 }
 
 // ══════════════════════════════════════
@@ -852,6 +855,7 @@ async function enviarMensaje(){
     mascota: mascotaSeleccionada || null,
     mcolor: mascotaSeleccionada && Starbits.getColor() !== 'natural' ? Starbits.getColor() : null,
     memo:   mascotaSeleccionada && Starbits.getEmo() !== 'feliz' ? Starbits.getEmo() : null,
+    mnivel: mascotaSeleccionada && Starbits.nivel() > 1 ? Starbits.nivel() : null,
     skin:   Starbits.getSkin() !== 'pergamino' ? Starbits.getSkin() : null,
     uid:    window._fbUser?.uid || null,
     ts:     Date.now(),
@@ -864,7 +868,7 @@ async function enviarMensaje(){
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify(entry)
     });
-    if(!res.ok) throw new Error('Firebase error');
+    if(!res.ok) throw new Error('Firebase ' + res.status + (res.status===401||res.status===403?' — las reglas rechazaron la escritura':''));
 
     msg.textContent = _t('muro_success');
     document.getElementById('inputMensaje').value = '';
@@ -872,7 +876,7 @@ async function enviarMensaje(){
     setTimeout(()=>{ cerrarPublicar(); msg.textContent=''; }, 1200);
     await cargarMuro();
   } catch(e) {
-    msg.textContent = _t('muro_error');
+    msg.textContent = _t('muro_error') + ' (' + e.message + ')';
   } finally {
     btn.disabled = false;
   }
@@ -882,8 +886,15 @@ async function enviarMensaje(){
 async function cargarMuro(){
   const muroEl = document.getElementById('muro');
   try {
-    const res = await fetch(FB_MURO + '.json?orderBy="ts"&limitToLast=' + MAX_MENSAJES);
-    const data = await res.json();
+    // Consulta ordenada (requiere .indexOn "ts" en las reglas);
+    // si falla, traemos todo y ordenamos aquí
+    let res = await fetch(FB_MURO + '.json?orderBy="ts"&limitToLast=' + MAX_MENSAJES);
+    let data = await res.json();
+    if(!res.ok || (data && data.error)){
+      console.warn('consulta indexada falló, usando fallback:', data?.error);
+      res = await fetch(FB_MURO + '.json');
+      data = await res.json();
+    }
 
     if(!data || Object.keys(data).length === 0){
       muroEl.innerHTML = `<div class="muro-vacio">${_t('muro_vacio')}</div>`;
@@ -894,7 +905,8 @@ async function cargarMuro(){
 
     const mensajes = Object.entries(data)
       .map(([id, m]) => ({id, ...m}))
-      .sort((a,b) => b.ts - a.ts);
+      .sort((a,b) => b.ts - a.ts)
+      .slice(0, MAX_MENSAJES);
 
     const hoy = new Date().toDateString();
     const hoyCount = mensajes.filter(m => new Date(m.ts).toDateString() === hoy).length;
@@ -914,7 +926,7 @@ async function cargarMuro(){
       const nombre = escapeHtml(m.nombre || _t('muro_anon'));
       const emoji  = m.emoji || '✨';
       const fecha  = m.fecha || '';
-      const petTag = m.mascota && MASCOTAS[m.mascota] ? petHtml(m.mascota, .48, {color:m.mcolor, emo:m.memo}) : '';
+      const petTag = m.mascota && MASCOTAS[m.mascota] ? petHtml(m.mascota, .48, {color:m.mcolor, emo:m.memo, nivel:m.mnivel}) : '';
       const lit = lucesEncendidas.has(m.id);
       const nLuces = m.luces || 0;
       const modBtn = (rolTemplo==='admin'||rolTemplo==='mod')
@@ -1011,12 +1023,16 @@ async function prenderLuz(ev, id, actual, autorUid){
   if(btn) btn.classList.add('lit');
 
   try{
-    await fetch(`${FB_MURO}/${id}/luces.json`, {
+    const r = await fetch(`${FB_MURO}/${id}/luces.json`, {
       method:'PUT',
       headers:{'Content-Type':'application/json'},
       body: String(actual + 1)
     });
-  }catch(e){}
+    if(!r.ok){
+      console.warn('velita rechazada:', r.status);
+      sbToast('🕯️ La vela no pudo guardarse (' + r.status + ')');
+    }
+  }catch(e){ console.warn('velita error:', e) }
   // +1 Starbit por apoyar a otra alma (máx 5/día, no por tu propio mensaje)
   const miUid = window._fbUser?.uid;
   if(!miUid || autorUid !== miUid) Starbits.premiar('luz');
