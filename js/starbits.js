@@ -191,6 +191,19 @@ function addColor(key){
 function getColor(){ return localStorage.getItem('pcolor_sel') || 'natural' }
 function setColor(key){ localStorage.setItem('pcolor_sel', key||'natural'); guardarNube() }
 
+// ── Variantes por guardián (ej. "vela:azul") ──
+function ownedVars(){ return lsGet('pvars', []) }
+function addVar(pet, v){
+  const o = ownedVars(); const k = pet + ':' + v;
+  if(!o.includes(k)){ o.push(k); lsSet('pvars', o); guardarNube() }
+}
+function getVar(pet){ const m = lsGet('pvars_sel', {}); return m[pet] || '' }
+function setVar(pet, v){
+  const m = lsGet('pvars_sel', {});
+  if(v) m[pet] = v; else delete m[pet];
+  lsSet('pvars_sel', m); guardarNube();
+}
+
 // ── Emociones del alma (la de hoy) ──
 function ownedEmos(){
   let o = lsGet('pemos', []);
@@ -237,6 +250,8 @@ function guardarNube(){
         pcolor_sel: getColor(),
         pemos: ownedEmos(),
         pemo_sel: getEmo(),
+        pvars: ownedVars(),
+        pvars_sel: lsGet('pvars_sel', {}),
         premios: lsGet('sb_premios', {}),
         racha: lsGet('sb_racha', {last:'',n:0}),
         hist: historial().slice(0, 120),
@@ -264,6 +279,10 @@ async function cargarNube(){
       if(nube.pcolor_sel && getColor()==='natural') localStorage.setItem('pcolor_sel', nube.pcolor_sel);
       lsSet('pemos', [...new Set([...(nube.pemos||[]), ...ownedEmos()])]);
       if(nube.pemo_sel && getEmo()==='feliz') localStorage.setItem('pemo_sel', nube.pemo_sel);
+      lsSet('pvars', [...new Set([...(nube.pvars||[]), ...ownedVars()])]);
+      const vsLoc = lsGet('pvars_sel', {});
+      Object.entries(nube.pvars_sel||{}).forEach(([k,v])=>{ if(!vsLoc[k]) vsLoc[k]=v });
+      lsSet('pvars_sel', vsLoc);
       // Fusionar premios: conservar límites más restrictivos (evita doble premio entre dispositivos)
       const locP = lsGet('sb_premios', {}), nubeP = nube.premios || {};
       Object.keys(nubeP).forEach(ev=>{
@@ -324,6 +343,7 @@ window.Starbits = { get, add, gastar, premiar, racha, nivel, owned, addPet, getS
   ownedAuras, addAura, getAura, setAura,
   ownedColores, addColor, getColor, setColor,
   ownedEmos, addEmo, getEmo, setEmo,
+  ownedVars, addVar, getVar, setVar,
   historial, progreso,
   onChange: cb => cambioCbs.push(cb), toast, EVENTOS };
 
