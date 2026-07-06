@@ -203,6 +203,8 @@
     <div class="coleccion" id="colAuras"></div>
     <p class="panel-title" style="margin-top:1.4rem">💭 MIS EMOCIONES</p>
     <div class="coleccion" id="colEmos"></div>
+    <p class="panel-title" style="margin-top:1.4rem">🎭 MIS VARIANTES</p>
+    <div class="coleccion" id="colVars"></div>
     <p class="vacio" style="padding-top:1rem">Toca cualquiera para activarla ✦ Encuentra más en la <a href="muro.html" style="color:var(--gold-l)">Tienda Mística</a></p>
   </div>
 
@@ -285,7 +287,8 @@ function renderPerfil(user){
   const _color = Starbits.getColor ? Starbits.getColor() : 'natural';
   const _emo   = Starbits.getEmo   ? Starbits.getEmo()   : 'feliz';
   const _nv    = Starbits.nivel    ? Starbits.nivel()    : 1;
-  document.getElementById('guardianGrande').innerHTML = petHtml(sel, 1.05, {color:_color, emo:_emo, nivel:_nv});
+  const _vari = Starbits.getVar ? Starbits.getVar(sel) : '';
+  document.getElementById('guardianGrande').innerHTML = petHtml(sel, 1.05, {color:_color, emo:_emo, nivel:_nv, vari:_vari});
   const elNv = document.getElementById('stNivel');
   if(elNv) elNv.textContent = (window.NIVELES && NIVELES[_nv]) ? NIVELES[_nv].nombre : 'Alma Joven';
 
@@ -297,7 +300,7 @@ function renderPerfil(user){
       const m = MASCOTAS[key];
       const esSel = key === sel;
       return `<div class="col-item ${esSel?'sel':''}" onclick="elegirGuardian('${key}')" style="cursor:pointer">
-        <div class="col-stage">${petHtml(key, .68, {color:_color, emo:_emo})}</div>
+        <div class="col-stage">${petHtml(key, .68, {color:_color, emo:_emo, vari:Starbits.getVar?Starbits.getVar(key):''})}</div>
         <p class="col-nombre">${m.nombre}</p>
         <span class="col-badge">${esSel ? '✦ TE ACOMPAÑA' : 'ADOPTADO'}</span>
       </div>`;
@@ -400,11 +403,27 @@ function renderItems(){
     </div>`).join('');
 }
 
+  // Variantes compradas
+  const varsOwned = (Starbits.ownedVars ? Starbits.ownedVars() : []).filter(k=>{
+    const [p,v] = k.split(':'); return window.VARIANTES?.[p]?.[v];
+  });
+  const elVars = document.getElementById('colVars');
+  if(elVars) elVars.innerHTML = varsOwned.length ? varsOwned.map(k=>{
+    const [p,v] = k.split(':');
+    const activa = Starbits.getVar(p) === v;
+    return `<div class="col-item ${activa?'sel':''}" onclick="activarItem('var','${activa ? p+':' : k}')" style="cursor:pointer">
+      <div class="col-swatch">${petHtml(p, .55, {vari:v})}</div>
+      <p class="col-nombre">${MASCOTAS[p].nombre} · ${VARIANTES[p][v].nombre}</p>
+      <span class="col-badge">${activa?'✦ EN USO · tocar para quitar':'MÍA'}</span>
+    </div>`;
+  }).join('') : '<p class="vacio">Aún no tienes variantes ✦ Descúbrelas en la Tienda Mística</p>';
+
 window.activarItem = function(tipo, key){
   if(tipo==='skin')  Starbits.setSkin(key);
   if(tipo==='color') Starbits.setColor(key);
   if(tipo==='aura')  Starbits.setAura(key);
   if(tipo==='emo')   Starbits.setEmo(key);
+  if(tipo==='var'){ const [p,v] = key.split(':'); Starbits.setVar(p, v||''); }
   renderPerfil(window._fbUser);
 };
 
