@@ -60,6 +60,45 @@ window.EMOCIONES = {
   bendecida: {nombre:'Bendecida',   precio:60, rareza:'legendaria', emoji:'😇'},
 };
 
+// ── Variantes por guardián (rasgos únicos comprables) ──
+window.VARIANTES = {
+  vela: {
+    azul:     {nombre:'Llama Azul',      precio:25, rareza:'comun'},
+    violeta:  {nombre:'Llama Violeta',   precio:30, rareza:'rara'},
+    esmeralda:{nombre:'Llama Esmeralda', precio:35, rareza:'rara'},
+  },
+  estrella: {
+    seis: {nombre:'Seis Puntas', precio:30, rareza:'rara'},
+    ocho: {nombre:'Ocho Puntas', precio:45, rareza:'legendaria'},
+  },
+  luna: {
+    llena:  {nombre:'Luna Llena',        precio:30, rareza:'rara'},
+    cuarto: {nombre:'Cuarto Menguante',  precio:35, rareza:'rara'},
+  },
+  bola: {
+    plata:     {nombre:'Base de Plata',    precio:20, rareza:'comun'},
+    obsidiana: {nombre:'Base Obsidiana',   precio:30, rareza:'rara'},
+    rosaoro:   {nombre:'Base Rosa y Oro',  precio:35, rareza:'rara'},
+  },
+  ojo: {
+    esmeralda: {nombre:'Iris Esmeralda', precio:25, rareza:'comun'},
+    ambar:     {nombre:'Iris Ámbar',     precio:25, rareza:'comun'},
+    violeta:   {nombre:'Iris Violeta',   precio:35, rareza:'rara'},
+  },
+  brillito: {
+    anrosa:    {nombre:'Anillo Rosa',    precio:25, rareza:'comun'},
+    anceleste: {nombre:'Anillo Celeste', precio:25, rareza:'comun'},
+  },
+  alma: {
+    halorosa:  {nombre:'Halo Rosa',      precio:30, rareza:'rara'},
+    haloplata: {nombre:'Halo de Plata',  precio:30, rareza:'rara'},
+  },
+  nabi: {
+    monarca: {nombre:'Alas Monarca',       precio:40, rareza:'legendaria'},
+    morpho:  {nombre:'Alas Morpho Azul',   precio:40, rareza:'legendaria'},
+  },
+};
+
 // ── Evoluciones del guardián (crece con tu racha de días) ──
 window.NIVELES = {
   1: {nombre:'Alma Joven', dias:0,  desc:'Recién llegado al Templo'},
@@ -88,7 +127,8 @@ window.petHtml = function(key, scale=1, opts={}){
   const cCls = opts.color && opts.color!=='natural' && window.COLORES[opts.color] ? ` pcolor-${opts.color}` : '';
   const eCls = opts.emo && opts.emo!=='feliz' && window.EMOCIONES[opts.emo] ? ` pemo-${opts.emo}` : '';
   const nCls = opts.nivel >= 2 ? ` pnv${Math.min(opts.nivel,3)}` : '';
-  return `<span class="petw${cCls}${nCls}" style="width:${w}px;height:${h}px" title="${m.nombre} · ${m.energia}">
+  const vCls = opts.vari && window.VARIANTES?.[key]?.[opts.vari] ? ` pvar-${key}-${opts.vari}` : '';
+  return `<span class="petw${cCls}${nCls}${vCls}" style="width:${w}px;height:${h}px" title="${m.nombre} · ${m.energia}">
     <span class="pets${eCls}" style="transform:scale(${scale})">${PET_ART[key]}</span></span>`;
 };
 
@@ -290,6 +330,60 @@ const css = `
 .pemo-bendecida .pface::before{content:'';position:absolute;top:-11px;left:50%;transform:translateX(-50%);
   width:16px;height:5px;border-radius:50%;border:1.5px solid rgba(255,225,140,.95);
   box-shadow:0 0 6px rgba(255,216,112,.8);animation:pet-tw 2.4s ease-in-out infinite}
+
+/* ── Nabi Maine Coon: mechones en orejas y mejillas peluditas ── */
+.pn .oreja::after{content:'';position:absolute;left:-5px;top:5px;
+  border-left:5px solid transparent;border-right:5px solid transparent;
+  border-bottom:9px solid #d8b890}
+.pn .cabeza::before,.pn .cabeza::after{content:'';position:absolute;top:24px;
+  width:13px;height:17px;border-radius:60% 40% 70% 30%;background:#efe1cd;
+  box-shadow:inset -2px -2px 4px rgba(180,140,110,.35)}
+.pn .cabeza::before{left:-8px;transform:rotate(-14deg)}
+.pn .cabeza::after{right:-8px;transform:scaleX(-1) rotate(-14deg)}
+
+/* ══════ VARIANTES POR GUARDIÁN ══════ */
+/* Lumi: llamas de colores */
+.pvar-vela-azul .pv .llama{background:radial-gradient(ellipse at 50% 78%,#e8f6ff 0%,#6ad0ff 45%,#2a7ae8 80%,transparent 100%);filter:drop-shadow(0 0 12px rgba(90,180,255,.95))}
+.pvar-vela-violeta .pv .llama{background:radial-gradient(ellipse at 50% 78%,#f4e6ff 0%,#c07aff 45%,#7a2ae8 80%,transparent 100%);filter:drop-shadow(0 0 12px rgba(170,100,255,.95))}
+.pvar-vela-esmeralda .pv .llama{background:radial-gradient(ellipse at 50% 78%,#eafff2 0%,#5ee8a0 45%,#1a9a5a 80%,transparent 100%);filter:drop-shadow(0 0 12px rgba(80,220,150,.95))}
+/* Stella: cantidad de puntas */
+.pvar-estrella-seis .pe .cuerpo{clip-path:polygon(50% 0%,61% 29%,93% 25%,72% 50%,93% 75%,61% 71%,50% 100%,39% 71%,7% 75%,28% 50%,7% 25%,39% 29%)}
+.pvar-estrella-ocho .pe .cuerpo{clip-path:polygon(50% 0%,59% 26%,79% 12%,72% 35%,100% 39%,78% 50%,100% 61%,72% 65%,79% 88%,59% 74%,50% 100%,41% 74%,21% 88%,28% 65%,0% 61%,22% 50%,0% 39%,28% 35%,21% 12%,41% 26%)}
+/* Selene: otras fases */
+.pvar-luna-llena .pl .cuerpo{-webkit-mask:none;mask:none}
+.pvar-luna-cuarto .pl .cuerpo{-webkit-mask:radial-gradient(circle at 22% 22%,transparent 34%,#000 36%);mask:radial-gradient(circle at 22% 22%,transparent 34%,#000 36%)}
+.pvar-luna-cuarto .pl .pface{left:58%}
+/* Cristalia: bases de otro material */
+.pvar-bola-plata .pb .base{background:linear-gradient(160deg,#eef2f8,#8a94a8)}
+.pvar-bola-obsidiana .pb .base{background:linear-gradient(160deg,#4a4658,#16141f);box-shadow:0 3px 8px rgba(0,0,0,.6),0 0 8px rgba(140,120,200,.3)}
+.pvar-bola-rosaoro .pb .base{background:linear-gradient(160deg,#f8d0c0,#c8825f)}
+/* Nazari: colores de iris */
+.pvar-ojo-esmeralda .po{filter:drop-shadow(0 0 14px rgba(60,220,150,.6))}
+.pvar-ojo-esmeralda .po .a1{background:radial-gradient(circle at 36% 30%,#3ce89e,#0f7a4a)}
+.pvar-ojo-esmeralda .po .a3{background:radial-gradient(circle at 38% 32%,#8af0c0,#1a9a5e)}
+.pvar-ojo-ambar .po{filter:drop-shadow(0 0 14px rgba(255,190,80,.6))}
+.pvar-ojo-ambar .po .a1{background:radial-gradient(circle at 36% 30%,#e8b04a,#8a5c10)}
+.pvar-ojo-ambar .po .a3{background:radial-gradient(circle at 38% 32%,#ffd88a,#c8861a)}
+.pvar-ojo-violeta .po{filter:drop-shadow(0 0 14px rgba(180,110,255,.6))}
+.pvar-ojo-violeta .po .a1{background:radial-gradient(circle at 36% 30%,#b070f0,#4a1a94)}
+.pvar-ojo-violeta .po .a3{background:radial-gradient(circle at 38% 32%,#d8aaff,#7a2ae8)}
+/* Glimmer: anillos de color */
+.pvar-brillito-anrosa .pbr .anillo{border-color:rgba(255,150,220,.65)}
+.pvar-brillito-anceleste .pbr .anillo{border-color:rgba(130,210,255,.65)}
+/* Alma: halos de color */
+.pvar-alma-halorosa .pa .halo{border-color:#ff9ad0;box-shadow:0 0 12px rgba(255,140,200,.9)}
+.pvar-alma-haloplata .pa .halo{border-color:#e6ecfa;box-shadow:0 0 12px rgba(210,225,255,.95)}
+/* Nabi: alas de mariposas reales */
+.pvar-nabi-monarca .pn .ala{background:
+  radial-gradient(circle at 30% 26%,#fff 2.5px,transparent 3.5px),
+  radial-gradient(circle at 62% 48%,#fff 2px,transparent 3px),
+  radial-gradient(circle at 40% 70%,#fff 1.8px,transparent 2.8px),
+  linear-gradient(160deg,#ff9a3c 0%,#e8641a 45%,#7a2a08 80%,#3a1404 100%);
+  box-shadow:inset 0 0 8px rgba(60,20,0,.45),0 0 12px rgba(255,140,40,.5)}
+.pvar-nabi-monarca .pn{filter:drop-shadow(0 0 14px rgba(255,150,60,.55))}
+.pvar-nabi-morpho .pn .ala{background:linear-gradient(160deg,#b8ecff 0%,#5ac4ff 35%,#1a72e8 70%,#0a2a7a 100%);
+  box-shadow:inset 0 0 10px rgba(255,255,255,.4),0 0 14px rgba(80,170,255,.6)}
+.pvar-nabi-morpho .pn{filter:drop-shadow(0 0 14px rgba(90,180,255,.6))}
 
 /* ══════ EVOLUCIONES ══════ */
 .pnv2{transform:scale(1.12)}
