@@ -1358,4 +1358,5 @@ const LangEngine = {
   }
 };
 
+window.LangEngine = LangEngine;
 LangEngine.init();
