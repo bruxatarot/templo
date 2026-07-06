@@ -382,6 +382,90 @@ window.acariciarGuardian = function(el){
   window.Starbits?.premiar('caricia');
 };
 
+// ═══════════════════════════════════════════════════
+//  🧪 POCIÓN DE APOYO — "invítame una poción" (Ko-fi)
+//  Frasquito burbujeante en la esquina inferior izquierda;
+//  al tocarlo se despliega el mensaje con el enlace.
+// ═══════════════════════════════════════════════════
+const KOFI_URL = 'https://ko-fi.com/bruxatarot';
+
+const pocionCss = document.createElement('style');
+pocionCss.textContent = `
+#pocionApoyo{position:fixed;bottom:1.4rem;left:1.4rem;z-index:95;
+  font-family:'Cinzel',serif}
+#pocionBtn{width:52px;height:58px;cursor:pointer;position:relative;border:none;
+  background:none;padding:0;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));
+  transition:transform .3s;animation:pocion-flota 4.5s ease-in-out infinite}
+#pocionBtn:hover{transform:scale(1.12)}
+@keyframes pocion-flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.poc-frasco{position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:40px;height:40px;border-radius:50%;
+  background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.5) 0%,rgba(190,120,240,.85) 30%,rgba(120,60,190,.95) 70%,rgba(70,30,120,1) 100%);
+  border:2px solid rgba(230,200,255,.5);overflow:hidden;
+  box-shadow:0 0 16px rgba(170,90,240,.55),inset 0 -6px 12px rgba(50,15,90,.6)}
+.poc-cuello{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
+  width:12px;height:14px;background:linear-gradient(to right,rgba(200,160,240,.5),rgba(240,220,255,.35),rgba(200,160,240,.5));
+  border:2px solid rgba(230,200,255,.5);border-bottom:none;border-radius:3px 3px 0 0}
+.poc-corcho{position:absolute;bottom:46px;left:50%;transform:translateX(-50%);
+  width:14px;height:7px;background:linear-gradient(160deg,#c9a06a,#8a6438);border-radius:3px 3px 1px 1px}
+.poc-burbuja{position:absolute;bottom:2px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.9),rgba(230,190,255,.4));
+  animation:poc-sube var(--bd,2.2s) ease-in infinite;animation-delay:var(--bw,0s)}
+@keyframes poc-sube{0%{transform:translateY(0) scale(.6);opacity:0}
+  15%{opacity:.9}100%{transform:translateY(-30px) scale(1.1);opacity:0}}
+.poc-brillo{position:absolute;top:-4px;right:-2px;font-size:.7rem;color:#e8c8ff;
+  text-shadow:0 0 6px rgba(200,140,255,.9);animation:pet-tw 2s ease-in-out infinite}
+
+#pocionPanel{position:absolute;bottom:70px;left:0;width:236px;
+  background:linear-gradient(160deg,rgba(38,22,66,.97),rgba(18,10,38,.98));
+  border:1px solid rgba(190,130,250,.4);border-radius:16px;padding:1.1rem 1.2rem;
+  box-shadow:0 14px 40px rgba(0,0,0,.6),0 0 30px rgba(150,80,220,.18);
+  opacity:0;pointer-events:none;transform:translateY(8px);transition:all .3s}
+#pocionApoyo.abierto #pocionPanel{opacity:1;pointer-events:all;transform:translateY(0)}
+#pocionPanel p{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.92rem;line-height:1.55;color:#dcc8f0;margin-bottom:.9rem}
+#pocionPanel a{display:block;text-align:center;text-decoration:none;
+  font-size:.55rem;letter-spacing:.18em;padding:.65rem 1rem;border-radius:100px;
+  background:linear-gradient(135deg,#a866e0,#7a3cc0);color:#fff;
+  box-shadow:0 0 16px rgba(160,90,230,.4);transition:all .3s}
+#pocionPanel a:hover{box-shadow:0 0 26px rgba(180,110,250,.6);transform:translateY(-1px)}
+#pocionCerrar{position:absolute;top:.5rem;right:.7rem;background:none;border:none;
+  color:rgba(220,190,250,.5);font-size:.85rem;cursor:pointer}
+#pocionCerrar:hover{color:#e8c8ff}
+@media(max-width:600px){#pocionApoyo{bottom:.8rem;left:.8rem}#pocionPanel{width:200px}}
+`;
+(document.head || document.documentElement).appendChild(pocionCss);
+
+function crearPocion(){
+  if(document.getElementById('pocionApoyo') || !document.body) return;
+  const el = document.createElement('div');
+  el.id = 'pocionApoyo';
+  el.innerHTML = `
+    <div id="pocionPanel">
+      <button id="pocionCerrar">✕</button>
+      <p>✦ ¿Disfrutas del Templo?<br>Si mi trabajo ilumina tu camino, considera regalarme una <em style="color:#c89aff">poción mágica</em> para seguir creando 💜</p>
+      <a href="${KOFI_URL}" target="_blank" rel="noopener">🧪 REGALAR UNA POCIÓN</a>
+    </div>
+    <button id="pocionBtn" title="Invítame una poción mágica 🧪">
+      <span class="poc-corcho"></span>
+      <span class="poc-cuello"></span>
+      <span class="poc-frasco">
+        <span class="poc-burbuja" style="left:8px;width:5px;height:5px;--bd:2.4s;--bw:0s"></span>
+        <span class="poc-burbuja" style="left:18px;width:7px;height:7px;--bd:2s;--bw:.7s"></span>
+        <span class="poc-burbuja" style="left:27px;width:4px;height:4px;--bd:2.8s;--bw:1.3s"></span>
+      </span>
+      <span class="poc-brillo">✦</span>
+    </button>`;
+  document.body.appendChild(el);
+  document.getElementById('pocionBtn').onclick = () => el.classList.toggle('abierto');
+  document.getElementById('pocionCerrar').onclick = (e) => { e.stopPropagation(); el.classList.remove('abierto'); };
+}
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', crearPocion);
+} else {
+  crearPocion();
+}
+
 document.addEventListener('authchange', () => setTimeout(renderCompanion, 1500));
 // Chequeo suave por si la sesión o la selección cambian sin evento
 setInterval(renderCompanion, 4000);
