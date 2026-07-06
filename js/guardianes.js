@@ -389,6 +389,28 @@ window.acariciarGuardian = function(el){
 // ═══════════════════════════════════════════════════
 const KOFI_URL = 'https://ko-fi.com/bruxatarot';
 
+// Textos de la poción en los 7 idiomas del Templo
+const POCION_TXT = {
+  es: { msg: `✦ ¿Disfrutas del Templo?<br>Si mi trabajo ilumina tu camino, considera regalarme una <em style="color:#c89aff">poción mágica</em> para seguir creando 💜`,
+        btn: '🧪 REGALAR UNA POCIÓN', tip: 'Invítame una poción mágica 🧪' },
+  en: { msg: `✦ Enjoying the Temple?<br>If my work lights your path, consider gifting me a <em style="color:#c89aff">magic potion</em> to keep creating 💜`,
+        btn: '🧪 GIFT A POTION', tip: 'Buy me a magic potion 🧪' },
+  pt: { msg: `✦ Está gostando do Templo?<br>Se meu trabalho ilumina seu caminho, considere me presentear com uma <em style="color:#c89aff">poção mágica</em> para continuar criando 💜`,
+        btn: '🧪 PRESENTEAR UMA POÇÃO', tip: 'Me presenteie uma poção mágica 🧪' },
+  it: { msg: `✦ Ti piace il Tempio?<br>Se il mio lavoro illumina il tuo cammino, considera di regalarmi una <em style="color:#c89aff">pozione magica</em> per continuare a creare 💜`,
+        btn: '🧪 REGALA UNA POZIONE', tip: 'Regalami una pozione magica 🧪' },
+  ko: { msg: `✦ 템플이 마음에 드시나요?<br>제 작업이 당신의 길을 밝혀준다면, 계속 창작할 수 있도록 <em style="color:#c89aff">마법의 물약</em>을 선물해 주세요 💜`,
+        btn: '🧪 물약 선물하기', tip: '마법의 물약을 선물해 주세요 🧪' },
+  tr: { msg: `✦ Tapınağı seviyor musun?<br>Çalışmalarım yolunu aydınlatıyorsa, yaratmaya devam edebilmem için bana bir <em style="color:#c89aff">sihirli iksir</em> hediye etmeyi düşün 💜`,
+        btn: '🧪 İKSİR HEDİYE ET', tip: 'Bana sihirli bir iksir ısmarla 🧪' },
+  ja: { msg: `✦ テンプロを楽しんでいますか？<br>私の作品があなたの道を照らしているなら、創作を続けられるよう<em style="color:#c89aff">魔法のポーション</em>を贈っていただけると嬉しいです 💜`,
+        btn: '🧪 ポーションを贈る', tip: '魔法のポーションを贈ってね 🧪' },
+};
+function pocionTexto(){
+  const lang = window.LangEngine?.current || 'es';
+  return POCION_TXT[lang] || POCION_TXT.es;
+}
+
 const pocionCss = document.createElement('style');
 pocionCss.textContent = `
 #pocionApoyo{position:fixed;bottom:1.4rem;left:1.4rem;z-index:95;
@@ -438,15 +460,16 @@ pocionCss.textContent = `
 
 function crearPocion(){
   if(document.getElementById('pocionApoyo') || !document.body) return;
+  const t = pocionTexto();
   const el = document.createElement('div');
   el.id = 'pocionApoyo';
   el.innerHTML = `
     <div id="pocionPanel">
       <button id="pocionCerrar">✕</button>
-      <p>✦ ¿Disfrutas del Templo?<br>Si mi trabajo ilumina tu camino, considera regalarme una <em style="color:#c89aff">poción mágica</em> para seguir creando 💜</p>
-      <a href="${KOFI_URL}" target="_blank" rel="noopener">🧪 REGALAR UNA POCIÓN</a>
+      <p id="pocionMsg">${t.msg}</p>
+      <a id="pocionLink" href="${KOFI_URL}" target="_blank" rel="noopener">${t.btn}</a>
     </div>
-    <button id="pocionBtn" title="Invítame una poción mágica 🧪">
+    <button id="pocionBtn" title="${t.tip}">
       <span class="poc-corcho"></span>
       <span class="poc-cuello"></span>
       <span class="poc-frasco">
@@ -460,6 +483,20 @@ function crearPocion(){
   document.getElementById('pocionBtn').onclick = () => el.classList.toggle('abierto');
   document.getElementById('pocionCerrar').onclick = (e) => { e.stopPropagation(); el.classList.remove('abierto'); };
 }
+
+// Actualizar la poción cuando el visitante cambia de idioma
+function traducirPocion(){
+  const t = pocionTexto();
+  const msg = document.getElementById('pocionMsg');
+  const link = document.getElementById('pocionLink');
+  const btn = document.getElementById('pocionBtn');
+  if(msg) msg.innerHTML = t.msg;
+  if(link) link.textContent = t.btn;
+  if(btn) btn.title = t.tip;
+}
+document.addEventListener('langchange', traducirPocion);
+// Respaldo: por si el idioma se detecta después de dibujar la poción
+setTimeout(traducirPocion, 1200);
 if(document.readyState === 'loading'){
   document.addEventListener('DOMContentLoaded', crearPocion);
 } else {
