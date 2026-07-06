@@ -8,16 +8,16 @@
 (function(){
 
 window.MASCOTAS = {
-  vela:     {emoji:'🕯️', nombre:'Vela',            energia:'Luz interior, guía',      rareza:'comun',      precio:0},
-  estrella: {emoji:'⭐',  nombre:'Estrella',        energia:'Deseos, esperanza',       rareza:'comun',      precio:15},
-  luna:     {emoji:'🌙', nombre:'Luna',             energia:'Intuición, sueños',       rareza:'rara',       precio:35},
-  bola:     {emoji:'🔮', nombre:'Bola de Cristal',  energia:'Claridad, visión',        rareza:'rara',       precio:50},
-  ojo:      {emoji:'🧿', nombre:'Ojo Místico',      energia:'Protección, poder',       rareza:'rara',       precio:50},
-  brillito: {emoji:'🌟', nombre:'Brillito',         energia:'Chispa, alegría',         rareza:'legendaria', precio:100},
-  alma:     {emoji:'🌛', nombre:'Alma',             energia:'Conciencia, luz interior',rareza:'legendaria', precio:150},
-  nabi:     {emoji:'🐱', nombre:'Nabi',             energia:'Magia felina, vuelo de mariposa', rareza:'unica', precio:null, exclusiva:true},
+  vela:     {emoji:'🕯️', nombre:'Velita',        energia:'Luz interior, guía',      rareza:'comun',      precio:0},
+  estrella: {emoji:'⭐',  nombre:'Estrellita',    energia:'Deseos, esperanza',       rareza:'comun',      precio:15},
+  luna:     {emoji:'🌙', nombre:'Lunita',         energia:'Intuición, sueños',       rareza:'rara',       precio:35},
+  bola:     {emoji:'🔮', nombre:'Cristalina',     energia:'Claridad, visión',        rareza:'rara',       precio:50},
+  ojo:      {emoji:'🧿', nombre:'Ojito Místico',  energia:'Protección, poder',       rareza:'rara',       precio:50},
+  brillito: {emoji:'🌟', nombre:'Glimmer',        energia:'Chispa, alegría',         rareza:'legendaria', precio:100},
+  alma:     {emoji:'🌛', nombre:'Almita',         energia:'Conciencia, luz interior',rareza:'legendaria', precio:150},
+  nabi:     {emoji:'🐱', nombre:'Nabi',           energia:'Magia felina, amor dulce',rareza:'mitica',     precio:200},
 };
-window.RAREZA_LABEL = {comun:'COMÚN', rara:'RARA', legendaria:'LEGENDARIA', unica:'ÚNICA 👑'};
+window.RAREZA_LABEL = {comun:'COMÚN', rara:'RARA', legendaria:'LEGENDARIA', mitica:'MÍTICA 🦋', unica:'ÚNICA 👑'};
 
 // ── Skins de pergamino (para los mensajes del muro) ──
 window.SKINS = {
