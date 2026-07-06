@@ -58,7 +58,6 @@ window.EMOCIONES = {
   celebrando:{nombre:'Celebrando',  precio:40, rareza:'rara',       emoji:'🎉'},
   estelar:   {nombre:'Estelar',     precio:50, rareza:'legendaria', emoji:'🤩'},
   bendecida: {nombre:'Bendecida',   precio:60, rareza:'legendaria', emoji:'😇'},
-  Serena: {nombre:'Serena',         precio:15, rareza:'comun',      emoji:'🙂'}
 };
 
 // ── Variantes por guardián (rasgos únicos comprables) ──
