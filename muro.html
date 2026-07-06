@@ -386,9 +386,9 @@
     <span class="starbits-icon">⭐</span>
     <span id="sbCount">0</span>&nbsp;STARBITS
   </div>
-  <button class="btn-vela" onclick="velaGlobal()">🕯️ Enciende una vela · <span id="velasTemplo">…</span></button>
-  <button class="btn-tienda" onclick="abrirTienda()">🌙 Tienda Mística</button>
-  <button class="btn-publica" onclick="abrirPublicar()">✦ PUBLICA</button>
+  <button class="btn-vela" onclick="velaGlobal()">🕯️ <span id="txtVelaBtn">Enciende una vela</span> · <span id="velasTemplo">…</span></button>
+  <button class="btn-tienda" onclick="abrirTienda()">🌙 <span id="txtTiendaBtn">Tienda Mística</span></button>
+  <button class="btn-publica" onclick="abrirPublicar()">✦ <span id="txtPublicaBtn">PUBLICA</span></button>
 </div>
 
 <!-- CONTADOR -->
@@ -433,12 +433,12 @@
     </div>
 
     <div class="form-row">
-      <label class="form-label">Tu Guardián del Templo (acompaña tu mensaje)</label>
+      <label class="form-label" id="txtLblGuardian">Tu Guardián del Templo (acompaña tu mensaje)</label>
       <div class="pet-row" id="petRow"></div>
     </div>
 
     <div class="form-row">
-      <label class="form-label">💭 ¿Cómo se siente tu alma hoy?</label>
+      <label class="form-label" id="txtLblEmo">💭 ¿Cómo se siente tu alma hoy?</label>
       <div class="emoji-row" id="emoRow"></div>
     </div>
 
@@ -465,11 +465,11 @@
 <div class="modal-overlay" id="tiendaOverlay">
   <div class="tienda-modal">
     <button class="modal-close" onclick="cerrarTienda()">✕</button>
-    <p class="tienda-title">🌙 TIENDA MÍSTICA</p>
-    <p class="tienda-sub">Adopta un Guardián del Templo con tus Starbits ⭐</p>
+    <p class="tienda-title" id="txtTiendaTitulo">🌙 TIENDA MÍSTICA</p>
+    <p class="tienda-sub" id="txtTiendaSub">Adopta un Guardián del Templo con tus Starbits ⭐</p>
     <div class="tienda-grid" id="tiendaGrid"></div>
     <p class="tienda-msg" id="tiendaMsg"></p>
-    <p class="tienda-earn">✦ Gana Starbits: +10 por visitar cada día · +5 por dejar un mensaje ✦</p>
+    <p class="tienda-earn" id="txtTiendaEarn">✦ Gana Starbits: +2 por visitar cada día · +5 por dejar un mensaje ✦</p>
   </div>
 </div>
 
@@ -495,6 +495,107 @@
 })();
 
 const _t = k => window.LangEngine?.t(k) || k;
+
+// ── Textos del muro en 7 idiomas ──
+const MURO_TXT = {
+es:{vela_btn:'Enciende una vela',tienda_btn:'Tienda Mística',publica:'PUBLICA',
+  lbl_guardian:'Tu Guardián del Templo (acompaña tu mensaje)',lbl_emo:'💭 ¿Cómo se siente tu alma hoy?',
+  tienda_tit:'🌙 TIENDA MÍSTICA',tienda_sub:'Adopta un Guardián del Templo con tus Starbits ⭐',
+  sec_g:'🛡️ GUARDIANES',sec_s:'📜 SKINS DE PERGAMINO',sec_a:'✨ AURAS DEL GUARDIÁN',sec_c:'🎨 COLORES DEL GUARDIÁN',sec_e:'💭 EMOCIONES DEL ALMA',
+  gratis:'Gratis ✨',usar:'Usar',en_uso:'✓ En uso',protege:'✓ Te protege',solo_bruxa:'Solo la Bruxa 👑',tuya:'👑 Tuya',
+  activar:'Activar',quitar:'✓ Activa · quitar',sentirla:'Sentirla',hoy_asi:'✓ Hoy me siento así',
+  sin_sb:'✦ Aún no tienes suficientes Starbits',
+  earn:'✦ Gana Starbits: +2 por visitar cada día · +5 por dejar un mensaje ✦',
+  skin_preview:'Tu mensaje volará así…',
+  vela1:'alma ha encendido una vela por este mensaje',velaN:'almas han encendido una vela por este mensaje',
+  luz_tip:'Prender una velita por esta alma',
+  fx_luz:'TU VELA ILUMINA EL TEMPLO',fx_velas:'VELAS ENCENDIDAS',fx_err:'LA VELA NO PUDO ENCENDERSE — INTENTA DE NUEVO'},
+en:{vela_btn:'Light a candle',tienda_btn:'Mystic Shop',publica:'POST',
+  lbl_guardian:'Your Temple Guardian (joins your message)',lbl_emo:'💭 How does your soul feel today?',
+  tienda_tit:'🌙 MYSTIC SHOP',tienda_sub:'Adopt a Temple Guardian with your Starbits ⭐',
+  sec_g:'🛡️ GUARDIANS',sec_s:'📜 SCROLL SKINS',sec_a:'✨ GUARDIAN AURAS',sec_c:'🎨 GUARDIAN COLORS',sec_e:'💭 SOUL EMOTIONS',
+  gratis:'Free ✨',usar:'Use',en_uso:'✓ In use',protege:'✓ Protecting you',solo_bruxa:'Bruxa only 👑',tuya:'👑 Yours',
+  activar:'Activate',quitar:'✓ Active · remove',sentirla:'Feel it',hoy_asi:'✓ Feeling it today',
+  sin_sb:'✦ Not enough Starbits yet',
+  earn:'✦ Earn Starbits: +2 for visiting daily · +5 for leaving a message ✦',
+  skin_preview:'Your message will fly like this…',
+  vela1:'soul has lit a candle for this message',velaN:'souls have lit a candle for this message',
+  luz_tip:'Light a candle for this soul',
+  fx_luz:'YOUR CANDLE LIGHTS THE TEMPLE',fx_velas:'CANDLES LIT',fx_err:'THE CANDLE COULD NOT BE LIT — TRY AGAIN'},
+pt:{vela_btn:'Acenda uma vela',tienda_btn:'Loja Mística',publica:'PUBLICAR',
+  lbl_guardian:'Seu Guardião do Templo (acompanha sua mensagem)',lbl_emo:'💭 Como sua alma se sente hoje?',
+  tienda_tit:'🌙 LOJA MÍSTICA',tienda_sub:'Adote um Guardião do Templo com seus Starbits ⭐',
+  sec_g:'🛡️ GUARDIÕES',sec_s:'📜 SKINS DE PERGAMINHO',sec_a:'✨ AURAS DO GUARDIÃO',sec_c:'🎨 CORES DO GUARDIÃO',sec_e:'💭 EMOÇÕES DA ALMA',
+  gratis:'Grátis ✨',usar:'Usar',en_uso:'✓ Em uso',protege:'✓ Protegendo você',solo_bruxa:'Só a Bruxa 👑',tuya:'👑 Sua',
+  activar:'Ativar',quitar:'✓ Ativa · remover',sentirla:'Sentir',hoy_asi:'✓ Me sinto assim hoje',
+  sin_sb:'✦ Ainda não tem Starbits suficientes',
+  earn:'✦ Ganhe Starbits: +2 por visitar cada dia · +5 por deixar uma mensagem ✦',
+  skin_preview:'Sua mensagem voará assim…',
+  vela1:'alma acendeu uma vela por esta mensagem',velaN:'almas acenderam uma vela por esta mensagem',
+  luz_tip:'Acender uma velinha por esta alma',
+  fx_luz:'SUA VELA ILUMINA O TEMPLO',fx_velas:'VELAS ACESAS',fx_err:'A VELA NÃO PÔDE SER ACESA — TENTE DE NOVO'},
+it:{vela_btn:'Accendi una candela',tienda_btn:'Bottega Mistica',publica:'PUBBLICA',
+  lbl_guardian:'Il tuo Guardiano del Tempio (accompagna il messaggio)',lbl_emo:'💭 Come si sente la tua anima oggi?',
+  tienda_tit:'🌙 BOTTEGA MISTICA',tienda_sub:'Adotta un Guardiano del Tempio con i tuoi Starbits ⭐',
+  sec_g:'🛡️ GUARDIANI',sec_s:'📜 SKIN DI PERGAMENA',sec_a:'✨ AURE DEL GUARDIANO',sec_c:'🎨 COLORI DEL GUARDIANO',sec_e:"💭 EMOZIONI DELL'ANIMA",
+  gratis:'Gratis ✨',usar:'Usa',en_uso:'✓ In uso',protege:'✓ Ti protegge',solo_bruxa:'Solo la Bruxa 👑',tuya:'👑 Tua',
+  activar:'Attiva',quitar:'✓ Attiva · rimuovi',sentirla:'Sentila',hoy_asi:'✓ Oggi mi sento così',
+  sin_sb:'✦ Non hai ancora abbastanza Starbits',
+  earn:'✦ Guadagna Starbits: +2 per ogni visita giornaliera · +5 per un messaggio ✦',
+  skin_preview:'Il tuo messaggio volerà così…',
+  vela1:'anima ha acceso una candela per questo messaggio',velaN:'anime hanno acceso una candela per questo messaggio',
+  luz_tip:'Accendi una candelina per questa anima',
+  fx_luz:'LA TUA CANDELA ILLUMINA IL TEMPIO',fx_velas:'CANDELE ACCESE',fx_err:'LA CANDELA NON SI È ACCESA — RIPROVA'},
+ko:{vela_btn:'초 켜기',tienda_btn:'신비한 상점',publica:'글쓰기',
+  lbl_guardian:'당신의 템플 수호자 (메시지와 함께해요)',lbl_emo:'💭 오늘 당신의 영혼은 어떤가요?',
+  tienda_tit:'🌙 신비한 상점',tienda_sub:'스타빗으로 템플 수호자를 입양하세요 ⭐',
+  sec_g:'🛡️ 수호자',sec_s:'📜 두루마리 스킨',sec_a:'✨ 수호자 아우라',sec_c:'🎨 수호자 색상',sec_e:'💭 영혼의 감정',
+  gratis:'무료 ✨',usar:'사용',en_uso:'✓ 사용 중',protege:'✓ 보호 중',solo_bruxa:'브루샤 전용 👑',tuya:'👑 나의 것',
+  activar:'활성화',quitar:'✓ 활성 · 해제',sentirla:'느끼기',hoy_asi:'✓ 오늘 이런 기분',
+  sin_sb:'✦ 아직 스타빗이 부족해요',
+  earn:'✦ 스타빗 얻기: 매일 방문 +2 · 메시지 남기기 +5 ✦',
+  skin_preview:'메시지가 이렇게 날아가요…',
+  vela1:'명의 영혼이 이 메시지에 초를 켰어요',velaN:'명의 영혼이 이 메시지에 초를 켰어요',
+  luz_tip:'이 영혼을 위해 초를 켜주세요',
+  fx_luz:'당신의 초가 템플을 밝힙니다',fx_velas:'개의 초가 켜졌어요',fx_err:'초를 켤 수 없었어요 — 다시 시도해 주세요'},
+tr:{vela_btn:'Bir mum yak',tienda_btn:'Mistik Dükkan',publica:'PAYLAŞ',
+  lbl_guardian:'Tapınak Koruyucun (mesajına eşlik eder)',lbl_emo:'💭 Ruhun bugün nasıl hissediyor?',
+  tienda_tit:'🌙 MİSTİK DÜKKAN',tienda_sub:'Starbits ile bir Tapınak Koruyucusu edin ⭐',
+  sec_g:'🛡️ KORUYUCULAR',sec_s:'📜 PARŞÖMEN GÖRÜNÜMLERİ',sec_a:'✨ KORUYUCU AURALARI',sec_c:'🎨 KORUYUCU RENKLERİ',sec_e:'💭 RUH DUYGULARI',
+  gratis:'Ücretsiz ✨',usar:'Kullan',en_uso:'✓ Kullanımda',protege:'✓ Seni koruyor',solo_bruxa:'Sadece Bruxa 👑',tuya:'👑 Senin',
+  activar:'Etkinleştir',quitar:'✓ Aktif · kaldır',sentirla:'Hisset',hoy_asi:'✓ Bugün böyle hissediyorum',
+  sin_sb:'✦ Henüz yeterli Starbits yok',
+  earn:'✦ Starbits kazan: her gün ziyaret +2 · mesaj bırak +5 ✦',
+  skin_preview:'Mesajın böyle uçacak…',
+  vela1:'ruh bu mesaj için mum yaktı',velaN:'ruh bu mesaj için mum yaktı',
+  luz_tip:'Bu ruh için bir mum yak',
+  fx_luz:'MUMUN TAPINAĞI AYDINLATIYOR',fx_velas:'MUM YAKILDI',fx_err:'MUM YAKILAMADI — TEKRAR DENE'},
+ja:{vela_btn:'キャンドルを灯す',tienda_btn:'神秘のお店',publica:'投稿する',
+  lbl_guardian:'あなたのテンプロ守護者（メッセージに寄り添います）',lbl_emo:'💭 今日のあなたの魂の気分は？',
+  tienda_tit:'🌙 神秘のお店',tienda_sub:'スタービットでテンプロ守護者をお迎えしましょう ⭐',
+  sec_g:'🛡️ 守護者',sec_s:'📜 巻物スキン',sec_a:'✨ 守護者のオーラ',sec_c:'🎨 守護者のカラー',sec_e:'💭 魂の感情',
+  gratis:'無料 ✨',usar:'使う',en_uso:'✓ 使用中',protege:'✓ 守っています',solo_bruxa:'ブルシャ専用 👑',tuya:'👑 あなたのもの',
+  activar:'有効にする',quitar:'✓ 有効 · 解除',sentirla:'感じる',hoy_asi:'✓ 今日はこの気分',
+  sin_sb:'✦ スタービットがまだ足りません',
+  earn:'✦ スタービットを稼ぐ：毎日の訪問 +2 · メッセージ投稿 +5 ✦',
+  skin_preview:'メッセージはこんな風に舞います…',
+  vela1:'人の魂がこのメッセージにキャンドルを灯しました',velaN:'人の魂がこのメッセージにキャンドルを灯しました',
+  luz_tip:'この魂のためにキャンドルを灯す',
+  fx_luz:'あなたのキャンドルがテンプロを照らします',fx_velas:'本のキャンドルが灯りました',fx_err:'キャンドルを灯せませんでした — もう一度お試しください'},
+};
+function mt(k){
+  const lang = window.LangEngine?.current || 'es';
+  return (MURO_TXT[lang] || MURO_TXT.es)[k] ?? MURO_TXT.es[k] ?? k;
+}
+function velasTxt(n){
+  return `<b id="luzn-__ID__">${n}</b> ${n===1 ? mt('vela1') : mt('velaN')}`;
+}
+function aplicarMuroLang(){
+  const set = (id, k) => { const el = document.getElementById(id); if(el) el.textContent = mt(k); };
+  set('txtVelaBtn','vela_btn'); set('txtTiendaBtn','tienda_btn'); set('txtPublicaBtn','publica');
+  set('txtLblGuardian','lbl_guardian'); set('txtLblEmo','lbl_emo');
+  set('txtTiendaTitulo','tienda_tit'); set('txtTiendaSub','tienda_sub'); set('txtTiendaEarn','earn');
+}
 
 // ── CONFIG ──
 const FB_URL  = 'https://diario-del-alma-default-rtdb.firebaseio.com';
@@ -605,9 +706,9 @@ async function velaGlobal(){
     const n = (await res.json()) || 0;
     await fetch(FB_VELAS, {method:'PUT', headers:{'Content-Type':'application/json'}, body:String(n+1)});
     document.getElementById('velasTemplo').textContent = n + 1;
-    document.getElementById('velaFxTxt').textContent = `✦ TU VELA ILUMINA EL TEMPLO · ${n+1} VELAS ENCENDIDAS ✦`;
+    document.getElementById('velaFxTxt').textContent = `✦ ${mt('fx_luz')} · ${n+1} ${mt('fx_velas')} ✦`;
   }catch(e){
-    document.getElementById('velaFxTxt').textContent = '✦ LA VELA NO PUDO ENCENDERSE — INTENTA DE NUEVO ✦';
+    document.getElementById('velaFxTxt').textContent = '✦ ' + mt('fx_err') + ' ✦';
   }
 }
 // Cerrar el efecto al tocarlo
@@ -644,19 +745,19 @@ function renderTienda(){
   const owned = petsOwned();
 
   // ── Guardianes ──
-  let html = `<div class="tienda-seccion">🛡️ GUARDIANES</div>`;
+  let html = `<div class="tienda-seccion">${mt('sec_g')}</div>`;
   html += Object.entries(MASCOTAS).map(([key,m])=>{
     const has = owned.includes(key);
     let btn;
     if(m.exclusiva){
       btn = has
-        ? `<button class="tienda-btn owned">👑 Tuya</button>`
-        : `<button class="tienda-btn" disabled>Solo la Bruxa 👑</button>`;
+        ? `<button class="tienda-btn owned">${mt('tuya')}</button>`
+        : `<button class="tienda-btn" disabled>${mt('solo_bruxa')}</button>`;
     } else {
       btn = has
-        ? `<button class="tienda-btn owned">✓ Te protege</button>`
+        ? `<button class="tienda-btn owned">${mt('protege')}</button>`
         : m.precio===0
-          ? `<button class="tienda-btn" onclick="comprarPet('${key}')">Gratis ✨</button>`
+          ? `<button class="tienda-btn" onclick="comprarPet('${key}')">${mt('gratis')}</button>`
           : `<button class="tienda-btn" onclick="comprarPet('${key}')" ${sbGet()<m.precio?'disabled':''}>⭐ ${m.precio}</button>`;
     }
     return `<div class="tienda-item rareza-${m.rareza}">
@@ -671,21 +772,21 @@ function renderTienda(){
   // ── Skins de pergamino ──
   const skinsOwned = Starbits.ownedSkins();
   const skinSel = Starbits.getSkin();
-  html += `<div class="tienda-seccion">📜 SKINS DE PERGAMINO</div>`;
+  html += `<div class="tienda-seccion">${mt('sec_s')}</div>`;
   html += Object.entries(SKINS).map(([key,sk])=>{
     const has = skinsOwned.includes(key);
     const activa = skinSel === key;
     const btn = activa
-      ? `<button class="tienda-btn owned">✓ En uso</button>`
+      ? `<button class="tienda-btn owned">${mt('en_uso')}</button>`
       : has
-        ? `<button class="tienda-btn" onclick="usarSkin('${key}')">Usar</button>`
+        ? `<button class="tienda-btn" onclick="usarSkin('${key}')">${mt('usar')}</button>`
         : sk.precio===0
-          ? `<button class="tienda-btn" onclick="comprarSkin('${key}')">Gratis ✨</button>`
+          ? `<button class="tienda-btn" onclick="comprarSkin('${key}')">${mt('gratis')}</button>`
           : `<button class="tienda-btn" onclick="comprarSkin('${key}')" ${sbGet()<sk.precio?'disabled':''}>⭐ ${sk.precio}</button>`;
     return `<div class="tienda-item rareza-${sk.rareza}">
       <span class="tienda-rareza">${RAREZA_LABEL[sk.rareza]}</span>
       <div class="skin-preview"><div class="nota skin-${key}" style="animation:none;transform:none">
-        <p class="nota-texto" style="-webkit-line-clamp:2;font-size:.85rem;margin-bottom:.3rem">Tu mensaje volará así…</p>
+        <p class="nota-texto" style="-webkit-line-clamp:2;font-size:.85rem;margin-bottom:.3rem">${mt('skin_preview')}</p>
       </div></div>
       <p class="tienda-nombre">${sk.nombre}</p>
       ${btn}
@@ -695,14 +796,14 @@ function renderTienda(){
   // ── Auras del guardián ──
   const aurasOwned = Starbits.ownedAuras();
   const auraSel = Starbits.getAura();
-  html += `<div class="tienda-seccion">✨ AURAS DEL GUARDIÁN</div>`;
+  html += `<div class="tienda-seccion">${mt('sec_a')}</div>`;
   html += Object.entries(AURAS).map(([key,a])=>{
     const has = aurasOwned.includes(key);
     const activa = auraSel === key;
     const btn = activa
-      ? `<button class="tienda-btn owned" onclick="usarAura('')">✓ Activa · quitar</button>`
+      ? `<button class="tienda-btn owned" onclick="usarAura('')">${mt('quitar')}</button>`
       : has
-        ? `<button class="tienda-btn" onclick="usarAura('${key}')">Activar</button>`
+        ? `<button class="tienda-btn" onclick="usarAura('${key}')">${mt('activar')}</button>`
         : `<button class="tienda-btn" onclick="comprarAura('${key}')" ${sbGet()<a.precio?'disabled':''}>⭐ ${a.precio}</button>`;
     return `<div class="tienda-item rareza-${a.rareza}">
       <span class="tienda-rareza">${RAREZA_LABEL[a.rareza]}</span>
@@ -715,16 +816,16 @@ function renderTienda(){
   // ── Colores del guardián ──
   const colOwned = Starbits.ownedColores();
   const colSel = Starbits.getColor();
-  html += `<div class="tienda-seccion">🎨 COLORES DEL GUARDIÁN</div>`;
+  html += `<div class="tienda-seccion">${mt('sec_c')}</div>`;
   html += Object.entries(COLORES).map(([key,c])=>{
     const has = colOwned.includes(key);
     const activa = colSel === key;
     const btn = activa
-      ? `<button class="tienda-btn owned">✓ En uso</button>`
+      ? `<button class="tienda-btn owned">${mt('en_uso')}</button>`
       : has
-        ? `<button class="tienda-btn" onclick="usarColor('${key}')">Usar</button>`
+        ? `<button class="tienda-btn" onclick="usarColor('${key}')">${mt('usar')}</button>`
         : c.precio===0
-          ? `<button class="tienda-btn" onclick="comprarColor('${key}')">Gratis ✨</button>`
+          ? `<button class="tienda-btn" onclick="comprarColor('${key}')">${mt('gratis')}</button>`
           : `<button class="tienda-btn" onclick="comprarColor('${key}')" ${sbGet()<c.precio?'disabled':''}>⭐ ${c.precio}</button>`;
     return `<div class="tienda-item rareza-${c.rareza}">
       <span class="tienda-rareza">${RAREZA_LABEL[c.rareza]}</span>
@@ -737,16 +838,16 @@ function renderTienda(){
   // ── Emociones del alma ──
   const emoOwned = Starbits.ownedEmos();
   const emoSel = Starbits.getEmo();
-  html += `<div class="tienda-seccion">💭 EMOCIONES DEL ALMA</div>`;
+  html += `<div class="tienda-seccion">${mt('sec_e')}</div>`;
   html += Object.entries(EMOCIONES).map(([key,em])=>{
     const has = emoOwned.includes(key);
     const activa = emoSel === key;
     const btn = activa
-      ? `<button class="tienda-btn owned">✓ Hoy me siento así</button>`
+      ? `<button class="tienda-btn owned">${mt('hoy_asi')}</button>`
       : has
-        ? `<button class="tienda-btn" onclick="usarEmo('${key}')">Sentirla</button>`
+        ? `<button class="tienda-btn" onclick="usarEmo('${key}')">${mt('sentirla')}</button>`
         : em.precio===0
-          ? `<button class="tienda-btn" onclick="comprarEmo('${key}')">Gratis ✨</button>`
+          ? `<button class="tienda-btn" onclick="comprarEmo('${key}')">${mt('gratis')}</button>`
           : `<button class="tienda-btn" onclick="comprarEmo('${key}')" ${sbGet()<em.precio?'disabled':''}>⭐ ${em.precio}</button>`;
     return `<div class="tienda-item rareza-${em.rareza}">
       <span class="tienda-rareza">${RAREZA_LABEL[em.rareza]}</span>
@@ -763,7 +864,7 @@ function comprarColor(key){
   const c = COLORES[key];
   const msg = document.getElementById('tiendaMsg');
   if(Starbits.ownedColores().includes(key)) return;
-  if(!Starbits.gastar(c.precio, '🎨 Color ' + c.nombre)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
+  if(!Starbits.gastar(c.precio, '🎨 Color ' + c.nombre)){ msg.textContent = mt('sin_sb'); return; }
   Starbits.addColor(key);
   Starbits.setColor(key);
   msg.textContent = `✦ ¡Tu guardián brilla en ${c.nombre}! ✦`;
@@ -776,7 +877,7 @@ function comprarEmo(key){
   const em = EMOCIONES[key];
   const msg = document.getElementById('tiendaMsg');
   if(Starbits.ownedEmos().includes(key)) return;
-  if(!Starbits.gastar(em.precio, '💭 Emoción ' + em.nombre)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
+  if(!Starbits.gastar(em.precio, '💭 Emoción ' + em.nombre)){ msg.textContent = mt('sin_sb'); return; }
   Starbits.addEmo(key);
   Starbits.setEmo(key);
   msg.textContent = `✦ Tu guardián ahora puede sentirse ${em.nombre.toLowerCase()} ✦`;
@@ -789,7 +890,7 @@ function comprarSkin(key){
   const sk = SKINS[key];
   const msg = document.getElementById('tiendaMsg');
   if(Starbits.ownedSkins().includes(key)) return;
-  if(!Starbits.gastar(sk.precio, '📜 Skin ' + sk.nombre)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
+  if(!Starbits.gastar(sk.precio, '📜 Skin ' + sk.nombre)){ msg.textContent = mt('sin_sb'); return; }
   Starbits.addSkin(key);
   Starbits.setSkin(key);
   msg.textContent = `✦ ¡${sk.nombre} es tuya! Tus mensajes volarán con ella ✦`;
@@ -802,7 +903,7 @@ function comprarAura(key){
   const a = AURAS[key];
   const msg = document.getElementById('tiendaMsg');
   if(Starbits.ownedAuras().includes(key)) return;
-  if(!Starbits.gastar(a.precio, a.emoji + ' Aura ' + a.nombre)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
+  if(!Starbits.gastar(a.precio, a.emoji + ' Aura ' + a.nombre)){ msg.textContent = mt('sin_sb'); return; }
   Starbits.addAura(key);
   Starbits.setAura(key);
   msg.textContent = `✦ ¡${a.nombre} envuelve a tu guardián! ✦`;
@@ -815,7 +916,7 @@ function comprarPet(key){
   const m = MASCOTAS[key];
   const msg = document.getElementById('tiendaMsg');
   if(petsOwned().includes(key)) return;
-  if(!Starbits.gastar(m.precio, '🛡️ Guardián ' + m.nombre)){ msg.textContent = '✦ Aún no tienes suficientes Starbits'; return; }
+  if(!Starbits.gastar(m.precio, '🛡️ Guardián ' + m.nombre)){ msg.textContent = mt('sin_sb'); return; }
   petsAdd(key);
   mascotaSeleccionada = key;
   Starbits.setSel(key);
@@ -942,11 +1043,11 @@ async function cargarMuro(){
         <p class="nota-texto">${texto}</p>
         <div class="nota-velas">
           <span class="velita${lit?' encendida':''}" id="velita-${m.id}"><span class="cera"></span><span class="pab"></span><span class="flama"></span></span>
-          <span class="nota-velas-txt"><b id="luzn-${m.id}">${nLuces}</b> ${nLuces===1?'alma ha encendido una vela':'almas han encendido una vela'} por este mensaje</span>
+          <span class="nota-velas-txt">${velasTxt(nLuces).replace('__ID__', m.id)}</span>
         </div>
         <div class="nota-footer">
           <span class="nota-nombre">${nombre}</span>
-          <button class="nota-luz${lit?' lit':''}" onclick="prenderLuz(event,'${m.id}', ${nLuces}, '${m.uid||''}')" title="Prender una velita por esta alma">🕯️ <span id="luz-${m.id}">${nLuces}</span></button>
+          <button class="nota-luz${lit?' lit':''}" onclick="prenderLuz(event,'${m.id}', ${nLuces}, '${m.uid||''}')" title="${mt('luz_tip')}">🕯️ <span id="luz-${m.id}">${nLuces}</span></button>
         </div>
       </div>`;
     }).join('');
@@ -1013,9 +1114,8 @@ async function prenderLuz(ev, id, actual, autorUid){
   document.getElementById('velita-'+id)?.classList.add('encendida');
   const nEl = document.getElementById('luzn-'+id);
   if(nEl){
-    nEl.textContent = actual + 1;
     const txt = nEl.parentElement;
-    if(txt) txt.innerHTML = `<b id="luzn-${id}">${actual+1}</b> ${actual+1===1?'alma ha encendido una vela':'almas han encendido una vela'} por este mensaje`;
+    if(txt) txt.innerHTML = velasTxt(actual+1).replace('__ID__', id);
   }
   const el = document.getElementById('luz-'+id);
   const btn = el?.closest('.nota-luz');
@@ -1051,6 +1151,12 @@ document.getElementById('inputMensaje').addEventListener('keydown', e => {
 
 // ── LANG ──
 if(typeof LangEngine !== 'undefined'){ LangEngine.detect(); LangEngine.apply(); }
+aplicarMuroLang();
+document.addEventListener('langchange', ()=>{
+  aplicarMuroLang();
+  cargarMuro();
+  if(document.getElementById('tiendaOverlay').classList.contains('open')) renderTienda();
+});
 
 sbRender();
 renderPetPicker();
