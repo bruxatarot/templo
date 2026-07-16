@@ -349,6 +349,53 @@
       font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.15em;
       color:rgba(201,168,76,.35);
     }
+
+    /* ── SELECTOR DE IDIOMA ── */
+    .lang-wrap{position:relative}
+    .lang-toggle{
+      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.15em;
+      background:transparent;border:1px solid rgba(201,168,76,.2);
+      color:rgba(201,168,76,.6);border-radius:100px;
+      padding:.3rem .8rem;cursor:pointer;transition:all .3s;
+      display:flex;align-items:center;gap:.35rem;
+    }
+    .lang-toggle:hover{border-color:rgba(201,168,76,.45);color:var(--gold)}
+    .lang-menu{
+      position:absolute;top:calc(100% + .5rem);right:0;z-index:120;
+      background:rgba(10,8,26,.97);backdrop-filter:blur(10px);
+      border:1px solid rgba(201,168,76,.18);border-radius:12px;
+      padding:.4rem;min-width:150px;
+      opacity:0;pointer-events:none;transform:translateY(-6px);
+      transition:opacity .25s,transform .25s;
+      box-shadow:0 12px 40px rgba(0,0,0,.5);
+    }
+    .lang-menu.open{opacity:1;pointer-events:auto;transform:translateY(0)}
+    .lang-opt{
+      display:flex;align-items:center;gap:.6rem;width:100%;
+      font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.12em;
+      background:transparent;border:none;border-radius:8px;
+      color:rgba(201,168,76,.55);padding:.5rem .7rem;cursor:pointer;
+      transition:all .2s;text-align:left;
+    }
+    .lang-opt:hover{background:rgba(201,168,76,.07);color:var(--gold-light)}
+    .lang-opt.active{background:rgba(201,168,76,.1);color:var(--gold)}
+    .lang-opt .flag{font-size:.9rem}
+    .lang-loading{
+      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.15em;
+      color:rgba(201,168,76,.4);text-align:center;padding:.6rem;
+    }
+    /* aviso traducción no disponible */
+    .trad-aviso{
+      font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.12em;
+      color:rgba(201,168,76,.35);text-align:center;
+      padding:.5rem .8rem;margin-bottom:1rem;
+      border:1px dashed rgba(201,168,76,.15);border-radius:8px;
+    }
+    @media(max-width:600px){
+      .lang-toggle{font-size:.5rem;padding:.25rem .6rem}
+      .lang-menu{right:auto;left:50%;transform:translateX(-50%) translateY(-6px)}
+      .lang-menu.open{transform:translateX(-50%) translateY(0)}
+    }
   </style>
 </head>
 <body>
@@ -356,11 +403,25 @@
 <canvas id="starfield"></canvas>
 
 <nav>
-  <a href="index.html" class="nav-back">← Templo</a>
+  <a href="index.html" class="nav-back" id="navTemplo">← Templo</a>
   <a href="index.html" class="nav-logo">✦ BRUXA TAROT</a>
-  <div style="display:flex;gap:1.2rem">
-    <a href="recetas.html" class="nav-back">Recetas</a>
-    <a href="muro.html" class="nav-back">Muro</a>
+  <div style="display:flex;gap:1rem;align-items:center">
+    <a href="recetas.html" class="nav-back" id="navRecetas">Recetas</a>
+    <a href="muro.html" class="nav-back" id="navMuro">Muro</a>
+    <div class="lang-wrap">
+      <button class="lang-toggle" id="langToggle" onclick="toggleLangMenu(event)">
+        <span id="langFlag">🇪🇸</span><span id="langCode">ES</span>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-opt active" data-lang="es" onclick="cambiarIdioma('es')"><span class="flag">🇪🇸</span> Español</button>
+        <button class="lang-opt" data-lang="en" onclick="cambiarIdioma('en')"><span class="flag">🇺🇸</span> English</button>
+        <button class="lang-opt" data-lang="pt" onclick="cambiarIdioma('pt')"><span class="flag">🇧🇷</span> Português</button>
+        <button class="lang-opt" data-lang="it" onclick="cambiarIdioma('it')"><span class="flag">🇮🇹</span> Italiano</button>
+        <button class="lang-opt" data-lang="tr" onclick="cambiarIdioma('tr')"><span class="flag">🇹🇷</span> Türkçe</button>
+        <button class="lang-opt" data-lang="ja" onclick="cambiarIdioma('ja')"><span class="flag">🇯🇵</span> 日本語</button>
+        <button class="lang-opt" data-lang="ko" onclick="cambiarIdioma('ko')"><span class="flag">🇰🇷</span> 한국어</button>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -395,7 +456,7 @@
           <span class="libro-cover-badge">✦ Disponible</span>
           <div class="libro-cover-content">
             <p class="libro-cover-title">En Busca de Tus Ojos Verdes</p>
-            <p class="libro-cover-sub">5 capítulos</p>
+            <p class="libro-cover-sub">10 capítulos</p>
             <p class="libro-cover-hint">Toca para abrir</p>
           </div>
         </div>
@@ -471,7 +532,7 @@
           <span class="libro-cover-badge">✦ Disponible</span>
           <div class="libro-cover-content">
             <p class="libro-cover-title">Ecos en Tu Piel</p>
-            <p class="libro-cover-sub">5 capítulos</p>
+            <p class="libro-cover-sub">10 capítulos</p>
             <p class="libro-cover-hint">Toca para abrir</p>
           </div>
         </div>
@@ -543,7 +604,7 @@
       <div class="libro">
         <div class="libro-cover">
           <div class="libro-spine"></div>
-          <img src="images/leyenda.png" alt="La Leyenda de Nabi: La Cazadora de Espíritus"
+          <img src="historias/assets/banner-nabi.jpg" alt="La Leyenda de Nabi: La Cazadora de Espíritus"
             class="libro-cover-img" onerror="this.style.display='none'">
           <div class="libro-cover-img-fallback">🐱</div>
           <div class="libro-cover-overlay"></div>
@@ -579,7 +640,7 @@
 <!-- LECTOR DE CAPÍTULO -->
 <div class="cap-reader" id="capReader">
   <div class="cap-reader-nav">
-    <button class="cap-reader-back" onclick="cerrarLector()">← Volver al libro</button>
+    <button class="cap-reader-back" id="btnVolverLibro" onclick="cerrarLector()">← Volver al libro</button>
     <span class="cap-reader-title" id="readerTitle"></span>
     <div style="display:flex;gap:.5rem">
       <button class="cap-reader-arrow" id="readerPrev" onclick="navegarCapitulo(-1)">← Anterior</button>
@@ -1241,7 +1302,7 @@ CAP_CONTENIDO['nabi-1'] = {
   titulo: 'La Leyenda de Nabi',
   sub: 'Capítulos 1–7 — El Despertar de la Cazadora',
   autor: 'Narrado por Nabi (con interrupciones de Bruxa Tarot)',
-  img: 'images/leyenda.png',
+  img: 'historias/assets/banner-nabi.jpg',
   spotify: ''
 };
 CAP_CONTENIDO['nabi-1'].texto = '<p>El destino se había sellado en el momento en que mis patas habían tocado el suelo. No sabía dónde estaba ni qué significaba aquel cambio, pero lo sentía en mis bigotes: mi vida jamás volvería a ser la misma. Un portal se había abierto y, sin previo aviso, fui arrancada de lo que conocía y transportada a un mundo nuevo. Desde la calidez de unas manos humanas, una voz resonó en mi mente, poderosa y firme: —Tu nombre es Nabi. Fue en ese instante cuando comprendí que algo más grande me esperaba. Mi propósito. Mi destino. Atravesamos el portal y la energía de aquel lugar me invadió de inmediato. Un territorio amplio, con rincones estratégicos, una cama gigante que serviría como puesto de observación y un sofá pequeño que irradiaba una energía acogedora. Allí, supe que había encontrado mi base de operaciones… mi templo de poder. Pero la paz no duró mucho. En el horizonte, una presencia perturbadora emergió. Inmóvil, silenciosa, aferrada a la pared. Nabi sintió el escalofrío recorrer su lomo: su primer enemigo la esperaba. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: No estabas librando ninguna batalla. Solo mirabas la pared. ✦</em> Solo los verdaderos cazadores pueden ver la guerra, Bruxa. Días después, una sombra se deslizó por la pared. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: Era la sombra de una mariposa, Nabi. ✦</em> Silencio, humana. No arruines la tensión. Esta sombra era densa, siniestra. Y entonces algo imposible ocurrió: mi sombra reflejada en el suelo tembló y… ¿cambió? Casi podía jurar que veía… alas. Mi sombra tenía alas. Una mariposa se había posado en el vidrio, y junto con Nabi, sus siluetas se fusionaron creando la ilusión de un ser alado. Bruxa Tarot se acercó sonriendo: —Mira, Nabi, parece que tienes alas. Es la mariposa en la ventana. Y entonces, la cazadora despertó.</p>';
@@ -1250,7 +1311,7 @@ CAP_CONTENIDO['nabi-2'] = {
   titulo: 'La Leyenda de Nabi',
   sub: 'Capítulos 8–14 — Portales, Cubos y el Iluminado',
   autor: 'Narrado por Nabi (con interrupciones de Bruxa Tarot)',
-  img: 'images/leyenda.png',
+  img: 'historias/assets/banner-nabi.jpg',
   spotify: ''
 };
 CAP_CONTENIDO['nabi-2'].texto = '<p>El aire se sentía denso. Detecté un portal rectangular de energía contenida en una pared — un umbral hacia lo desconocido. Del otro lado, apareció el Gate Keeper — el humano más pequeño de la casa, aquel que tenía la capacidad de abrir los portales a otras dimensiones. Necesitaba el artefacto místico que Bruxa Tarot usaba para invocarlo. Sigilosamente, subí a la mesa donde lo había visto. Lo empujé con la pata. Nada ocurrió. Lo empujé de nuevo. Lo mordí, le di golpes, maullé sobre él. El artefacto no reaccionaba. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: ¿Te refieres a mi Reloj inteligente? ¿Ese que empujaste al suelo cuatro veces seguidas? ✦</em> Exactamente. Solo los entrenados en las artes místicas pueden convocar al Gate Keeper. Esto significa que Bruxa Tarot posee una magia innata que yo debo aprender. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: ¿Así que ahora me ves como una maga? ✦</em> Siempre lo supe. Por eso, he decidido estudiarte. Cada noche, Bruxa Tarot se sentaba ante su espejo mágico. Yo, con los ojos muy abiertos, la veía colocar misteriosas pociones en su rostro y manos. Luego, purificaba su cabello de energías negativas. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: ¿Así que por eso me miras fijamente cuando me lavo la cara en las noches? ✦</em> Sí. Todo forma parte de mi entrenamiento. Después, gané acceso a las escaleras. Por primera vez, no había barreras. Me acerqué al primer escalón. Tomé aire y descendí. Un escalón. Nada ocurrió. Bajé otro. Todo iba bien. Me sentía poderosa. Tercer escalón. Cuarto escalón. Tropiezo. Mi cuerpo cayó repentinamente. Me levanté de inmediato. ¿Alguien me había visto? Silencio. Mi dignidad seguía intacta. Sacudí mis patas con elegancia, levanté la cabeza con orgullo y di el último paso con la majestuosidad de una diosa felina.</p>';
@@ -1259,7 +1320,7 @@ CAP_CONTENIDO['nabi-3'] = {
   titulo: 'La Leyenda de Nabi',
   sub: 'Capítulos 15–20 — El Concilio de la Magia',
   autor: 'Narrado por Nabi (con interrupciones de Bruxa Tarot)',
-  img: 'images/leyenda.png',
+  img: 'historias/assets/banner-nabi.jpg',
   spotify: ''
 };
 CAP_CONTENIDO['nabi-3'].texto = '<p>En la sala descubrí mi Cat Tree — santuario de poder desde donde podría controlar el territorio. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: Nabi, es tu Cat Tree, te lo trajimos hace meses. ✦</em> Lo que esta humana no entendía era que este no era un simple objeto, sino un pilar de fortaleza. Frente al gran asiento mullido, había un portal desconocido incrustado en la pared. Una pantalla de luz que mostraba imágenes en movimiento. Un portal a otros mundos. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: Nabi, es solo la TV. ✦</em> De entre las manos del Gate Keeper salió un artefacto hipnótico — un bastón delgado, flexible, que en su extremo poseía… plumas. Mi mente entró en caos. Quise resistirme. Pero su hechizo era demasiado fuerte. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: Es solo un juguete, Nabi, cálmate. ✦</em> ¡No lo era! ¡Era un artefacto de control mental! Y aunque no lo quería admitir… estaba perdiendo. Luego descubrí el Inframundo de los Rituales. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: Nabi, es la cocina. ✦</em> No podía confiar en sus palabras. Había frascos llenos de esencias mágicas, dispositivos que rugían generando calor. Mi sentido del olfato había evolucionado — yo era la guardiana de las pociones. Salté al mesón para inspeccionar una anomalía olfativa. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: ¡Nabi, bájate de ahí! ¡Eso NO se come! ✦</em> Mi frustración ardió. Debía ser más rápida la próxima vez. Y descubrí La Nevera — la fuente de la magia de Bruxa Tarot. Me acerqué sigilosamente al borde del portal. Había un aroma en particular que me atraía con una fuerza imposible de resistir. Una esencia cremosa, densa, con un toque de misterio. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: ¡Nabi, aléjate del queso! ✦</em> El portal se cerró antes de que pudiera completar mi análisis. Esperaría. Observaría. Y cuando el portal volviera a abrirse… estaría lista.</p>';
@@ -1268,7 +1329,7 @@ CAP_CONTENIDO['nabi-4'] = {
   titulo: 'La Leyenda de Nabi',
   sub: 'Capítulos 21–27 — El Devorador de Almas',
   autor: 'Narrado por Nabi (con interrupciones de Bruxa Tarot)',
-  img: 'images/leyenda.png',
+  img: 'historias/assets/banner-nabi.jpg',
   spotify: ''
 };
 CAP_CONTENIDO['nabi-4'].texto = '<p>El Gate Keeper dejó caer un pequeño cubo translúcido. Sin pensarlo dos veces, saqué la lengua y lo probé. Y entonces… el mundo cambió. Un escalofrío recorrió mi cuerpo. Miles de chispas explotaron en mi interior. ¡Demasiado poder! Corrí con velocidad felina hacia mi área de purificación. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: Nabi, solo lames los hielos y luego sales corriendo como si hubieras visto un fantasma. ✦</em> Ella no entendía. Estos fragmentos de poder eran peligrosos. Con el tiempo, el acceso a los cubos mágicos fue restringido. Debía encontrarlos por mi cuenta. Mientras tanto, descubrí al Observador Silencioso — guardián de conocimientos prohibidos, el espíritu atrapado que debía ser liberado. Permanecí frente a su portal en guardia. Los días pasaron. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: Nabi, llevas media hora acostada ahí, ¿qué estás haciendo? ✦</em> Silencio, humana. Estoy en misión sagrada. Finalmente, el Gate Keeper habló: —Ahh, ¿quieres entrar al cuarto de Erebus? Mi mente se paralizó. Erebus. Ese era su nombre. Y giró el picaporte. Era mi momento. Al cruzar el umbral, el Observador Silencioso tenía su mirada clavada en un portal mágico que lo tenía bajo su control. —Ruuu… —llamé su atención. Nada. Me tiré de pancita — gesto supremo de confianza. Silencio absoluto. Con un salto ágil al escritorio, el hechizo se rompió. El Observador Silencioso parpadeó y por primera vez habló: —Hola, Nabi. Pero su mirada volvió al portal. Comprendí entonces: él no era solo un Observador Silencioso… era el Iluminado. Aquel que tenía el conocimiento del universo al alcance de un botón. Me senté junto a él, observando cada movimiento de sus dedos sobre los botones del portal, lista para descubrir el secreto de su poder. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: ¿Nabi? ¿Qué haces mirando el ordenador de Erebus? ✦</em> El hechizo se rompió. Fui retirada del santuario del Iluminado. Esto solo era un contratiempo temporal. El portal volvería a abrirse… y cuando lo hiciera, yo estaría lista.</p>';
@@ -1277,7 +1338,7 @@ CAP_CONTENIDO['nabi-5'] = {
   titulo: 'La Leyenda de Nabi',
   sub: 'Capítulos 28–33 — La Maga Suprema y los Portales Prohibidos',
   autor: 'Narrado por Nabi (con interrupciones de Bruxa Tarot)',
-  img: 'images/leyenda.png',
+  img: 'historias/assets/banner-nabi.jpg',
   spotify: ''
 };
 CAP_CONTENIDO['nabi-5'].texto = '<p>Había otro en esta casa. El Viajero del Inframundo — un espíritu errante que cada día desaparecía y regresaba cuando la noche cubría el cielo. El dispositivo del oráculo anunciaba su inminente retorno. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: Nabi, solo es Alexa diciéndome que mi esposo llegó. ✦</em> Silencio, humana. Cada noche, lo recibía con la misma esperanza. Tal vez hoy regresaría con botín. Pero cada noche… llegaba con las manos vacías. Sin embargo, al verme en la cima de las escaleras, el Viajero inclinaba su cabeza ante mi presencia — una petición de absolución. Con gran dignidad, yo posaba mi pata sobre su cabeza, transmitiendo la energía de la redención. Cada noche, Bruxa Tarot llamaba a todos para El Concilio de la Magia. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: Nabi, deja de meter la cara en mi taza. ✦</em> Ella no entendía. Esto era un ritual sagrado. Luego, el Portal de Purificación — donde los objetos entraban sucios y salían completamente limpios. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: Nabi, es solo el lavaplatos. ✦</em> Y entonces, la Esencia de la Perdición cayó sobre mi pelaje. El mundo se detuvo. Un poder desconocido me envolvió, debilitando mis sentidos. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: ¡Nabi, es agua! ✦</em> Había descubierto mi criptonita. Más tarde, el Rugido de la Oscuridad perturbó mi meditación. Recurrí a la Técnica del Masaje Sagrado y las Entonaciones Vibracionales. Subí sobre el pecho del Viajero del Inframundo, amasando con mis patas en un patrón rítmico. Mi Ronroneo Sagrado se expandió por la habitación. El Rugido de la Oscuridad había sido silenciado. La victoria era mía. Y cuando el Guardián de los Portales se preparaba para compartir conmigo el potaje blanquecino del desayuno, Bruxa Tarot intervino: —¡No! Nabi, tú no puedes tomar leche. Mi mundo se detuvo. El Concilio de la Magia escondía aún más secretos de los que imaginaba.</p>';
@@ -1286,7 +1347,7 @@ CAP_CONTENIDO['nabi-6'] = {
   titulo: 'La Leyenda de Nabi',
   sub: 'Capítulos 34–38 + Epílogo — La Cazadora Eterna',
   autor: 'Narrado por Nabi (con interrupciones de Bruxa Tarot)',
-  img: 'images/leyenda.png',
+  img: 'historias/assets/banner-nabi.jpg',
   spotify: ''
 };
 CAP_CONTENIDO['nabi-6'].texto = '<p>En la mañana, por primera vez estaba sola. Un grillo camello emergió de las sombras. Sus patas largas y retorcidas se estiraban con una agilidad inquietante. Mi enemigo estaba frente a mí. El espíritu era veloz — un destello oscuro cruzó mi visión. ¡Estaba en la pared! No podía dejarme llevar por el miedo. Era una cazadora. Salté con él, calculando cada movimiento. El espíritu cayó. La batalla había terminado. Cuando Bruxa Tarot regresó, dijo con resignación: —Ahhh, te comiste un grillo camello… Entonces sacó el Devorador de Almas del armario oscuro. Se deslizó por el suelo, rugiendo con un sonido aterrador, succionando las almas caídas en combate. Con horror, comprendí la verdad — el Devorador las estaba reuniendo para crear el monstruo supremo. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: Nabi, es la aspiradora. ✦</em> Necesitaba al Guardián para acceder al sótano. Lo encontré en su habitación — el Portal del Caos — rodeado de caos absoluto. Con un salto estratégico, capturé su artefacto de juego y corrí hacia el umbral del sótano. Aproveché la distracción del Iluminado y me escurrí hacia el interior. Oscuridad. Frío. El Iluminado cerró la puerta sin darse cuenta. Estaba atrapada. Y entonces… las vi. Miles de almas saltando en regocijo. <em style="color:rgba(201,168,76,.6);font-size:.95em">✦ Bruxa Tarot: Nabi entró al sótano donde guardamos las pelotas del recreo de los niños. ✦</em> Salté. El ataque había comenzado. Cada golpe era certero. Era glorioso. Pero escuché mi nombre. El Guardián abrió el portal. Corrí. Había sido descubierta. Los días pasaron. Las semanas avanzaron. Y entonces, las sombras que una vez sentí moverse en el portal más oscuro… habían desaparecido. No había más espíritus. No había más amenazas. El Devorador de Almas podía estar esperando su momento. Pero mientras yo estuviera aquí, ningún espíritu se atrevería a desafiar mi guardia. Porque yo, Nabi, la Cazadora de Espíritus, nunca bajaría la guardia. Mi misión nunca termina. Y siempre, siempre, estaré lista para la próxima batalla. Fin de la Leyenda… ¿o solo el comienzo? 😼✨</p>';
@@ -1418,7 +1479,7 @@ const INLINE_KEYS = {
 };
 
 function abrirLector(capId, spotify, libroId, capIndex) {
-  const cap = CAP_CONTENIDO[capId];
+  const cap = getCap(capId);
   if(!cap) return;
 
   // Guardar estado para navegación prev/next
@@ -1426,7 +1487,11 @@ function abrirLector(capId, spotify, libroId, capIndex) {
   lectorActual.capIndex = capIndex;
 
   document.getElementById('readerTitle').textContent = cap.sub;
+  const aviso = cap._sinTraducir
+    ? '<p class="trad-aviso">' + t('noDisponible') + '</p>' : '';
+
   document.getElementById('readerContent').innerHTML =
+    aviso +
     '<img src="' + cap.img + '" alt="' + cap.titulo + '" class="cap-reader-banner" onerror="this.style.display=\'none\'">' +
     '<h2 class="cap-reader-chapter-title">' + cap.titulo + '</h2>' +
     '<p class="cap-reader-chapter-sub">' + cap.sub + '</p>' +
@@ -1446,8 +1511,10 @@ function actualizarBotonesNav() {
   const keyList = INLINE_KEYS[lectorActual.libroId] || [];
   const prevBtn = document.getElementById('readerPrev');
   const nextBtn = document.getElementById('readerNext');
-  if(prevBtn) prevBtn.disabled = lectorActual.capIndex <= 0;
-  if(nextBtn) nextBtn.disabled = lectorActual.capIndex >= keyList.length - 1;
+  const backBtn = document.getElementById('btnVolverLibro');
+  if(prevBtn){ prevBtn.disabled = lectorActual.capIndex <= 0; prevBtn.textContent = t('anterior'); }
+  if(nextBtn){ nextBtn.disabled = lectorActual.capIndex >= keyList.length - 1; nextBtn.textContent = t('siguiente'); }
+  if(backBtn) backBtn.textContent = t('volverLibro');
 }
 
 function navegarCapitulo(dir) {
@@ -1465,6 +1532,174 @@ function cerrarLector() {
 }
 
 // ── DATOS DE LIBROS ──
+
+// ══════════════════════════════════════════════
+//  MOTOR DE IDIOMAS (i18n)
+// ══════════════════════════════════════════════
+const IDIOMAS = {
+  es:{flag:'🇪🇸',code:'ES',nombre:'Español'},
+  en:{flag:'🇺🇸',code:'EN',nombre:'English'},
+  pt:{flag:'🇧🇷',code:'PT',nombre:'Português'},
+  it:{flag:'🇮🇹',code:'IT',nombre:'Italiano'},
+  tr:{flag:'🇹🇷',code:'TR',nombre:'Türkçe'},
+  ja:{flag:'🇯🇵',code:'JA',nombre:'日本語'},
+  ko:{flag:'🇰🇷',code:'KO',nombre:'한국어'}
+};
+
+// Textos de interfaz en español (base)
+const UI_ES = {
+  templo:'← Templo', recetas:'Recetas', muro:'Muro',
+  heroEyebrow:'✦ Bruxa Tarot · Biblioteca del Alma ✦',
+  heroSub:'Historias que se leen con el corazón',
+  capitulos:'✦ CAPÍTULOS',
+  leerAqui:'📖 Leer aquí', leer:'📖 Leer',
+  proximamente:'Próximamente',
+  volverLibro:'← Volver al libro',
+  anterior:'← Anterior', siguiente:'Siguiente →',
+  tocaAbrir:'Toca para abrir',
+  disponible:'✦ Disponible',
+  cargando:'Cargando traducción…',
+  noDisponible:'✦ Esta historia aún no está traducida a este idioma. Mostrando la versión original en español. ✦'
+};
+
+let LANG = localStorage.getItem('bruxa_lang') || 'es';
+const TRAD_CACHE = {};   // { en: {ui:{}, libros:{}, caps:{}} }
+let cargandoIdioma = false;
+
+// ── Resolvers ──
+function t(key){
+  if(LANG === 'es') return UI_ES[key] || '';
+  const tr = TRAD_CACHE[LANG];
+  return (tr && tr.ui && tr.ui[key]) || UI_ES[key] || '';
+}
+
+function getLibro(id){
+  const base = LIBROS[id];
+  if(!base) return null;
+  if(LANG === 'es') return base;
+  const tr = TRAD_CACHE[LANG];
+  const tl = tr && tr.libros && tr.libros[id];
+  if(!tl) return base;
+  // merge: la traducción sobrescribe titulo/badge/desc/capitulos[].nombre
+  const caps = base.capitulos.map((cap,i) => {
+    const tc = tl.capitulos && tl.capitulos[i];
+    return tc ? {...cap, num: tc.num || cap.num, nombre: tc.nombre || cap.nombre} : cap;
+  });
+  return {...base, titulo: tl.titulo || base.titulo, badge: tl.badge || base.badge,
+          desc: tl.desc || base.desc, capitulos: caps};
+}
+
+function getCap(capId){
+  const base = CAP_CONTENIDO[capId];
+  if(!base) return null;
+  if(LANG === 'es') return base;
+  const tr = TRAD_CACHE[LANG];
+  const tc = tr && tr.caps && tr.caps[capId];
+  if(!tc || !tc.texto) return {...base, _sinTraducir:true};
+  return {...base, titulo: tc.titulo || base.titulo, sub: tc.sub || base.sub,
+          autor: tc.autor || base.autor, texto: tc.texto};
+}
+
+// ── Carga dinámica ──
+function cargarIdioma(lang){
+  return new Promise((resolve, reject) => {
+    if(lang === 'es' || TRAD_CACHE[lang]) return resolve();
+    const s = document.createElement('script');
+    s.src = `historias-${lang}.js`;
+    s.onload = () => {
+      const g = window['TRADUCCIONES_' + lang.toUpperCase()];
+      if(g) TRAD_CACHE[lang] = g;
+      resolve();
+    };
+    s.onerror = () => reject(new Error('No se pudo cargar historias-' + lang + '.js'));
+    document.head.appendChild(s);
+  });
+}
+
+// ── Cambiar idioma ──
+async function cambiarIdioma(lang){
+  if(cargandoIdioma || lang === LANG){ cerrarLangMenu(); return; }
+  cargandoIdioma = true;
+  const menu = document.getElementById('langMenu');
+  const prev = menu.innerHTML;
+  menu.innerHTML = '<p class="lang-loading">✦ ' + (t('cargando')||'Cargando…') + ' ✦</p>';
+
+  try{
+    await cargarIdioma(lang);
+    LANG = lang;
+    localStorage.setItem('bruxa_lang', lang);
+  }catch(e){
+    // si falla, seguimos en el idioma actual
+    console.warn(e);
+  }finally{
+    menu.innerHTML = prev;
+    cargandoIdioma = false;
+    aplicarIdioma();
+    cerrarLangMenu();
+  }
+}
+
+// ── Aplicar idioma a toda la UI ──
+function aplicarIdioma(){
+  const info = IDIOMAS[LANG];
+  document.getElementById('langFlag').textContent = info.flag;
+  document.getElementById('langCode').textContent = info.code;
+  document.documentElement.lang = LANG;
+
+  document.querySelectorAll('.lang-opt').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === LANG));
+
+  // Nav
+  const nt = document.getElementById('navTemplo');   if(nt) nt.textContent = t('templo');
+  const nr = document.getElementById('navRecetas');  if(nr) nr.textContent = t('recetas');
+  const nm = document.getElementById('navMuro');     if(nm) nm.textContent = t('muro');
+
+  // Hero
+  const he = document.querySelector('.hero-eyebrow'); if(he) he.textContent = t('heroEyebrow');
+  const hs = document.querySelector('.hero-sub');     if(hs) hs.textContent = t('heroSub');
+
+  // Portadas de la estantería
+  document.querySelectorAll('.libro-wrap[onclick]').forEach(w => {
+    const m = w.getAttribute('onclick').match(/abrirLibro\('([^']+)'\)/);
+    if(!m) return;
+    const libro = getLibro(m[1]);
+    if(!libro) return;
+    const tEl = w.querySelector('.libro-cover-title, .bf-cover-title');
+    const sEl = w.querySelector('.libro-cover-sub, .bf-cover-sub');
+    const hEl = w.querySelector('.libro-cover-hint, .bf-cover-hint');
+    if(tEl) tEl.textContent = libro.titulo;
+    if(sEl && libro.badge) sEl.textContent = libro.badge.replace(/^✦\s*\S+\s*·\s*/,'');
+    if(hEl) hEl.textContent = t('tocaAbrir');
+  });
+
+  // Si hay un libro abierto, re-render
+  const overlay = document.getElementById('modalOverlay');
+  if(overlay && overlay.classList.contains('open') && libroAbiertoId){
+    abrirLibro(libroAbiertoId);
+  }
+  // Si hay un capítulo abierto, re-render
+  const reader = document.getElementById('capReader');
+  if(reader && reader.classList.contains('open') && lectorActual.libroId){
+    const keys = INLINE_KEYS[lectorActual.libroId];
+    if(keys) abrirLector(keys[lectorActual.capIndex], '', lectorActual.libroId, lectorActual.capIndex);
+  }
+}
+
+// ── Menú ──
+function toggleLangMenu(e){
+  e.stopPropagation();
+  document.getElementById('langMenu').classList.toggle('open');
+}
+function cerrarLangMenu(){
+  const m = document.getElementById('langMenu');
+  if(m) m.classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if(!e.target.closest('.lang-wrap')) cerrarLangMenu();
+});
+
+let libroAbiertoId = null;
+
 const LIBROS = {
   'ojos-verdes': {
     titulo: 'En Busca de Tus Ojos Verdes',
@@ -1482,7 +1717,7 @@ const LIBROS = {
   },
   'nabi': {
     titulo: 'La Leyenda de Nabi: La Cazadora de Espíritus',
-    img: 'images/leyenda.png',
+    img: 'historias/assets/banner-nabi.jpg',
     fallback: '🐱',
     badge: '✦ Disponible · 38 capítulos + Epílogo',
     desc: 'Narrado por la grandiosa cazadora, Nabi. (Con interrupciones innecesarias de Bruxa Tarot, que claramente no entiende la magnitud de su misión.) La épica historia de una gata que llegó a un nuevo hogar y descubrió portales, espíritus malignos, artefactos místicos y un destino legendario.',
@@ -1545,7 +1780,7 @@ const LIBROS = {
     titulo: 'Ecos en Tu Piel',
     img: 'images/eco-piel.png',
     fallback: '🌙',
-    badge: '✦ Disponible · 5 capítulos',
+    badge: '✦ Disponible · 10 capítulos',
     desc: 'El amor adolescente, la distancia, los errores y las decisiones que marcan para siempre. La historia de Mia, una chica que nunca pensó que un partido de béisbol cambiaría su vida, y de Emmanuel, el chico que lo tenía todo, excepto la certeza de a quién amar con el corazón completo.',
     capitulos: [
       { num:'Capítulo 1', nombre:'Entre el Público y el Destino', leer:'#', escuchar:'' },
@@ -1577,23 +1812,23 @@ const LIBROS = {
 };
 
 function abrirLibro(id) {
-  const libro = LIBROS[id];
+  const libro = getLibro(id);
   if(!libro) return;
+  libroAbiertoId = id;
 
   const caps = libro.capitulos.map((c,i) => {
-    const tieneContenido = c.leer || c.escuchar;
     return `
       <div class="capitulo-row">
         <span class="cap-num">${c.num}</span>
         <span class="cap-name">${c.nombre || ''}</span>
         <div style="display:flex;gap:.4rem;flex-shrink:0">
           ${(()=>{
-            if(!c.leer) return '<span class="cap-btn soon">Próximamente</span>';
+            if(!c.leer) return '<span class="cap-btn soon">' + t('proximamente') + '</span>';
             const keyList = INLINE_KEYS[id];
             const inlineKey = keyList ? keyList[i] : null;
             if(inlineKey && CAP_CONTENIDO[inlineKey] && CAP_CONTENIDO[inlineKey].texto.length > 50)
-              return '<button class="cap-btn leer" onclick="abrirLector(\'' + inlineKey + '\',\'\',\'' + id + '\',' + i + ')">📖 Leer aquí</button>';
-            return '<a href="' + c.leer + '" class="cap-btn leer">📖 Leer</a>';
+              return '<button class="cap-btn leer" onclick="abrirLector(\'' + inlineKey + '\',\'\',\'' + id + '\',' + i + ')">' + t('leerAqui') + '</button>';
+            return '<a href="' + c.leer + '" class="cap-btn leer">' + t('leer') + '</a>';
           })()}
         </div>
       </div>`;
@@ -1609,7 +1844,7 @@ function abrirLibro(id) {
     <div class="libro-modal-divider"></div>
     <p class="libro-modal-desc">${libro.desc}</p>
     <div class="libro-modal-divider"></div>
-    <p class="libro-modal-chapters-title">✦ CAPÍTULOS</p>
+    <p class="libro-modal-chapters-title">${t('capitulos')}</p>
     ${caps}
   `;
 
@@ -1629,6 +1864,15 @@ document.addEventListener('keydown', e => {
     document.body.style.overflow = '';
   }
 });
+
+// ── INIT IDIOMA (restaura el guardado) ──
+(async function initIdioma(){
+  if(LANG !== 'es'){
+    try{ await cargarIdioma(LANG); }
+    catch(e){ LANG = 'es'; localStorage.setItem('bruxa_lang','es'); }
+  }
+  aplicarIdioma();
+})();
 </script>
 </body>
 </html>
