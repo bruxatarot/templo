@@ -606,4 +606,15 @@ if(document.readyState === 'loading'){
   setTimeout(renderCompanion, 800);
 }
 
+// ═══════════════════════════════════════════════════
+//  📱 MODO APP — registrar el service worker (PWA)
+//  Hace que el Templo se pueda instalar en el teléfono
+//  y funcione sin conexión. Ruta relativa para GitHub Pages.
+// ═══════════════════════════════════════════════════
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+
 })();
