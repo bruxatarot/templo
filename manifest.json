@@ -2,10 +2,10 @@
   "name": "Templo del Prisma | Bruxa Tarot - Oráculo Prisma del Alma",
   "short_name": "Bruxa Tarot",
   "description": "Oráculo interactivo del Prisma del Alma. Haz lecturas, tiradas y rituales incluso sin conexión.",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#04060f",
-  "theme_color": "#c9a84c",
+  "theme_color": "#04060f",
   "orientation": "portrait",
   "icons": [
     {
@@ -20,7 +20,11 @@
       "type": "image/png"
     }
   ],
-  "scope": "/",
+  "scope": "./",
   "lang": "es",
-  "categories": ["lifestyle", "entertainment", "spirituality"]
+  "categories": [
+    "lifestyle",
+    "entertainment",
+    "spirituality"
+  ]
 }

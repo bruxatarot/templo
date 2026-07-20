@@ -1,134 +1,90 @@
 /*
   Templo del Prisma - Service Worker
-  PWA para lecturas offline del Oráculo Prisma del Alma
-  Enfocado en: oracle data, páginas principales de tiradas y assets críticos
+  PWA: el Templo se instala como app y funciona sin conexión.
+
+  Estrategia:
+  - Páginas, scripts y estilos: RED PRIMERO (siempre la versión más nueva),
+    con respaldo en caché si no hay conexión.
+  - Imágenes y fuentes: caché primero (no cambian casi nunca).
+  - Rutas RELATIVAS para funcionar en bruxatarot.github.io/templo/.
 */
 
-const CACHE_NAME = 'prisma-templo-v1.1';
-const OFFLINE_URL = '/offline.html';
+const CACHE_NAME = 'prisma-templo-v2';
+const OFFLINE_URL = 'offline.html';
 
-// Archivos críticos para lecturas offline
-// Incluye data del oráculo (todas las versiones de idioma)
+// Lo esencial para abrir el Templo sin conexión
 const CORE_ASSETS = [
-  '/',
-  '/index.html',
-  '/tiradas.html',
-  '/test.html',
-  '/rituales.html',
-  '/manifest.json',
-  // Data del Oráculo (imprescindible para lecturas offline)
-  '/js/data/oracle-cards.js',
-  '/js/data/oracle-en.js', // si existe
-  '/js/data/oracle-pt.js',
-  '/js/data/oracle-it.js',
-  '/js/data/oracle-ko.js',
-  '/js/data/oracle-tr.js',
-  '/js/data/oracle-ja.js',
-  // Scripts principales
-  '/js/lang.js',
-  '/js/guardianes.js',
-  '/js/starbits.js',
-  '/js/auth-chip.js',
-  // Estilos críticos (si están separados)
-  // Imágenes esenciales
-  '/images/dorso.png',
-  '/images/bruxa-tarot.png'
+  'index.html',
+  'offline.html',
+  'manifest.json',
+  'lang.js',
+  'js/guardianes.js',
+  'js/starbits.js',
+  'images/dorso.png',
+  'images/bruxa-tarot.png'
 ];
 
-// Instalar: precachear todo lo necesario para lecturas
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('[SW] Precaching core assets for offline readings');
-        return cache.addAll(CORE_ASSETS);
-      })
+      // addAll falla completo si un archivo falta; cachear uno a uno es más resiliente
+      .then((cache) => Promise.allSettled(CORE_ASSETS.map((a) => cache.add(a))))
       .then(() => self.skipWaiting())
   );
 });
 
-// Activar: limpiar caches viejos
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
-      );
-    }).then(() => self.clients.claim())
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+    ).then(() => self.clients.claim())
   );
 });
 
-// Fetch strategy:
-// - Cache first para assets del mismo origen (ideal para offline)
-// - Network first con fallback a cache para datos dinámicos
-// - Fallback a offline.html si todo falla
 self.addEventListener('fetch', (event) => {
   const { request } = event;
+  if (request.method !== 'GET') return;
   const url = new URL(request.url);
 
-  // Solo manejar requests del mismo origen (evitar CDNs externos por ahora)
-  if (url.origin !== location.origin) {
-    return; // Dejar que el navegador maneje Firebase, Leaflet, fonts, etc.
-  }
+  // No tocar Firebase, fuentes de Google, CDNs, etc.
+  if (url.origin !== location.origin) return;
 
-  // Estrategia Cache First para la mayoría (perfecto para lecturas offline)
-  if (
-    request.destination === 'document' ||
-    request.destination === 'script' ||
-    request.destination === 'style' ||
-    request.destination === 'image' ||
-    url.pathname.startsWith('/js/data/') ||
-    url.pathname.includes('oracle')
-  ) {
+  const esEstatico = request.destination === 'image' || request.destination === 'font';
+
+  if (esEstatico) {
+    // Caché primero para imágenes/fuentes
     event.respondWith(
-      caches.match(request).then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-
-        return fetch(request)
-          .then((networkResponse) => {
-            // Cachear dinámicamente nuevas respuestas
-            if (networkResponse && networkResponse.status === 200) {
-              const responseToCache = networkResponse.clone();
-              caches.open(CACHE_NAME).then((cache) => {
-                cache.put(request, responseToCache);
-              });
-            }
-            return networkResponse;
-          })
-          .catch(() => {
-            // Fallback para páginas HTML
-            if (request.destination === 'document') {
-              return caches.match(OFFLINE_URL) || caches.match('/index.html');
-            }
-            // Para imágenes o scripts críticos
-            if (request.destination === 'image') {
-              return caches.match('/images/dorso.png');
-            }
-            return new Response('Offline - Recurso no disponible', {
-              status: 503,
-              headers: { 'Content-Type': 'text/plain' }
-            });
-          });
-      })
+      caches.match(request).then((hit) => hit ||
+        fetch(request).then((res) => {
+          if (res && res.status === 200) {
+            const copia = res.clone();
+            caches.open(CACHE_NAME).then((c) => c.put(request, copia));
+          }
+          return res;
+        }).catch(() => caches.match('images/dorso.png'))
+      )
     );
     return;
   }
 
-  // Default: intentar red, fallback a cache
+  // Red primero para todo lo demás (HTML, JS, CSS, datos)
   event.respondWith(
-    fetch(request).catch(() => caches.match(request))
+    fetch(request).then((res) => {
+      if (res && res.status === 200) {
+        const copia = res.clone();
+        caches.open(CACHE_NAME).then((c) => c.put(request, copia));
+      }
+      return res;
+    }).catch(() =>
+      caches.match(request).then((hit) => {
+        if (hit) return hit;
+        if (request.destination === 'document') return caches.match(OFFLINE_URL);
+        return new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } });
+      })
+    )
   );
 });
 
-// Mensaje para actualizar SW desde la app
 self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
-
-console.log('%c[Bruxa Tarot PWA] Service Worker v1.1 listo para lecturas offline', 'color:#c9a84c');
