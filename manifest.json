@@ -8,23 +8,11 @@
   "theme_color": "#04060f",
   "orientation": "portrait",
   "icons": [
-    {
-      "src": "images/bruxa-tarot.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "images/dorso.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
+    { "src": "images/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "images/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "scope": "./",
   "lang": "es",
-  "categories": [
-    "lifestyle",
-    "entertainment",
-    "spirituality"
-  ]
+  "categories": ["lifestyle", "entertainment", "spirituality"]
 }
