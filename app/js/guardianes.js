@@ -1,0 +1,593 @@
+// =====================================================
+// BRUXA TAROT — GUARDIANES DEL TEMPLO
+// Catálogo + arte CSS compartido (muro, perfil, tienda)
+// Uso: <script src="js/guardianes.js"></script>
+//   window.MASCOTAS  → catálogo
+//   window.petHtml(key, scale) → HTML del guardián animado
+// =====================================================
+(function(){
+
+window.MASCOTAS = {
+  vela:     {emoji:'🕯️', nombre:'Lumi',          energia:'Luz interior, guía',      rareza:'comun',      precio:0},
+  estrella: {emoji:'⭐',  nombre:'Stella',        energia:'Deseos, esperanza',       rareza:'comun',      precio:15},
+  luna:     {emoji:'🌙', nombre:'Selene',        energia:'Intuición, sueños',       rareza:'rara',       precio:35},
+  bola:     {emoji:'🔮', nombre:'Cristalia',     energia:'Claridad, visión',        rareza:'rara',       precio:50},
+  ojo:      {emoji:'🧿', nombre:'Nazari',        energia:'Protección, poder',       rareza:'rara',       precio:50},
+  brillito: {emoji:'🌟', nombre:'Glimmer',        energia:'Chispa, alegría',         rareza:'legendaria', precio:100},
+  alma:     {emoji:'🌛', nombre:'Alma',          energia:'Conciencia, luz interior',rareza:'legendaria', precio:150},
+  nabi:     {emoji:'🐱', nombre:'Nabi',           energia:'Magia felina, amor dulce',rareza:'mitica',     precio:null, exclusiva:true},
+};
+window.RAREZA_LABEL = {comun:'COMÚN', rara:'RARA', legendaria:'LEGENDARIA', mitica:'MÍTICA 🦋', unica:'ÚNICA 👑'};
+
+// ── Skins de pergamino (para los mensajes del muro) ──
+window.SKINS = {
+  pergamino: {nombre:'Pergamino Clásico', precio:0,  rareza:'comun'},
+  nocturno:  {nombre:'Papel de Medianoche', precio:20, rareza:'comun'},
+  rosa:      {nombre:'Pétalos de Rosa',   precio:20, rareza:'comun'},
+  bosque:    {nombre:'Hoja del Bosque',   precio:30, rareza:'rara'},
+  real:      {nombre:'Violeta Real',      precio:45, rareza:'rara'},
+  solar:     {nombre:'Oro Solar',         precio:90, rareza:'legendaria'},
+};
+
+// ── Auras animadas (para tu guardián en la página) ──
+window.AURAS = {
+  dorada:   {nombre:'Aura Dorada',        precio:25, rareza:'comun',      emoji:'🌟'},
+  chispas:  {nombre:'Chispas Orbitales',  precio:40, rareza:'rara',       emoji:'✨'},
+  estrellas:{nombre:'Lluvia de Estrellas',precio:60, rareza:'legendaria', emoji:'💫'},
+};
+
+// ── Colores del guardián (tintes mágicos) ──
+window.COLORES = {
+  natural:  {nombre:'Natural',        precio:0,  rareza:'comun',      emoji:'🤍'},
+  rosa:     {nombre:'Rosa Cuarzo',    precio:20, rareza:'comun',      emoji:'🌸'},
+  esmeralda:{nombre:'Esmeralda',      precio:20, rareza:'comun',      emoji:'💚'},
+  celeste:  {nombre:'Celeste Lunar',  precio:25, rareza:'rara',       emoji:'💙'},
+  violeta:  {nombre:'Violeta Místico',precio:30, rareza:'rara',       emoji:'💜'},
+  fuego:    {nombre:'Fuego Interior', precio:40, rareza:'rara',       emoji:'❤️‍🔥'},
+  arcoiris: {nombre:'Prisma Arcoíris',precio:80, rareza:'legendaria', emoji:'🌈'},
+};
+
+// ── Emociones del alma (la carita de tu guardián) ──
+window.EMOCIONES = {
+  feliz:     {nombre:'Feliz',       precio:0,  rareza:'comun',      emoji:'😊'},
+  sonadora:  {nombre:'Soñadora',    precio:15, rareza:'comun',      emoji:'😌'},
+  sorprendida:{nombre:'Sorprendida',precio:20, rareza:'comun',      emoji:'😮'},
+  triste:    {nombre:'Melancólica', precio:20, rareza:'rara',       emoji:'🥺'},
+  picara:    {nombre:'Pícara',      precio:25, rareza:'rara',       emoji:'😏'},
+  enamorada: {nombre:'Enamorada',   precio:35, rareza:'rara',       emoji:'😍'},
+  celebrando:{nombre:'Celebrando',  precio:40, rareza:'rara',       emoji:'🎉'},
+  estelar:   {nombre:'Estelar',     precio:50, rareza:'legendaria', emoji:'🤩'},
+  bendecida: {nombre:'Bendecida',   precio:60, rareza:'legendaria', emoji:'😇'},
+};
+
+// ── Variantes por guardián (rasgos únicos comprables) ──
+window.VARIANTES = {
+  vela: {
+    azul:     {nombre:'Llama Azul',      precio:25, rareza:'comun'},
+    violeta:  {nombre:'Llama Violeta',   precio:30, rareza:'rara'},
+    esmeralda:{nombre:'Llama Esmeralda', precio:35, rareza:'rara'},
+  },
+  estrella: {
+    seis: {nombre:'Seis Puntas', precio:30, rareza:'rara'},
+    ocho: {nombre:'Ocho Puntas', precio:45, rareza:'legendaria'},
+  },
+  luna: {
+    llena:  {nombre:'Luna Llena',        precio:30, rareza:'rara'},
+    cuarto: {nombre:'Cuarto Menguante',  precio:35, rareza:'rara'},
+  },
+  bola: {
+    plata:     {nombre:'Base de Plata',    precio:20, rareza:'comun'},
+    obsidiana: {nombre:'Base Obsidiana',   precio:30, rareza:'rara'},
+    rosaoro:   {nombre:'Base Rosa y Oro',  precio:35, rareza:'rara'},
+  },
+  ojo: {
+    esmeralda: {nombre:'Iris Esmeralda', precio:25, rareza:'comun'},
+    ambar:     {nombre:'Iris Ámbar',     precio:25, rareza:'comun'},
+    violeta:   {nombre:'Iris Violeta',   precio:35, rareza:'rara'},
+  },
+  brillito: {
+    anrosa:    {nombre:'Anillo Rosa',    precio:25, rareza:'comun'},
+    anceleste: {nombre:'Anillo Celeste', precio:25, rareza:'comun'},
+  },
+  alma: {
+    halorosa:  {nombre:'Halo Rosa',      precio:30, rareza:'rara'},
+    haloplata: {nombre:'Halo de Plata',  precio:30, rareza:'rara'},
+  },
+  nabi: {
+    monarca: {nombre:'Alas Monarca',       precio:40, rareza:'legendaria'},
+    morpho:  {nombre:'Alas Morpho Azul',   precio:40, rareza:'legendaria'},
+  },
+};
+
+// ── Evoluciones del guardián (crece con tu racha de días) ──
+window.NIVELES = {
+  1: {nombre:'Alma Joven', dias:0,  desc:'Recién llegado al Templo'},
+  2: {nombre:'Despierto',  dias:7,  desc:'7 días seguidos — su luz se intensifica'},
+  3: {nombre:'Ancestral',  dias:30, desc:'30 días seguidos — porta la corona del Templo'},
+};
+
+const FACE = `<span class="pface"><span class="pojos"><span class="pojo"></span><span class="pojo"></span></span><span class="pboca"></span></span>`;
+const FACE_ZZZ = `<span class="pface pzzz"><span class="pojos"><span class="pojo"></span><span class="pojo"></span></span><span class="pboca"></span></span>`;
+
+const PET_ART = {
+  vela: `<span class="pv"><span class="llama"></span><span class="pabilo"></span><span class="cuerpo"><span class="pchapas"><i></i><i></i></span>${FACE}</span></span>`,
+  luna: `<span class="pl"><span class="cuerpo"></span><span class="crater c1"></span><span class="crater c2"></span>${FACE_ZZZ}<span class="est">✦</span></span>`,
+  estrella: `<span class="pe"><span class="cuerpo"></span>${FACE}<span class="sp">✦</span><span class="sp sp2">✧</span></span>`,
+  bola: `<span class="pb"><span class="esfera"></span><span class="niebla"></span>${FACE}<span class="base"></span></span>`,
+  ojo: `<span class="po"><span class="a1"><span class="a2"><span class="a3"><span class="pupila"></span></span></span></span></span>`,
+  brillito: `<span class="pbr"><span class="anillo"></span><span class="cuerpo"></span>${FACE}</span>`,
+  alma: `<span class="pa"><span class="halo"></span><span class="cuerpo"></span><span class="anillop"></span>${FACE}<span class="cola">✦ ✧ ✦</span></span>`,
+  nabi: `<span class="pn"><span class="ala ala-i"></span><span class="ala ala-d"></span><span class="cabeza"><span class="oreja o-i"></span><span class="oreja o-d"></span>${FACE}<span class="nariz"></span></span><span class="brillo-n">✧</span></span>`,
+};
+
+window.petHtml = function(key, scale=1, opts={}){
+  const m = window.MASCOTAS[key];
+  if(!m || !PET_ART[key]) return '';
+  const w = Math.round(96*scale), h = Math.round(100*scale);
+  const cCls = opts.color && opts.color!=='natural' && window.COLORES[opts.color] ? ` pcolor-${opts.color}` : '';
+  const eCls = opts.emo && opts.emo!=='feliz' && window.EMOCIONES[opts.emo] ? ` pemo-${opts.emo}` : '';
+  const nCls = opts.nivel >= 2 ? ` pnv${Math.min(opts.nivel,3)}` : '';
+  const vCls = opts.vari && window.VARIANTES?.[key]?.[opts.vari] ? ` pvar-${key}-${opts.vari}` : '';
+  return `<span class="petw${cCls}${nCls}${vCls}" style="width:${w}px;height:${h}px" title="${m.nombre} · ${m.energia}">
+    <span class="pets${eCls}" style="transform:scale(${scale})">${PET_ART[key]}</span></span>`;
+};
+
+const css = `
+.petw{position:relative;display:inline-flex;align-items:center;justify-content:center;overflow:visible}
+.pets{position:relative;width:96px;height:100px;transform-origin:center;display:flex;align-items:center;justify-content:center;flex:none}
+.pface{position:absolute;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+.pojos{display:flex;gap:11px}
+.pojo{width:9px;height:11px;background:#2a1a10;border-radius:50%;position:relative}
+.pojo::after{content:'';position:absolute;top:1.5px;left:2px;width:3.5px;height:3.5px;background:#fff;border-radius:50%}
+.pboca{width:9px;height:5px;border:1.6px solid #2a1a10;border-top:none;border-radius:0 0 9px 9px;margin-top:2.5px}
+.pchapas{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:46px;display:flex;justify-content:space-between}
+.pchapas i{width:7px;height:4px;background:rgba(255,150,130,.55);border-radius:50%;filter:blur(1px)}
+.pzzz .pojo{height:2.5px;border-radius:3px;margin-top:5px}
+.pzzz .pojo::after{display:none}
+@keyframes pet-flot{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-9px) rotate(3deg)}}
+@keyframes pet-tw{0%,100%{opacity:.15}50%{opacity:1}}
+.pv{position:relative;width:44px;height:86px;animation:pv-sway 3.2s ease-in-out infinite}
+.pv .cuerpo{position:absolute;bottom:0;width:44px;height:58px;border-radius:10px 10px 12px 12px;background:linear-gradient(160deg,#fdf3dc,#ecd9ae 60%,#d8bd85);box-shadow:inset -5px 0 9px rgba(160,120,60,.3)}
+.pv .llama{position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:16px;height:24px;background:radial-gradient(ellipse at 50% 78%,#fff8e0 0%,#ffd24a 45%,#ff8c2a 80%,transparent 100%);border-radius:50% 50% 50% 50%/62% 62% 38% 38%;animation:pv-flama .55s ease-in-out infinite alternate;filter:drop-shadow(0 0 12px rgba(255,190,70,.95))}
+.pv .pabilo{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:2.5px;height:7px;background:#4a3520;border-radius:2px}
+.pv .pface{top:40px}
+@keyframes pv-flama{from{transform:translateX(-50%) scale(1) rotate(-3deg)}to{transform:translateX(-50%) scale(1.12,1.22) rotate(3deg)}}
+@keyframes pv-sway{0%,100%{transform:rotate(-1.6deg)}50%{transform:rotate(1.6deg)}}
+.pl{position:relative;width:80px;height:80px;animation:pet-flot 5s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(200,212,255,.55))}
+.pl .cuerpo{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 34% 30%,#f4f2ff 0%,#ccc8ec 55%,#9a92c8 100%);-webkit-mask:radial-gradient(circle at 78% 22%,transparent 34%,#000 36%);mask:radial-gradient(circle at 78% 22%,transparent 34%,#000 36%)}
+.pl .crater{position:absolute;border-radius:50%;background:rgba(140,130,190,.45)}
+.pl .c1{width:9px;height:9px;top:16px;left:14px}
+.pl .c2{width:6px;height:6px;top:56px;left:26px}
+.pl .pface{top:32px;left:42%}
+.pl .est{position:absolute;top:6px;right:2px;color:#e8e4ff;font-size:.7rem;animation:pet-tw 2.4s ease-in-out infinite}
+.pe{position:relative;width:86px;height:86px;animation:pe-tit 2s ease-in-out infinite}
+.pe .cuerpo{position:absolute;inset:4px;background:radial-gradient(circle at 42% 36%,#fff6cf 0%,#ffd75e 55%,#e8a92c 100%);clip-path:polygon(50% 0%,63% 34%,98% 37%,71% 59%,81% 95%,50% 74%,19% 95%,29% 59%,2% 37%,37% 34%);filter:drop-shadow(0 0 12px rgba(255,215,94,.85))}
+.pe .pface{top:36px}
+.pe .sp{position:absolute;top:50%;left:50%;color:#ffe9a0;font-size:.62rem;animation:pe-orb 3s linear infinite}
+.pe .sp2{animation-delay:-1.5s;font-size:.48rem}
+@keyframes pe-tit{0%,100%{transform:scale(1) rotate(-4deg)}50%{transform:scale(1.09) rotate(4deg)}}
+@keyframes pe-orb{0%{transform:rotate(0) translateX(50px) rotate(0);opacity:1}100%{transform:rotate(360deg) translateX(50px) rotate(-360deg);opacity:.35}}
+.pb{position:relative;width:78px;height:92px}
+.pb .esfera{position:absolute;top:0;left:50%;transform:translateX(-50%);width:72px;height:72px;border-radius:50%;background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.95) 0%,rgba(190,170,255,.6) 22%,rgba(120,90,210,.55) 60%,rgba(60,40,130,.75) 100%);box-shadow:inset 0 -8px 18px rgba(40,20,90,.5),0 0 18px rgba(160,130,255,.5);animation:pb-vis 4.5s ease-in-out infinite}
+.pb .niebla{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:44px;height:30px;border-radius:50%;filter:blur(6px);background:radial-gradient(ellipse,rgba(255,220,255,.55),transparent 70%);animation:pb-nie 3.4s ease-in-out infinite}
+.pb .base{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:52px;height:20px;border-radius:6px 6px 12px 12px;background:linear-gradient(160deg,#e8c97a,#a07828);box-shadow:0 3px 8px rgba(0,0,0,.5)}
+.pb .pface{top:28px}
+@keyframes pb-vis{0%,100%{filter:hue-rotate(0)}50%{filter:hue-rotate(38deg)}}
+@keyframes pb-nie{0%,100%{opacity:.5;transform:translateX(-58%)}50%{opacity:1;transform:translateX(-42%)}}
+.po{position:relative;width:92px;height:92px;display:flex;align-items:center;justify-content:center;animation:pet-flot 4.2s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(70,130,255,.6))}
+.po .a1{width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 36% 30%,#3d7ae8,#1a3a94);display:flex;align-items:center;justify-content:center}
+.po .a2{width:66px;height:66px;border-radius:50%;background:#eef4ff;display:flex;align-items:center;justify-content:center}
+.po .a3{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#7ec2ff,#2a6ad0);display:flex;align-items:center;justify-content:center;animation:po-parp 4.6s ease-in-out infinite}
+.po .pupila{width:19px;height:19px;border-radius:50%;background:#0c1430;position:relative}
+.po .pupila::after{content:'';position:absolute;top:3px;left:4px;width:6px;height:6px;background:#fff;border-radius:50%}
+@keyframes po-parp{0%,86%,100%{transform:scaleY(1)}90%,94%{transform:scaleY(.1)}}
+.pbr{position:relative;width:90px;height:90px;animation:pbr-brinco 1.7s ease-in-out infinite}
+.pbr .cuerpo{position:absolute;inset:6px;background:radial-gradient(circle at 40% 34%,#fff9d8 0%,#ffde6a 50%,#f0a830 100%);clip-path:polygon(50% 0%,61% 24%,84% 12%,78% 37%,100% 46%,79% 58%,88% 84%,62% 74%,50% 100%,38% 74%,12% 84%,21% 58%,0% 46%,22% 37%,16% 12%,39% 24%);filter:drop-shadow(0 0 16px rgba(255,220,110,1))}
+.pbr .pface{top:34px}
+.pbr .pboca{width:12px;height:8px;background:#7a3010;border:none;border-radius:0 0 12px 12px}
+.pbr .anillo{position:absolute;inset:-4px;border-radius:50%;border:1.6px dashed rgba(255,225,140,.55);animation:pbr-gira 7s linear infinite}
+@keyframes pbr-brinco{0%,100%{transform:translateY(0) scale(1)}38%{transform:translateY(-11px) scale(1.08) rotate(-7deg)}58%{transform:translateY(-5px) scale(1.04) rotate(5deg)}}
+@keyframes pbr-gira{to{transform:rotate(360deg)}}
+.pa{position:relative;width:96px;height:100px;animation:pet-flot 4.6s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(255,236,190,.8))}
+.pa .halo{position:absolute;top:-2px;left:50%;transform:translateX(-50%) rotate(-6deg);width:44px;height:13px;border-radius:50%;border:3px solid #ffd870;box-shadow:0 0 12px rgba(255,216,112,.9);animation:pa-halo 3s ease-in-out infinite}
+.pa .anillop{position:absolute;top:46px;left:-8px;width:112px;height:26px;border-radius:50%;border:2.5px solid rgba(232,201,122,.75);transform:rotate(-12deg);border-top-color:transparent;z-index:3}
+.pa .cuerpo{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:70px;height:70px;border-radius:50%;z-index:2;background:radial-gradient(circle at 36% 30%,#fffdf4 0%,#f5e8cf 50%,#d8c4e0 100%);box-shadow:inset -6px -5px 14px rgba(180,150,200,.35)}
+.pa .pface{top:38px;z-index:4}
+.pa .cola{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);font-size:.6rem;color:rgba(255,236,190,.85);letter-spacing:.4em;animation:pa-polvo 2.6s ease-in-out infinite;z-index:1}
+@keyframes pa-halo{0%,100%{opacity:.75}50%{opacity:1}}
+@keyframes pa-polvo{0%,100%{opacity:.35;transform:translateX(-50%) translateY(0)}50%{opacity:1;transform:translateX(-50%) translateY(4px)}}
+/* 🐱🦋 NABI — gatita con alas de mariposa multicolor (exclusiva) */
+.pn{position:relative;width:96px;height:96px;animation:pet-flot 4.2s ease-in-out infinite;
+  filter:drop-shadow(0 0 14px rgba(255,160,220,.55))}
+.pn .ala{position:absolute;top:14px;width:36px;height:56px;z-index:1;
+  border-radius:65% 65% 55% 55%/75% 75% 45% 45%;opacity:.92;
+  background:linear-gradient(160deg,#ff8ab8 0%,#ffd76a 26%,#8af0b0 50%,#7ac8ff 74%,#c89aff 100%);
+  box-shadow:inset 0 0 10px rgba(255,255,255,.5),0 0 12px rgba(255,160,220,.45)}
+.pn .ala::after{content:'';position:absolute;inset:22%;border-radius:inherit;
+  background:radial-gradient(circle,rgba(255,255,255,.65),transparent 70%)}
+.pn .ala-i{left:0;transform-origin:right center;animation:nabi-aleteo 1.1s ease-in-out infinite}
+.pn .ala-d{right:0;transform-origin:left center;animation:nabi-aleteo-d 1.1s ease-in-out infinite}
+@keyframes nabi-aleteo{0%,100%{transform:rotate(10deg) scaleX(1)}50%{transform:rotate(-16deg) scaleX(.82)}}
+@keyframes nabi-aleteo-d{0%,100%{transform:scaleX(-1) rotate(10deg)}50%{transform:scaleX(-.82) rotate(-16deg)}}
+.pn .cabeza{position:absolute;top:24px;left:50%;transform:translateX(-50%);
+  width:54px;height:50px;border-radius:50% 50% 46% 46%;z-index:2;
+  background:radial-gradient(circle at 38% 32%,#fffdf6 0%,#f2e4d2 55%,#ddc8b2 100%);
+  box-shadow:inset -4px -3px 10px rgba(180,140,110,.3)}
+.pn .oreja{position:absolute;top:-11px;width:0;height:0;z-index:1;
+  border-left:9px solid transparent;border-right:9px solid transparent;
+  border-bottom:17px solid #ecdcc8}
+.pn .o-i{left:5px;transform:rotate(-14deg)}
+.pn .o-d{right:5px;transform:rotate(14deg)}
+.pn .pface{top:15px}
+.pn .nariz{position:absolute;top:31px;left:50%;transform:translateX(-50%);
+  width:6px;height:4.5px;background:#e88aa0;border-radius:50% 50% 60% 60%;z-index:3}
+.pn .brillo-n{position:absolute;top:2px;right:6px;font-size:.62rem;color:#ffc8e8;
+  animation:pet-tw 2s ease-in-out infinite;z-index:3}
+
+/* ══════ SKINS DE PERGAMINO ══════ */
+.nota.skin-nocturno{background:linear-gradient(175deg,#332c5c 0%,#262048 55%,#1c1838 100%);
+  border-color:rgba(180,170,230,.4)}
+.nota.skin-nocturno::before,.nota.skin-nocturno::after{background:linear-gradient(to bottom,#8a80c0,#5a5290)}
+.nota.skin-nocturno .nota-texto{color:#e0d8f8}
+.nota.skin-nocturno .nota-nombre{color:#b0a4e0}
+.nota.skin-nocturno .nota-luz{color:#c0b4e8;background:rgba(255,255,255,.06);border-color:rgba(180,170,230,.4)}
+.nota.skin-rosa{background:linear-gradient(175deg,#fce4ec 0%,#f5c8d8 55%,#eab0c4 100%);
+  border-color:rgba(200,110,140,.45)}
+.nota.skin-rosa::before,.nota.skin-rosa::after{background:linear-gradient(to bottom,#d890a8,#b06880)}
+.nota.skin-rosa .nota-texto{color:#6a2840}
+.nota.skin-rosa .nota-nombre{color:#a04868}
+.nota.skin-bosque{background:linear-gradient(175deg,#e4eecc 0%,#ccdca8 55%,#b4c890 100%);
+  border-color:rgba(110,140,70,.5)}
+.nota.skin-bosque::before,.nota.skin-bosque::after{background:linear-gradient(to bottom,#98b068,#708844)}
+.nota.skin-bosque .nota-texto{color:#2c4014}
+.nota.skin-bosque .nota-nombre{color:#54702c}
+.nota.skin-real{background:linear-gradient(175deg,#ecdcf8 0%,#d8bcf0 55%,#c0a0e0 100%);
+  border-color:rgba(140,90,190,.5)}
+.nota.skin-real::before,.nota.skin-real::after{background:linear-gradient(to bottom,#a878d0,#7c50a8)}
+.nota.skin-real .nota-texto{color:#3c1c64}
+.nota.skin-real .nota-nombre{color:#6c3ca0}
+.nota.skin-solar{background:linear-gradient(175deg,#fff0be 0%,#ffdf8a 55%,#f0c25e 100%);
+  border-color:rgba(200,150,40,.6);
+  box-shadow:0 6px 20px rgba(0,0,0,.45),0 0 24px rgba(255,200,80,.45),inset 0 0 30px rgba(255,230,150,.4)!important}
+.nota.skin-solar::before,.nota.skin-solar::after{background:linear-gradient(to bottom,#e8b850,#b8862a)}
+.nota.skin-solar .nota-texto{color:#5c3c08}
+.nota.skin-solar .nota-nombre{color:#8a5c10}
+
+/* ══════ AURAS DEL GUARDIÁN ══════ */
+.aura-dorada .pets{filter:drop-shadow(0 0 16px rgba(255,215,100,.9));
+  animation:aura-pulso 2.4s ease-in-out infinite}
+@keyframes aura-pulso{0%,100%{filter:drop-shadow(0 0 10px rgba(255,215,100,.6))}
+  50%{filter:drop-shadow(0 0 26px rgba(255,215,100,1))}}
+.aura-chispas{position:relative}
+.aura-chispas::before,.aura-chispas::after{position:absolute;top:50%;left:50%;
+  font-size:.75rem;color:#ffe9a0;z-index:5;pointer-events:none;
+  text-shadow:0 0 6px rgba(255,220,120,.9)}
+.aura-chispas::before{content:'✦';animation:aura-orb 3.2s linear infinite}
+.aura-chispas::after{content:'✧';animation:aura-orb 3.2s linear infinite reverse;font-size:.55rem}
+@keyframes aura-orb{0%{transform:rotate(0) translateX(56px) rotate(0);opacity:1}
+  100%{transform:rotate(360deg) translateX(56px) rotate(-360deg);opacity:.4}}
+.aura-estrellas{position:relative}
+.aura-estrellas::before{content:'✦  ✧  ✦';position:absolute;top:-20px;left:50%;
+  transform:translateX(-50%);font-size:.6rem;letter-spacing:.6em;color:#cfe0ff;
+  text-shadow:0 0 6px rgba(160,200,255,.9);z-index:5;pointer-events:none;
+  animation:aura-lluvia 2.2s linear infinite}
+.aura-estrellas::after{content:'✧  ✦  ✧';position:absolute;top:-20px;left:50%;
+  transform:translateX(-50%);font-size:.45rem;letter-spacing:.9em;color:#ffe0f0;
+  text-shadow:0 0 6px rgba(255,180,230,.9);z-index:5;pointer-events:none;
+  animation:aura-lluvia 2.2s linear infinite;animation-delay:1.1s}
+@keyframes aura-lluvia{0%{transform:translateX(-50%) translateY(0);opacity:0}
+  25%{opacity:1}100%{transform:translateX(-50%) translateY(95px);opacity:0}}
+
+/* ══════ COLORES DEL GUARDIÁN (tintes) ══════ */
+.pcolor-rosa{filter:hue-rotate(305deg) saturate(1.25)}
+.pcolor-esmeralda{filter:hue-rotate(85deg) saturate(1.15)}
+.pcolor-celeste{filter:hue-rotate(165deg) saturate(1.2)}
+.pcolor-violeta{filter:hue-rotate(230deg) saturate(1.25)}
+.pcolor-fuego{filter:hue-rotate(-25deg) saturate(1.6) brightness(1.05)}
+.pcolor-arcoiris{animation:pcolor-ciclo 6s linear infinite}
+@keyframes pcolor-ciclo{0%{filter:hue-rotate(0deg) saturate(1.3)}100%{filter:hue-rotate(360deg) saturate(1.3)}}
+
+/* ══════ EMOCIONES (la carita cambia) ══════ */
+/* Soñadora: ojitos cerrados serenos */
+.pemo-sonadora .pojo{height:2.5px;border-radius:3px;margin-top:5px}
+.pemo-sonadora .pojo::after{display:none}
+/* Sorprendida: boca en O y ojos grandes */
+.pemo-sorprendida .pboca{width:8px;height:8px;border:1.6px solid #2a1a10;border-radius:50%;margin-top:2px}
+.pemo-sorprendida .pojo{width:11px;height:12px}
+/* Melancólica: boquita triste y lagrimita */
+.pemo-triste .pboca{border:none;border-top:1.6px solid #2a1a10;border-radius:9px 9px 0 0;height:5px;margin-top:4px}
+.pemo-triste .pface::after{content:'💧';position:absolute;right:-11px;top:3px;font-size:.5rem;
+  animation:pemo-lagrima 2.4s ease-in-out infinite}
+@keyframes pemo-lagrima{0%,100%{opacity:.4;transform:translateY(0)}50%{opacity:1;transform:translateY(3px)}}
+/* Enamorada: ojitos de corazón */
+.pemo-enamorada .pojo{background:none;width:11px;height:11px}
+.pemo-enamorada .pojo::after{content:'♥';position:static;width:auto;height:auto;background:none;
+  color:#e8506a;font-size:12px;line-height:1;display:block;text-align:center;
+  animation:pemo-latido 1.2s ease-in-out infinite}
+@keyframes pemo-latido{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+/* Estelar: ojos de estrella brillante */
+.pemo-estelar .pojo{background:none;width:12px;height:12px}
+.pemo-estelar .pojo::after{content:'✦';position:static;width:auto;height:auto;background:none;
+  color:#e8a020;font-size:12px;line-height:1;display:block;text-align:center;
+  text-shadow:0 0 5px rgba(255,200,80,.9);animation:pet-tw 1.6s ease-in-out infinite}
+.pemo-estelar .pboca{width:11px;height:7px;background:#7a3010;border:none;border-radius:0 0 11px 11px}
+
+/* Pícara: guiño con sonrisita ladeada */
+.pemo-picara .pojo:first-child{height:2.5px;border-radius:3px;margin-top:5px}
+.pemo-picara .pojo:first-child::after{display:none}
+.pemo-picara .pboca{transform:rotate(-8deg);width:11px}
+/* Celebrando: sonrisota + confeti */
+.pemo-celebrando .pboca{width:12px;height:8px;background:#7a3010;border:none;border-radius:0 0 12px 12px}
+.pemo-celebrando .pface::before{content:'🎊';position:absolute;left:-16px;top:-4px;font-size:.55rem;
+  animation:pemo-conf 1.4s ease-in-out infinite}
+.pemo-celebrando .pface::after{content:'🎉';position:absolute;right:-16px;top:-4px;font-size:.55rem;
+  animation:pemo-conf 1.4s ease-in-out infinite .7s}
+@keyframes pemo-conf{0%,100%{transform:translateY(0) rotate(-10deg)}50%{transform:translateY(-5px) rotate(10deg)}}
+/* Bendecida: serena con halo pequeño */
+.pemo-bendecida .pojo{height:2.5px;border-radius:3px;margin-top:5px}
+.pemo-bendecida .pojo::after{display:none}
+.pemo-bendecida .pboca{width:10px}
+.pemo-bendecida .pface::before{content:'';position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  width:16px;height:5px;border-radius:50%;border:1.5px solid rgba(255,225,140,.95);
+  box-shadow:0 0 6px rgba(255,216,112,.8);animation:pet-tw 2.4s ease-in-out infinite}
+
+/* ── Nabi Maine Coon: mechones en orejas y mejillas peluditas ── */
+.pn .oreja::after{content:'';position:absolute;left:-5px;top:5px;
+  border-left:5px solid transparent;border-right:5px solid transparent;
+  border-bottom:9px solid #d8b890}
+.pn .cabeza::before,.pn .cabeza::after{content:'';position:absolute;top:24px;
+  width:13px;height:17px;border-radius:60% 40% 70% 30%;background:#efe1cd;
+  box-shadow:inset -2px -2px 4px rgba(180,140,110,.35)}
+.pn .cabeza::before{left:-8px;transform:rotate(-14deg)}
+.pn .cabeza::after{right:-8px;transform:scaleX(-1) rotate(-14deg)}
+
+/* ══════ VARIANTES POR GUARDIÁN ══════ */
+/* Lumi: llamas de colores */
+.pvar-vela-azul .pv .llama{background:radial-gradient(ellipse at 50% 78%,#e8f6ff 0%,#6ad0ff 45%,#2a7ae8 80%,transparent 100%);filter:drop-shadow(0 0 12px rgba(90,180,255,.95))}
+.pvar-vela-violeta .pv .llama{background:radial-gradient(ellipse at 50% 78%,#f4e6ff 0%,#c07aff 45%,#7a2ae8 80%,transparent 100%);filter:drop-shadow(0 0 12px rgba(170,100,255,.95))}
+.pvar-vela-esmeralda .pv .llama{background:radial-gradient(ellipse at 50% 78%,#eafff2 0%,#5ee8a0 45%,#1a9a5a 80%,transparent 100%);filter:drop-shadow(0 0 12px rgba(80,220,150,.95))}
+/* Stella: cantidad de puntas */
+.pvar-estrella-seis .pe .cuerpo{clip-path:polygon(50% 0%,61% 29%,93% 25%,72% 50%,93% 75%,61% 71%,50% 100%,39% 71%,7% 75%,28% 50%,7% 25%,39% 29%)}
+.pvar-estrella-ocho .pe .cuerpo{clip-path:polygon(50% 0%,59% 26%,79% 12%,72% 35%,100% 39%,78% 50%,100% 61%,72% 65%,79% 88%,59% 74%,50% 100%,41% 74%,21% 88%,28% 65%,0% 61%,22% 50%,0% 39%,28% 35%,21% 12%,41% 26%)}
+/* Selene: otras fases */
+.pvar-luna-llena .pl .cuerpo{-webkit-mask:none;mask:none}
+.pvar-luna-cuarto .pl .cuerpo{-webkit-mask:radial-gradient(circle at 22% 22%,transparent 34%,#000 36%);mask:radial-gradient(circle at 22% 22%,transparent 34%,#000 36%)}
+.pvar-luna-cuarto .pl .pface{left:58%}
+/* Cristalia: bases de otro material */
+.pvar-bola-plata .pb .base{background:linear-gradient(160deg,#eef2f8,#8a94a8)}
+.pvar-bola-obsidiana .pb .base{background:linear-gradient(160deg,#4a4658,#16141f);box-shadow:0 3px 8px rgba(0,0,0,.6),0 0 8px rgba(140,120,200,.3)}
+.pvar-bola-rosaoro .pb .base{background:linear-gradient(160deg,#f8d0c0,#c8825f)}
+/* Nazari: colores de iris */
+.pvar-ojo-esmeralda .po{filter:drop-shadow(0 0 14px rgba(60,220,150,.6))}
+.pvar-ojo-esmeralda .po .a1{background:radial-gradient(circle at 36% 30%,#3ce89e,#0f7a4a)}
+.pvar-ojo-esmeralda .po .a3{background:radial-gradient(circle at 38% 32%,#8af0c0,#1a9a5e)}
+.pvar-ojo-ambar .po{filter:drop-shadow(0 0 14px rgba(255,190,80,.6))}
+.pvar-ojo-ambar .po .a1{background:radial-gradient(circle at 36% 30%,#e8b04a,#8a5c10)}
+.pvar-ojo-ambar .po .a3{background:radial-gradient(circle at 38% 32%,#ffd88a,#c8861a)}
+.pvar-ojo-violeta .po{filter:drop-shadow(0 0 14px rgba(180,110,255,.6))}
+.pvar-ojo-violeta .po .a1{background:radial-gradient(circle at 36% 30%,#b070f0,#4a1a94)}
+.pvar-ojo-violeta .po .a3{background:radial-gradient(circle at 38% 32%,#d8aaff,#7a2ae8)}
+/* Glimmer: anillos de color */
+.pvar-brillito-anrosa .pbr .anillo{border-color:rgba(255,150,220,.65)}
+.pvar-brillito-anceleste .pbr .anillo{border-color:rgba(130,210,255,.65)}
+/* Alma: halos de color */
+.pvar-alma-halorosa .pa .halo{border-color:#ff9ad0;box-shadow:0 0 12px rgba(255,140,200,.9)}
+.pvar-alma-haloplata .pa .halo{border-color:#e6ecfa;box-shadow:0 0 12px rgba(210,225,255,.95)}
+/* Nabi: alas de mariposas reales */
+.pvar-nabi-monarca .pn .ala{background:
+  radial-gradient(circle at 30% 26%,#fff 2.5px,transparent 3.5px),
+  radial-gradient(circle at 62% 48%,#fff 2px,transparent 3px),
+  radial-gradient(circle at 40% 70%,#fff 1.8px,transparent 2.8px),
+  linear-gradient(160deg,#ff9a3c 0%,#e8641a 45%,#7a2a08 80%,#3a1404 100%);
+  box-shadow:inset 0 0 8px rgba(60,20,0,.45),0 0 12px rgba(255,140,40,.5)}
+.pvar-nabi-monarca .pn{filter:drop-shadow(0 0 14px rgba(255,150,60,.55))}
+.pvar-nabi-morpho .pn .ala{background:linear-gradient(160deg,#b8ecff 0%,#5ac4ff 35%,#1a72e8 70%,#0a2a7a 100%);
+  box-shadow:inset 0 0 10px rgba(255,255,255,.4),0 0 14px rgba(80,170,255,.6)}
+.pvar-nabi-morpho .pn{filter:drop-shadow(0 0 14px rgba(90,180,255,.6))}
+
+/* ══════ EVOLUCIONES ══════ */
+.pnv2{transform:scale(1.12)}
+.pnv2 .pets{filter:drop-shadow(0 0 12px rgba(255,230,150,.75))}
+.pnv3{transform:scale(1.22);position:relative}
+.pnv3 .pets{filter:drop-shadow(0 0 16px rgba(255,216,112,.95))}
+.pnv3::before{content:'♕';position:absolute;top:-15px;left:50%;transform:translateX(-50%);
+  color:#ffd870;font-size:15px;z-index:7;pointer-events:none;
+  text-shadow:0 0 9px rgba(255,216,112,.95);animation:pnv-corona 2.4s ease-in-out infinite}
+@keyframes pnv-corona{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
+
+/* ══════ CARICIA 💞 ══════ */
+@keyframes caricia-salto{0%,100%{transform:translateY(0) scale(1)}
+  30%{transform:translateY(-14px) scale(1.12) rotate(-6deg)}
+  55%{transform:translateY(-4px) scale(1.06) rotate(5deg)}}
+.caricia-anim{animation:caricia-salto .7s ease-in-out!important}
+.caricia-corazon{position:absolute;font-size:.9rem;pointer-events:none;z-index:99;
+  animation:caricia-sube 1.1s ease-out forwards}
+@keyframes caricia-sube{0%{opacity:1;transform:translateY(0) scale(.7)}
+  100%{opacity:0;transform:translateY(-46px) scale(1.25)}}
+
+@media(prefers-reduced-motion:reduce){.pets,.pets *,.pets *::before,.pets *::after{animation:none!important}}
+`;
+const style = document.createElement('style');
+style.id = 'guardianes-css';
+style.textContent = css;
+(document.head || document.documentElement).appendChild(style);
+
+// ═══════════════════════════════════════════════════
+//  GUARDIÁN ACOMPAÑANTE — te sigue por todo el Templo
+//  Aparece en cualquier página cuando hay sesión iniciada
+//  y tienes un guardián elegido. Clic → Mi Santuario.
+// ═══════════════════════════════════════════════════
+const compCss = document.createElement('style');
+compCss.textContent = `
+#guardianCompanion{position:fixed;bottom:1.4rem;right:1.4rem;z-index:90;
+  cursor:pointer;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));
+  animation:comp-idle 6s ease-in-out infinite;transition:transform .3s}
+#guardianCompanion:hover{transform:scale(1.12)}
+@keyframes comp-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@media(max-width:600px){#guardianCompanion{bottom:.8rem;right:.8rem;transform:scale(.75)}}
+`;
+(document.head || document.documentElement).appendChild(compCss);
+
+function renderCompanion(){
+  // El muro tiene su propio guardián de página — no duplicar
+  if(document.getElementById('guardianPage')) return;
+  if(!window.Starbits || !document.body) return;
+
+  let el = document.getElementById('guardianCompanion');
+  const sel = window.Starbits.getSel();
+  const conSesion = !!window._fbUser;
+
+  if(!conSesion || !sel || !window.MASCOTAS[sel]){
+    if(el) el.remove();
+    return;
+  }
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'guardianCompanion';
+    el.title = 'Acariciar 💞 · doble clic: Mi Santuario';
+    el.onclick = () => window.acariciarGuardian(el);
+    el.ondblclick = () => location.href = 'perfil.html';
+    document.body.appendChild(el);
+  }
+  const aura = window.Starbits.getAura();
+  const firma = sel + '|' + window.Starbits.getColor() + '|' + window.Starbits.getEmo() + '|' + aura;
+  if(el.dataset.firma === firma) return; // sin cambios, no re-dibujar
+  el.dataset.firma = firma;
+  el.className = aura && window.AURAS[aura] ? 'aura-' + aura : '';
+  el.innerHTML = window.petHtml(sel, .8, {color: window.Starbits.getColor(), emo: window.Starbits.getEmo()});
+}
+
+// ── Acariciar: salto + corazones + Starbits (con tope diario) ──
+window.acariciarGuardian = function(el){
+  if(!el) return;
+  el.classList.remove('caricia-anim');
+  void el.offsetWidth; // reiniciar la animación
+  el.classList.add('caricia-anim');
+  for(let i=0;i<3;i++){
+    const c = document.createElement('span');
+    c.className = 'caricia-corazon';
+    c.textContent = ['💛','💖','✨'][i];
+    c.style.left = (18 + Math.random()*46) + 'px';
+    c.style.top  = (8 + Math.random()*18) + 'px';
+    c.style.animationDelay = (i*.12) + 's';
+    el.appendChild(c);
+    setTimeout(()=>c.remove(), 1400);
+  }
+  window.Starbits?.premiar('caricia');
+};
+
+// ═══════════════════════════════════════════════════
+//  🧪 POCIÓN DE APOYO — "invítame una poción" (Ko-fi)
+//  Frasquito burbujeante en la esquina inferior izquierda;
+//  al tocarlo se despliega el mensaje con el enlace.
+// ═══════════════════════════════════════════════════
+const KOFI_URL = 'https://ko-fi.com/bruxatarot';
+
+// Textos de la poción en los 7 idiomas del Templo
+const POCION_TXT = {
+  es: { msg: `✦ ¿Disfrutas del Templo?<br>Si mi trabajo ilumina tu camino, considera regalarme una <em style="color:#c89aff">poción mágica</em> para seguir creando 💜`,
+        btn: '🧪 REGALAR UNA POCIÓN', tip: 'Invítame una poción mágica 🧪' },
+  en: { msg: `✦ Enjoying the Temple?<br>If my work lights your path, consider gifting me a <em style="color:#c89aff">magic potion</em> to keep creating 💜`,
+        btn: '🧪 GIFT A POTION', tip: 'Buy me a magic potion 🧪' },
+  pt: { msg: `✦ Está gostando do Templo?<br>Se meu trabalho ilumina seu caminho, considere me presentear com uma <em style="color:#c89aff">poção mágica</em> para continuar criando 💜`,
+        btn: '🧪 PRESENTEAR UMA POÇÃO', tip: 'Me presenteie uma poção mágica 🧪' },
+  it: { msg: `✦ Ti piace il Tempio?<br>Se il mio lavoro illumina il tuo cammino, considera di regalarmi una <em style="color:#c89aff">pozione magica</em> per continuare a creare 💜`,
+        btn: '🧪 REGALA UNA POZIONE', tip: 'Regalami una pozione magica 🧪' },
+  ko: { msg: `✦ 템플이 마음에 드시나요?<br>제 작업이 당신의 길을 밝혀준다면, 계속 창작할 수 있도록 <em style="color:#c89aff">마법의 물약</em>을 선물해 주세요 💜`,
+        btn: '🧪 물약 선물하기', tip: '마법의 물약을 선물해 주세요 🧪' },
+  tr: { msg: `✦ Tapınağı seviyor musun?<br>Çalışmalarım yolunu aydınlatıyorsa, yaratmaya devam edebilmem için bana bir <em style="color:#c89aff">sihirli iksir</em> hediye etmeyi düşün 💜`,
+        btn: '🧪 İKSİR HEDİYE ET', tip: 'Bana sihirli bir iksir ısmarla 🧪' },
+  ja: { msg: `✦ テンプロを楽しんでいますか？<br>私の作品があなたの道を照らしているなら、創作を続けられるよう<em style="color:#c89aff">魔法のポーション</em>を贈っていただけると嬉しいです 💜`,
+        btn: '🧪 ポーションを贈る', tip: '魔法のポーションを贈ってね 🧪' },
+};
+function pocionTexto(){
+  const lang = window.LangEngine?.current || 'es';
+  return POCION_TXT[lang] || POCION_TXT.es;
+}
+
+const pocionCss = document.createElement('style');
+pocionCss.textContent = `
+#pocionApoyo{position:fixed;bottom:1.4rem;left:1.4rem;z-index:95;
+  font-family:'Cinzel',serif}
+#pocionBtn{width:52px;height:58px;cursor:pointer;position:relative;border:none;
+  background:none;padding:0;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));
+  transition:transform .3s;animation:pocion-flota 4.5s ease-in-out infinite}
+#pocionBtn:hover{transform:scale(1.12)}
+@keyframes pocion-flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.poc-frasco{position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:40px;height:40px;border-radius:50%;
+  background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.5) 0%,rgba(190,120,240,.85) 30%,rgba(120,60,190,.95) 70%,rgba(70,30,120,1) 100%);
+  border:2px solid rgba(230,200,255,.5);overflow:hidden;
+  box-shadow:0 0 16px rgba(170,90,240,.55),inset 0 -6px 12px rgba(50,15,90,.6)}
+.poc-cuello{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
+  width:12px;height:14px;background:linear-gradient(to right,rgba(200,160,240,.5),rgba(240,220,255,.35),rgba(200,160,240,.5));
+  border:2px solid rgba(230,200,255,.5);border-bottom:none;border-radius:3px 3px 0 0}
+.poc-corcho{position:absolute;bottom:46px;left:50%;transform:translateX(-50%);
+  width:14px;height:7px;background:linear-gradient(160deg,#c9a06a,#8a6438);border-radius:3px 3px 1px 1px}
+.poc-burbuja{position:absolute;bottom:2px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.9),rgba(230,190,255,.4));
+  animation:poc-sube var(--bd,2.2s) ease-in infinite;animation-delay:var(--bw,0s)}
+@keyframes poc-sube{0%{transform:translateY(0) scale(.6);opacity:0}
+  15%{opacity:.9}100%{transform:translateY(-30px) scale(1.1);opacity:0}}
+.poc-brillo{position:absolute;top:-4px;right:-2px;font-size:.7rem;color:#e8c8ff;
+  text-shadow:0 0 6px rgba(200,140,255,.9);animation:pet-tw 2s ease-in-out infinite}
+
+#pocionPanel{position:absolute;bottom:70px;left:0;width:236px;
+  background:linear-gradient(160deg,rgba(38,22,66,.97),rgba(18,10,38,.98));
+  border:1px solid rgba(190,130,250,.4);border-radius:16px;padding:1.1rem 1.2rem;
+  box-shadow:0 14px 40px rgba(0,0,0,.6),0 0 30px rgba(150,80,220,.18);
+  opacity:0;pointer-events:none;transform:translateY(8px);transition:all .3s}
+#pocionApoyo.abierto #pocionPanel{opacity:1;pointer-events:all;transform:translateY(0)}
+#pocionPanel p{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.92rem;line-height:1.55;color:#dcc8f0;margin-bottom:.9rem}
+#pocionPanel a{display:block;text-align:center;text-decoration:none;
+  font-size:.55rem;letter-spacing:.18em;padding:.65rem 1rem;border-radius:100px;
+  background:linear-gradient(135deg,#a866e0,#7a3cc0);color:#fff;
+  box-shadow:0 0 16px rgba(160,90,230,.4);transition:all .3s}
+#pocionPanel a:hover{box-shadow:0 0 26px rgba(180,110,250,.6);transform:translateY(-1px)}
+#pocionCerrar{position:absolute;top:.5rem;right:.7rem;background:none;border:none;
+  color:rgba(220,190,250,.5);font-size:.85rem;cursor:pointer}
+#pocionCerrar:hover{color:#e8c8ff}
+@media(max-width:600px){#pocionApoyo{bottom:.8rem;left:.8rem}#pocionPanel{width:200px}}
+`;
+(document.head || document.documentElement).appendChild(pocionCss);
+
+function crearPocion(){
+  if(document.getElementById('pocionApoyo') || !document.body) return;
+  const t = pocionTexto();
+  const el = document.createElement('div');
+  el.id = 'pocionApoyo';
+  el.innerHTML = `
+    <div id="pocionPanel">
+      <button id="pocionCerrar">✕</button>
+      <p id="pocionMsg">${t.msg}</p>
+      <a id="pocionLink" href="${KOFI_URL}" target="_blank" rel="noopener">${t.btn}</a>
+    </div>
+    <button id="pocionBtn" title="${t.tip}">
+      <span class="poc-corcho"></span>
+      <span class="poc-cuello"></span>
+      <span class="poc-frasco">
+        <span class="poc-burbuja" style="left:8px;width:5px;height:5px;--bd:2.4s;--bw:0s"></span>
+        <span class="poc-burbuja" style="left:18px;width:7px;height:7px;--bd:2s;--bw:.7s"></span>
+        <span class="poc-burbuja" style="left:27px;width:4px;height:4px;--bd:2.8s;--bw:1.3s"></span>
+      </span>
+      <span class="poc-brillo">✦</span>
+    </button>`;
+  document.body.appendChild(el);
+  document.getElementById('pocionBtn').onclick = () => el.classList.toggle('abierto');
+  document.getElementById('pocionCerrar').onclick = (e) => { e.stopPropagation(); el.classList.remove('abierto'); };
+}
+
+// Actualizar la poción cuando el visitante cambia de idioma
+function traducirPocion(){
+  const t = pocionTexto();
+  const msg = document.getElementById('pocionMsg');
+  const link = document.getElementById('pocionLink');
+  const btn = document.getElementById('pocionBtn');
+  if(msg) msg.innerHTML = t.msg;
+  if(link) link.textContent = t.btn;
+  if(btn) btn.title = t.tip;
+}
+// (auto-init deshabilitado en la app: la poción y el guardián acompañante se montan desde el DC)
+
+})();
