@@ -1351,5 +1351,120 @@ document.getElementById('loginPass').addEventListener('keydown', e => {
   if(e.key === 'Enter') verificarLogin();
 });
 </script>
+<!-- ═══════════ MODO MÓVIL DEL PANEL (no afecta la vista de computadora) ═══════════ -->
+<style>
+@media (max-width:700px){
+  .admin-content{padding:1.2rem .9rem calc(4rem + env(safe-area-inset-bottom,0px))}
+  .admin-greeting{font-size:1.15rem}
+  .admin-sub{margin-bottom:1.2rem;font-size:.85rem}
+  /* inputs a 16px: evita que el iPhone haga zoom al escribir */
+  .admin-input,.admin-textarea,input,textarea,select{font-size:16px !important}
+  .save-btn,.login-btn{min-height:46px}
+  .adm-btn-borrar{min-height:38px;padding:.5rem 1rem}
+  .admin-card{padding:1.1rem 1rem}
+
+  /* Tarjetas colapsables: cerrada = solo se ve el título */
+  body.m-movil .admin-card .admin-card-title{
+    display:flex;align-items:center;gap:.5rem;cursor:pointer;
+    -webkit-user-select:none;user-select:none;padding:.35rem 0;
+  }
+  body.m-movil .admin-card .admin-card-title::after{
+    content:'▾';margin-left:auto;color:rgba(201,168,76,.55);
+    transition:transform .25s;font-size:.9rem;
+  }
+  body.m-movil .admin-card.m-cerrada .admin-card-title::after{transform:rotate(-90deg)}
+  body.m-movil .admin-card.m-cerrada > *:not(.admin-card-icon):not(.admin-card-title){display:none !important}
+
+  /* Barra de accesos rápidos (pegajosa arriba) */
+  #mNavRapida{
+    position:sticky;top:0;z-index:60;display:flex;gap:.45rem;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;
+    padding:.6rem .2rem;margin:0 0 1rem;
+    background:rgba(4,6,15,.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(201,168,76,.15);
+    scrollbar-width:none;
+  }
+  #mNavRapida::-webkit-scrollbar{display:none}
+  .m-chip{
+    flex:0 0 auto;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.12em;
+    color:rgba(201,168,76,.85);background:rgba(11,17,40,.7);
+    border:1px solid rgba(201,168,76,.25);border-radius:100px;
+    padding:.45rem .8rem;cursor:pointer;white-space:nowrap;
+  }
+  .m-chip:active{background:rgba(201,168,76,.18)}
+}
+@media (min-width:701px){ #mNavRapida{display:none} }
+</style>
+<script>
+(function(){
+  var mq = window.matchMedia('(max-width:700px)');
+
+  function tituloCorto(card){
+    var t = card.querySelector('.admin-card-title');
+    var texto = t ? t.textContent.trim() : '';
+    // "GESTIÓN DEL LIBRO DE ALMAS" -> "GESTIÓN LIBRO"
+    var palabras = texto.split(/\s+/).filter(function(p){
+      return !/^(DEL|DE|LA|EL|LOS|LAS|QUE|NOS|·)$/i.test(p);
+    });
+    return palabras.slice(0,2).join(' ');
+  }
+
+  function activar(){
+    document.body.classList.add('m-movil');
+    var panel = document.getElementById('adminPanel');
+    if(!panel) return;
+    var cards = Array.prototype.slice.call(panel.querySelectorAll('.admin-card'));
+    if(!cards.length) return;
+
+    // 1) Colapsar todas menos la primera (estadísticas)
+    cards.forEach(function(card, i){
+      if(i > 0) card.classList.add('m-cerrada');
+      var t = card.querySelector('.admin-card-title');
+      if(t && !t.dataset.mListo){
+        t.dataset.mListo = '1';
+        t.addEventListener('click', function(){
+          if(!document.body.classList.contains('m-movil')) return;
+          card.classList.toggle('m-cerrada');
+        });
+      }
+    });
+
+    // 2) Barra de accesos rápidos
+    if(!document.getElementById('mNavRapida')){
+      var nav = document.createElement('div');
+      nav.id = 'mNavRapida';
+      cards.forEach(function(card){
+        var icono = card.querySelector('.admin-card-icon');
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'm-chip';
+        chip.textContent = (icono ? icono.textContent.trim()+' ' : '') + tituloCorto(card);
+        chip.addEventListener('click', function(){
+          card.classList.remove('m-cerrada');
+          card.scrollIntoView({behavior:'smooth', block:'start'});
+        });
+        nav.appendChild(chip);
+      });
+      var contenido = panel.querySelector('.admin-content') || panel;
+      contenido.insertBefore(nav, contenido.firstChild);
+    }
+  }
+
+  function desactivar(){
+    document.body.classList.remove('m-movil');
+    // las tarjetas se muestran completas por CSS al salir de m-movil
+  }
+
+  function revisar(){ mq.matches ? activar() : desactivar(); }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', revisar);
+  } else { revisar(); }
+  if(mq.addEventListener){ mq.addEventListener('change', revisar); }
+  else if(mq.addListener){ mq.addListener(revisar); }
+})();
+</script>
+<!-- ═══════════ FIN MODO MÓVIL ═══════════ -->
+
 </body>
 </html>
