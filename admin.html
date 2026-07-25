@@ -399,7 +399,9 @@
         background:radial-gradient(circle at 50% 30%,rgba(201,168,76,.08),transparent 70%)">
         <div id="sorteoEmoji" style="font-size:2.4rem;margin-bottom:.6rem"></div>
         <div id="sorteoNombre" style="font-family:'Cinzel Decorative',serif;font-size:1.3rem;color:#f5e6b8;margin-bottom:.3rem"></div>
-        <div id="sorteoTipo" style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.25em;color:rgba(201,168,76,.5);margin-bottom:1.2rem"></div>
+        <div id="sorteoTipo" style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.25em;color:rgba(201,168,76,.5);margin-bottom:.8rem"></div>
+        <div id="sorteoOrientacion" style="display:none;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.25em;margin-bottom:.8rem"></div>
+        <div id="sorteoSignificado" style="display:none;max-width:520px;margin:0 auto 1.2rem;padding:.9rem 1.1rem;border:1px solid rgba(201,168,76,.18);border-radius:12px;background:rgba(4,6,15,.4)"></div>
         <div style="display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap">
           <button class="save-btn" onclick="sortearOtraVez()" style="background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.3)">↺ Sortear de nuevo</button>
           <button class="save-btn" onclick="usarEnSemana()">✦ Usar en Energía de la Semana</button>
@@ -628,19 +630,138 @@ function verificarLogin() {
 }
 
 // ══════════════════════════════════════════
-// SORTEO MÍSTICO 🎴
+// SORTEO MÍSTICO 🎴  (con luz/sombra y significados)
 // ══════════════════════════════════════════
 let _ultimoSorteoTipo = 'oracle';
 const SUIT_NOMBRES = {mayor:'Arcano Mayor', copas:'Copas', oros:'Oros', espadas:'Espadas', bastos:'Bastos'};
+
+// Oráculo: num -> [subtítulo, luz, sombra]  (textos del Oráculo Prisma, tal como en tiradas.html)
+const ORACULO_SIG = {"1":["Canalizadora del Prisma","Es tiempo de recuperar tu magia personal. Tienes el poder de cambiar tu mirada y elegir otra frecuencia. Esta carta es un llamado suave pero firme a recuperar el asombro.","En sombra: te desconectas de lo concreto y vives demasiado en potenciales. El prisma de posibilidades puede volverse laberinto. Hoy pregúntate: ¿estás creando o evadiendo?"],
+"2":["Cazadora de Espíritus","Algo invisible necesita ser visto. Tu intuición será tu mejor aliada. Observa, discierte y actúa con sigilo, pero con firmeza.","En sombra: la hipervigilancia se convierte en ansiedad y sospecha. Ves peligro donde no lo hay. Hoy respira — no todo lo que percibes es una amenaza real."],
+"3":["Diosa de la Sanación","Sanar no implica evitar el dolor, sino atravesarlo con valentía. Marta te invita a confiar en que cada lágrima derramada riega tu camino hacia una versión más fuerte de ti.","En sombra: la paciencia se convierte en estancamiento. Te aferras a la esperanza aunque ya no haya señales. ¿Estás esperando o simplemente evitando avanzar?"],
+"4":["Diosa del Karma","Jade aparece cuando el universo está haciendo ajustes. Todo lo que sembraste comienza a dar frutos. Esta carta te invita a perdonarte y soltar lo que ya no te corresponde cargar.","En sombra: la necesidad de equilibrio se vuelve rigidez y juicio excesivo. El peso de la justicia puede convertirse en condena. Suelta el veredicto."],
+"5":["Diosa del Camino","El camino ya está trazado dentro de ti. Aunque no veas todo el mapa, tienes suficiente claridad para el siguiente paso. Confía en tu intuición. No estás sola.","En sombra: la brújula interna se silencia por duda excesiva. No confías en lo que ya sabes. Hoy para el ruido externo y escucha lo que llevas dentro."],
+"6":["Diosa del Amor Propio","Mia llega cuando es momento de recordar quién eres y lo que vales. El amor empieza por ti. No temas alejarte de lo que no te valora.","En sombra: la autoprotección se vuelve cierre prematuro. Tu dignidad puede volverse distancia. ¿Estás protegiéndote... o alejando lo que sí te hace bien?"],
+"7":["Dios del Tiempo","Tony aparece cuando el tiempo es ahora. Ya no hay espacio para el después. Lo que no eliges hoy, lo elige el tiempo por ti.","En sombra: la urgencia se convierte en ansiedad por el futuro. El miedo a que el tiempo se acabe te paraliza. Hoy respira — no todo necesita resolverse ahora."],
+"8":["Dios del Fuego y la Resurrección","Dante aparece cuando el deseo es tan fuerte que no puede ser ignorado. Atrévete a sentir sin censura. Del dolor más profundo nace la llama más brillante.","En sombra: la intensidad se convierte en adicción al drama emocional. Buscas el fuego aunque destruya. ¿Lo que sientes es pasión... o caos disfrazado?"],
+"9":["Regreso Interior","La Voz Clara es el momento en que el alma dice: ya no más huir. Estás lista para volver a ti. Es hora de tomar el micrófono de tu propia vida.","En sombra: el ruido externo ahoga la voz interior. No logras escucharte. Hoy apaga todo lo que no eres tú y siéntate en silencio aunque incomode."],
+"10":["Despertar Espiritual","Tu corazón desea otra vida. Cuando ya diste el primer paso y necesitas confirmación de que tu alma te guía — esta carta es esa señal.","En sombra: el despertar genera crisis de identidad. Te resistes al cambio que tu alma pide. Lo que se mueve en ti no es peligro — es evolución."],
+"11":["Reconexión","Luego del caos, del despertar, del dolor — decides volver a ti. No es un regreso al pasado: es al presente más honesto, más tuyo.","En sombra: le temes a la calma. La estabilidad te parece aburrida o falsa. ¿Por qué te cuesta tanto permitirte estar en paz?"],
+"12":["Tejedor de Sombras","Esta carta surge cuando las emociones se vuelven un juego de poder. ¿Estás en un vínculo desequilibrado? Tu intuición ya sabe la verdad.","En sombra profunda: manipulación pasiva y dependencia emocional disfrazada. Usas la ambigüedad como escudo para no comprometerte. Hoy sé honesto/a — contigo primero."],
+"13":["Eco de la Duda","Cuando estás atrapada entre lo que deseas y lo que te atreves a elegir. No elegir también es elegir. Y el alma lo sabe.","En sombra: nostalgia paralizante y apego a lo conocido aunque duela. Hoy el universo te pide que te decidas."],
+"14":["El Veneno Sutil","Esta carta llega como susurro. ¿Lo que sientes es deseo o adicción? ¿Estás aceptando migajas disfrazadas de pasión?","En sombra: toxicidad pasiva y autoafirmación a costa de otros. Distorsionas percepciones sin confrontación directa. Hoy pregúntate desde dónde estás actuando realmente."],
+"15":["Intromisión Silenciosa","El verdadero poder no viene del control externo, sino de la seguridad interna. Esta carta te invita a soltar el espejismo del control.","En sombra: cruzas límites sin confrontación abierta, desde la inseguridad disfrazada de poder. El verdadero control viene de adentro, no de manipular lo externo."],
+"16":["Prisionera del Ayer","Tatiana aparece cuando estás aferrada a algo solo porque es familiar. ¿Estás en ciclos repetidos por costumbre, no por amor?","En sombra: vives emocionalmente anclada al pasado y repites ciclos por miedo al cambio. Hoy suelta una cosa — solo una — que ya no te sirve pero sigues cargando."],
+"17":["Susurro Eterno","Cuando sientes un amor tan profundo que trasciende lo tangible. A veces el alma está esperando otra vida, otro plano, otro momento.","En sombra: idealizas el pasado y te cierras al presente. Un amor no cerrado sigue ocupando espacio. Hoy date permiso de soltar sin olvidar."],
+"18":["La Voz que Enfrenta la Injusticia","Alberto aparece cuando alguien necesita ser defendido. Sé trinchera cuando alguien más está cayendo. Un acto de intercesión puede cambiar el rumbo de una situación.","En sombra: rigidez moral o confrontación impulsiva. Luchas batallas que no son tuyas. Hoy pregúntate si estás defendiendo la justicia... o tu propio orgullo."],
+"19":["Protector de los Corazones Rotos","Es momento de honrar lo que siempre ha estado ahí: un amor no correspondido, una amistad que te sostuvo, una parte de ti que nunca dejaste morir.","En sombra: invisibilidad emocional y autosacrificio. Te borras para que otros brillen. Hoy recuerda que tus necesidades también importan."],
+"20":["La Druida del Espejo","Rosario no te da respuestas directas: te pone frente al espejo y te acompaña mientras las descubres. La amistad que escucha antes de hablar.","En sombra: exceso de autoanálisis o dureza emocional. La verdad se convierte en juicio. Hoy sé tan compasiva con otros como lo eres con la verdad."],
+"21":["Renata, Cristina y Sofía","¿Estás dejando que te acompañen, o tratando de cargar todo sola? Es momento de honrar a quienes te sostienen sin condiciones.","En sombra: dispersión emocional o contradicción interna. Las voces que te apoyan se contradicen y te confunden. Hoy elige una sola dirección y confía en ella."],
+"22":["Cupido Encubierto","Jazmín trabaja en silencio y confía en el tiempo del universo. El verdadero cupido no lanza flechas — lanza señales.","En sombra: conectas a todos menos a ti misma/o. Postergás tu propio deseo emocional. Hoy pregúntate qué necesitas tú."],
+"23":["Cheerleader del Alma","Esta carta es el grito del alma que dice: vas mejor de lo que crees. No te escondas cuando es hora de brillar.","En sombra: niegas tu propio dolor para mantener la energía de todos. Te consumes ayudando y nadie lo nota. Hoy permite que alguien te cuide a ti."],
+"24":["Guardián de los Portales","Sigue tu curiosidad, explora lo que parecía insignificante. Algo está a punto de abrirse en tu vida. La magia no siempre llega con grandes rituales.","En sombra: hipercontrol y rigidez defensiva. Proteges tan bien los umbrales que nada bueno puede entrar. Hoy abre una puerta aunque dé miedo."],
+"25":["El Iluminado","Erebus aparece cuando estás listo para ver más allá de la superficie. Su presencia basta para hacerte encontrar respuestas donde antes solo había ruido.","En sombra: aislamiento emocional y sobreintelectualización. Te encierras tanto en tu mundo que pierdes contacto con los demás. Hoy sal de tu cabeza y entra en tu cuerpo."],
+"26":["El Viajero del Inframundo","Estás cruzando portales internos que antes no querías ver. No necesitas entenderlo todo: solo atreverte a seguir tu propio viaje.","En sombra: te pierdes tan profundo que pierdes contacto con la realidad cotidiana. Hoy ancla algo concreto — come, camina, respira la tierra."],
+"27":["Portal Místico","No entras para desaparecer — entras para recordar quién eras antes de olvidar. Para regresar a ti... a veces hay que bajar.","En sombra: te niegas a bajar. Evitas el dolor transformacional y te quedas en la superficie. Hoy date permiso de sentir lo que has estado evitando."],
+"28":["Portal Místico","Ya hay un concilio energético reunido: tus guías, tus yo futuros, tus ancestros. Ya estás siendo sostenida por energías mayores.","En sombra: buscas apoyo externo cuando la respuesta ya está dentro. Dependes demasiado de la validación de otros. Hoy confía en tu propio concilio interior."],
+"29":["Portal Místico","El Portal del Caos no es tu enemigo. El universo sacude la mesa para que dejes de jugar a encajar. Te libera… aunque duela.","En sombra: el caos te paraliza en vez de liberarte. Le temes a lo que se rompe aunque ya no servía. Lo que cae no era tuyo para quedarse."],
+"30":["Portal Místico","Tu alma está en proceso alquímico. No interrumpas la mezcla: confía en lo que se está cocinando dentro de ti.","En sombra: interrumpes el proceso antes de que termine. La impaciencia te impide ver los frutos. Hoy confía en la mezcla aunque no entiendas el resultado aún."],
+"31":["Portal Místico","La sabiduría no se encuentra… se recuerda. Estás lista para recibir respuestas que antes no podías sostener.","En sombra: recibes tanta información que no sabes cuál escuchar. El exceso de conocimiento se vuelve parálisis. Hoy elige una sola verdad y actúa desde ahí."]};
+
+// Tarot: id -> [luz, sombra]
+const TAROT_SIG = {"t0":["Nuevos comienzos, fe en el salto, libertad del alma que confía en el camino.","El salto sin mirar se vuelve imprudencia. Hoy revisa si huyes en lugar de comenzar."],
+"t1":["Tienes todas las herramientas. Tu voluntad puede manifestar lo que nombres.","Manipulación o talento disperso. El poder sin propósito se vuelve truco vacío."],
+"t2":["Sabiduría interior, intuición profunda. La respuesta ya vive en tu silencio.","Secretos que pesan, intuición ignorada. Estás mirando afuera lo que solo se ve adentro."],
+"t3":["Abundancia, creatividad fértil, cuidado amoroso. Algo tuyo está floreciendo.","Sobreprotección o bloqueo creativo. Dar de más también puede ahogar."],
+"t4":["Estructura, orden y autoridad sana. Construyes sobre base firme.","Rigidez y control excesivo. La estructura que protege también puede encarcelar."],
+"t5":["Guía espiritual, tradición que sostiene, aprendizaje con maestros.","Dogma que limita. Cuestiona la regla que ya no sirve a tu alma."],
+"t6":["Unión, elección desde el corazón, armonía entre dos caminos.","Indecisión o valores en conflicto. Elegir por miedo no es elegir."],
+"t7":["Voluntad enfocada, victoria por disciplina. Avanzas dirigiendo tus fuerzas.","Impulsividad o rumbo perdido. Las riendas sueltas te llevan donde no quieres."],
+"t8":["Fuerza serena, coraje compasivo. Domas a la bestia con ternura, no con látigo.","Dudas de tu poder o fuerzas la situación. La verdadera fuerza no grita."],
+"t9":["Retiro sabio, búsqueda interior. Tu lámpara ilumina lo que la prisa esconde.","Aislamiento que duele. Hay diferencia entre soledad elegida y encierro."],
+"t10":["Giro del destino a tu favor. Los ciclos se mueven — fluye con ellos.","Resistencia al cambio. La rueda gira igual; aferrarte solo te marea."],
+"t11":["Verdad, equilibrio, consecuencias justas. Lo que siembras regresa alineado.","Injusticia o autoengaño. Revisa dónde no estás siendo honesta contigo."],
+"t12":["Pausa reveladora. Mirar el mundo al revés te muestra lo que nadie ve.","Sacrificio inútil, estancamiento. ¿Esperas con propósito o solo esperas?"],
+"t13":["Transformación profunda. Algo termina para que renazcas más ligera.","Miedo a soltar. Lo que retienes ya murió; cargarlo te impide florecer."],
+"t14":["Equilibrio, paciencia alquímica. Mezclas los opuestos y creas medicina.","Excesos o impaciencia. El desbalance te pide volver al centro."],
+"t15":["Reconocer tus cadenas es el primer paso. Mira de frente lo que te ata.","Adicciones, apegos, miedos que gobiernan. Las cadenas están más flojas de lo que crees."],
+"t16":["Derrumbe liberador. Cae lo falso para que quede solo lo verdadero.","Crisis que se prolonga por negarla. Deja caer la torre; no vivías en ella, te escondías."],
+"t17":["Esperanza, sanación, guía luminosa después de la tormenta.","Fe apagada, desilusión. La estrella sigue ahí aunque hoy no la veas."],
+"t18":["Intuición, sueños, misterio. No todo debe entenderse para ser sabido.","Confusión, engaño o miedos nocturnos. No tomes decisiones dentro de la niebla."],
+"t19":["Alegría plena, éxito, claridad. Tu luz merece ser vista sin disculpas.","Ego inflado u optimismo forzado. Brillar no es negar la sombra."],
+"t20":["Despertar, llamado del alma, renacimiento. Tu pasado te libera al perdonarlo.","Juicio duro contigo misma. La voz que te llama no es la que te condena."],
+"t21":["Culminación, integración, plenitud. El ciclo se completa y tú danzas en él.","Cierre pendiente. Falta un paso para completar — no te detengas en la puerta."],
+"tc1":["Nuevo amor o emoción que nace. El corazón se abre como copa llena.","Emociones reprimidas o copa ignorada. ¿Qué sentimiento no te permites?"],
+"tc2":["Unión de almas, reciprocidad, elección mutua del corazón.","Desbalance en el dar y recibir. Una copa no puede llenar a las dos."],
+"tc3":["Celebración, amistad, comunidad que nutre el alma.","Exceso social o terceros que interfieren. No toda fiesta alimenta."],
+"tc4":["Pausa emocional para reevaluar. Hay una copa nueva que aún no ves.","Apatía que se vuelve costumbre. La oportunidad espera tu mirada."],
+"tc5":["Duelo honesto. Llora las copas caídas, pero dos siguen de pie.","Aferrarse a la pérdida. Voltea: no todo se derramó."],
+"tc6":["Nostalgia dulce, reencuentros, la niña interior que pide juego.","Vivir en el ayer. El pasado es visita, no residencia."],
+"tc7":["Sueños e imaginación fértil. Muchas visiones — elige una y hazla real.","Ilusiones que dispersan. No todas las copas contienen algo verdadero."],
+"tc8":["Partida valiente. Dejas lo conocido para buscar lo que el alma pide.","Miedo a partir o huida sin rumbo. ¿Te vas hacia algo o solo escapas?"],
+"tc9":["Deseos cumplidos, satisfacción del corazón. Disfruta lo logrado.","Complacencia vacía. ¿El deseo cumplido era tuyo o aprendido?"],
+"tc10":["Plenitud emocional, hogar del alma, amor que se comparte en familia.","Armonía de fachada. El arcoíris real incluye días de lluvia."],
+"tcp":["Mensaje del corazón, sensibilidad nueva, arte que quiere nacer.","Inmadurez emocional o fantasía escapista. Siente sin ahogarte."],
+"tcq":["Romance, invitación del corazón, caballero que trae poesía.","Promesas bonitas sin acción. Las palabras dulces también engordan el ego."],
+"tcr":["Madurez emocional, intuición que cuida, amor que sostiene sin ahogar.","Dependencia o chantaje emocional. Cuidar no es controlar."],
+"tck":["Maestría emocional. Sientes hondo y gobiernas sereno como el mar.","Frialdad o manipulación afectiva. El control emocional sin corazón es hielo."],
+"tp1":["Semilla de prosperidad. Una oportunidad material concreta llega a tu mano.","Oportunidad desaprovechada o codicia inicial. La semilla pide tierra, no vitrina."],
+"tp2":["Malabarismo exitoso. Equilibras recursos y tiempos con gracia.","Sobrecarga. No puedes sostener todas las monedas en el aire para siempre."],
+"tp3":["Trabajo en equipo, maestría reconocida, construir con otros.","Trabajar sin reconocimiento o no delegar. La catedral se levanta entre varios."],
+"tp4":["Estabilidad, ahorro sabio, proteger lo construido.","Avaricia o miedo a soltar. Apretar las monedas también aprieta el corazón."],
+"tp5":["La escasez es temporal. Ayuda disponible si levantas la vista.","Mentalidad de carencia. La puerta del templo está al lado; toca."],
+"tp6":["Generosidad equilibrada. Das y recibes en justa medida.","Dar con condiciones o recibir con deuda. Revisa la balanza del intercambio."],
+"tp7":["Paciencia del sembrador. Tu cosecha crece aunque aún no la veas.","Impaciencia o esfuerzo mal invertido. Evalúa antes de seguir regando."],
+"tp8":["Dedicación artesana. Cada detalle que pules te acerca a la maestría.","Perfeccionismo o rutina vacía. Trabajar más no siempre es trabajar mejor."],
+"tp9":["Abundancia ganada, independencia, disfrutar tu jardín propio.","Éxito solitario o lujo sin gozo. ¿De qué sirve el jardín sin quien lo camine?"],
+"tp10":["Legado, riqueza familiar, prosperidad que trasciende generaciones.","Conflictos por lo material o peso de expectativas familiares."],
+"tpp":["Estudiante de la abundancia. Nueva habilidad o proyecto material germina.","Distracción o falta de constancia. La semilla necesita atención diaria."],
+"tpq":["Trabajo constante y confiable. Paso a paso, sin prisa y sin pausa.","Estancamiento en la rutina. Constancia sí, pero no te fosilices."],
+"tpr":["Abundancia práctica y generosa. Nutres tu hogar con manos sabias.","Perfeccionismo doméstico o autoabandono. Cuídate como cuidas todo lo demás."],
+"tpk":["Maestría material, éxito sólido, el toque que convierte en oro.","Obsesión por acumular o terquedad. El oro sin alma pesa."],
+"te1":["Claridad mental, verdad que corta la confusión. Una idea poderosa nace.","Pensamientos que hieren, verdad usada como arma. Afila con cuidado."],
+"te2":["Tregua interior. Decisión pausada con los ojos vendados a propósito.","Evasión de una decisión. La venda voluntaria se volvió ceguera."],
+"te3":["Dolor que enseña. Nombrar la herida es empezar a sanarla.","Herida revivida una y otra vez. Saca las espadas; el corazón quiere cerrar."],
+"te4":["Descanso reparador. La mente también necesita su templo de silencio.","Agotamiento negado. Descansar no es rendirse."],
+"te5":["Victoria con costo. Evalúa si esta batalla merece tu paz.","Ganar humillando o pelear por orgullo. Hay victorias que se pierden."],
+"te6":["Travesía hacia aguas calmas. Te alejas de la tormenta con lo esencial.","Cargar el pasado en la barca. Suelta las espadas que hunden."],
+"te7":["Estrategia y discreción. No todas tus cartas deben mostrarse.","Autoengaño o atajos deshonestos. Lo que tomas a escondidas te toma a ti."],
+"te8":["Las ataduras son mentales. Un paso basta para probar que puedes salir.","Victimismo o parálisis. La venda está floja y las espadas no te rodean tanto."],
+"te9":["La pesadilla nombrada pierde poder. Comparte lo que te desvela.","Ansiedad nocturna, culpa que agranda sombras. El amanecer desmiente a la mente."],
+"te10":["El final ya pasó. Solo queda levantarse: el amanecer está detrás.","Drama del final. Ya terminó — deja de clavarte la última espada tú misma."],
+"tep":["Mente curiosa, vigilancia inteligente, sed de verdad.","Chisme, espionaje o palabras impulsivas. Observar no es acusar."],
+"teq":["Acción veloz y valiente. Cabalgas directo hacia la verdad.","Precipitación que arrasa. La velocidad sin dirección corta lo que ama."],
+"ter":["Claridad sin adornos. Ves la verdad aunque duela, y eso te libera.","Frialdad o amargura. La verdad sin compasión también es una espada."],
+"tek":["Autoridad mental, juicio limpio, decisiones desde la ética.","Tiranía intelectual. Tener razón no es lo mismo que tener sabiduría."],
+"tb1":["Chispa creativa, energía nueva, el fuego del comienzo en tu mano.","Falsos arranques o energía dispersa. Enciende una sola antorcha primero."],
+"tb2":["Visión de futuro, el mundo en tus manos, planear la expansión.","Miedo a salir del castillo. El mapa sin viaje es solo papel."],
+"tb3":["Tus barcos ya navegan. La espera activa da frutos en el horizonte.","Retrasos o visión corta. Los barcos llegan; no abandones el puerto."],
+"tb4":["Celebración, hogar estable, logro que merece fiesta.","Celebrar antes de tiempo o inestabilidad disfrazada de fiesta."],
+"tb5":["Competencia sana, fuego que entrena. El roce afila tu llama.","Conflictos desgastantes. No toda pelea merece tu leña."],
+"tb6":["Victoria reconocida, regreso triunfal. Recibe tus laureles.","Éxito que depende del aplauso. La corona no es tu cabeza."],
+"tb7":["Defiende tu posición con coraje. Estás arriba por mérito propio.","Defensividad agotadora. No todos vienen a quitarte el lugar."],
+"tb8":["Movimiento veloz, noticias en camino, energía que fluye sin obstáculo.","Prisa que atropella o mensajes cruzados. Deja aterrizar las varas."],
+"tb9":["Resiliencia. Herida pero de pie: la última guardia antes del logro.","Desconfianza agotada. Bajar la guardia también es fortaleza."],
+"tb10":["Cosecha pesada pero tuya. Ya casi llegas — organiza la carga.","Sobrecarga autoimpuesta. Soltar varas no es fracasar."],
+"tbp":["Entusiasmo explorador, mensaje inspirador, chispa que quiere mundo.","Promesas de fuego sin leña. Inspírate, pero concreta."],
+"tbq":["Aventura, pasión en movimiento, audacia que abre caminos.","Impulsividad que quema. El fuego sin dirección incendia lo propio."],
+"tbr":["Magnetismo, creatividad confiada, calidez que lidera sin forzar.","Celos o drama. Tu fuego no necesita apagar el de nadie."],
+"tbk":["Liderazgo visionario, carisma maduro, el fuego que inspira a otros.","Autoritarismo o ego ardiente. Liderar no es deslumbrar."]};
 
 function sortearCarta(tipo){
   _ultimoSorteoTipo = tipo;
   const box = document.getElementById('sorteoResultado');
   box.style.display = 'block';
 
-  // Barajado con suspenso: nombres pasan rápido y se detiene en la elegida
   const lista = tipo === 'oracle' ? CARTAS : TAROT;
   const elegida = lista[Math.floor(Math.random() * lista.length)];
+  const enSombra = Math.random() < 0.5;   // 50/50: luz o sombra (invertida)
+
+  const elSig = document.getElementById('sorteoSignificado');
+  const elOri = document.getElementById('sorteoOrientacion');
+  if(elSig){ elSig.style.display='none'; elSig.textContent=''; }
+  if(elOri){ elOri.style.display='none'; }
+
   let pasos = 0;
   const totalPasos = 14;
   const intervalo = setInterval(()=>{
@@ -652,21 +773,65 @@ function sortearCarta(tipo){
     document.getElementById('sorteoTipo').textContent = tipo==='oracle'
       ? `ORÁCULO PRISMA · CARTA ${carta.num} DE 31`
       : `TAROT · ${(SUIT_NOMBRES[carta.suit]||carta.suit).toUpperCase()}`;
-    if(pasos >= totalPasos) clearInterval(intervalo);
+    if(pasos >= totalPasos){
+      clearInterval(intervalo);
+      revelarSignificado(tipo, elegida, enSombra);
+    }
   }, 90);
 }
+
+function revelarSignificado(tipo, carta, enSombra){
+  const elOri = document.getElementById('sorteoOrientacion');
+  const elSig = document.getElementById('sorteoSignificado');
+  const emoji = document.getElementById('sorteoEmoji');
+  if(!elOri || !elSig) return;
+
+  let subtitulo = '', texto = '';
+  if(tipo === 'oracle'){
+    const s = ORACULO_SIG[String(carta.num)];
+    if(s){ subtitulo = s[0]; texto = enSombra ? s[2] : s[1]; }
+  } else {
+    const s = TAROT_SIG[carta.id];
+    if(s){ texto = enSombra ? ('En sombra: ' + s[1]) : s[0]; }
+  }
+
+  // etiqueta de orientación
+  elOri.style.display = 'block';
+  elOri.innerHTML = enSombra
+    ? '🌑 EN SOMBRA <span style="opacity:.55">(invertida)</span>'
+    : '✦ EN LUZ';
+  elOri.style.color = enSombra ? '#d4a8f0' : '#f5e6b8';
+
+  // emoji volteado si sale en sombra
+  emoji.style.display = 'inline-block';
+  emoji.style.transform = enSombra ? 'rotate(180deg)' : 'none';
+  emoji.style.transition = 'transform .5s ease';
+
+  // subtítulo + significado
+  elSig.style.display = 'block';
+  elSig.innerHTML = (subtitulo ? `<div style="font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.2em;color:rgba(201,168,76,.6);margin-bottom:.5rem">${subtitulo.toUpperCase()}</div>` : '')
+    + `<div style="font-family:'Cormorant Garamond',serif;font-size:1.02rem;line-height:1.55;color:rgba(245,230,184,.85)">${texto}</div>`;
+
+  elSig.dataset.sombra = enSombra ? '1' : '0';
+}
+
 function sortearOtraVez(){ sortearCarta(_ultimoSorteoTipo) }
+
 function usarEnSemana(){
   const nombre = document.getElementById('sorteoNombre').textContent;
   const tipo = document.getElementById('sorteoTipo').textContent;
+  const elSig = document.getElementById('sorteoSignificado');
   const ta = document.getElementById('mensajeSemanal');
   if(!ta || !nombre) return;
-  const linea = `✦ Carta de la semana: ${nombre} (${tipo.includes('ORÁCULO') ? 'Oráculo Prisma' : 'Tarot'})`;
+  const enSombra = elSig && elSig.dataset.sombra === '1';
+  const orientacion = enSombra ? ' · en sombra' : ' · en luz';
+  const sig = elSig ? elSig.textContent.trim() : '';
+  const linea = `✦ Carta de la semana: ${nombre}${orientacion} (${tipo.includes('ORÁCULO') ? 'Oráculo Prisma' : 'Tarot'})`
+    + (sig ? '\n' + sig : '');
   ta.value = ta.value ? linea + '\n\n' + ta.value : linea + '\n\n';
   ta.focus();
   ta.scrollIntoView({behavior:'smooth', block:'center'});
 }
-
 // ══════════════════════════════════════════
 // MODERACIÓN DEL MURO
 // ══════════════════════════════════════════
