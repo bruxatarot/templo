@@ -18,7 +18,7 @@
   css.textContent =
     '#tvTinte{position:fixed;inset:0;z-index:1;pointer-events:none;mix-blend-mode:soft-light;transition:background 2.5s ease}' +
     '#tvClima{position:fixed;inset:0;z-index:2;pointer-events:none}' +
-    '#tvAviso{position:fixed;top:1rem;left:50%;transform:translateX(-50%);z-index:70;' +
+    '#tvAviso{position:fixed;top:1rem;left:50%;transform:translateX(-50%);z-index:70;pointer-events:none;' +
       "font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.22em;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;" +
       'color:#f5e6b8;background:rgba(4,6,15,.78);border:1px solid rgba(201,168,76,.35);' +
       'border-radius:100px;padding:.55rem 1.2rem;backdrop-filter:blur(8px);' +
