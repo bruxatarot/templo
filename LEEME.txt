@@ -1,0 +1,25 @@
+COMMIT: CAMINO DEL ALMA + CIELO DEL TEMPLO
+═══════════════════════════════════════════
+
+ARCHIVOS NUEVOS
+  js/camino-alma.js   → los 7 rangos del alma
+  js/cielo.js         → publica tus gestos al espacio compartido
+  cielo.html          → la página del Cielo del Templo
+
+ARCHIVOS QUE REEMPLAZAS
+  js/starbits.js      → +19 líneas (acumula la luz y cuenta los gestos)
+  perfil.html         → +10 líneas (panel del Camino + enlace al Cielo)
+
+ANTES DE QUE FUNCIONE EL CIELO
+  Lee REGLAS-FIREBASE.txt: hay que agregar un bloque de reglas
+  para el espacio público /templo/cielo. Sin eso, el Cielo se
+  verá vacío (no se rompe nada, simplemente no publica).
+
+DESPUÉS DE SUBIR
+  · perfil.html  → verás tu rango y el camino de las 7 lunas
+  · cielo.html   → los honores (estará vacío hasta que haya almas
+                   con gestos registrados; tú misma lo irás llenando)
+
+NOTA HONESTA
+  Los contadores empiezan HOY en cero: cuentan desde que subas
+  esto, no hacia atrás (no había registro previo de gestos).

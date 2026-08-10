@@ -14,6 +14,8 @@
   <script src="lang.js"></script>
   <script src="js/guardianes.js"></script>
   <script src="js/starbits.js"></script>
+  <script src="js/camino-alma.js"></script>
+  <script src="js/cielo.js"></script>
   <script type="module" src="js/auth-chip.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
   <style>
@@ -235,6 +237,12 @@
     <div class="mov-lista" id="listaMovs"><p class="vacio">Sin movimientos aún</p></div>
   </div>
 
+  <!-- EL CAMINO DEL ALMA -->
+  <div class="panel" id="panelCamino" style="display:none">
+    <div class="panel-t">✦ EL CAMINO DEL ALMA ✦</div>
+    <div id="caminoAlma"></div>
+  </div>
+
   <!-- CÓMO GANAR STARBITS (desplegable con progreso) -->
   <details class="panel">
     <summary>⭐ CÓMO GANAR STARBITS <span class="prog-badge" id="progBadge">0 de 0 hoy</span></summary>
@@ -253,6 +261,7 @@
       <a class="acceso" href="tiradas.html">🔮 Oráculo Prisma</a>
       <a class="acceso" href="pozo.html">⭐ Pozo de los Deseos</a>
       <a class="acceso" href="historias.html">📚 Historias Mágicas</a>
+      <a class="acceso" href="cielo.html">🌌 El Cielo del Templo</a>
     </div>
   </div>
 
@@ -274,7 +283,7 @@ const FB_URL = 'https://diario-del-alma-default-rtdb.firebaseio.com';
 
 function renderPerfil(user){
   document.getElementById('panelNoSesion').style.display = user ? 'none' : 'block';
-  ['panelAlma','panelColeccion','panelMsgs'].forEach(id=>{
+  ['panelAlma','panelCamino','panelColeccion','panelMsgs'].forEach(id=>{
     document.getElementById(id).style.display = user ? 'block' : 'none';
   });
   if(!user) return;
