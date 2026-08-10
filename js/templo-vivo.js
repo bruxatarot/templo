@@ -36,10 +36,37 @@
 
 function semillaDeFecha(d){
   const s = d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
-  let h = s ^ 0x9E3779B9;
-  return function(){ h|=0; h = h + 0x6D2B79F5 | 0;
+  // mezcla fuerte: dos días seguidos deben dar resultados MUY distintos
+  let h = s >>> 0;
+  h ^= h >>> 16; h = Math.imul(h, 0x21f0aaad);
+  h ^= h >>> 15; h = Math.imul(h, 0x735a2d97);
+  h ^= h >>> 15;
+  const rnd = function(){ h|=0; h = h + 0x6D2B79F5 | 0;
     let t = Math.imul(h ^ h>>>15, 1|h); t = t + Math.imul(t ^ t>>>7, 61|t) ^ t;
     return ((t ^ t>>>14)>>>0)/4294967296; };
+  rnd(); rnd();                       // calentar el generador
+  return rnd;
+}
+
+// clima del día: nunca repite el de los 2 días anteriores.
+// Recorre una ventana de 5 días hacia atrás resolviendo cada uno en orden,
+// para que la cadena sea coherente (y siempre igual para todas las almas).
+function climaDelDia(fecha, pool){
+  const dias = 5;
+  let ant1 = null, ant2 = null, elegido = null;
+  for(let k = dias; k >= 0; k--){
+    const f = new Date(fecha.getTime() - k*86400000);
+    const az = semillaDeFecha(f);
+    let c = pool[Math.floor(az()*pool.length)];
+    if(c === ant1 || c === ant2){
+      for(let j = 1; j < pool.length; j++){
+        const alt = pool[(pool.indexOf(c)+j) % pool.length];
+        if(alt !== ant1 && alt !== ant2){ c = alt; break; }
+      }
+    }
+    ant2 = ant1; ant1 = c; elegido = c;
+  }
+  return elegido;
 }
 function faseLunar(d){
   const dias = (d.getTime() - Date.UTC(2000,0,6,18,14)) / 86400000;
@@ -58,10 +85,10 @@ function estacionDe(d){ const m=d.getMonth()+1;
   if(m>=9&&m<=11)return 'otono'; return 'invierno'; }
 
 const ESTACIONES = {
-  primavera:{tinte:'rgba(120,190,140,.10)', extra:['petalos','flores']},
-  verano:   {tinte:'rgba(255,190,90,.08)',  extra:['luciernagas']},
-  otono:    {tinte:'rgba(200,110,40,.10)',  extra:['hojas','neblina']},
-  invierno: {tinte:'rgba(140,170,255,.10)', extra:['nieve','polvo']},
+  primavera:{tinte:'rgba(120,190,140,.10)', extra:['petalos','flores','mariposas']},
+  verano:   {tinte:'rgba(255,190,90,.08)',  extra:['luciernagas','mariposas']},
+  otono:    {tinte:'rgba(200,110,40,.10)',  extra:['hojas','hojas','neblina']},
+  invierno: {tinte:'rgba(140,170,255,.10)', extra:['nieve','nieve','neblina']},
 };
 const CLIMAS = {
   estrellas:{aviso:'Esta noche llueven estrellas en el Templo',icono:'🌠'},
@@ -74,8 +101,9 @@ const CLIMAS = {
   mariposas:{aviso:'Mariposas de luz cruzan el Templo',icono:'🦋'},
   hojas:{aviso:'Las hojas doradas danzan en el Templo',icono:'🍂'},
   nieve:{aviso:'Nieve serena cae sobre el Templo',icono:'❄️'},
+  aurora:{aviso:'Una aurora danza sobre el Templo esta noche',icono:'🌌'},
 };
-const POOL_BASE = ['estrellas','serena','polvo','mariposas','neblina'];
+const POOL_BASE = ['estrellas','serena','polvo'];
 const SAGRADAS = {
   '10-31':{clima:'espiritus',aviso:'Los espíritus caminan esta noche por el Templo',icono:'👻',tinte:'rgba(150,80,200,.14)'},
   '11-01':{clima:'espiritus',aviso:'Las almas queridas visitan el Templo',icono:'🕯️',tinte:'rgba(255,140,60,.12)'},
@@ -93,7 +121,7 @@ function medir2(){ W2=clima.width=innerWidth; H2=clima.height=innerHeight; }
 addEventListener('resize', medir2);
 
 function crearParticulas(tipo, az){
-  const n = {estrellas:34, serena:0, luciernagas:26, polvo:60, flores:22, petalos:28,
+  const n = {aurora:1, estrellas:34, serena:0, luciernagas:26, polvo:60, flores:22, petalos:28,
              neblina:8, mariposas:12, hojas:26, nieve:55, nievedorada:55,
              espiritus:9, petalosrosa:28}[tipo] || 26;
   particulas = Array.from({length:n}, ()=>({
@@ -121,11 +149,16 @@ function dMariposa(c,p){
   c.beginPath(); c.moveTo(0,-s*.5); c.lineTo(0,s*.5); c.stroke();          // cuerpo
   c.restore();
 }
+const PALETA_HOJAS=[['rgba(200,80,40,.9)','rgba(230,140,60,.9)'],    // roja
+                    ['rgba(210,120,40,.88)','rgba(240,190,90,.88)'],  // naranja
+                    ['rgba(170,60,50,.88)','rgba(215,110,70,.88)'],   // vino
+                    ['rgba(200,150,50,.85)','rgba(240,210,120,.85)']];// ámbar
 function dHoja(c,p){
   const s=5+p.r*7;
+  if(p.pal===undefined)p.pal=Math.floor(Math.random()*PALETA_HOJAS.length);
   c.save(); c.translate(p.x,p.y); c.rotate(p.f);
   const g=c.createLinearGradient(-s,0,s,0);
-  g.addColorStop(0,'rgba(200,130,50,.85)'); g.addColorStop(1,'rgba(230,180,90,.85)');
+  g.addColorStop(0,PALETA_HOJAS[p.pal][0]); g.addColorStop(1,PALETA_HOJAS[p.pal][1]);
   c.fillStyle=g;
   c.beginPath(); c.moveTo(0,-s);
   c.quadraticCurveTo(s*.9,0,0,s); c.quadraticCurveTo(-s*.9,0,0,-s); c.fill();
@@ -151,6 +184,29 @@ function dFlor(c,p){
   c.fillStyle='rgba(245,230,184,.95)';
   c.beginPath(); c.arc(0,0,s*.35,0,7); c.fill();                           // centro dorado
   c.restore();
+}
+function dAurora(c,p){
+  // cortinas de luz que ondulan en lo alto del cielo
+  const alto=H2*.55, base=H2*.06;
+  for(let capa=0;capa<3;capa++){
+    const desf=p.f+capa*1.7, tono=capa===0?'120,255,190':(capa===1?'140,200,255':'200,150,255');
+    c.beginPath();
+    for(let x=0;x<=W2;x+=14){
+      const y=base+Math.sin(x*.004+desf)*26+Math.sin(x*.011+desf*1.6)*13+capa*16;
+      x===0?c.moveTo(x,y):c.lineTo(x,y);
+    }
+    for(let x=W2;x>=0;x-=14){
+      const y=base+Math.sin(x*.004+desf)*26+Math.sin(x*.011+desf*1.6)*13+capa*16;
+      const largo=alto*(.55+Math.sin(x*.006+desf*.7)*.3);
+      c.lineTo(x,y+largo);
+    }
+    c.closePath();
+    const g2=c.createLinearGradient(0,base,0,base+alto);
+    g2.addColorStop(0,'rgba('+tono+',0)');
+    g2.addColorStop(.25,'rgba('+tono+',.13)');
+    g2.addColorStop(1,'rgba('+tono+',0)');
+    c.fillStyle=g2; c.fill();
+  }
 }
 function dEspiritu(c,p){
   const a=.22+Math.abs(Math.sin(p.f))*.25;
@@ -210,10 +266,14 @@ function pintar(t){
         cx.fillStyle=`rgba(201,168,76,${.15+p.r*.4})`;
         cx.beginPath(); cx.arc(p.x,p.y,1+p.r*1.6,0,7); cx.fill();
         break;
+      case 'aurora':
+        p.f+=.006;
+        dAurora(cx,p);
+        break;
       case 'neblina':{
         p.x += .35*p.s; if(p.x>W2+300)p.x=-300;
         const g=cx.createRadialGradient(p.x,p.y,0,p.x,p.y,180+p.r*140);
-        g.addColorStop(0,'rgba(139,79,158,.10)'); g.addColorStop(1,'rgba(139,79,158,0)');
+        g.addColorStop(0,'rgba(139,79,158,.055)'); g.addColorStop(1,'rgba(139,79,158,0)');
         cx.fillStyle=g; cx.fillRect(p.x-320,p.y-320,640,640);
         break;}
       case 'nieve': case 'nievedorada':{
@@ -269,14 +329,23 @@ function vestirTemplo(fecha){
   if (sagrada){ climaId=sagrada.clima; aviso=sagrada.aviso; icono=sagrada.icono; tinte=sagrada.tinte; }
   else {
     const pool = POOL_BASE.concat(ESTACIONES[est].extra);
-    climaId = pool[Math.floor(az()*pool.length)];
+    climaId = climaDelDia(fecha, pool);
+    // aurora boreal: rara y solo en las estaciones frías
+    if(est==='invierno'||est==='otono'){
+      const dadoAurora=function(f){ const r=semillaDeFecha(f); r(); r(); r(); return r(); };
+      if(dadoAurora(fecha) < 0.05){
+        let cerca=false;                       // ninguna aurora en los 5 días previos
+        for(let k=1;k<=5;k++) if(dadoAurora(new Date(fecha.getTime()-k*86400000)) < 0.05) cerca=true;
+        if(!cerca) climaId='aurora';
+      }
+    }
     aviso = CLIMAS[climaId].aviso; icono = CLIMAS[climaId].icono;
     if (luna.n==='luna llena') aviso += ' · la luna llena lo ilumina todo';
     if (luna.n==='luna nueva') aviso += ' · bajo el manto de la luna nueva';
   }
 
   // las fugaces brillan en noches serenas y de lluvia de estrellas; descansan si nieva o hay neblina
-  fugacesActivas = ['serena','estrellas','polvo','luciernagas','mariposas','flores','petalos','petalosrosa'].includes(climaId);
+  fugacesActivas = ['serena','estrellas','polvo','luciernagas','mariposas','flores','petalos','petalosrosa','aurora'].includes(climaId);
 
   tinteEl.style.background = tinte;
   var sf = document.getElementById('starfield'); if (sf) sf.style.filter = 'brightness(' + luna.luz + ')';
@@ -289,7 +358,11 @@ function vestirTemplo(fecha){
 
   /* ── arranque ── */
   medir2();
-  vestirTemplo(new Date());
+  // vista previa: abre tu templo con ?fecha=2026-10-31 para ver ese día
+  var qs = new URLSearchParams(location.search).get('fecha');
+  var hoy = qs ? new Date(qs + 'T12:00:00') : new Date();
+  if (isNaN(hoy)) hoy = new Date();
+  vestirTemplo(hoy);
   requestAnimationFrame(pintar);
 
   // el aviso aparece, acompaña unos segundos y se despide
