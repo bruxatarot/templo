@@ -9,6 +9,12 @@ ARCHIVOS NUEVOS
 ARCHIVOS QUE REEMPLAZAS
   js/starbits.js      → +19 líneas (acumula la luz y cuenta los gestos)
   perfil.html         → +10 líneas (panel del Camino + enlace al Cielo)
+  index.html          → +1 línea (el Cielo en el menú lateral)
+
+CÓMO SE LLEGA AL CIELO
+  · Menú lateral del Templo → 🌌 El Cielo del Templo
+  · Mi Santuario → sección MI CAMINO → 🌌 El Cielo del Templo
+  · Y desde el Cielo, un enlace de vuelta al Templo y a Mi Santuario
 
 ANTES DE QUE FUNCIONE EL CIELO
   Lee REGLAS-FIREBASE.txt: hay que agregar un bloque de reglas
