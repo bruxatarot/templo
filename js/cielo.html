@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#04060f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Bruxa Tarot">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon-180.png">
+  <title>El Cielo del Templo • Bruxa Tarot</title>
+  <script src="lang.js"></script>
+  <script src="js/guardianes.js"></script>
+  <script src="js/starbits.js"></script>
+  <script src="js/camino-alma.js"></script>
+  <script src="js/cielo.js"></script>
+  <script type="module" src="js/auth-chip.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root{ --noche:#04060f; --gold:#c9a84c; --gold-p:#f5e6b8; --violeta:#8b4f9e; }
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:var(--noche);color:var(--gold-p);
+      font-family:'Cormorant Garamond',serif;padding:1.2rem 1rem 5rem}
+    #starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
+    #starfield canvas{position:absolute;inset:0;width:100%;height:100%}
+    .wrap{max-width:600px;margin:0 auto;position:relative;z-index:1}
+
+    .nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.6rem}
+    .nav a{text-decoration:none;font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;color:rgba(201,168,76,.7)}
+    .nav a:hover{color:var(--gold-p)}
+
+    h1{font-family:'Cinzel Decorative',serif;font-size:1.5rem;text-align:center;margin:.2rem 0 .2rem;
+      color:var(--gold-p);text-shadow:0 0 26px rgba(201,168,76,.35)}
+    .sub{text-align:center;font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.3em;
+      color:rgba(201,168,76,.55);margin-bottom:.5rem}
+    .luna-info{text-align:center;font-style:italic;color:rgba(245,230,184,.55);font-size:.95rem;margin-bottom:1.4rem}
+
+    .tabs{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.4rem;flex-wrap:wrap}
+    .tab{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.15em;cursor:pointer;color:rgba(201,168,76,.85);
+      background:rgba(11,17,40,.7);border:1px solid rgba(201,168,76,.3);border-radius:100px;padding:.45rem .85rem}
+    .tab.activo,.tab:hover{background:rgba(201,168,76,.2);color:var(--gold-p)}
+
+    .honor{border:1px solid rgba(201,168,76,.25);border-radius:18px;padding:1.15rem 1.1rem;margin-bottom:.9rem;
+      background:linear-gradient(160deg,rgba(30,20,56,.85),rgba(16,10,34,.9));position:relative;overflow:hidden;
+      backdrop-filter:blur(6px)}
+    .honor.mio{border-color:rgba(201,168,76,.75);box-shadow:0 0 28px rgba(201,168,76,.14)}
+    .honor .astro{position:absolute;right:-8px;top:-10px;font-size:3.4rem;opacity:.10}
+    .honor .t{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.22em;color:rgba(201,168,76,.75);margin-bottom:.45rem}
+    .honor .alma{font-family:'Cinzel Decorative',serif;font-size:1.12rem;color:var(--gold-p);margin-bottom:.15rem}
+    .honor .gesto{font-style:italic;font-size:.96rem;color:rgba(245,230,184,.65)}
+    .honor .yo{margin-top:.7rem;padding-top:.55rem;border-top:1px solid rgba(201,168,76,.15);
+      font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.14em;color:rgba(201,168,76,.6)}
+    .cerca{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem}
+    .cerca span{font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:.1em;color:rgba(245,230,184,.45);
+      border:1px solid rgba(201,168,76,.18);border-radius:100px;padding:.18rem .5rem}
+    .cerca span.yo-chip{color:var(--gold-p);border-color:rgba(201,168,76,.5)}
+    .vacio{text-align:center;font-style:italic;color:rgba(245,230,184,.45);padding:2.2rem 1rem;line-height:1.6}
+
+    .privacidad{margin-top:1.8rem;border:1px dashed rgba(201,168,76,.22);border-radius:14px;padding:1rem;
+      display:flex;align-items:center;gap:.8rem;font-size:.92rem;color:rgba(245,230,184,.6)}
+    .privacidad button{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.15em;cursor:pointer;
+      border:1px solid rgba(201,168,76,.4);border-radius:100px;padding:.45rem .8rem;background:transparent;
+      color:rgba(201,168,76,.9);margin-left:auto;white-space:nowrap}
+    .nota{text-align:center;font-style:italic;font-size:.9rem;color:rgba(245,230,184,.45);
+      margin-top:1.4rem;line-height:1.55}
+  </style>
+</head>
+<body>
+<div id="starfield"><canvas id="stars"></canvas></div>
+
+<div class="wrap">
+  <div class="nav">
+    <a href="index.html">← TEMPLO</a>
+    <a href="perfil.html">MI SANTUARIO →</a>
+  </div>
+
+  <h1>El Cielo del Templo</h1>
+  <div class="sub">✦ LAS ALMAS QUE MÁS BRILLARON ✦</div>
+  <div class="luna-info" id="lunaInfo">Cargando el cielo…</div>
+
+  <div class="tabs">
+    <button class="tab activo" data-v="mes">ESTA LUNA</button>
+    <button class="tab" data-v="total">DE SIEMPRE</button>
+  </div>
+
+  <div id="honores"><div class="vacio">Mirando las estrellas…</div></div>
+
+  <div class="privacidad">
+    <span id="privTexto">Apareces en el Cielo del Templo.</span>
+    <button id="privBtn">CAMBIAR</button>
+  </div>
+
+  <div class="nota">
+    Cada luna el cielo se vacía y vuelve a llenarse.<br>
+    Nadie se queda con un lugar para siempre.
+  </div>
+</div>
+
+<script>
+/* ── starfield (el mismo de tu templo) ── */
+(function(){
+  const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');
+  let stars=[],W,H;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  function initStars(){stars=[];const n=Math.floor((W*H)/4000);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.2,alpha:Math.random()*.7+.1,ts:Math.random()*.02+.005,to:Math.random()*Math.PI*2,gold:Math.random()<.08});}
+  function draw(t){ctx.clearRect(0,0,W,H);stars.forEach(s=>{const a=s.alpha*(.6+.4*Math.sin(t*s.ts+s.to));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.gold?`rgba(201,168,76,${a*.8})`:`rgba(255,255,255,${a})`;ctx.fill();});requestAnimationFrame(draw);}
+  window.addEventListener('resize',()=>{resize();initStars();});resize();initStars();requestAnimationFrame(draw);
+})();
+
+/* ── los honores: qué gesto premia cada uno ── */
+const HONORES = [
+  {ev:'luz',      astro:'🕯️', t:'GUARDIANA DE LA LLAMA',    verbo:n=>'encendió '+n+' velas por otras almas',   mio:n=>'Tú llevas '+n+' velas encendidas'},
+  {ev:'deseo',    astro:'🌠', t:'VOZ DEL POZO',              verbo:n=>'lanzó '+n+' deseos al pozo',             mio:n=>'Tú llevas '+n+' deseos'},
+  {ev:'carta',    astro:'🎴', t:'OJO DEL ORÁCULO',           verbo:n=>'sacó su carta '+n+' veces',              mio:n=>'Tú llevas '+n+' cartas'},
+  {ev:'diario',   astro:'📖', t:'PLUMA DEL ALMA',            verbo:n=>'escribió '+n+' veces en su diario',      mio:n=>'Tú llevas '+n+' entradas'},
+  {ev:'muro',     astro:'💌', t:'CORAZÓN DEL MURO',          verbo:n=>'dejó '+n+' mensajes en el Muro',         mio:n=>'Tú llevas '+n+' mensajes'},
+  {ev:'historia', astro:'📚', t:'VIAJERA DE LAS HISTORIAS',  verbo:n=>'leyó '+n+' veces en la biblioteca',      mio:n=>'Tú llevas '+n+' lecturas'},
+  {ev:'caricia',  astro:'💞', t:'MANO QUE ACARICIA',         verbo:n=>'mimó a su guardián '+n+' veces',         mio:n=>'Tú llevas '+n+' cariñitos'},
+];
+
+let ALMAS = [], VISTA = 'mes';
+
+async function cargarCielo(){
+  try{
+    const r = await fetch(window.CieloTemplo.FB_URL + '/templo/cielo.json');
+    const data = await r.json();
+    ALMAS = data ? Object.entries(data).map(([uid,a])=>Object.assign({uid}, a)) : [];
+  }catch(e){ ALMAS = []; }
+  pintar();
+}
+
+function pintar(){
+  const cont = document.getElementById('honores');
+  const miUid = window._fbUser?.uid;
+  const mesClave = new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');
+
+  document.getElementById('lunaInfo').textContent =
+    VISTA === 'mes' ? 'Luna de ' + new Date().toLocaleDateString('es',{month:'long',year:'numeric'})
+                    : 'Honores que nadie ha destronado todavía';
+
+  if(!ALMAS.length){
+    cont.innerHTML = '<div class="vacio">El cielo aún está vacío.<br>Las primeras almas que caminen el Templo lo encenderán ✦</div>';
+    return;
+  }
+
+  cont.innerHTML = HONORES.map(function(h){
+    const conteo = ALMAS.map(function(a){
+      const c = (VISTA==='mes')
+        ? ((a.mesClave === mesClave && a.mes) ? (a.mes[h.ev]||0) : 0)
+        : ((a.total && a.total[h.ev]) || 0);
+      return {nombre:a.nombre||'Alma', uid:a.uid, n:c};
+    }).filter(x=>x.n>0).sort((a,b)=>b.n-a.n);
+
+    if(!conteo.length) return '';
+    const rey = conteo[0];
+    const yo  = conteo.find(x=>x.uid===miUid);
+    const esMio = rey.uid === miUid;
+    const cerca = conteo.slice(0,4).map(function(x){
+      return '<span'+(x.uid===miUid?' class="yo-chip"':'')+'>'+(x.uid===miUid?'tú':x.nombre)+' · '+x.n+'</span>';
+    }).join('');
+
+    return '<div class="honor'+(esMio?' mio':'')+'">'
+      +'<div class="astro">'+h.astro+'</div>'
+      +'<div class="t">'+h.t+'</div>'
+      +'<div class="alma">'+(esMio ? 'tú' : rey.nombre)+'</div>'
+      +'<div class="gesto">'+h.verbo(rey.n)+'</div>'
+      +(esMio ? '<div class="yo">NADIE TE ALCANZA ✦</div>'
+              : (yo ? '<div class="yo">'+h.mio(yo.n).toUpperCase()+'</div>' : ''))
+      +'<div class="cerca">'+cerca+'</div>'
+      +'</div>';
+  }).join('') || '<div class="vacio">Todavía no hay gestos suficientes esta luna.<br>Vuelve pronto ✦</div>';
+}
+
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click', function(){
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('activo'));
+    t.classList.add('activo'); VISTA = t.dataset.v; pintar();
+  });
+});
+
+/* ── privacidad ── */
+function pintarPriv(){
+  const v = window.CieloTemplo.visible();
+  document.getElementById('privTexto').textContent = v
+    ? 'Apareces en el Cielo del Templo.'
+    : 'Caminas en silencio: no apareces en el Cielo.';
+  document.getElementById('privBtn').textContent = v ? 'OCULTARME' : 'APARECER';
+}
+document.getElementById('privBtn').addEventListener('click', function(){
+  window.CieloTemplo.setVisible(!window.CieloTemplo.visible());
+  pintarPriv();
+  setTimeout(cargarCielo, 1200);
+});
+
+/* arranque */
+setTimeout(function(){ pintarPriv(); cargarCielo(); }, 900);
+setTimeout(cargarCielo, 4000);   // segunda pasada cuando ya publicó tu sesión
+</script>
+</body>
+</html>
