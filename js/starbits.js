@@ -58,7 +58,11 @@ function registrar(tipo, n, motivo){
 function get(){ return parseInt(localStorage.getItem('starbits')||'0') }
 function setSaldo(n){ localStorage.setItem('starbits', String(Math.max(0,n))); notificar(); guardarNube() }
 function add(n, label){
-  if(n>0) registrar('gano', n, label || '');
+  if(n>0){
+    registrar('gano', n, label || '');
+    // ── Camino del Alma: la luz acumulada NUNCA baja (aunque gastes) ──
+    localStorage.setItem('alma_luz', String((parseInt(localStorage.getItem('alma_luz')||'0')) + n));
+  }
   setSaldo(get()+n);
   if(n>0 && label) toast(`+${n} ⭐ ${label}`);
 }
@@ -90,9 +94,27 @@ function premiar(evento){
 
   premios[evento] = p;
   lsSet('sb_premios', premios);
+  contarGesto(evento);            // ── Cielo del Templo: contadores por gesto ──
   add(cfg.sb, cfg.label);
   return true;
 }
+
+// ── Contadores para el Cielo del Templo (totales y de esta luna) ──
+function mesActual(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0') }
+function contarGesto(evento, cuantos){
+  const n = cuantos || 1;
+  const tot = lsGet('alma_cont', {});
+  tot[evento] = (tot[evento]||0) + n;
+  lsSet('alma_cont', tot);
+  const mes = lsGet('alma_cont_mes', {m:'', c:{}});
+  if(mes.m !== mesActual()){ mes.m = mesActual(); mes.c = {} }
+  mes.c[evento] = (mes.c[evento]||0) + n;
+  lsSet('alma_cont_mes', mes);
+}
+function contadores(){ return {
+  total: lsGet('alma_cont', {}),
+  mes: (function(){ const m = lsGet('alma_cont_mes', {m:'',c:{}}); return m.m === mesActual() ? m.c : {} })()
+} }
 
 // ── Racha de días ──
 function actualizarRacha(){
@@ -344,7 +366,7 @@ window.Starbits = { get, add, gastar, premiar, racha, nivel, owned, addPet, getS
   ownedColores, addColor, getColor, setColor,
   ownedEmos, addEmo, getEmo, setEmo,
   ownedVars, addVar, getVar, setVar,
-  historial, progreso,
+  historial, progreso, contadores, contarGesto,
   onChange: cb => cambioCbs.push(cb), toast, EVENTOS };
 
 // ── Al cargar: racha + bono de visita ──
