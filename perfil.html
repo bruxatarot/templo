@@ -17,6 +17,7 @@
   <script src="js/camino-alma.js"></script>
   <script src="js/cielo.js"></script>
   <script type="module" src="js/auth-chip.js"></script>
+  <script type="module" src="js/lucy.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
   <style>
     :root{--gold:#c9a84c;--gold-l:#e8c97a;--gold-p:#f5e6b8;--deep:#04060f}
@@ -237,6 +238,19 @@
     <div class="mov-lista" id="listaMovs"><p class="vacio">Sin movimientos aún</p></div>
   </div>
 
+  <!-- INSIGNIA DE FUNDADORA -->
+  <div class="panel" id="panelFundadora" style="display:none">
+    <div class="panel-t">✦ ALMA FUNDADORA ✦</div>
+    <div style="text-align:center;padding:.6rem 1rem 1.2rem">
+      <div style="font-size:2.1rem;filter:drop-shadow(0 0 18px rgba(255,215,110,.85))">✦</div>
+      <div style="font-family:'Cinzel Decorative',Cinzel,serif;font-size:1.15rem;color:#f5e6b8;margin:.5rem 0 .2rem">Lucy · la luciérnaga</div>
+      <div id="fundNumero" style="font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.2em;color:rgba(201,168,76,.7)"></div>
+      <div style="font-style:italic;color:rgba(245,230,184,.6);font-size:.95rem;margin-top:.5rem;line-height:1.5">
+        Llegaste cuando el Templo aún era penumbra.<br>Lucy vuela contigo — y no volverá a entregarse jamás.
+      </div>
+    </div>
+  </div>
+
   <!-- EL CAMINO DEL ALMA -->
   <div class="panel" id="panelCamino" style="display:none">
     <div class="panel-t">✦ EL CAMINO DEL ALMA ✦</div>
@@ -283,7 +297,7 @@ const FB_URL = 'https://diario-del-alma-default-rtdb.firebaseio.com';
 
 function renderPerfil(user){
   document.getElementById('panelNoSesion').style.display = user ? 'none' : 'block';
-  ['panelAlma','panelCamino','panelColeccion','panelMsgs'].forEach(id=>{
+  ['panelAlma','panelFundadora','panelCamino','panelColeccion','panelMsgs'].forEach(id=>{
     document.getElementById(id).style.display = user ? 'block' : 'none';
   });
   if(!user) return;
@@ -502,5 +516,20 @@ if(typeof LangEngine !== 'undefined'){ LangEngine.detect(); LangEngine.apply(); 
 renderProgreso();
 </script>
 <script src="js/templo-vivo.js" defer></script>
+<script>
+/* insignia de fundadora: solo se muestra si Lucy te eligió */
+(function(){
+  function pintarFundadora(){
+    const es = localStorage.getItem('alma_fundadora') === '1';
+    const p = document.getElementById('panelFundadora');
+    if(!p) return;
+    if(!es){ p.style.display = 'none'; return; }
+    const n = localStorage.getItem('alma_numero') || '?';
+    document.getElementById('fundNumero').textContent = 'ALMA FUNDADORA N.º ' + n + ' DE 20';
+  }
+  setTimeout(pintarFundadora, 1200);
+  setTimeout(pintarFundadora, 4000);
+})();
+</script>
 </body>
 </html>

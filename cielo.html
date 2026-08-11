@@ -17,6 +17,8 @@
   <script src="js/camino-alma.js"></script>
   <script src="js/cielo.js"></script>
   <script type="module" src="js/auth-chip.js"></script>
+  <script type="module" src="js/lucy.js"></script>
+  <script src="js/templo-vivo.js" defer></script>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
   <style>
     :root{ --noche:#04060f; --gold:#c9a84c; --gold-p:#f5e6b8; --violeta:#8b4f9e; }
@@ -25,7 +27,7 @@
       font-family:'Cormorant Garamond',serif;padding:1.2rem 1rem 5rem}
     #starfield{position:fixed;inset:0;z-index:0;pointer-events:none}
     #starfield canvas{position:absolute;inset:0;width:100%;height:100%}
-    .wrap{max-width:600px;margin:0 auto;position:relative;z-index:1}
+    .wrap{max-width:600px;margin:0 auto;position:relative;z-index:5}  /* por encima del clima del Templo Vivo (z-index 2) */
 
     .nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.6rem}
     .nav a{text-decoration:none;font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;color:rgba(201,168,76,.7)}
